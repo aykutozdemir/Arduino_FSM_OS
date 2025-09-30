@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For FsmOS
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+Scheduler	KEYWORD1
+Task		KEYWORD1
+Msg		KEYWORD1
+Timer		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin		KEYWORD2
+add		KEYWORD2
+loop_once	KEYWORD2
+now		KEYWORD2
+on_start	KEYWORD2
+on_msg		KEYWORD2
+step		KEYWORD2
+tell		KEYWORD2
+publish		KEYWORD2
+subscribe	KEYWORD2
+start		KEYWORD2
+expired		KEYWORD2
+
+#######################################
+# Constants and Variables (LITERAL1)
+#######################################
+OS		LITERAL1
