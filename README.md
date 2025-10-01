@@ -4,6 +4,16 @@ A lightweight, cooperative, finite-state-machine-based operating system for Ardu
 
 ## Features
 
+*   **Enhanced Task State Management:**
+    * Active/Suspended/Inactive states
+    * Automatic cleanup of inactive tasks
+    * Configurable message queueing during suspension
+*   **Memory-Optimized Design:**
+    * Linked-list based message queues
+    * Dynamic memory management
+    * Smart pointer message handling
+    * Reference counting for shared resources
+
 *   **Cooperative Multitasking:** Run multiple independent tasks on a single-core MCU.
 *   **Periodic & One-Shot Tasks:** Schedule tasks to run at regular intervals or just once.
 *   **Finite State Machine (FSM) Oriented:** Design tasks as state machines using the `step()` function.

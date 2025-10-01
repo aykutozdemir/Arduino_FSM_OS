@@ -116,7 +116,9 @@ void setup() {
   producer_task_ptr = &producer_task;
   cleanup_task_ptr = &cleanup_task;
 
-  OS.begin();
+  // Initialize the OS with capacity for 8 tasks (to allow for dynamic creation)
+  // and a message queue of size 32 (for task coordination)
+  OS.begin(8, 32);
   OS.add(producer_task_ptr);
   OS.add(cleanup_task_ptr);
 }

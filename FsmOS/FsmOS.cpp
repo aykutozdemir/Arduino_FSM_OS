@@ -29,25 +29,80 @@ void Scheduler::begin() {
   // For non-AVR, we can't determine reset cause this way.
   reset_info.reset_reason = 0;
 #endif
+
+  // Initialize the linked list
+  task_list = nullptr;
+  task_count = 0;
+  next_task_id = 0;
   ms = millis();
+  watchdog_enabled = false;
 }
 
 uint8_t Scheduler::add(Task* t) {
-  if (task_count >= FSMOS_MAX_TASKS) {
-    return 255; // Error: Task limit reached
+  uint8_t new_id = next_task_id++;
+  if (next_task_id == 0) {  // Wrapped around
+    next_task_id = 1;  // Skip 0 for next time
   }
-  tasks[task_count] = t;
-  t->id = task_count;
+
+  TaskNode* new_node = new TaskNode(t, new_id);
+  t->id = new_id;
   t->state = Task::ACTIVE;
   t->next_due = ms; // Run as soon as possible
-  task_stats[task_count] = {0, 0, 0};
+
+  // Add to front of list
+  new_node->next = task_list;
+  task_list = new_node;
   task_count++;
+  
   t->on_start();
-  return t->id;
+  return new_id;
 }
 
-bool Scheduler::post(Msg m) {
-  return bus.push(m);
+bool Scheduler::remove(uint8_t task_id) {
+  if (!task_list) return false;
+
+  TaskNode** curr = &task_list;
+  while (*curr) {
+    if ((*curr)->id == task_id) {
+      TaskNode* to_delete = *curr;
+      *curr = to_delete->next;
+      delete to_delete;
+      task_count--;
+      return true;
+    }
+    curr = &((*curr)->next);
+  }
+  return false;
+}
+
+bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, void* ptr, bool is_dynamic) {
+  MsgData* data = new MsgData();
+  data->type = type;
+  data->src_id = src_id;
+  data->topic = topic;
+  data->arg = arg;
+  data->ptr = ptr;
+  data->is_dynamic = is_dynamic;
+  
+  // Count subscribers
+  uint8_t target_count = 0;
+  if (topic == 0) {
+    // Direct message
+    if (src_id < task_count && tasks[src_id]) target_count = 1;
+  } else {
+    // Topic-based message
+    for (uint8_t i = 0; i < task_count; ++i) {
+      if (tasks[i] && tasks[i]->is_subscribed_to(topic)) target_count++;
+    }
+  }
+  
+  data->ref_count = target_count;
+  if (target_count == 0) {
+    delete data;
+    return false;
+  }
+  
+  return message_queue->push(SharedMsg(data));
 }
 
 void Scheduler::loop_once() {
@@ -58,32 +113,52 @@ void Scheduler::loop_once() {
   // 2. Deliver all messages from the global bus
   deliver();
 
-  // 3. Execute due tasks
-  for (uint8_t i = 0; i < task_count; ++i) {
-    if (tasks[i] && tasks[i]->is_active() && (int32_t)(now - tasks[i]->next_due) >= 0) {
-      
-      // WDT & Profiling Start
-      reset_info.last_task_id = i; // Mark current task before running
-      uint32_t start_us = micros();
+  // 3. Execute due tasks and handle cleanup
+  TaskNode** curr = &task_list;
+  while (*curr) {
+    TaskNode* node = *curr;
+    Task* task = node->task;
+    bool delete_task = false;
 
-      tasks[i]->step();
-
-      // Profiling End
-      uint32_t exec_time = micros() - start_us;
-      task_stats[i].total_exec_time_us += exec_time;
-      if (exec_time > task_stats[i].max_exec_time_us) {
-        task_stats[i].max_exec_time_us = exec_time;
+    if (task) {
+      if (task->is_inactive()) {
+        // Mark for deletion
+        delete_task = true;
       }
-      task_stats[i].run_count++;
+      else if (task->is_active() && (int32_t)(now - task->next_due) >= 0) {
+        // Only execute if task is active (not suspended or inactive)
+        // WDT & Profiling Start
+        reset_info.last_task_id = node->id;
+        uint32_t start_us = micros();
 
-      // Schedule next run
-      tasks[i]->next_due += tasks[i]->get_period();
-      
-      // If a task takes too long, it might miss its deadline.
-      // This ensures it schedules for the next available slot from NOW.
-      if ((int32_t)(tasks[i]->next_due - now) < 0) {
-          tasks[i]->next_due = now + tasks[i]->get_period();
+        task->step();
+
+        // Profiling End
+        uint32_t exec_time = micros() - start_us;
+        node->stats.total_exec_time_us += exec_time;
+        if (exec_time > node->stats.max_exec_time_us) {
+          node->stats.max_exec_time_us = exec_time;
+        }
+        node->stats.run_count++;
+
+        // Schedule next run
+        task->next_due += task->get_period();
+        
+        // Handle missed deadlines
+        if ((int32_t)(task->next_due - now) < 0) {
+          task->next_due = now + task->get_period();
+        }
       }
+    }
+
+    if (delete_task) {
+      // Remove and delete the task
+      *curr = node->next;
+      delete task;       // This will call on_terminate()
+      delete node;
+      task_count--;
+    } else {
+      curr = &(node->next);
     }
   }
   
@@ -94,20 +169,39 @@ void Scheduler::loop_once() {
 }
 
 void Scheduler::deliver() {
-  Msg m;
-  while (bus.pop(m)) {
-    if (m.topic == 0) { // Direct message
-      if (m.src_id < task_count && tasks[m.src_id]) {
-        tasks[m.src_id]->inbox.push(m);
-      }
-    } else { // Topic-based (publish/subscribe)
-      for (uint8_t i = 0; i < task_count; ++i) {
-        if (tasks[i] && tasks[i]->is_subscribed_to(m.topic)) {
-          tasks[i]->inbox.push(m);
-        }
-      }
+  // Process messages for each task
+  TaskNode* curr = task_list;
+  while (curr) {
+    if (curr->task && curr->task->is_active()) {
+      curr->task->process_messages();
+    }
+    curr = curr->next;
+  }
+}
+
+SharedMsg Scheduler::get_next_message(uint8_t task_id) {
+  SharedMsg msg;
+  if (message_queue->empty()) return msg;
+  
+  // Check the next message
+  SharedMsg peek;
+  if (!message_queue->pop(peek)) return msg;
+  
+  if (peek->topic == 0) {
+    // Direct message
+    if (peek->src_id == task_id) {
+      return peek;
+    }
+  } else {
+    // Topic-based message
+    if (tasks[task_id]->is_subscribed_to(peek->topic)) {
+      return peek;
     }
   }
+  
+  // Put it back if not for this task
+  message_queue->push(peek);
+  return msg;
 }
 
 void Scheduler::enable_watchdog(uint8_t timeout) {
@@ -128,16 +222,26 @@ uint8_t Scheduler::get_task_count() const {
   return task_count;
 }
 
+TaskNode* Scheduler::find_task_node(uint8_t task_id) const {
+    TaskNode* curr = task_list;
+    while (curr) {
+        if (curr->id == task_id) {
+            return curr;
+        }
+        curr = curr->next;
+    }
+    return nullptr;
+}
+
 Task* Scheduler::get_task(uint8_t task_id) const {
-  if (task_id < task_count) {
-    return tasks[task_id];
-  }
-  return nullptr;
+    TaskNode* node = find_task_node(task_id);
+    return node ? node->task : nullptr;
 }
 
 bool Scheduler::get_task_stats(uint8_t task_id, TaskStats& stats) const {
-    if (task_id < task_count) {
-        stats = task_stats[task_id];
+    TaskNode* node = find_task_node(task_id);
+    if (node) {
+        stats = node->stats;
         return true;
     }
     return false;
@@ -145,25 +249,17 @@ bool Scheduler::get_task_stats(uint8_t task_id, TaskStats& stats) const {
 
 /* ================== Task Implementation ================== */
 
-bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr) {
-  Msg m = {type, id, 0, arg, ptr};
-  // We need to find the destination task to post to its queue directly
-  // For simplicity, we post to the global bus and let the scheduler deliver.
-  // A more direct implementation would be:
-  // return OS.get_task(dst_task_id)->inbox.push(m);
-  // But this is safer for now.
-  m.src_id = dst_task_id; // Repurposing src_id for destination
-  return OS.post(m);
+bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
+  return OS.post(type, dst_task_id, 0, arg, ptr, is_dynamic);
 }
 
-bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr) {
+bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
   if (topic == 0) return false; // Topic 0 is reserved for direct messages
-  Msg m = {type, id, topic, arg, ptr};
-  return OS.post(m);
+  return OS.post(type, id, topic, arg, ptr, is_dynamic);
 }
 
 void Task::subscribe(uint8_t topic) {
-  if (topic > 0 && subscription_count < FSMOS_TASK_QUEUE_CAP) {
+  if (topic > 0 && subscription_count < subscription_capacity) {
     // Avoid duplicate subscriptions
     for (uint8_t i = 0; i < subscription_count; ++i) {
       if (subscriptions[i] == topic) return;
@@ -179,17 +275,25 @@ bool Task::is_subscribed_to(uint8_t topic) {
   return false;
 }
 
-void Task::stop() {
-  state = INACTIVE;
-}
-
-void Task::resume() {
+void Task::activate() {
+  if (state == SUSPENDED) {
+    on_resume();
+    // Will process any queued message on next scheduler loop
+  }
   state = ACTIVE;
   next_due = OS.now() + period_ms;
 }
 
-bool Task::is_active() const {
-  return state == ACTIVE;
+void Task::suspend() {
+  if (state == ACTIVE) {
+    on_suspend();
+    state = SUSPENDED;
+    // Keep any queued message for when we resume
+  }
+}
+
+void Task::terminate() {
+  state = INACTIVE;
 }
 
 uint8_t Task::get_id() const {
@@ -202,4 +306,38 @@ void Task::set_period(uint16_t period) {
 
 uint16_t Task::get_period() const {
   return period_ms;
+}
+
+void Task::set_queue_messages_while_suspended(bool queue_messages) {
+  queue_messages_while_suspended = queue_messages;
+}
+
+bool Task::get_queue_messages_while_suspended() const {
+  return queue_messages_while_suspended;
+}
+
+void Task::process_messages() {
+  if (state == ACTIVE) {
+    // First process any queued messages from suspended state
+    SharedMsg queued;
+    while (suspended_msg_queue.pop(queued)) {
+      on_msg(*queued.get());
+    }
+    
+    // Then process new messages
+    SharedMsg msg = OS.get_next_message(id);
+    while (msg.valid()) {
+      on_msg(*msg.get());
+      msg = OS.get_next_message(id);
+    }
+  } 
+  else if (state == SUSPENDED && queue_messages_while_suspended) {
+    // Queue new messages while suspended
+    SharedMsg msg = OS.get_next_message(id);
+    while (msg.valid()) {
+      suspended_msg_queue.push(msg);
+      msg = OS.get_next_message(id);
+    }
+  }
+  // If inactive or not queueing while suspended, messages are dropped
 }

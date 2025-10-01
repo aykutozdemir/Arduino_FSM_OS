@@ -118,8 +118,9 @@ void setup() {
   OS.enable_watchdog(WDTO_2S);
   Serial.println(F("Watchdog enabled (2s timeout)."));
 
-  // Initialize the OS timer system
-  OS.begin();
+  // Initialize the OS with capacity for 4 tasks and a message queue of size 32
+  // (larger queue for diagnostics messages)
+  OS.begin(4, 32);
 
   // Add tasks to the scheduler
   OS.add(&stats_task);

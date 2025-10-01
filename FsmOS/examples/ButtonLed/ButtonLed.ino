@@ -1,6 +1,10 @@
 #include <FsmOS.h>
 
-/* ================== App Configuration ================== */
+/* ====  ButtonTask(uint8_t button_pin) : Task(4), pin(button_pin) {
+    set_period(5); // Poll the button every 5ms
+    state = HIGH;
+    last_reading = HIGH;
+    debounce_counter = 0;========= App Configuration ================== */
 
 // Event types for our application
 enum : uint8_t {
@@ -25,7 +29,7 @@ class ButtonTask : public Task {
   const uint8_t debounce_threshold = 5; // 5 * 5ms = 25ms debounce time
 
 public:
-  ButtonTask(uint8_t button_pin) : pin(button_pin) {
+  ButtonTask(uint8_t button_pin) : Task(4, 2), pin(button_pin) {
     set_period(5); // Poll the button every 5ms
     state = HIGH;
     last_reading = HIGH;
@@ -72,7 +76,7 @@ class LedTask : public Task {
   uint16_t blink_interval = 500;
 
 public:
-  LedTask(uint8_t led_pin) : pin(led_pin) {
+  LedTask(uint8_t led_pin) : Task(4), pin(led_pin) {
     period_ms = 10; // Run step() every 10ms
   }
 
@@ -119,8 +123,9 @@ ButtonTask button_task(2); // Button on pin 2
 LedTask led_task(LED_BUILTIN); // LED on built-in pin
 
 void setup() {
-  // Initialize the OS and system timer
-  OS.begin();
+  // Initialize the OS with max 4 tasks and a global queue of 32 messages
+  // Using larger global queue since we have message-heavy tasks
+  OS.begin(4, 32);
 
   // Add tasks to the scheduler. The 'add' method assigns an ID to the task object.
   OS.add(&led_task);

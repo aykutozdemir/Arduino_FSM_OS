@@ -25,10 +25,11 @@ BlinkTask blinker;
 
 // Standard Arduino setup function.
 void setup() {
-  // Initialize the OS. This sets up the 1ms system tick.
-  OS.begin();
+  // Initialize the OS with max 4 tasks and a global queue of 16 messages
+  OS.begin(4, 16);
 
   // Add our task to the scheduler.
+  // The BlinkTask is created with default queue sizes since it doesn't use messaging
   OS.add(&blinker);
 }
 
