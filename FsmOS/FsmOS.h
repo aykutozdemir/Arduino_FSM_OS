@@ -299,6 +299,10 @@ public:
   void set_queue_messages_while_suspended(bool queue_messages);
   bool get_queue_messages_while_suspended() const;
 
+  // Task naming
+  void set_name(const __FlashStringHelper* name) { task_name = name; }
+  const __FlashStringHelper* get_name() const { return task_name ? task_name : F("Unknown"); }
+
   // Process any pending messages for this task
   void process_messages();
 
@@ -311,12 +315,14 @@ private:
   TaskState state = ACTIVE;
   uint8_t subscription_count = 0;
   uint8_t subscription_capacity = 0;
+  const __FlashStringHelper* task_name = nullptr;  // Task name stored in PROGMEM
   bool queue_messages_while_suspended = true;  // Whether to queue messages while suspended
   uint8_t* subscriptions = nullptr;
   LinkedQueue<SharedMsg> suspended_msg_queue;  // Queue for messages during suspended state
 
 public:
-  explicit Task(uint8_t max_subscriptions = 4) {  // Reduced default as most tasks use fewer topics
+  explicit Task(const __FlashStringHelper* name = nullptr, uint8_t max_subscriptions = 4) {
+    task_name = name;
     subscriptions = new uint8_t[max_subscriptions];
     subscription_capacity = max_subscriptions;
   }
