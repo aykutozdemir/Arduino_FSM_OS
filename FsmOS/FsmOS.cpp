@@ -8,23 +8,14 @@ Scheduler OS;
 __attribute__((section(".noinit")))
 ResetInfo reset_info;
 
-// Helper to get reset reason from MCUSR
-#if defined(__AVR__)
-void get_mcusr() {
-  // MCUSR must be read and cleared early in the startup sequence.
-  // A copy is saved to reset_info.reset_reason.
-  reset_info.reset_reason = MCUSR;
-  MCUSR = 0;
-}
-#endif
 
 /* ================== Scheduler Implementation ================== */
 
 void Scheduler::begin() {
 #if defined(__AVR__)
-  // This function is called by the bootloader before global constructors.
-  // We save the MCUSR register early.
-  __asm__ __volatile__("call get_mcusr");
+  // Read and clear MCUSR register early
+  reset_info.reset_reason = MCUSR;
+  MCUSR = 0;
 #else
   // For non-AVR, we can't determine reset cause this way.
   reset_info.reset_reason = 0;
@@ -88,11 +79,14 @@ bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, 
   uint8_t target_count = 0;
   if (topic == 0) {
     // Direct message
-    if (src_id < task_count && tasks[src_id]) target_count = 1;
+    TaskNode* target_node = find_task_node(src_id);
+    if (target_node && target_node->task) target_count = 1;
   } else {
     // Topic-based message
-    for (uint8_t i = 0; i < task_count; ++i) {
-      if (tasks[i] && tasks[i]->is_subscribed_to(topic)) target_count++;
+    TaskNode* curr = task_list;
+    while (curr) {
+      if (curr->task && curr->task->is_subscribed_to(topic)) target_count++;
+      curr = curr->next;
     }
   }
   
@@ -102,7 +96,7 @@ bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, 
     return false;
   }
   
-  return message_queue->push(SharedMsg(data));
+  return message_queue.push(SharedMsg(data));
 }
 
 void Scheduler::loop_once() {
@@ -181,11 +175,11 @@ void Scheduler::deliver() {
 
 SharedMsg Scheduler::get_next_message(uint8_t task_id) {
   SharedMsg msg;
-  if (message_queue->empty()) return msg;
+  if (message_queue.empty()) return msg;
   
   // Check the next message
   SharedMsg peek;
-  if (!message_queue->pop(peek)) return msg;
+  if (!message_queue.pop(peek)) return msg;
   
   if (peek->topic == 0) {
     // Direct message
@@ -194,13 +188,14 @@ SharedMsg Scheduler::get_next_message(uint8_t task_id) {
     }
   } else {
     // Topic-based message
-    if (tasks[task_id]->is_subscribed_to(peek->topic)) {
+    TaskNode* target_node = find_task_node(task_id);
+    if (target_node && target_node->task && target_node->task->is_subscribed_to(peek->topic)) {
       return peek;
     }
   }
   
   // Put it back if not for this task
-  message_queue->push(peek);
+  message_queue.push(peek);
   return msg;
 }
 

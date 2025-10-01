@@ -128,10 +128,8 @@ public:
   LinkedQueue& operator=(const LinkedQueue&) = delete;
 
   inline bool push(const T& v) {
-     void* mem = ::operator new(sizeof(Node));
-    if (!mem) return false;
-    
-    Node* new_node = new(mem) Node(v);
+    Node* new_node = new Node(v);
+    if (!new_node) return false;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
       if (!head) {
         head = tail = new_node;
