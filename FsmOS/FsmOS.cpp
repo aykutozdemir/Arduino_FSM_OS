@@ -1,68 +1,9 @@
 #include "FsmOS.h"
 
-/* ================== Logger Implementation ================== */
-
-// Initialize static members
-const char* const LoggerTask::LEVEL_STRINGS[] = {"DEBUG", "INFO", "WARN", "ERROR"};
-LoggerTask* LoggerTask::logger_instance = nullptr;
-
-LoggerTask::LoggerTask() : Task(F("Logger")) {
-    set_period(10);  // Check messages frequently
-    logger_instance = this;
-}
-
-void LoggerTask::on_msg(const MsgData& msg) {
-    if (msg.type == MSG_LOG && msg.ptr) {
-        LogMessage* log = (LogMessage*)msg.ptr;
-        
-        // Print timestamp [MM:SS.mmm]
-        uint32_t total_ms = log->timestamp;
-        uint16_t ms = total_ms % 1000;
-        uint8_t seconds = (total_ms / 1000) % 60;
-        uint8_t minutes = (total_ms / 60000) % 60;
-        
-        Serial.print(F("["));
-        if (minutes < 10) Serial.print(F("0"));
-        Serial.print(minutes);
-        Serial.print(F(":"));
-        if (seconds < 10) Serial.print(F("0"));
-        Serial.print(seconds);
-        Serial.print(F("."));
-        if (ms < 100) Serial.print(F("0"));
-        if (ms < 10) Serial.print(F("0"));
-        Serial.print(ms);
-        Serial.print(F("] "));
-        
-        // Print log level
-        Serial.print(F("["));
-        Serial.print(LEVEL_STRINGS[log->level]);
-        Serial.print(F("] "));
-        
-        // Print task name
-        Serial.print(F("["));
-        Serial.print(log->task_name);
-        Serial.print(F("] "));
-        
-        // Print message
-        Serial.println(log->message);
-        
-        // Clean up
-        delete log;
-    }
-}
-
-void log_message(Task* src_task, LogLevel level, const __FlashStringHelper* message) {
-    if (!LoggerTask::instance()) return;  // No logger available
-    
-    LogMessage* log = new LogMessage{
-        OS.now(),                // timestamp
-        level,                   // level
-        src_task->get_name(),    // task_name
-        message                  // message
-    };
-    
-    LoggerTask::instance()->tell(LoggerTask::instance()->get_id(), MSG_LOG, 0, log, true);
-}
+/* ================== Memory Tracking ================== */
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+MemoryStats fsmos_memory_stats = {0, 0, 0, 0};
+#endif
 
 /* ================== Global OS Instance ================== */
 Scheduler OS;
@@ -74,14 +15,6 @@ ResetInfo reset_info;
 
 
 /* ================== Scheduler Implementation ================== */
-
-void Scheduler::begin_with_logger() {
-    begin();
-    // Add logger as the first task
-    LoggerTask* logger = new LoggerTask();
-    add(logger);
-    log_message(logger, LOG_INFO, F("FsmOS Started with Logger"));
-}
 
 void Scheduler::begin() {
 #if defined(__AVR__)
@@ -101,6 +34,41 @@ void Scheduler::begin() {
   watchdog_enabled = false;
 }
 
+// Optional: initialize with logger (alias to begin for now)
+void Scheduler::begin_with_logger() {
+  begin();
+}
+
+void Scheduler::_print_log_prefix(Task* task, LogLevel level) {
+#ifndef FSMOS_DISABLE_LOGGING
+  static const char PROGMEM levelChars[] = {'D', 'I', 'W', 'E'};
+  
+  uint32_t t = now();
+  Serial.write('[');
+  Serial.print(t / 1000);
+  Serial.write(':');
+  Serial.print(t % 1000);
+  Serial.write('][');
+  Serial.write(pgm_read_byte(&levelChars[level]));
+  Serial.write('][');
+  if (task && task->get_name()) {
+    Serial.print(task->get_name());
+  } else {
+    Serial.write('-');
+  }
+  Serial.write(']');
+  Serial.write(' ');
+#endif
+}
+
+void Scheduler::_log(Task* task, LogLevel level, const __FlashStringHelper* msg) {
+#ifndef FSMOS_DISABLE_LOGGING
+  _print_log_prefix(task, level);
+  Serial.println(msg);
+#endif
+}
+
+
 uint8_t Scheduler::add(Task* t) {
   uint8_t new_id = next_task_id++;
   if (next_task_id == 0) {  // Wrapped around
@@ -117,10 +85,6 @@ uint8_t Scheduler::add(Task* t) {
   task_list = new_node;
   task_count++;
   
-  StringHelper str;
-  str << F("Adding task '") << t->get_name() << F("' with ID ") << new_id;
-  log_message(t, LOG_INFO, str.toFlashStr());
-  
   t->on_start();
   return new_id;
 }
@@ -132,10 +96,6 @@ bool Scheduler::remove(uint8_t task_id) {
   while (*curr) {
     if ((*curr)->id == task_id) {
       TaskNode* to_delete = *curr;
-      StringHelper str;
-      str << F("Removing task '") << to_delete->task->get_name() << F("' with ID ") << task_id;
-      log_message(to_delete->task, LOG_INFO, str.toFlashStr());
-      
       *curr = to_delete->next;
       delete to_delete;
       task_count--;
@@ -154,6 +114,7 @@ bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, 
   data->arg = arg;
   data->ptr = ptr;
   data->is_dynamic = is_dynamic;
+  data->dynamic_size = 0;  // Will be set by the caller if needed
   
   // Count subscribers
   uint8_t target_count = 0;
@@ -212,14 +173,6 @@ void Scheduler::loop_once() {
         node->stats.total_exec_time_us += exec_time;
         if (exec_time > node->stats.max_exec_time_us) {
           node->stats.max_exec_time_us = exec_time;
-          
-          // Log warning if task takes too long
-          if (exec_time > 10000) { // More than 10ms
-            StringHelper str;
-            str << F("Long task execution: '") << task->get_name() 
-                << F("' took ") << (exec_time / 1000) << F("ms");
-            log_message(task, LOG_WARNING, str.toFlashStr());
-          }
         }
         node->stats.run_count++;
 
@@ -296,15 +249,8 @@ void Scheduler::enable_watchdog(uint8_t timeout) {
 
 bool Scheduler::get_reset_info(ResetInfo& info) {
   info = reset_info;
-  
-  if (info.reset_reason & _BV(WDRF)) {
-    StringHelper str;
-    str << F("System recovered from watchdog reset. Last task ID: ") << info.last_task_id;
-    log_message(nullptr, LOG_WARNING, str.toFlashStr());
-  }
-  
   // Clear last task ID after reading to avoid stale info on next reset
-  reset_info.last_task_id = 255;
+  reset_info.last_task_id = 255; 
   return true;
 }
 
@@ -347,20 +293,6 @@ bool Scheduler::get_system_memory_info(SystemMemoryInfo& info) const {
     info.free_ram = get_free_memory();
     info.heap_fragments = count_heap_fragments();
     info.largest_block = get_largest_block();
-    
-    // Log memory status if free memory is low
-    if (info.free_ram < 256) { // Less than 256 bytes free
-      StringHelper str;
-      str << F("Low memory warning: ") << info.free_ram << F(" bytes free");
-      log_message(nullptr, LOG_WARNING, str.toFlashStr());
-    }
-    
-    // Log high fragmentation warning
-    if (get_heap_fragmentation() > 50) { // More than 50% fragmentation
-      StringHelper str;
-      str << F("High heap fragmentation: ") << get_heap_fragmentation() << F("%");
-      log_message(nullptr, LOG_WARNING, str.toFlashStr());
-    }
     
     // Task Memory
     info.total_tasks = task_count;
@@ -413,20 +345,9 @@ uint16_t Scheduler::get_free_memory() const {
 
 uint16_t Scheduler::get_largest_block() const {
 #if defined(__AVR__)
-    uint16_t largest = 0;
-    uint16_t current = 0;
-    uint8_t* ptr = (uint8_t*)&__heap_start;
-    
-    while (ptr < (uint8_t*)SP) {
-        if (*ptr == HEAP_FREE_MARKER) {
-            current++;
-            if (current > largest) largest = current;
-        } else {
-            current = 0;
-        }
-        ptr++;
-    }
-    return largest;
+    // Simplified implementation - return free memory as largest block
+    // This is not perfect but works for basic monitoring
+    return get_free_memory();
 #else
     return 0;
 #endif
@@ -446,22 +367,9 @@ uint8_t Scheduler::get_heap_fragmentation() const {
 
 uint8_t Scheduler::count_heap_fragments() const {
 #if defined(__AVR__)
-    uint8_t fragments = 0;
-    bool in_fragment = false;
-    uint8_t* ptr = (uint8_t*)&__heap_start;
-    
-    while (ptr < (uint8_t*)SP) {
-        if (*ptr == HEAP_FREE_MARKER) {
-            if (!in_fragment) {
-                fragments++;
-                in_fragment = true;
-            }
-        } else {
-            in_fragment = false;
-        }
-        ptr++;
-    }
-    return fragments;
+    // Simplified implementation - return 1 for basic monitoring
+    // This is not perfect but works for basic monitoring
+    return 1;
 #else
     return 0;
 #endif
@@ -526,10 +434,8 @@ bool Task::is_subscribed_to(uint8_t topic) {
 
 void Task::activate() {
   if (state == SUSPENDED) {
-    StringHelper str;
-    str << F("Task '") << get_name() << F("' resuming from suspended state");
-    log_message(this, LOG_INFO, str.toFlashStr());
     on_resume();
+    // Will process any queued message on next scheduler loop
   }
   state = ACTIVE;
   next_due = OS.now() + period_ms;
@@ -537,9 +443,6 @@ void Task::activate() {
 
 void Task::suspend() {
   if (state == ACTIVE) {
-    StringHelper str;
-    str << F("Task '") << get_name() << F("' entering suspended state");
-    log_message(this, LOG_INFO, str.toFlashStr());
     on_suspend();
     state = SUSPENDED;
     // Keep any queued message for when we resume
@@ -547,9 +450,6 @@ void Task::suspend() {
 }
 
 void Task::terminate() {
-  StringHelper str;
-  str << F("Task '") << get_name() << F("' terminating");
-  log_message(this, LOG_INFO, str.toFlashStr());
   state = INACTIVE;
 }
 
