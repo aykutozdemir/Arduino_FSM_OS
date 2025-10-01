@@ -239,6 +239,7 @@ struct TaskNode {
 class Scheduler {
 public:
     void begin();
+    void begin_with_logger();
     uint8_t add(Task* t);
     bool remove(uint8_t task_id);  // New method to remove tasks
     bool post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
@@ -375,6 +376,110 @@ public:
     reserved_flags = 0;
   }
 };
+
+/* ================== String Helper ================== */
+class StringHelper {
+  static const size_t BUFFER_SIZE = 128;
+  char buffer[BUFFER_SIZE];
+  size_t position;
+
+public:
+  StringHelper() : position(0) {
+    buffer[0] = '\0';
+  }
+
+  StringHelper& operator<<(const char* str) {
+    strncat(buffer + position, str, BUFFER_SIZE - position - 1);
+    position = strlen(buffer);
+    return *this;
+  }
+
+  StringHelper& operator<<(const __FlashStringHelper* str) {
+    strncpy_P(buffer + position, (PGM_P)str, BUFFER_SIZE - position - 1);
+    position = strlen(buffer);
+    return *this;
+  }
+
+  StringHelper& operator<<(char c) {
+    if (position < BUFFER_SIZE - 1) {
+      buffer[position++] = c;
+      buffer[position] = '\0';
+    }
+    return *this;
+  }
+
+  StringHelper& operator<<(int value) {
+    char temp[12];
+    itoa(value, temp, 10);
+    return *this << temp;
+  }
+
+  StringHelper& operator<<(unsigned int value) {
+    char temp[12];
+    utoa(value, temp, 10);
+    return *this << temp;
+  }
+
+  StringHelper& operator<<(long value) {
+    char temp[12];
+    ltoa(value, temp, 10);
+    return *this << temp;
+  }
+
+  StringHelper& operator<<(unsigned long value) {
+    char temp[12];
+    ultoa(value, temp, 10);
+    return *this << temp;
+  }
+
+  const __FlashStringHelper* toFlashStr() {
+    // Store in program memory and return as flash string
+    static char PROGMEM flash_buffer[BUFFER_SIZE];
+    memcpy_P((void*)flash_buffer, buffer, BUFFER_SIZE);
+    return (__FlashStringHelper*)flash_buffer;
+  }
+
+  void clear() {
+    position = 0;
+    buffer[0] = '\0';
+  }
+};
+
+/* ================== Logging System ================== */
+enum LogLevel : uint8_t {
+  LOG_DEBUG = 0,
+  LOG_INFO,
+  LOG_WARNING,
+  LOG_ERROR
+};
+
+// Message type for logging
+enum : uint8_t {
+  MSG_LOG = 255  // Using 255 to avoid conflicts with user message types
+};
+
+// Log message structure
+struct LogMessage {
+  uint32_t timestamp;
+  LogLevel level;
+  const __FlashStringHelper* task_name;
+  const __FlashStringHelper* message;
+};
+
+/* ================== Default Logger Task ================== */
+class LoggerTask : public Task {
+public:
+  LoggerTask();
+  void on_msg(const MsgData& msg) override;
+  static LoggerTask* instance() { return logger_instance; }
+
+private:
+  static const char* const LEVEL_STRINGS[];
+  static LoggerTask* logger_instance;
+};
+
+// Helper function for logging
+void log_message(Task* src_task, LogLevel level, const __FlashStringHelper* message);
 
 /* ================== Utility: soft-timer for FSMs ================== */
 struct __attribute__((packed)) Timer {

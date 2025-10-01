@@ -8,11 +8,17 @@ A lightweight, cooperative, finite-state-machine-based operating system for Ardu
     * Active/Suspended/Inactive states
     * Automatic cleanup of inactive tasks
     * Configurable message queueing during suspension
+*   **Built-in Logging System:**
+    * Timestamp and task context
+    * Multiple log levels (DEBUG, INFO, WARNING, ERROR)
+    * Memory-efficient string handling
+    * Automatic system event logging
 *   **Memory-Optimized Design:**
     * Linked-list based message queues
     * Dynamic memory management
     * Smart pointer message handling
     * Reference counting for shared resources
+    * Flash memory string optimization
 
 *   **Cooperative Multitasking:** Run multiple independent tasks on a single-core MCU.
 *   **Periodic & One-Shot Tasks:** Schedule tasks to run at regular intervals or just once.
@@ -228,6 +234,53 @@ class WorkerTask : public Task {
 };
 ```
 
+## Logging System
+
+FsmOS includes a built-in logging system that provides structured logging with timestamps, task context, and different log levels. The system automatically logs important system events and can be used by tasks to log their own events.
+
+### Using the Logger
+
+```cpp
+#include <FsmOS.h>
+
+class MyTask : public Task {
+public:
+  MyTask() : Task(F("MyTask")) {}
+
+  void step() override {
+    // Log different types of messages
+    log_message(this, LOG_DEBUG, F("Processing data..."));
+    log_message(this, LOG_INFO, F("Operation completed"));
+    log_message(this, LOG_WARNING, F("Low memory detected"));
+    log_message(this, LOG_ERROR, F("Operation failed"));
+  }
+};
+
+void setup() {
+  Serial.begin(9600);
+  // Initialize OS with built-in logger
+  OS.begin_with_logger();
+  OS.add(new MyTask());
+}
+```
+
+Example output:
+```
+[00:00.000] [INFO] [Logger] FsmOS Started with Logger
+[00:00.010] [INFO] [Scheduler] Adding task 'MyTask' with ID 1
+[00:00.100] [DEBUG] [MyTask] Processing data...
+[00:00.200] [INFO] [MyTask] Operation completed
+```
+
+### Automatic System Logging
+
+The system automatically logs various events:
+* Task lifecycle (creation, suspension, resumption, termination)
+* Memory warnings (low memory, high fragmentation)
+* Watchdog resets
+* Long-running task detection
+* System initialization and shutdown
+
 ## API Reference
 
 ### `Scheduler OS`
@@ -248,14 +301,37 @@ class WorkerTask : public Task {
 *   `bool tell(uint8_t dst_task_id, ...)`: Sends a direct message to another task.
 *   `bool publish(uint8_t topic, ...)`: Publishes a message to a topic.
 *   `void subscribe(uint8_t topic)`: Subscribes the task to a topic.
-*   `void stop()`: Deactivates the task. It will no longer be scheduled.
-*   `void resume()`: Reactivates a stopped task.
+*   `void activate()`: Sets task to ACTIVE state, resuming execution.
+*   `void suspend()`: Sets task to SUSPENDED state, pausing execution but keeping messages.
+*   `void terminate()`: Sets task to INACTIVE state for automatic cleanup.
 *   `uint8_t get_id() const`: Returns the task's unique ID.
+*   `const __FlashStringHelper* get_name() const`: Returns the task's name.
+*   `void set_name(const __FlashStringHelper* name)`: Sets the task's name.
 
 ### `Timer`
 
 *   `void start(uint32_t duration_ms)`: Starts the timer for a given duration.
 *   `bool expired() const`: Returns `true` if the timer has finished.
+
+## Examples
+
+FsmOS comes with several example sketches demonstrating different features:
+
+### Basic Examples
+* **BasicBlink**: Simple task that blinks an LED
+* **ButtonLed**: Demonstrates inter-task communication
+* **TaskNames**: Shows how to use named tasks and track task states
+* **TaskLifecycle**: Illustrates task lifecycle management
+
+### Advanced Features
+* **Logger**: Shows the built-in logging system capabilities
+* **MemoryMonitoring**: Demonstrates memory usage tracking
+* **MessageQueueing**: Shows message handling during task suspension
+* **Diagnostics**: Provides system monitoring and debugging tools
+
+### System Management
+* **DynamicTasks**: Shows runtime task creation and deletion
+* **MemoryOptimization**: Demonstrates memory-efficient practices
 
 ## How to Install
 
