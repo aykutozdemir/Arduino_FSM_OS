@@ -1,6 +1,21 @@
-# Arduino_FSM_OS
+# Arduino_FSM_OS (v1.2.0)
 
 A lightweight, cooperative, finite-state-machine-based operating system for Arduino and other AVR-based microcontrollers. It provides a structured way to manage multiple tasks, communication, and real-time events without the complexity of a full preemptive RTOS.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Arduino Library](https://www.ardu-badge.com/badge/FsmOS.svg)](https://www.ardu-badge.com/FsmOS)
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Core Concepts](#core-concepts)
+- [Examples](#examples)
+- [API Reference](#api-reference)
+- [Advanced Topics](#advanced-topics)
+- [Contributing](#contributing)
+- [License](#license)
+- [Version History](#version-history)
 
 ## Features
 
@@ -8,11 +23,15 @@ A lightweight, cooperative, finite-state-machine-based operating system for Ardu
     * Active/Suspended/Inactive states
     * Automatic cleanup of inactive tasks
     * Configurable message queueing during suspension
-*   **Built-in Logging System:**
+*   **Enhanced Logging System:**
     * Timestamp and task context
     * Multiple log levels (DEBUG, INFO, WARNING, ERROR)
-    * Memory-efficient string handling
+    * Memory-efficient string handling with PROGMEM support
+    * Printf-style formatted logging
+    * Fixed-size buffers to prevent fragmentation
     * Automatic system event logging
+    * Configurable log levels
+    * Optional logging compilation
 *   **Memory-Optimized Design:**
     * Linked-list based message queues
     * Dynamic memory management
@@ -248,11 +267,17 @@ public:
   MyTask() : Task(F("MyTask")) {}
 
   void step() override {
-    // Log different types of messages
-    log_message(this, LOG_DEBUG, F("Processing data..."));
-    log_message(this, LOG_INFO, F("Operation completed"));
-    log_message(this, LOG_WARNING, F("Low memory detected"));
-    log_message(this, LOG_ERROR, F("Operation failed"));
+    // Basic logging
+    log_debug(F("Processing data..."));
+    log_info(F("Operation completed"));
+    log_warn(F("Low memory detected"));
+    log_error(F("Operation failed"));
+
+    // Formatted logging with values
+    int counter = 42;
+    float temperature = 23.5;
+    log_info(F("Counter value: %d"), counter);
+    log_debug(F("Temperature: %.1f°C"), temperature);
   }
 };
 
@@ -270,6 +295,8 @@ Example output:
 [00:00.010] [INFO] [Scheduler] Adding task 'MyTask' with ID 1
 [00:00.100] [DEBUG] [MyTask] Processing data...
 [00:00.200] [INFO] [MyTask] Operation completed
+[00:00.300] [INFO] [MyTask] Counter value: 42
+[00:00.400] [DEBUG] [MyTask] Temperature: 23.5°C
 ```
 
 ### Automatic System Logging
@@ -307,6 +334,14 @@ The system automatically logs various events:
 *   `uint8_t get_id() const`: Returns the task's unique ID.
 *   `const __FlashStringHelper* get_name() const`: Returns the task's name.
 *   `void set_name(const __FlashStringHelper* name)`: Sets the task's name.
+*   `void log_debug(const __FlashStringHelper* msg)`: Logs a debug message.
+*   `void log_info(const __FlashStringHelper* msg)`: Logs an info message.
+*   `void log_warn(const __FlashStringHelper* msg)`: Logs a warning message.
+*   `void log_error(const __FlashStringHelper* msg)`: Logs an error message.
+*   `template<typename... Args> void log_debug(const __FlashStringHelper* format, Args... args)`: Logs a formatted debug message.
+*   `template<typename... Args> void log_info(const __FlashStringHelper* format, Args... args)`: Logs a formatted info message.
+*   `template<typename... Args> void log_warn(const __FlashStringHelper* format, Args... args)`: Logs a formatted warning message.
+*   `template<typename... Args> void log_error(const __FlashStringHelper* format, Args... args)`: Logs a formatted error message.
 
 ### `Timer`
 
@@ -333,9 +368,65 @@ FsmOS comes with several example sketches demonstrating different features:
 * **DynamicTasks**: Shows runtime task creation and deletion
 * **MemoryOptimization**: Demonstrates memory-efficient practices
 
-## How to Install
+## Installation
 
-1.  Download this repository as a ZIP file.
-2.  In the Arduino IDE, go to `Sketch > Include Library > Add .ZIP Library...`
-3.  Select the downloaded ZIP file.
-4.  You can now find the examples in `File > Examples > Arduino_FSM_OS`.
+### Using Arduino IDE Library Manager (Recommended)
+
+1. Open Arduino IDE
+2. Go to `Sketch > Include Library > Manage Libraries...`
+3. Search for "FsmOS"
+4. Click Install
+
+### Manual Installation
+
+1. Download the [latest release](https://github.com/aykutozdemir/Arduino_FSM_OS/releases/latest) as a ZIP file
+2. In Arduino IDE, go to `Sketch > Include Library > Add .ZIP Library...`
+3. Select the downloaded ZIP file
+4. You can now find the examples in `File > Examples > FsmOS`
+
+### PlatformIO
+
+Add to your `platformio.ini`:
+```ini
+lib_deps =
+    fsmos
+```
+
+### Compatibility
+
+- Tested on Arduino AVR boards (Uno, Mega, Nano, etc.)
+- Requires Arduino IDE 1.5.0 or later
+- Memory requirements:
+  - Flash: ~2-4KB depending on features used
+  - RAM: ~100-200 bytes base + memory for tasks and message queues
+
+## Version History
+
+### v1.2.0 (Current)
+- Added enhanced logging system
+- Improved memory management and diagnostics
+- Added task profiling features
+- Fixed watchdog timer issues
+- Added support for dynamic task creation/deletion
+
+### v1.1.1
+- Bug fixes and stability improvements
+- Enhanced message queueing system
+- Memory optimization features
+
+### v1.0.0
+- Initial release with basic task management
+- Inter-task communication
+- Simple timer utilities
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

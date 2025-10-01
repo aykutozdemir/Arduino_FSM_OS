@@ -1,3 +1,19 @@
+/**
+ * @file FsmOS.cpp
+ * @brief Implementation of the FsmOS cooperative task scheduler
+ * @author Aykut Ozdemir
+ * @date 2025-10-02
+ * 
+ * This file contains the implementation of the FsmOS scheduler and task
+ * management system. It provides:
+ * 
+ * - Task scheduling and execution
+ * - Message passing and event handling
+ * - Memory management and monitoring
+ * - System diagnostics and profiling
+ * - Hardware watchdog integration
+ */
+
 #include "FsmOS.h"
 
 /* ================== Memory Tracking ================== */
@@ -16,6 +32,15 @@ ResetInfo reset_info;
 
 /* ================== Scheduler Implementation ================== */
 
+/**
+ * @brief Initialize the scheduler
+ * 
+ * Performs initial setup of the scheduler including:
+ * - Capturing reset reason (AVR only)
+ * - Initializing task management
+ * - Setting up system time
+ * - Preparing watchdog status
+ */
 void Scheduler::begin() {
 #if defined(__AVR__)
   // Read and clear MCUSR register early
@@ -44,31 +69,66 @@ void Scheduler::_print_log_prefix(Task* task, LogLevel level) {
   static const char PROGMEM levelChars[] = {'D', 'I', 'W', 'E'};
   
   uint32_t t = now();
-  Serial.write('[');
+  Serial.print('[');
   Serial.print(t / 1000);
-  Serial.write(':');
+  Serial.print(':');
   Serial.print(t % 1000);
-  Serial.write('][');
+  Serial.print(F("]["));
   Serial.write(pgm_read_byte(&levelChars[level]));
-  Serial.write('][');
+  Serial.print(F("]["));
   if (task && task->get_name()) {
     Serial.print(task->get_name());
   } else {
     Serial.write('-');
   }
-  Serial.write(']');
-  Serial.write(' ');
+  Serial.print(']');
+  Serial.print(' ');
 #endif
 }
 
-void Scheduler::_log(Task* task, LogLevel level, const __FlashStringHelper* msg) {
+void Scheduler::logMessage(Task* task, LogLevel level, const __FlashStringHelper* msg) {
 #ifndef FSMOS_DISABLE_LOGGING
   _print_log_prefix(task, level);
   Serial.println(msg);
 #endif
 }
 
+void Scheduler::logFormatted(Task* task, LogLevel level, const __FlashStringHelper* fmt, ...) {
+#ifndef FSMOS_DISABLE_LOGGING
+  _print_log_prefix(task, level);
+  char fmt_buf[64];
+  uint8_t i = 0;
+  const char* p = reinterpret_cast<const char*>(fmt);
+  while (i < sizeof(fmt_buf) - 1) {
+    char c = pgm_read_byte(p++);
+    if (c == 0) break;
+    fmt_buf[i++] = c;
+  }
+  fmt_buf[i] = 0;
 
+  char out_buf[64];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(out_buf, sizeof(out_buf), fmt_buf, args);
+  va_end(args);
+  Serial.println(out_buf);
+#endif
+}
+
+
+/**
+ * @brief Add a new task to the scheduler
+ * 
+ * This method:
+ * - Assigns a unique ID to the task
+ * - Creates a new task node
+ * - Initializes task state
+ * - Links task into task list
+ * - Calls task's start handler
+ * 
+ * @param t Pointer to the task to add
+ * @return Assigned task ID (255 if failed)
+ */
 uint8_t Scheduler::add(Task* t) {
   uint8_t new_id = next_task_id++;
   if (next_task_id == 0) {  // Wrapped around
@@ -140,6 +200,23 @@ bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, 
   return message_queue.push(SharedMsg(data));
 }
 
+/**
+ * @brief Execute one iteration of the scheduler
+ * 
+ * This is the core scheduling loop that:
+ * 1. Updates system time
+ * 2. Delivers pending messages
+ * 3. Executes due tasks
+ * 4. Handles task cleanup
+ * 5. Updates task statistics
+ * 6. Manages watchdog
+ * 
+ * The scheduler ensures:
+ * - Tasks run in their configured periods
+ * - Messages are delivered promptly
+ * - Resources are cleaned up
+ * - System remains responsive
+ */
 void Scheduler::loop_once() {
   // 1. Update time
   uint32_t now = millis();
@@ -203,6 +280,18 @@ void Scheduler::loop_once() {
   }
 }
 
+/**
+ * @brief Deliver pending messages to tasks
+ * 
+ * Iterates through all active tasks and processes their pending
+ * messages. For each task:
+ * - Checks if task is active
+ * - Processes queued messages
+ * - Handles message cleanup
+ * 
+ * This method ensures messages are delivered in a fair manner
+ * and maintains system responsiveness.
+ */
 void Scheduler::deliver() {
   // Process messages for each task
   TaskNode* curr = task_list;
@@ -260,6 +349,19 @@ static const uint8_t HEAP_FREE_MARKER = 0xFF;
 static const uint16_t STACK_CANARY = 0xFEED;
 #endif
 
+/**
+ * @brief Get memory usage information for a task
+ * 
+ * Calculates memory used by a task including:
+ * - Task object size
+ * - Subscription array size
+ * - Message queue size
+ * - Total allocated memory
+ * 
+ * @param task_id ID of task to analyze
+ * @param info Reference to store memory info
+ * @return true if task was found and info populated
+ */
 bool Scheduler::get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) const {
     TaskNode* node = find_task_node(task_id);
     if (!node || !node->task) return false;
@@ -406,15 +508,43 @@ bool Scheduler::get_task_stats(uint8_t task_id, TaskStats& stats) const {
 
 /* ================== Task Implementation ================== */
 
+/**
+ * @brief Send a direct message to another task
+ * 
+ * @param dst_task_id Destination task ID
+ * @param type Message type
+ * @param arg Optional 16-bit argument
+ * @param ptr Optional data pointer
+ * @param is_dynamic Whether ptr is dynamically allocated
+ * @return true if message was queued successfully
+ */
 bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
   return OS.post(type, dst_task_id, 0, arg, ptr, is_dynamic);
 }
 
+/**
+ * @brief Publish a message to a topic
+ * 
+ * @param topic Topic ID (1-255)
+ * @param type Message type
+ * @param arg Optional 16-bit argument
+ * @param ptr Optional data pointer
+ * @param is_dynamic Whether ptr is dynamically allocated
+ * @return true if message was queued successfully
+ */
 bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
   if (topic == 0) return false; // Topic 0 is reserved for direct messages
   return OS.post(type, id, topic, arg, ptr, is_dynamic);
 }
 
+/**
+ * @brief Subscribe to a topic
+ * 
+ * Allows task to receive messages published to the specified topic.
+ * Maximum 15 subscriptions per task.
+ * 
+ * @param topic Topic ID to subscribe to (1-255)
+ */
 void Task::subscribe(uint8_t topic) {
   if (topic > 0 && subscription_count < 15) {  // Max 15 subscriptions due to 4-bit field
     // Avoid duplicate subscriptions
@@ -425,6 +555,12 @@ void Task::subscribe(uint8_t topic) {
   }
 }
 
+/**
+ * @brief Check if task is subscribed to a topic
+ * 
+ * @param topic Topic ID to check
+ * @return true if task is subscribed to topic
+ */
 bool Task::is_subscribed_to(uint8_t topic) {
   for (uint8_t i = 0; i < subscription_count; ++i) {
     if (subscriptions[i] == topic) return true;
@@ -432,6 +568,14 @@ bool Task::is_subscribed_to(uint8_t topic) {
   return false;
 }
 
+/**
+ * @brief Activate or resume task execution
+ * 
+ * If task was suspended:
+ * - Calls on_resume() handler
+ * - Processes queued messages
+ * - Schedules next execution
+ */
 void Task::activate() {
   if (state == SUSPENDED) {
     on_resume();
@@ -441,6 +585,14 @@ void Task::activate() {
   next_due = OS.now() + period_ms;
 }
 
+/**
+ * @brief Suspend task execution
+ * 
+ * When suspending:
+ * - Calls on_suspend() handler
+ * - Preserves message queue
+ * - Stops task execution
+ */
 void Task::suspend() {
   if (state == ACTIVE) {
     on_suspend();
@@ -449,6 +601,13 @@ void Task::suspend() {
   }
 }
 
+/**
+ * @brief Permanently terminate task
+ * 
+ * Marks task for removal by scheduler.
+ * Task will be deleted and resources freed
+ * on next scheduler iteration.
+ */
 void Task::terminate() {
   state = INACTIVE;
 }

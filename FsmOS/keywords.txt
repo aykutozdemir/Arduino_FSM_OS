@@ -6,27 +6,70 @@
 # Datatypes (KEYWORD1)
 #######################################
 Scheduler	KEYWORD1
-Task		KEYWORD1
-Msg		KEYWORD1
-Timer		KEYWORD1
+Task	KEYWORD1
+MsgData	KEYWORD1
+Timer	KEYWORD1
+TaskStats	KEYWORD1
+ResetInfo	KEYWORD1
+TaskMemoryInfo	KEYWORD1
+SystemMemoryInfo	KEYWORD1
+SharedMsg	KEYWORD1
+LinkedQueue	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-begin		KEYWORD2
-add		KEYWORD2
+begin	KEYWORD2
+begin_with_logger	KEYWORD2
+add	KEYWORD2
+remove	KEYWORD2
 loop_once	KEYWORD2
-now		KEYWORD2
+now	KEYWORD2
 on_start	KEYWORD2
-on_msg		KEYWORD2
-step		KEYWORD2
-tell		KEYWORD2
-publish		KEYWORD2
+on_msg	KEYWORD2
+step	KEYWORD2
+on_suspend	KEYWORD2
+on_resume	KEYWORD2
+on_terminate	KEYWORD2
+tell	KEYWORD2
+publish	KEYWORD2
 subscribe	KEYWORD2
-start		KEYWORD2
-expired		KEYWORD2
+is_subscribed_to	KEYWORD2
+activate	KEYWORD2
+suspend	KEYWORD2
+terminate	KEYWORD2
+set_period	KEYWORD2
+get_period	KEYWORD2
+set_name	KEYWORD2
+get_name	KEYWORD2
+start	KEYWORD2
+expired	KEYWORD2
+enable_watchdog	KEYWORD2
+enable_stack_monitoring	KEYWORD2
+get_free_stack	KEYWORD2
+get_task_stats	KEYWORD2
+get_task_count	KEYWORD2
+get_task	KEYWORD2
+get_task_memory_info	KEYWORD2
+get_system_memory_info	KEYWORD2
+log_debug	KEYWORD2
+log_info	KEYWORD2
+log_warn	KEYWORD2
+log_error	KEYWORD2
 
 #######################################
-# Constants and Variables (LITERAL1)
+# Constants (LITERAL1)
 #######################################
-OS		LITERAL1
+OS	LITERAL1
+LOG_DEBUG	LITERAL1
+LOG_INFO	LITERAL1
+LOG_WARNING	LITERAL1
+LOG_ERROR	LITERAL1
+LOG_NONE	LITERAL1
+ACTIVE	LITERAL1
+SUSPENDED	LITERAL1
+INACTIVE	LITERAL1
+
+#######################################
+# Built-in Objects (KEYWORD3)
+#######################################

@@ -1,146 +1,290 @@
+/*
+  Diagnostics - System Monitoring and Debug Example
+  
+  This example demonstrates FsmOS's diagnostic and debugging capabilities including:
+  1. Task CPU usage monitoring and profiling
+  2. Stack space monitoring
+  3. Watchdog timer integration for crash recovery
+  4. Task identification after system resets
+  
+  The example creates three tasks:
+  - StatsDisplayTask: Periodically prints system diagnostics
+  - HeavyWorkTask: Simulates varying workloads to show CPU profiling
+  - RogueTask: Can be triggered to hang, demonstrating watchdog recovery
+  
+  To test the watchdog recovery:
+  1. Upload the sketch and open Serial Monitor at 115200 baud
+  2. Wait for the diagnostics to show normal operation
+  3. Send 't' through Serial Monitor to trigger RogueTask
+  4. The system will hang and then reset via watchdog
+  5. After reset, it will show which task caused the crash
+  
+  The circuit:
+  - No additional hardware required
+  - Serial Monitor should be set to 115200 baud
+  
+  Created October 2, 2025
+  By Aykut Ozdemir
+  
+  https://github.com/aykutozdemir/Arduino_FSM_OS
+*/
+
 #include <FsmOS.h>
 
-// This task periodically prints diagnostics to the Serial monitor.
+/**
+ * StatsDisplayTask: Monitors and displays system diagnostics
+ * 
+ * This task demonstrates:
+ * - How to access task statistics
+ * - Stack usage monitoring
+ * - How to identify and query tasks by ID
+ */
 class StatsDisplayTask : public Task {
 public:
-  StatsDisplayTask() {
-    set_period(2000); // Print stats every 2 seconds
+  StatsDisplayTask() : Task(F("Stats")) {
+    set_period(2000);  // Print stats every 2 seconds
   }
 
   void step() override {
-    Serial.println(F("--- System Diagnostics ---"));
+    Serial.println(F("\n=== System Diagnostics ==="));
 
-    // 1. Print Free Stack
+    // 1. Memory Statistics
+    print_memory_stats();
+
+    // 2. Task Statistics
+    print_task_stats();
+
+    Serial.println(F("=========================\n"));
+  }
+
+private:
+  void print_memory_stats() {
+    Serial.println(F("Memory Statistics:"));
+    
+    // Stack monitoring
 #if defined(__AVR__)
-    Serial.print(F("Free Stack: "));
+    Serial.print(F("  Free Stack: "));
     Serial.print(OS.get_free_stack());
     Serial.println(F(" bytes"));
+    
+    // Get detailed system memory info
+    SystemMemoryInfo mem_info;
+    if (OS.get_system_memory_info(mem_info)) {
+      Serial.print(F("  Heap Free: "));
+      Serial.print(mem_info.free_ram);
+      Serial.print(F(" bytes ("));
+      Serial.print(mem_info.heap_fragments);
+      Serial.println(F(" fragments)"));
+      
+      Serial.print(F("  Largest Block: "));
+      Serial.print(mem_info.largest_block);
+      Serial.println(F(" bytes"));
+    }
 #else
-    Serial.println(F("Stack monitoring not supported on this board."));
+    Serial.println(F("  Memory monitoring not supported on this board"));
 #endif
+  }
 
-    // 2. Print Task CPU Stats
-    Serial.println(F("Task CPU Usage:"));
+  void print_task_stats() {
+    Serial.println(F("Task Statistics:"));
+    
     for (uint8_t i = 0; i < OS.get_task_count(); i++) {
       Task* t = OS.get_task(i);
-      if (t) { // Check if task exists
-        TaskStats stats;
-        OS.get_task_stats(i, stats);
-        
-        Serial.print(F("  Task "));
-        Serial.print(i);
-        Serial.print(F(": Max Time: "));
+      if (!t) continue;  // Skip if task doesn't exist
+      
+      TaskStats stats;
+      TaskMemoryInfo mem_info;
+      
+      Serial.print(F("  Task "));
+      Serial.print(t->get_name());  // Use task name instead of just ID
+      Serial.print(F(" (#"));
+      Serial.print(i);
+      Serial.println(F("):"));
+      
+      // Get and print CPU stats
+      if (OS.get_task_stats(i, stats)) {
+        Serial.print(F("    CPU: Max="));
         Serial.print(stats.max_exec_time_us);
-        Serial.print(F("us, Avg Time: "));
-        if (stats.run_count > 0) {
-          Serial.print(stats.total_exec_time_us / stats.run_count);
-        }
-        else {
-          Serial.print(0);
-        }
-        Serial.println(F("us"));
+        Serial.print(F("µs, Avg="));
+        Serial.print(stats.run_count > 0 ? stats.total_exec_time_us / stats.run_count : 0);
+        Serial.print(F("µs, Runs="));
+        Serial.println(stats.run_count);
+      }
+      
+      // Get and print memory stats
+      if (OS.get_task_memory_info(i, mem_info)) {
+        Serial.print(F("    Mem: Task="));
+        Serial.print(mem_info.task_struct_size);
+        Serial.print(F("B, Queue="));
+        Serial.print(mem_info.queue_size);
+        Serial.print(F("B, Total="));
+        Serial.print(mem_info.total_allocated);
+        Serial.println(F("B"));
       }
     }
-    Serial.println(F("------------------------"));
   }
 };
 
-// This task simulates doing a variable amount of work to demonstrate the profiler.
+/**
+ * HeavyWorkTask: Simulates varying CPU workloads
+ * 
+ * This task demonstrates:
+ * - How task execution time affects system performance
+ * - How the profiler tracks varying CPU usage
+ * - The impact of task timing on overall system behavior
+ */
 class HeavyWorkTask : public Task {
-  int work_load = 100;
+  int work_load = 100;  // Starting workload in microseconds
+  const int MIN_LOAD = 100;
+  const int MAX_LOAD = 1000;
+  const int LOAD_STEP = 100;
+
 public:
-  HeavyWorkTask() {
-    set_period(500); // Run every 500ms
+  HeavyWorkTask() : Task(F("HeavyWork")) {
+    set_period(500);  // Run every 500ms
+  }
+
+  void on_start() override {
+    log_info(F("Heavy work task started with %d-%dµs variable load"),
+             MIN_LOAD, MAX_LOAD);
   }
 
   void step() override {
-    // Simulate work by delaying for a variable number of microseconds
+    // Log current workload for monitoring
+    log_debug(F("Processing load: %dµs"), work_load);
+    
+    // Simulate CPU-intensive work
     delayMicroseconds(work_load);
 
-    // Increase the work for next time, then wrap around
-    work_load += 100;
-    if (work_load > 1000) {
-      work_load = 100;
+    // Increase work_load for next iteration
+    work_load += LOAD_STEP;
+    if (work_load > MAX_LOAD) {
+      work_load = MIN_LOAD;
+      log_info(F("Work cycle complete, resetting load"));
     }
   }
 };
 
-// This task waits for a message and then enters an infinite loop to test the watchdog.
+/**
+ * RogueTask: Demonstrates watchdog timer recovery
+ * 
+ * This task can be triggered to enter an infinite loop, which will:
+ * 1. Cause the watchdog timer to trigger
+ * 2. Force a system reset
+ * 3. Allow the system to identify which task caused the crash
+ * 
+ * This demonstrates:
+ * - How the watchdog protects against hung tasks
+ * - How to identify problematic tasks after a crash
+ * - The system's automatic recovery capabilities
+ */
 class RogueTask : public Task {
+  static const uint8_t MSG_TRIGGER_HANG = 1;  // Message type to trigger hang
+
 public:
-  RogueTask() {
-    set_period(1000); // Check for messages every second
+  RogueTask() : Task(F("Rogue")) {
+    set_period(1000);  // Check messages every second
+  }
+
+  void on_start() override {
+    log_info(F("Rogue task started - send 't' to trigger watchdog test"));
   }
   
-  void on_msg(const Msg& m) override {
-    if (m.type == 123) { // Special message type to trigger the hang
-      Serial.println(F("RogueTask: Received message to hang. Infinite loop starting..."));
-      delay(20); // Allow serial to print before hanging
-      while(1); // This will trigger the watchdog timer and reset the MCU
+  void on_msg(const MsgData& m) override {
+    if (m.type == MSG_TRIGGER_HANG) {
+      log_warn(F("Received command to hang - entering infinite loop"));
+      log_warn(F("System should reset via watchdog in ~2 seconds"));
+      
+      delay(100);  // Allow logs to be printed
+      
+      // Enter infinite loop - this will trigger the watchdog
+      while(1) {
+        // The watchdog will eventually reset the system
+        // The OS will record this task's ID as the culprit
+      }
     }
   }
 
   void step() override {
-    // This task does nothing in its step, it only acts on messages.
+    // This task only responds to messages
   }
 };
 
-// Create instances of our tasks
+/* ================== Application Setup ================== */
+
+// Create task instances
 StatsDisplayTask stats_task;
 HeavyWorkTask work_task;
 RogueTask rogue_task;
 
 void setup() {
+  // Initialize serial communication
   Serial.begin(115200);
-  while(!Serial);
-  delay(500); // Wait a bit for serial monitor to open
+  while (!Serial) { /* Wait for serial port */ }
+  
+  Serial.println(F("\n=== FsmOS Diagnostics Example ==="));
+  Serial.println(F("Version: 1.2.0"));
 
-  // --- Check for Watchdog Reset ---
-  // This section runs first to see if we are recovering from a crash.
+  // Check if we're recovering from a watchdog reset
 #if defined(__AVR__)
-  ResetInfo info;
-  if (OS.get_reset_info(info)) {
-    Serial.println(F("*********************************"));
-    Serial.println(F("SYSTEM RECOVERED FROM WATCHDOG RESET"));
-    Serial.print(F("Last running task ID was: "));
-    Serial.println(info.last_task_id);
-    Serial.println(F("*********************************"));
+  ResetInfo reset_info;
+  if (OS.get_reset_info(reset_info)) {
+    Serial.println(F("\n!!! WATCHDOG RESET DETECTED !!!"));
+    Serial.println(F("System recovered from a crash"));
+    Serial.print(F("Last active task: "));
+    
+    // Get the name of the task that caused the crash
+    Task* crashed_task = OS.get_task(reset_info.last_task_id);
+    if (crashed_task) {
+      Serial.print(crashed_task->get_name());
+      Serial.print(F(" (#"));
+      Serial.print(reset_info.last_task_id);
+      Serial.println(F(")"));
+    } else {
+      Serial.print(F("#"));
+      Serial.println(reset_info.last_task_id);
+    }
+    
+    Serial.print(F("Reset reason: 0x"));
+    Serial.println(reset_info.reset_reason, HEX);
+    Serial.println(F("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"));
   }
 #endif
 
-  // --- Enable New Features ---
-  Serial.println(F("--- FsmOS Diagnostics Example ---"));
-
-  // 1. Enable Stack Monitoring. Call this FIRST in setup().
+  // Enable diagnostic features
   OS.enable_stack_monitoring();
-
-  // 2. Enable the Watchdog Timer with a 2-second timeout.
   OS.enable_watchdog(WDTO_2S);
-  Serial.println(F("Watchdog enabled (2s timeout)."));
 
-  // Initialize the OS with capacity for 4 tasks and a message queue of size 32
-  // (larger queue for diagnostics messages)
-  OS.begin(4, 32);
+  // Initialize the OS with logging
+  OS.begin_with_logger();
 
   // Add tasks to the scheduler
   OS.add(&stats_task);
   OS.add(&work_task);
   OS.add(&rogue_task);
 
-  Serial.println(F("\nTo test the watchdog, send 't' via the serial monitor."));
+  // Print instructions
+  Serial.println(F("\nDiagnostics Example Running"));
+  Serial.println(F("---------------------------"));
+  Serial.println(F("This example demonstrates:"));
+  Serial.println(F("1. Task CPU profiling"));
+  Serial.println(F("2. Memory monitoring"));
+  Serial.println(F("3. Watchdog protection"));
+  Serial.println(F("\nCommands:"));
+  Serial.println(F("- Send 't' to trigger watchdog test"));
+  Serial.println(F("---------------------------\n"));
 }
 
 void loop() {
-  // OS.loop_once() must be called continuously.
+  // Run the scheduler
   OS.loop_once();
 
-  // Check for user input to trigger the test
-  if (Serial.available() > 0) {
-    char c = Serial.read();
-    if (c == 't') {
-      Serial.println(F("Sending message to RogueTask to trigger a hang..."));
-      // Tell the rogue task to hang the system. Its ID will be captured by the OS.
-      rogue_task.tell(rogue_task.get_id(), 123);
+  // Check for user commands
+  if (Serial.available()) {
+    char cmd = Serial.read();
+    if (cmd == 't') {
+      Serial.println(F("\n>>> Triggering watchdog test <<<"));
+      rogue_task.tell(rogue_task.get_id(), RogueTask::MSG_TRIGGER_HANG);
     }
   }
 }
