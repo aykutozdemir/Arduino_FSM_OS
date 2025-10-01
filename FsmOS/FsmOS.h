@@ -18,12 +18,12 @@ struct __attribute__((packed)) MsgData {
   uint8_t type;     // User-defined event type
   uint8_t src_id;   // Scheduler-assigned ID of the source task
   uint8_t topic;    // Optional topic for publish/subscribe (0 for direct, 1-255 for topics)
-  uint8_t ref_count; // Number of tasks that need to process this message
+  uint8_t ref_count: 7; // Number of tasks that need to process this message (max 127)
+  bool is_dynamic: 1;   // Whether ptr needs to be freed
   uint16_t arg;     // Small payload
   void* ptr;        // Optional pointer to larger data
-  bool is_dynamic;  // Whether ptr needs to be freed
   
-  MsgData() : type(0), src_id(0), topic(0), ref_count(0), arg(0), ptr(nullptr), is_dynamic(false) {}
+  MsgData() : type(0), src_id(0), topic(0), ref_count(0), is_dynamic(0), arg(0), ptr(nullptr) {}
 };
 
 // Smart pointer-like class for message reference counting
@@ -183,6 +183,43 @@ struct ResetInfo {
   uint8_t reset_reason; // The value of the MCUSR register on AVR boards
 };
 
+/* ================== Memory Monitoring ================== */
+struct __attribute__((packed)) TaskMemoryInfo {
+  uint16_t task_struct_size;      // Size of task object
+  uint16_t subscription_size;      // Size of subscription array
+  uint16_t queue_size;            // Size of message queue
+  uint16_t total_allocated;       // Total memory allocated by task
+};
+
+struct __attribute__((packed)) SystemMemoryInfo {
+  // Static Memory
+  uint16_t total_ram;            // Total RAM available
+  uint16_t static_data_size;     // Size of static/global variables
+  uint16_t heap_size;            // Size of heap
+  
+  // Dynamic Memory
+  uint16_t free_ram;             // Current free RAM
+  uint16_t heap_fragments;       // Number of heap fragments
+  uint16_t largest_block;        // Largest free block
+  
+  // Task Memory
+  uint8_t total_tasks;           // Number of tasks
+  uint16_t task_memory;          // Memory used by tasks
+  
+  // Message Memory
+  uint8_t active_messages;       // Number of messages in flight
+  uint16_t message_memory;       // Memory used by messages
+  
+  // Stack Memory
+  uint16_t stack_size;           // Total stack size
+  uint16_t stack_used;           // Used stack space
+  uint16_t stack_free;           // Free stack space
+  
+  // Program Memory
+  uint32_t flash_used;           // Used program memory
+  uint32_t flash_free;           // Free program memory
+};
+
 /* ================== Task Node ================== */
 struct TaskNode {
     Task* task;
@@ -218,6 +255,13 @@ public:
     Task* get_task(uint8_t task_id) const;
     bool get_reset_info(ResetInfo& info);
 
+    // Memory monitoring
+    bool get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) const;
+    bool get_system_memory_info(SystemMemoryInfo& info) const;
+    uint16_t get_free_memory() const;      // Quick access to free RAM
+    uint16_t get_largest_block() const;     // Largest allocatable block
+    uint8_t get_heap_fragmentation() const; // Fragmentation percentage
+    
     // Message processing
     SharedMsg get_next_message(uint8_t task_id);
     void process_message(SharedMsg& msg);
@@ -256,10 +300,10 @@ extern Scheduler OS;
 /* ================== Task base class ================== */
 class Task {
 public:
-  enum TaskState {
-    ACTIVE,     // Task is running normally
-    SUSPENDED,  // Task doesn't execute but receives messages
-    INACTIVE    // Task will be auto-deleted
+  enum TaskState : uint8_t {
+    ACTIVE = 0,    // Task is running normally (00)
+    SUSPENDED = 1, // Task doesn't execute but receives messages (01)
+    INACTIVE = 2   // Task will be auto-deleted (10)
   };
 
   virtual void on_start() {}
@@ -282,7 +326,7 @@ public:
   bool is_active() const { return state == ACTIVE; }
   bool is_suspended() const { return state == SUSPENDED; }
   bool is_inactive() const { return state == INACTIVE; }
-  TaskState get_state() const { return state; }
+  TaskState get_state() const { return static_cast<TaskState>(state); }
 
   // Message handling
   bool tell(uint8_t dst_task_id, uint8_t type, uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
@@ -324,7 +368,11 @@ public:
   explicit Task(const __FlashStringHelper* name = nullptr, uint8_t max_subscriptions = 4) {
     task_name = name;
     subscriptions = new uint8_t[max_subscriptions];
-    subscription_capacity = max_subscriptions;
+    subscription_count = 0;
+    subscription_capacity = min(max_subscriptions, uint8_t(15));
+    state = ACTIVE;
+    queue_msgs = 1;  // Default to true
+    reserved_flags = 0;
   }
 };
 

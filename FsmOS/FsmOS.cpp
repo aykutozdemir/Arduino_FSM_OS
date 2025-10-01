@@ -213,6 +213,151 @@ bool Scheduler::get_reset_info(ResetInfo& info) {
   return true;
 }
 
+#if defined(__AVR__)
+// Memory markers
+static const uint8_t HEAP_FREE_MARKER = 0xFF;
+static const uint16_t STACK_CANARY = 0xFEED;
+#endif
+
+bool Scheduler::get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) const {
+    TaskNode* node = find_task_node(task_id);
+    if (!node || !node->task) return false;
+
+    Task* task = node->task;
+    info.task_struct_size = sizeof(Task);
+    info.subscription_size = task->subscription_capacity;
+    info.queue_size = sizeof(LinkedQueue<SharedMsg>);
+    
+    // Calculate total allocated memory
+    info.total_allocated = info.task_struct_size + 
+                          info.subscription_size +
+                          info.queue_size;
+    
+    return true;
+}
+
+bool Scheduler::get_system_memory_info(SystemMemoryInfo& info) const {
+#if defined(__AVR__)
+    extern int __heap_start, *__brkval;
+    extern uint8_t __data_start, __data_end;
+    extern uint8_t __bss_start, __bss_end;
+    extern uint8_t _etext, __stack;
+    
+    // Static Memory
+    info.total_ram = RAMEND - RAMSTART + 1;
+    info.static_data_size = (&__data_end - &__data_start) + (&__bss_end - &__bss_start);
+    info.heap_size = (__brkval == 0 ? (uint16_t)&__heap_start : (uint16_t)__brkval) - (uint16_t)&__heap_start;
+    
+    // Dynamic Memory
+    info.free_ram = get_free_memory();
+    info.heap_fragments = count_heap_fragments();
+    info.largest_block = get_largest_block();
+    
+    // Task Memory
+    info.total_tasks = task_count;
+    info.task_memory = task_count * (sizeof(TaskNode) + sizeof(Task));
+    
+    // Message Memory
+    uint8_t msg_count = 0;
+    uint16_t msg_mem = 0;
+    TaskNode* curr = task_list;
+    while (curr) {
+        if (curr->task) {
+            msg_count += curr->task->suspended_msg_queue.size();
+            msg_mem += sizeof(MsgData) * curr->task->suspended_msg_queue.size();
+        }
+        curr = curr->next;
+    }
+    info.active_messages = msg_count;
+    info.message_memory = msg_mem;
+    
+    // Stack Memory
+    info.stack_size = RAMEND - (uint16_t)&__stack;
+    uint16_t* p = (uint16_t*)RAMEND;
+    while (p > (uint16_t*)&__stack && *p == STACK_CANARY) {
+        p--;
+    }
+    info.stack_free = (uint16_t)RAMEND - (uint16_t)p;
+    info.stack_used = info.stack_size - info.stack_free;
+    
+    // Program Memory
+    info.flash_used = (uint32_t)&_etext;
+    info.flash_free = (uint32_t)FLASHEND - info.flash_used;
+    
+    return true;
+#else
+    // Non-AVR implementation
+    memset(&info, 0, sizeof(info));
+    return false;
+#endif
+}
+
+uint16_t Scheduler::get_free_memory() const {
+#if defined(__AVR__)
+    extern int __heap_start, *__brkval;
+    int v;
+    return (uint16_t)&v - (__brkval == 0 ? (uint16_t)&__heap_start : (uint16_t)__brkval);
+#else
+    return 0;
+#endif
+}
+
+uint16_t Scheduler::get_largest_block() const {
+#if defined(__AVR__)
+    uint16_t largest = 0;
+    uint16_t current = 0;
+    uint8_t* ptr = (uint8_t*)&__heap_start;
+    
+    while (ptr < (uint8_t*)SP) {
+        if (*ptr == HEAP_FREE_MARKER) {
+            current++;
+            if (current > largest) largest = current;
+        } else {
+            current = 0;
+        }
+        ptr++;
+    }
+    return largest;
+#else
+    return 0;
+#endif
+}
+
+uint8_t Scheduler::get_heap_fragmentation() const {
+#if defined(__AVR__)
+    uint16_t total_free = get_free_memory();
+    uint16_t largest = get_largest_block();
+    
+    if (total_free == 0) return 100;
+    return (uint8_t)(100 - (largest * 100) / total_free);
+#else
+    return 0;
+#endif
+}
+
+uint8_t Scheduler::count_heap_fragments() const {
+#if defined(__AVR__)
+    uint8_t fragments = 0;
+    bool in_fragment = false;
+    uint8_t* ptr = (uint8_t*)&__heap_start;
+    
+    while (ptr < (uint8_t*)SP) {
+        if (*ptr == HEAP_FREE_MARKER) {
+            if (!in_fragment) {
+                fragments++;
+                in_fragment = true;
+            }
+        } else {
+            in_fragment = false;
+        }
+        ptr++;
+    }
+    return fragments;
+#else
+    return 0;
+#endif
+}
+
 uint8_t Scheduler::get_task_count() const {
   return task_count;
 }
@@ -254,7 +399,7 @@ bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is
 }
 
 void Task::subscribe(uint8_t topic) {
-  if (topic > 0 && subscription_count < subscription_capacity) {
+  if (topic > 0 && subscription_count < 15) {  // Max 15 subscriptions due to 4-bit field
     // Avoid duplicate subscriptions
     for (uint8_t i = 0; i < subscription_count; ++i) {
       if (subscriptions[i] == topic) return;
@@ -312,7 +457,8 @@ bool Task::get_queue_messages_while_suspended() const {
 }
 
 void Task::process_messages() {
-  if (state == ACTIVE) {
+  TaskState current_state = static_cast<TaskState>(state);
+  if (current_state == ACTIVE) {
     // First process any queued messages from suspended state
     SharedMsg queued;
     while (suspended_msg_queue.pop(queued)) {
@@ -326,7 +472,7 @@ void Task::process_messages() {
       msg = OS.get_next_message(id);
     }
   } 
-  else if (state == SUSPENDED && queue_messages_while_suspended) {
+  else if (current_state == SUSPENDED && queue_msgs) {
     // Queue new messages while suspended
     SharedMsg msg = OS.get_next_message(id);
     while (msg.valid()) {
