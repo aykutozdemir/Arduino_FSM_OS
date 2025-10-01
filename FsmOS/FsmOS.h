@@ -128,7 +128,7 @@ public:
   LinkedQueue& operator=(const LinkedQueue&) = delete;
 
   inline bool push(const T& v) {
-    void* mem = ::operator new(sizeof(Node), std::nothrow);
+     void* mem = ::operator new(sizeof(Node));
     if (!mem) return false;
     
     Node* new_node = new(mem) Node(v);
@@ -194,7 +194,9 @@ struct TaskNode {
 
     TaskNode(Task* t, uint8_t task_id) 
         : task(t), next(nullptr), id(task_id) {
-        stats = {0, 0, 0};
+         stats.max_exec_time_us = 0;
+         stats.total_exec_time_us = 0;
+         stats.run_count = 0;
     }
 };
 
