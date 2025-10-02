@@ -293,41 +293,30 @@ void Scheduler::loop_once() {
  * and maintains system responsiveness.
  */
 void Scheduler::deliver() {
-  // Process messages for each task
-  TaskNode* curr = task_list;
-  while (curr) {
-    if (curr->task && curr->task->is_active()) {
-      curr->task->process_messages();
+  // Process all messages in the queue
+  while (!message_queue.empty()) {
+    SharedMsg msg;
+    if (!message_queue.pop(msg)) break;
+    
+    if (msg->topic == 0) {
+      // Direct message - deliver to specific task
+      TaskNode* target_node = find_task_node(msg->src_id);
+      if (target_node && target_node->task && target_node->task->is_active()) {
+        target_node->task->on_msg(*msg.get());
+      }
+    } else {
+      // Topic-based message - deliver to all subscribed tasks
+      TaskNode* curr = task_list;
+      while (curr) {
+        if (curr->task && curr->task->is_active() && curr->task->is_subscribed_to(msg->topic)) {
+          curr->task->on_msg(*msg.get());
+        }
+        curr = curr->next;
+      }
     }
-    curr = curr->next;
   }
 }
 
-SharedMsg Scheduler::get_next_message(uint8_t task_id) {
-  SharedMsg msg;
-  if (message_queue.empty()) return msg;
-  
-  // Check the next message
-  SharedMsg peek;
-  if (!message_queue.pop(peek)) return msg;
-  
-  if (peek->topic == 0) {
-    // Direct message
-    if (peek->src_id == task_id) {
-      return peek;
-    }
-  } else {
-    // Topic-based message
-    TaskNode* target_node = find_task_node(task_id);
-    if (target_node && target_node->task && target_node->task->is_subscribed_to(peek->topic)) {
-      return peek;
-    }
-  }
-  
-  // Put it back if not for this task
-  message_queue.push(peek);
-  return msg;
-}
 
 void Scheduler::enable_watchdog(uint8_t timeout) {
 #if defined(__AVR__)
@@ -368,7 +357,7 @@ bool Scheduler::get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) cons
 
     Task* task = node->task;
     info.task_struct_size = sizeof(Task);
-    info.subscription_size = task->subscription_capacity;
+    info.subscription_size = task->subscription_count;
     info.queue_size = sizeof(LinkedQueue<SharedMsg>);
     
     // Calculate total allocated memory
@@ -534,6 +523,8 @@ bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool
  */
 bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
   if (topic == 0) return false; // Topic 0 is reserved for direct messages
+  
+  
   return OS.post(type, id, topic, arg, ptr, is_dynamic);
 }
 
@@ -541,18 +532,23 @@ bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is
  * @brief Subscribe to a topic
  * 
  * Allows task to receive messages published to the specified topic.
- * Maximum 15 subscriptions per task.
  * 
  * @param topic Topic ID to subscribe to (1-255)
  */
 void Task::subscribe(uint8_t topic) {
-  if (topic > 0 && subscription_count < 15) {  // Max 15 subscriptions due to 4-bit field
-    // Avoid duplicate subscriptions
-    for (uint8_t i = 0; i < subscription_count; ++i) {
-      if (subscriptions[i] == topic) return;
-    }
-    subscriptions[subscription_count++] = topic;
+  if (topic == 0) return; // topic 0 reserved
+  // Avoid duplicates
+  SubNode* curr = subscription_head;
+  while (curr) {
+    if (curr->topic == topic) return;
+    curr = curr->next;
   }
+  // Prepend new subscription
+  SubNode* node = new SubNode(topic);
+  node->next = subscription_head;
+  subscription_head = node;
+  if (subscription_count < 255) subscription_count++;
+  
 }
 
 /**
@@ -562,8 +558,11 @@ void Task::subscribe(uint8_t topic) {
  * @return true if task is subscribed to topic
  */
 bool Task::is_subscribed_to(uint8_t topic) {
-  for (uint8_t i = 0; i < subscription_count; ++i) {
-    if (subscriptions[i] == topic) return true;
+  if (topic == 0) return false;
+  SubNode* curr = subscription_head;
+  while (curr) {
+    if (curr->topic == topic) return true;
+    curr = curr->next;
   }
   return false;
 }
@@ -630,31 +629,4 @@ void Task::set_queue_messages_while_suspended(bool queue_messages) {
 
 bool Task::get_queue_messages_while_suspended() const {
   return queue_messages_while_suspended;
-}
-
-void Task::process_messages() {
-  TaskState current_state = static_cast<TaskState>(state);
-  if (current_state == ACTIVE) {
-    // First process any queued messages from suspended state
-    SharedMsg queued;
-    while (suspended_msg_queue.pop(queued)) {
-      on_msg(*queued.get());
-    }
-    
-    // Then process new messages
-    SharedMsg msg = OS.get_next_message(id);
-    while (msg.valid()) {
-      on_msg(*msg.get());
-      msg = OS.get_next_message(id);
-    }
-  } 
-  else if (current_state == SUSPENDED && queue_msgs) {
-    // Queue new messages while suspended
-    SharedMsg msg = OS.get_next_message(id);
-    while (msg.valid()) {
-      suspended_msg_queue.push(msg);
-      msg = OS.get_next_message(id);
-    }
-  }
-  // If inactive or not queueing while suspended, messages are dropped
 }

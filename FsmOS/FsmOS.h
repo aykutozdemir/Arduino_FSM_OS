@@ -285,6 +285,20 @@ enum LogLevel : uint8_t {
 #define FSMOS_LOG_LEVEL LOG_INFO
 #endif
 
+/* ================== Logging convenience macros (printf-style) ================== */
+// Use inside Task methods. These call OS.logFormatted with PROGMEM format strings.
+#ifndef FSMOS_DISABLE_LOGGING
+#define log_debugf(fmt, ...)   OS.logFormatted(this, LOG_DEBUG,   fmt, ##__VA_ARGS__)
+#define log_infof(fmt, ...)    OS.logFormatted(this, LOG_INFO,    fmt, ##__VA_ARGS__)
+#define log_warnf(fmt, ...)    OS.logFormatted(this, LOG_WARNING, fmt, ##__VA_ARGS__)
+#define log_errorf(fmt, ...)   OS.logFormatted(this, LOG_ERROR,   fmt, ##__VA_ARGS__)
+#else
+#define log_debugf(fmt, ...)
+#define log_infof(fmt, ...)
+#define log_warnf(fmt, ...)
+#define log_errorf(fmt, ...)
+#endif
+
 /* ================== Task Node ================== */
 struct TaskNode {
     Task* task;
@@ -442,7 +456,7 @@ private:
     TaskNode* task_list;
     uint8_t task_count;
     volatile uint32_t ms;
-    bool watchdog_enabled;
+    uint8_t watchdog_enabled:1;
     uint8_t next_task_id;
 
 public:
@@ -461,6 +475,16 @@ public:
 extern Scheduler OS;
 
 /* ================== Task base class ================== */
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+struct MemoryStats {
+  uint16_t allocations;
+  uint16_t deallocations;
+  uint16_t current_bytes;
+  uint16_t peak_bytes;
+};
+extern MemoryStats fsmos_memory_stats;
+#endif
+
 /**
  * @brief Base class for all tasks in FsmOS
  * 
@@ -509,11 +533,18 @@ public:
    * @brief Called when task is being terminated
    * Cleans up resources and pending messages
    */
-  virtual void on_terminate() {
+  virtual void on_terminate() {}
+
+  virtual ~Task() {
     on_terminate();
     SharedMsg msg;
     while (suspended_msg_queue.pop(msg)) { msg.release(); }
-    delete[] subscriptions;
+    // Free subscription linked list
+    while (subscription_head) {
+      SubNode* next = subscription_head->next;
+      delete subscription_head;
+      subscription_head = next;
+    }
   }
 
   /**
@@ -581,10 +612,9 @@ public:
    */
   bool publish(uint8_t topic, uint8_t type, uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
 
-  /**
+  /** 
    * @brief Subscribe to messages on a specific topic
    * @param topic Topic ID to subscribe to (1-255)
-   * @note Maximum 15 subscriptions per task
    */
   void subscribe(uint8_t topic);
 
@@ -680,24 +710,23 @@ private:
   uint32_t next_due = 0;
   uint16_t period_ms = 1;
   uint8_t id = 255;
-  TaskState state = ACTIVE;
   uint8_t subscription_count = 0;
-  uint8_t subscription_capacity = 0;
   const __FlashStringHelper* task_name = nullptr;
-  bool queue_messages_while_suspended = true;
-  uint8_t queue_msgs = 1;
-  uint8_t* subscriptions = nullptr;
+  TaskState state;
+  uint8_t queue_messages_while_suspended:1;
+  
+  // Subscription linked list (unlimited topics)
+  struct SubNode { uint8_t topic; SubNode* next; SubNode(uint8_t t) : topic(t), next(nullptr) {} };
+  SubNode* subscription_head = nullptr;
   LinkedQueue<SharedMsg> suspended_msg_queue;
 
 public:
-  explicit Task(const __FlashStringHelper* name = nullptr, uint8_t max_subscriptions = 2) {
+  explicit Task(const __FlashStringHelper* name = nullptr) {
     task_name = name;
-    subscriptions = new uint8_t[max_subscriptions];
     subscription_count = 0;
-    subscription_capacity = min(max_subscriptions, uint8_t(15));
     state = ACTIVE;
-    queue_messages_while_suspended = true;
-    queue_msgs = 1;
+    queue_messages_while_suspended = 1;
+    subscription_head = nullptr;
   }
 };
 
