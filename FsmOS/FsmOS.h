@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <util/atomic.h> // For ATOMIC_BLOCK
 #include <stdarg.h>
+#include <new> // For placement new operator
 
 #if defined(__AVR__)
 #include <avr/wdt.h> // For watchdog timer
@@ -52,14 +53,14 @@ struct __attribute__((packed)) MsgData {
   uint8_t type;         ///< User-defined event type
   uint8_t src_id;       ///< Scheduler-assigned ID of the source task
   uint8_t topic;        ///< Topic ID (0=direct message, 1-255=pub/sub topics)
+  uint8_t dst_id;       ///< Destination task ID (for direct messages only)
   uint8_t ref_count: 7; ///< Number of tasks to process message (max 127)
   bool is_dynamic: 1;   ///< Whether ptr points to dynamically allocated data
   uint16_t arg;         ///< Small payload
   void* ptr;            ///< Optional pointer to larger data
   uint16_t dynamic_size;///< Size of dynamically allocated data
   
-  /** @brief Initialize an empty message */
-  MsgData() : type(0), src_id(0), topic(0), ref_count(0), is_dynamic(0), arg(0), ptr(nullptr) {}
+  MsgData() : type(0), src_id(0), topic(0), dst_id(0), ref_count(0), is_dynamic(0), arg(0), ptr(nullptr), dynamic_size(0) {}
 };
 
 // Smart pointer-like class for message reference counting
@@ -94,26 +95,108 @@ public:
   
   ~SharedMsg() { release(); }
   
-  void release() {
-    if (data) {
-      bool should_delete = false;
-      ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        data->ref_count--;
-        should_delete = (data->ref_count == 0);
-      }
-      if (should_delete) {
-        if (data->is_dynamic && data->ptr) {
-          delete[] static_cast<uint8_t*>(data->ptr);
-        }
-        delete data;
-      }
-      data = nullptr;
-    }
-  }
+  void release();
   
   MsgData* get() const { return data; }
   MsgData* operator->() const { return data; }
   bool valid() const { return data != nullptr; }
+};
+
+class MsgDataPool {
+private:
+  struct PoolNode {
+    MsgData data;
+    PoolNode* next;
+    PoolNode() : data(), next(nullptr) {}
+  };
+  
+  PoolNode* free_list;
+  uint16_t pool_size;
+  uint16_t pool_limit;
+  uint16_t alloc_count;
+  uint16_t dealloc_count;
+  uint16_t peak_concurrent;
+  uint16_t current_in_use;
+  uint32_t last_update_ms;
+  
+public:
+  MsgDataPool() : free_list(nullptr), pool_size(0), pool_limit(3), 
+                  alloc_count(0), dealloc_count(0), peak_concurrent(0),
+                  current_in_use(0), last_update_ms(0) {}
+  
+  ~MsgDataPool() {
+    while (free_list) {
+      PoolNode* to_delete = free_list;
+      free_list = free_list->next;
+      delete to_delete;
+    }
+  }
+  
+  MsgData* allocate() {
+    alloc_count++;
+    current_in_use++;
+    if (current_in_use > peak_concurrent) {
+      peak_concurrent = current_in_use;
+    }
+    
+    if (free_list) {
+      PoolNode* node = free_list;
+      free_list = node->next;
+      pool_size--;
+      new (&node->data) MsgData();
+      return &node->data;
+    } else {
+      PoolNode* node = new PoolNode();
+      if (!node) return nullptr;
+      return &node->data;
+    }
+  }
+  
+  void deallocate(MsgData* data) {
+    if (!data) return;
+    
+    dealloc_count++;
+    current_in_use--;
+    
+    PoolNode* node = reinterpret_cast<PoolNode*>(
+      reinterpret_cast<char*>(data) - offsetof(PoolNode, data)
+    );
+    
+    if (pool_size < pool_limit) {
+      node->next = free_list;
+      free_list = node;
+      pool_size++;
+    } else {
+      delete node;
+    }
+  }
+  
+  void update_adaptive_limit(uint32_t now_ms) {
+    if (now_ms - last_update_ms >= 5000) {
+      // Calculate average concurrent usage for adaptive limit
+      uint16_t new_limit = peak_concurrent + (peak_concurrent / 5);
+      if (new_limit < 3) new_limit = 3;
+      if (new_limit > 255) new_limit = 255;
+      
+      pool_limit = new_limit;
+      
+      while (pool_size > pool_limit && free_list) {
+        PoolNode* to_delete = free_list;
+        free_list = to_delete->next;
+        delete to_delete;
+        pool_size--;
+      }
+      
+      alloc_count = 0;
+      dealloc_count = 0;
+      peak_concurrent = current_in_use;
+      last_update_ms = now_ms;
+    }
+  }
+  
+  uint16_t get_pool_size() const { return pool_size; }
+  uint16_t get_pool_limit() const { return pool_limit; }
+  uint16_t get_current_in_use() const { return current_in_use; }
 };
 
 /*
@@ -359,12 +442,13 @@ public:
      * @param type User-defined message type
      * @param src_id Source task ID
      * @param topic Topic ID (0 for direct, 1-255 for pub/sub)
+     * @param dst_id Destination task ID (for direct messages only, ignored for topics)
      * @param arg Optional 16-bit payload
      * @param ptr Optional pointer to larger data
      * @param is_dynamic Whether ptr is dynamically allocated
      * @return true if message was queued successfully
      */
-    bool post(uint8_t type, uint8_t src_id, uint8_t topic, 
+    bool post(uint8_t type, uint8_t src_id, uint8_t topic, uint8_t dst_id = 0,
               uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
 
     /**
@@ -446,6 +530,9 @@ public:
     // Message processing
     SharedMsg get_next_message(uint8_t task_id);
     void process_message(SharedMsg& msg);
+    
+    // Message pool access for SharedMsg
+    void deallocate_message(MsgData* data);
 
 private:
     void _print_log_prefix(Task* task, LogLevel level);
@@ -458,6 +545,7 @@ private:
     volatile uint32_t ms;
     uint8_t watchdog_enabled:1;
     uint8_t next_task_id;
+    MsgDataPool msg_pool;
 
 public:
   Scheduler() = default;

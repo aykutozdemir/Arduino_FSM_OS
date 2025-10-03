@@ -24,6 +24,24 @@ MemoryStats fsmos_memory_stats = {0, 0, 0, 0};
 /* ================== Global OS Instance ================== */
 Scheduler OS;
 
+/* ================== SharedMsg Implementation ================== */
+void SharedMsg::release() {
+  if (data) {
+    bool should_delete = false;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      data->ref_count--;
+      should_delete = (data->ref_count == 0);
+    }
+    if (should_delete) {
+      if (data->is_dynamic && data->ptr) {
+        delete[] static_cast<uint8_t*>(data->ptr);
+      }
+      OS.deallocate_message(data);
+    }
+    data = nullptr;
+  }
+}
+
 /* ================== Reset Info ================== */
 // This struct will be placed in the .noinit section, so it survives a reset.
 __attribute__((section(".noinit")))
@@ -131,16 +149,19 @@ void Scheduler::logFormatted(Task* task, LogLevel level, const __FlashStringHelp
  */
 uint8_t Scheduler::add(Task* t) {
   uint8_t new_id = next_task_id++;
-  if (next_task_id == 0) {  // Wrapped around
-    next_task_id = 1;  // Skip 0 for next time
+  if (next_task_id == 0) {
+    next_task_id = 1;
   }
 
   TaskNode* new_node = new TaskNode(t, new_id);
+  if (!new_node) {
+    return 255;
+  }
+  
   t->id = new_id;
   t->state = Task::ACTIVE;
-  t->next_due = ms; // Run as soon as possible
+  t->next_due = ms;
 
-  // Add to front of list
   new_node->next = task_list;
   task_list = new_node;
   task_count++;
@@ -156,7 +177,9 @@ bool Scheduler::remove(uint8_t task_id) {
   while (*curr) {
     if ((*curr)->id == task_id) {
       TaskNode* to_delete = *curr;
+      Task* task = to_delete->task;
       *curr = to_delete->next;
+      delete task;
       delete to_delete;
       task_count--;
       return true;
@@ -166,24 +189,24 @@ bool Scheduler::remove(uint8_t task_id) {
   return false;
 }
 
-bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, void* ptr, bool is_dynamic) {
-  MsgData* data = new MsgData();
+bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint8_t dst_id, uint16_t arg, void* ptr, bool is_dynamic) {
+  MsgData* data = msg_pool.allocate();
+  if (!data) return false;
+  
   data->type = type;
   data->src_id = src_id;
   data->topic = topic;
+  data->dst_id = dst_id;
   data->arg = arg;
   data->ptr = ptr;
   data->is_dynamic = is_dynamic;
-  data->dynamic_size = 0;  // Will be set by the caller if needed
+  data->dynamic_size = 0;
   
-  // Count subscribers
   uint8_t target_count = 0;
   if (topic == 0) {
-    // Direct message
-    TaskNode* target_node = find_task_node(src_id);
+    TaskNode* target_node = find_task_node(dst_id);
     if (target_node && target_node->task) target_count = 1;
   } else {
-    // Topic-based message
     TaskNode* curr = task_list;
     while (curr) {
       if (curr->task && curr->task->is_subscribed_to(topic)) target_count++;
@@ -191,9 +214,9 @@ bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint16_t arg, 
     }
   }
   
-  data->ref_count = target_count;
+  data->ref_count = (target_count > 0) ? (target_count - 1) : 0;
   if (target_count == 0) {
-    delete data;
+    msg_pool.deallocate(data);
     return false;
   }
   
@@ -275,9 +298,13 @@ void Scheduler::loop_once() {
   }
   
   // 4. Pet the watchdog
+#if defined(__AVR__)
   if (watchdog_enabled) {
     wdt_reset();
   }
+#endif
+  
+  msg_pool.update_adaptive_limit(now);
 }
 
 /**
@@ -299,8 +326,7 @@ void Scheduler::deliver() {
     if (!message_queue.pop(msg)) break;
     
     if (msg->topic == 0) {
-      // Direct message - deliver to specific task
-      TaskNode* target_node = find_task_node(msg->src_id);
+      TaskNode* target_node = find_task_node(msg->dst_id);
       if (target_node && target_node->task && target_node->task->is_active()) {
         target_node->task->on_msg(*msg.get());
       }
@@ -508,7 +534,7 @@ bool Scheduler::get_task_stats(uint8_t task_id, TaskStats& stats) const {
  * @return true if message was queued successfully
  */
 bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
-  return OS.post(type, dst_task_id, 0, arg, ptr, is_dynamic);
+  return OS.post(type, this->id, 0, dst_task_id, arg, ptr, is_dynamic);
 }
 
 /**
@@ -522,10 +548,8 @@ bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool
  * @return true if message was queued successfully
  */
 bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
-  if (topic == 0) return false; // Topic 0 is reserved for direct messages
-  
-  
-  return OS.post(type, id, topic, arg, ptr, is_dynamic);
+  if (topic == 0) return false;
+  return OS.post(type, id, topic, 0, arg, ptr, is_dynamic);
 }
 
 /**
@@ -629,4 +653,42 @@ void Task::set_queue_messages_while_suspended(bool queue_messages) {
 
 bool Task::get_queue_messages_while_suspended() const {
   return queue_messages_while_suspended;
+}
+
+void Scheduler::enable_stack_monitoring() {
+#if defined(__AVR__)
+  extern uint8_t __stack;
+  uint16_t* p = (uint16_t*)&__stack;
+  uint16_t* stack_end = (uint16_t*)RAMEND;
+  while (p < stack_end) {
+    *p++ = STACK_CANARY;
+  }
+#endif
+}
+
+int Scheduler::get_free_stack() const {
+#if defined(__AVR__)
+  extern uint8_t __stack;
+  uint16_t* p = (uint16_t*)RAMEND;
+  while (p > (uint16_t*)&__stack && *p == STACK_CANARY) {
+    p--;
+  }
+  return (int)((uint16_t)RAMEND - (uint16_t)p);
+#else
+  return 0;
+#endif
+}
+
+void Task::process_messages() {
+  if (!suspended_msg_queue.empty() && is_active()) {
+    while (!suspended_msg_queue.empty()) {
+      SharedMsg msg;
+      if (!suspended_msg_queue.pop(msg)) break;
+      on_msg(*msg.get());
+    }
+  }
+}
+
+void Scheduler::deallocate_message(MsgData* data) {
+  msg_pool.deallocate(data);
 }
