@@ -120,7 +120,7 @@ class GeneratorTask : public Task {
   LedTask* led1;      // LED task that queues messages
   LedTask* led2;      // LED task that drops messages
   uint32_t count;     // Cycle counter
-  Timer cycle_timer;  // Timer for tracking suspend/resume cycles
+  Timer16 cycle_timer; // 5000ms cycle timing - 4 bytes
   
 public:
   GeneratorTask(LedTask* l1, LedTask* l2) 
@@ -136,7 +136,7 @@ public:
     log_info(F("Message generator started"));
     log_info(F("  Sending toggles every 1 second"));
     log_info(F("  Suspend/resume cycle every 5 seconds"));
-    cycle_timer.start(5000);  // Start 5-second cycle timer
+    cycle_timer = create_timer_typed<Timer16>(5000);  // Start 5-second cycle timer
   }
 
   void step() override {
@@ -147,8 +147,8 @@ public:
     
     // Check if it's time for a cycle change
     if (cycle_timer.expired()) {
+      cycle_timer.start(5000);
       handle_cycle_change();
-      cycle_timer.start(5000);  // Reset cycle timer
     }
   }
 

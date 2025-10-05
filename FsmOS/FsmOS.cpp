@@ -3,692 +3,1640 @@
  * @brief Implementation of the FsmOS cooperative task scheduler
  * @author Aykut Ozdemir
  * @date 2025-10-02
- * 
+ *
  * This file contains the implementation of the FsmOS scheduler and task
  * management system. It provides:
- * 
+ *
  * - Task scheduling and execution
  * - Message passing and event handling
  * - Memory management and monitoring
  * - System diagnostics and profiling
  * - Hardware watchdog integration
+ *
+ * @version 1.2.1 - Bug fixes
  */
 
 #include "FsmOS.h"
+#include <stdarg.h>
+#include "../../src/BuildMemoryInfo.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-/* ================== Memory Tracking ================== */
+#if defined(__AVR__)
+// Stream stdio directly to Serial to allow vfprintf_P without intermediate buffers
+static int serial_putc(char c, FILE *)
+{
+    Serial.write(c);
+    return 0;
+}
+static FILE serial_stdout;
+static void init_stdio_to_serial()
+{
+    static bool inited = false;
+    if (inited)
+    {
+        return;
+    }
+    inited = true;
+    fdev_setup_stream(&serial_stdout, serial_putc, nullptr, _FDEV_SETUP_WRITE);
+    stdout = &serial_stdout;
+}
+#endif
+
+/* ================== Global Variables ================== */
+Scheduler OS;
+
 #if !defined(FSMOS_DISABLE_LEAK_DETECTION)
 MemoryStats fsmos_memory_stats = {0, 0, 0, 0};
 #endif
 
-/* ================== Global OS Instance ================== */
-Scheduler OS;
+/* ================== TimerT Implementation ================== */
+template <typename T>
+void TimerT<T>::startTimer(T d)
+{
+    startMs = static_cast<T>(OS.now());
+    durationMs = d;
+}
+
+template <typename T>
+bool TimerT<T>::isExpired() const
+{
+    if (durationMs == 0)
+    {
+        return true;
+    }
+
+    T current_time = static_cast<T>(OS.now());
+
+    // Handle timer overflow correctly
+    if (current_time >= startMs)
+    {
+        return (current_time - startMs) >= durationMs;
+    }
+    else
+    {
+        // Timer overflow occurred - calculate remaining time correctly
+        T elapsed = static_cast<T>(static_cast<T>(~static_cast<T>(0)) - startMs + current_time + 1);
+        return elapsed >= durationMs;
+    }
+}
+
+// Explicit template instantiations for common types
+template struct TimerT<uint8_t>;
+template struct TimerT<uint16_t>;
+template struct TimerT<uint32_t>;
 
 /* ================== SharedMsg Implementation ================== */
-void SharedMsg::release() {
-  if (data) {
-    bool should_delete = false;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-      data->ref_count--;
-      should_delete = (data->ref_count == 0);
+SharedMsg::SharedMsg() : msgData(nullptr) {}
+
+SharedMsg::SharedMsg(MsgData *msg) : msgData(msg)
+{
+    if (msgData)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { msgData->refCount++; }
     }
-    if (should_delete) {
-      if (data->is_dynamic && data->ptr) {
-        delete[] static_cast<uint8_t*>(data->ptr);
-      }
-      OS.deallocate_message(data);
-    }
-    data = nullptr;
-  }
 }
 
-/* ================== Reset Info ================== */
-// This struct will be placed in the .noinit section, so it survives a reset.
-__attribute__((section(".noinit")))
-ResetInfo reset_info;
+SharedMsg::SharedMsg(const SharedMsg &other) : msgData(other.msgData)
+{
+    if (msgData)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { msgData->refCount++; }
+    }
+}
 
+SharedMsg &SharedMsg::operator=(const SharedMsg &other)
+{
+    if (this != &other)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            release();
+            msgData = other.msgData;
+            if (msgData)
+            {
+                msgData->refCount++;
+            }
+        }
+    }
+    return *this;
+}
+
+SharedMsg::~SharedMsg()
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { release(); }
+}
+
+void SharedMsg::release()
+{
+    if (msgData)
+    {
+        msgData->refCount--;
+        if (msgData->refCount == 0)
+        {
+            OS.msgPool.deallocate(msgData);
+        }
+        msgData = nullptr;
+    }
+}
+
+MsgData *SharedMsg::getData() const { return msgData; }
+
+MsgData *SharedMsg::operator->() const { return msgData; }
+
+bool SharedMsg::isValid() const { return msgData != nullptr; }
+
+/* ================== MsgDataPool Implementation ================== */
+MsgDataPool::MsgDataPool()
+    : pool(nullptr), poolSize(0), poolLimit(MAX_MESSAGE_POOL_SIZE), currentInUse(0), nextFree(0)
+{
+    // Don't allocate memory during static initialization
+    // Memory will be allocated lazily when first needed
+}
+
+MsgDataPool::~MsgDataPool()
+{
+    if (pool)
+    {
+        // Free any remaining message data
+        for (uint8_t i = 0; i < poolSize; i++)
+        {
+            if (pool[i].data)
+            {
+                delete[] pool[i].data;
+                pool[i].data = nullptr;
+            }
+        }
+        delete[] pool;
+        pool = nullptr;
+    }
+}
+
+MsgData *MsgDataPool::allocate()
+{
+    // Lazy initialization - allocate pool if not already done
+    if (!pool && !initialize())
+    {
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+        fsmos_memory_stats.total_allocated += sizeof(MsgData) * poolLimit;
+#endif
+        return nullptr;
+    }
+
+    if (currentInUse >= poolSize)
+    {
+        return nullptr;
+    }
+
+    MsgData *msg = &pool[nextFree];
+
+    // Reset message to initial state
+    msg->refCount = 0;
+    msg->type = 0;
+    msg->topic = 0;
+    msg->arg = 0;
+    msg->data = nullptr;
+    msg->dataSize = 0;
+
+    currentInUse++;
+    nextFree = (nextFree + 1) % poolSize;
+
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+    fsmos_memory_stats.current_usage += sizeof(MsgData);
+    if (fsmos_memory_stats.current_usage > fsmos_memory_stats.peak_usage)
+    {
+        fsmos_memory_stats.peak_usage = fsmos_memory_stats.current_usage;
+    }
+#endif
+
+    // Update adaptive limit based on usage
+    updateAdaptiveLimit();
+
+    return msg;
+}
+
+void MsgDataPool::deallocate(MsgData *msg)
+{
+    if (!msg || !pool)
+    {
+        return;
+    }
+
+    // Free any associated data
+    if (msg->data)
+    {
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+        fsmos_memory_stats.total_freed += msg->dataSize;
+#endif
+        delete[] msg->data;
+        msg->data = nullptr;
+    }
+
+    // Reset message to initial state
+    msg->refCount = 0;
+    msg->type = 0;
+    msg->topic = 0;
+    msg->arg = 0;
+    msg->dataSize = 0;
+
+    currentInUse--;
+
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+    fsmos_memory_stats.current_usage -= sizeof(MsgData);
+    fsmos_memory_stats.total_freed += sizeof(MsgData);
+#endif
+
+    // Update adaptive limit based on usage
+    updateAdaptiveLimit();
+}
+
+void MsgDataPool::updateAdaptiveLimit()
+{
+    // Simple adaptive algorithm: increase limit if we're using most of it
+    if (currentInUse > (poolSize * 3) / 4 && poolSize < poolLimit)
+    {
+        poolSize++;
+    }
+    // Decrease limit if we're using very little
+    else if (currentInUse < poolSize / 4 && poolSize > 4)
+    {
+        poolSize--;
+    }
+}
+
+uint8_t MsgDataPool::getPoolSize() const { return poolSize; }
+
+uint8_t MsgDataPool::getPoolLimit() const { return poolLimit; }
+
+uint8_t MsgDataPool::getCurrentInUse() const { return currentInUse; }
+
+bool MsgDataPool::initialize()
+{
+    // If already initialized, return true
+    if (pool != nullptr)
+    {
+        return true;
+    }
+
+    // Try to allocate memory
+    pool = new MsgData[poolLimit];
+    if (pool)
+    {
+        poolSize = poolLimit;
+        // Initialize all messages as free
+        for (uint8_t i = 0; i < poolSize; i++)
+        {
+            pool[i].refCount = 0;
+            pool[i].type = 0;
+            pool[i].topic = 0;
+            pool[i].arg = 0;
+            pool[i].data = nullptr;
+            pool[i].dataSize = 0;
+        }
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+        fsmos_memory_stats.total_allocated += sizeof(MsgData) * poolLimit;
+#endif
+        return true;
+    }
+
+    // Log error if memory allocation fails
+    OS.logMessage(nullptr, Scheduler::LOG_ERROR, F("Failed to allocate message pool"));
+    return false;
+}
+
+/* ================== LinkedQueue Implementation ================== */
+template <typename T>
+LinkedQueue<T>::LinkedQueue() : head(nullptr), tail(nullptr), count(0) {}
+
+template <typename T>
+LinkedQueue<T>::~LinkedQueue()
+{
+    while (head)
+    {
+        Node *temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
+template <typename T>
+LinkedQueue<T>::LinkedQueue(LinkedQueue &&other) noexcept : head(other.head), tail(other.tail), count(other.count)
+{
+    other.head = nullptr;
+    other.tail = nullptr;
+    other.count = 0;
+}
+
+template <typename T>
+void LinkedQueue<T>::push(const T &item)
+{
+    Node *new_node = new Node;
+    if (!new_node)
+    {
+        return;    // Memory allocation failed
+    }
+
+    new_node->data = item;
+    new_node->next = nullptr;
+
+    if (tail)
+    {
+        tail->next = new_node;
+    }
+    else
+    {
+        head = new_node;
+    }
+    tail = new_node;
+    count++;
+}
+
+template <typename T>
+bool LinkedQueue<T>::pop(T &item)
+{
+    if (!head)
+    {
+        return false;
+    }
+
+    Node *temp = head;
+    item = temp->data;  // This properly handles SharedMsg reference counting
+    head = head->next;
+
+    if (!head)
+    {
+        tail = nullptr;
+    }
+
+    delete temp;
+    count--;
+    return true;
+}
+
+template <typename T>
+bool LinkedQueue<T>::isEmpty() const
+{
+    return head == nullptr;
+}
+
+template <typename T>
+uint8_t LinkedQueue<T>::getSize() const
+{
+    return count;
+}
+
+// Explicit template instantiations for common types
+template class LinkedQueue<SharedMsg>;
+
+/* ================== Mutex Implementation ================== */
+Mutex::Mutex() : locked(false), owner_id(0) {}
+
+bool Mutex::tryLock(uint8_t task_id)
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        if (!locked)
+        {
+            locked = true;
+            owner_id = task_id;
+            return true;
+        }
+    }
+    return false;
+}
+
+void Mutex::unlock(uint8_t task_id)
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        if (locked && owner_id == task_id)
+        {
+            locked = false;
+            owner_id = 0;
+        }
+    }
+}
+
+bool Mutex::isLocked() const { return locked; }
+
+uint8_t Mutex::getOwner() const { return owner_id; }
+
+/* ================== Semaphore Implementation ================== */
+Semaphore::Semaphore(uint8_t initial_count, uint8_t max_count) : count(initial_count), max_count(max_count) {}
+
+bool Semaphore::wait(uint8_t task_id)
+{
+    (void)task_id;  // Unused parameter
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        if (count > 0)
+        {
+            count--;
+            return true;
+        }
+    }
+    return false;
+}
+
+void Semaphore::signal()
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        if (count < max_count)
+        {
+            count++;
+        }
+    }
+}
+
+uint8_t Semaphore::getCount() const { return count; }
+
+uint8_t Semaphore::getMaxCount() const { return max_count; }
+
+/* ================== Task Implementation ================== */
+// Initialize static counter
+uint16_t Task::createdInstanceCount = 0;
+Task::Task(const __FlashStringHelper *task_name)
+    : remainingTime(0),
+      periodMs(DEFAULT_TASK_PERIOD),
+      taskId(0),
+      stateAndPriority(PRIORITY_NORMAL << 4), // INACTIVE state, PRIORITY_NORMAL priority
+      name(task_name)
+{
+    // Bitfield is already initialized to 0
+    createdInstanceCount++;
+}
+
+Task::~Task()
+{
+    if (createdInstanceCount > 0)
+    {
+        createdInstanceCount--;
+    }
+}
+
+void Task::start()
+{
+    if (getState() == INACTIVE)
+    {
+        setState(ACTIVE);
+        remainingTime = periodMs;
+        on_start();
+    }
+}
+
+void Task::stop()
+{
+    if (getState() == ACTIVE || getState() == SUSPENDED)
+    {
+        setState(INACTIVE);
+        on_stop();
+    }
+}
+
+void Task::suspend()
+{
+    if (getState() == ACTIVE)
+    {
+        setState(SUSPENDED);
+    }
+}
+
+void Task::resume()
+{
+    if (getState() == SUSPENDED)
+    {
+        setState(ACTIVE);
+        remainingTime = periodMs;
+    }
+}
+
+void Task::terminate() { setState(TERMINATED); }
+
+void Task::setPeriod(uint16_t period)
+{
+    periodMs = (period < MIN_TASK_PERIOD) ? MIN_TASK_PERIOD : ((period > MAX_TASK_PERIOD) ? MAX_TASK_PERIOD : period);
+}
+
+uint16_t Task::getPeriod() const { return periodMs; }
+
+void Task::setPriority(Priority priority) { stateAndPriority = (stateAndPriority & 0x0F) | ((static_cast<uint8_t>(priority) & 0x0F) << 4); }
+
+void Task::setPriority(uint8_t prio) { stateAndPriority = (stateAndPriority & 0x0F) | ((prio & 0x0F) << 4); }
+
+uint8_t Task::getPriority() const { return (stateAndPriority >> 4) & 0x0F; }
+
+void Task::setMaxMessageBudget(uint8_t budget)
+{
+    maxMessageBudget = budget;
+}
+
+uint8_t Task::getMaxMessageBudget() const { return maxMessageBudget; }
+
+Task::State Task::getState() const { return static_cast<State>(stateAndPriority & 0x0F); }
+
+void Task::setState(State newState) { stateAndPriority = (stateAndPriority & 0xF0) | static_cast<uint8_t>(newState); }
+
+bool Task::checkState(State expected) const { return getState() == expected; }
+
+bool Task::isActive() const { return getState() == ACTIVE; }
+
+bool Task::isInactive() const { return getState() == INACTIVE; }
+
+uint8_t Task::getId() const { return taskId; }
+
+const __FlashStringHelper *Task::getName() const { return name; }
+
+void Task::setName(const __FlashStringHelper *task_name) { name = task_name; }
+
+// Subscribe/unsubscribe methods are now inline in header file
+
+void Task::publish(uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+{
+    OS.publishMessage(topic, type, arg, data, dataSize);
+}
+
+void Task::tell(uint8_t target_task_id, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+{
+    OS.sendMessage(target_task_id, type, arg, data, dataSize);
+}
+
+void Task::log(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_INFO, msg); }
+
+void Task::logDebug(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_DEBUG, msg); }
+
+void Task::logInfo(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_INFO, msg); }
+
+void Task::logWarn(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_WARN, msg); }
+
+void Task::logError(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_ERROR, msg); }
+
+template <typename T>
+T Task::createTimerTyped(uint32_t duration_ms) const
+{
+    T timer;
+    // Extract the underlying type from TimerT<T>
+    using UnderlyingType = decltype(timer.durationMs);
+    UnderlyingType max_duration = static_cast<UnderlyingType>(~static_cast<UnderlyingType>(0));
+    UnderlyingType safe_duration =
+        (duration_ms > max_duration) ? max_duration : static_cast<UnderlyingType>(duration_ms);
+    timer.startTimer(safe_duration);
+    return timer;
+}
+
+// Explicit template instantiations for Task::createTimerTyped
+template Timer8 Task::createTimerTyped<Timer8>(uint32_t) const;
+template Timer16 Task::createTimerTyped<Timer16>(uint32_t) const;
+template Timer32 Task::createTimerTyped<Timer32>(uint32_t) const;
+
+void Task::processMessages()
+{
+    // Message processing removed for RAM optimization
+    // Messages are now handled directly by the scheduler
+}
 
 /* ================== Scheduler Implementation ================== */
-
-/**
- * @brief Initialize the scheduler
- * 
- * Performs initial setup of the scheduler including:
- * - Capturing reset reason (AVR only)
- * - Initializing task management
- * - Setting up system time
- * - Preparing watchdog status
- */
-void Scheduler::begin() {
+Scheduler::Scheduler()
+    : taskCount(0),
+      nextTaskId(1),
+      systemTime(0),
+      running(false),
+      currentLogLevel(LOG_INFO)
+{
+    // Initialize linked list pointers
+    taskHead = nullptr;
+    taskTail = nullptr;
+}
+// ========== Stack Canary (AVR only) ==========
 #if defined(__AVR__)
-  // Read and clear MCUSR register early
-  reset_info.reset_reason = MCUSR;
-  MCUSR = 0;
-#else
-  // For non-AVR, we can't determine reset cause this way.
-  reset_info.reset_reason = 0;
-#endif
-
-  // Initialize the linked list
-  task_list = nullptr;
-  task_count = 0;
-  next_task_id = 0;
-  ms = millis();
-  watchdog_enabled = false;
-}
-
-// Optional: initialize with logger (alias to begin for now)
-void Scheduler::begin_with_logger() {
-  begin();
-}
-
-void Scheduler::_print_log_prefix(Task* task, LogLevel level) {
-#ifndef FSMOS_DISABLE_LOGGING
-  static const char PROGMEM levelChars[] = {'D', 'I', 'W', 'E'};
-  
-  uint32_t t = now();
-  Serial.print('[');
-  Serial.print(t / 1000);
-  Serial.print(':');
-  Serial.print(t % 1000);
-  Serial.print(F("]["));
-  Serial.write(pgm_read_byte(&levelChars[level]));
-  Serial.print(F("]["));
-  if (task && task->get_name()) {
-    Serial.print(task->get_name());
-  } else {
-    Serial.write('-');
-  }
-  Serial.print(']');
-  Serial.print(' ');
-#endif
-}
-
-void Scheduler::logMessage(Task* task, LogLevel level, const __FlashStringHelper* msg) {
-#ifndef FSMOS_DISABLE_LOGGING
-  _print_log_prefix(task, level);
-  Serial.println(msg);
-#endif
-}
-
-void Scheduler::logFormatted(Task* task, LogLevel level, const __FlashStringHelper* fmt, ...) {
-#ifndef FSMOS_DISABLE_LOGGING
-  _print_log_prefix(task, level);
-  char fmt_buf[64];
-  uint8_t i = 0;
-  const char* p = reinterpret_cast<const char*>(fmt);
-  while (i < sizeof(fmt_buf) - 1) {
-    char c = pgm_read_byte(p++);
-    if (c == 0) break;
-    fmt_buf[i++] = c;
-  }
-  fmt_buf[i] = 0;
-
-  char out_buf[64];
-  va_list args;
-  va_start(args, fmt);
-  vsnprintf(out_buf, sizeof(out_buf), fmt_buf, args);
-  va_end(args);
-  Serial.println(out_buf);
-#endif
-}
-
-
-/**
- * @brief Add a new task to the scheduler
- * 
- * This method:
- * - Assigns a unique ID to the task
- * - Creates a new task node
- * - Initializes task state
- * - Links task into task list
- * - Calls task's start handler
- * 
- * @param t Pointer to the task to add
- * @return Assigned task ID (255 if failed)
- */
-uint8_t Scheduler::add(Task* t) {
-  uint8_t new_id = next_task_id++;
-  if (next_task_id == 0) {
-    next_task_id = 1;
-  }
-
-  TaskNode* new_node = new TaskNode(t, new_id);
-  if (!new_node) {
-    return 255;
-  }
-  
-  t->id = new_id;
-  t->state = Task::ACTIVE;
-  t->next_due = ms;
-
-  new_node->next = task_list;
-  task_list = new_node;
-  task_count++;
-  
-  t->on_start();
-  return new_id;
-}
-
-bool Scheduler::remove(uint8_t task_id) {
-  if (!task_list) return false;
-
-  TaskNode** curr = &task_list;
-  while (*curr) {
-    if ((*curr)->id == task_id) {
-      TaskNode* to_delete = *curr;
-      Task* task = to_delete->task;
-      *curr = to_delete->next;
-      delete task;
-      delete to_delete;
-      task_count--;
-      return true;
+// Canary byte used to mark free RAM for stack usage measurement
+static const uint8_t STACK_CANARY_BYTE = 0xCD;
+static void init_stack_canary()
+{
+    // Fill entire free RAM from end of .bss (or current heap break) up to RAMEND
+    extern char __bss_end;
+    extern char *__brkval;
+    uint8_t *start = (uint8_t *)(__brkval ? __brkval : &__bss_end);
+    uint8_t *end = (uint8_t *)RAMEND;
+    for (uint8_t *p = start; p <= end; ++p)
+    {
+        *p = STACK_CANARY_BYTE;
     }
-    curr = &((*curr)->next);
-  }
-  return false;
 }
 
-bool Scheduler::post(uint8_t type, uint8_t src_id, uint8_t topic, uint8_t dst_id, uint16_t arg, void* ptr, bool is_dynamic) {
-  MsgData* data = msg_pool.allocate();
-  if (!data) return false;
-  
-  data->type = type;
-  data->src_id = src_id;
-  data->topic = topic;
-  data->dst_id = dst_id;
-  data->arg = arg;
-  data->ptr = ptr;
-  data->is_dynamic = is_dynamic;
-  data->dynamic_size = 0;
-  
-  uint8_t target_count = 0;
-  if (topic == 0) {
-    TaskNode* target_node = find_task_node(dst_id);
-    if (target_node && target_node->task) target_count = 1;
-  } else {
-    TaskNode* curr = task_list;
-    while (curr) {
-      if (curr->task && curr->task->is_subscribed_to(topic)) target_count++;
-      curr = curr->next;
+static uint16_t measure_stack_used()
+{
+    // Scan canary region from free-RAM start to find first non-canary byte
+    extern char __bss_end;
+    extern char *__brkval;
+    uint8_t *start = (uint8_t *)(__brkval ? __brkval : &__bss_end);
+    uint8_t *end = (uint8_t *)RAMEND;
+    uint8_t *p = start;
+    while (p <= end && *p == STACK_CANARY_BYTE)
+    {
+        ++p;
     }
-  }
-  
-  data->ref_count = (target_count > 0) ? (target_count - 1) : 0;
-  if (target_count == 0) {
-    msg_pool.deallocate(data);
-    return false;
-  }
-  
-  return message_queue.push(SharedMsg(data));
+    if (p > end)
+    {
+        return 0;
+    }
+    return (uint16_t)(end - p + 1);
 }
+#endif
 
-/**
- * @brief Execute one iteration of the scheduler
- * 
- * This is the core scheduling loop that:
- * 1. Updates system time
- * 2. Delivers pending messages
- * 3. Executes due tasks
- * 4. Handles task cleanup
- * 5. Updates task statistics
- * 6. Manages watchdog
- * 
- * The scheduler ensures:
- * - Tasks run in their configured periods
- * - Messages are delivered promptly
- * - Resources are cleaned up
- * - System remains responsive
- */
-void Scheduler::loop_once() {
-  // 1. Update time
-  uint32_t now = millis();
-  ms = now;
+Scheduler::~Scheduler() { removeAll(); }
 
-  // 2. Deliver all messages from the global bus
-  deliver();
-
-  // 3. Execute due tasks and handle cleanup
-  TaskNode** curr = &task_list;
-  while (*curr) {
-    TaskNode* node = *curr;
-    Task* task = node->task;
-    bool delete_task = false;
-
-    if (task) {
-      if (task->is_inactive()) {
-        // Mark for deletion
-        delete_task = true;
-      }
-      else if (task->is_active() && (int32_t)(now - task->next_due) >= 0) {
-        // Only execute if task is active (not suspended or inactive)
-        // WDT & Profiling Start
-        reset_info.last_task_id = node->id;
-        uint32_t start_us = micros();
-
-        task->step();
-
-        // Profiling End
-        uint32_t exec_time = micros() - start_us;
-        node->stats.total_exec_time_us += exec_time;
-        if (exec_time > node->stats.max_exec_time_us) {
-          node->stats.max_exec_time_us = exec_time;
+bool Scheduler::initializeTaskNodePool()
+{
+    if (taskNodePoolInitialized)
+    {
+        return true;
+    }
+    // Preallocate TaskNode objects as a singly-linked free-list.
+    // Start with the number of created tasks (at least 1).
+    TaskNode *prev = nullptr;
+    uint16_t initial = Task::getCreatedInstanceCount();
+    if (initial == 0)
+    {
+        initial = 1;
+    }
+    for (uint8_t i = 0; i < initial; ++i)
+    {
+        TaskNode *node = (TaskNode *)malloc(sizeof(TaskNode));
+        if (!node)
+        {
+            // Allocation failure; roll back what we can (not strictly necessary on AVR)
+            return false;
         }
-        node->stats.run_count++;
-
-        // Schedule next run
-        task->next_due += task->get_period();
-        
-        // Handle missed deadlines
-        if ((int32_t)(task->next_due - now) < 0) {
-          task->next_due = now + task->get_period();
-        }
-      }
+        // Initialize fields manually; building free-list in reverse
+        node->task = nullptr;
+        node->next = prev;
+        prev = node;
+        taskNodePoolCapacity++;
     }
-
-    if (delete_task) {
-      // Remove and delete the task
-      *curr = node->next;
-      delete task;       // This will call on_terminate()
-      delete node;
-      task_count--;
-    } else {
-      curr = &(node->next);
-    }
-  }
-  
-  // 4. Pet the watchdog
-#if defined(__AVR__)
-  if (watchdog_enabled) {
-    wdt_reset();
-  }
-#endif
-  
-  msg_pool.update_adaptive_limit(now);
-}
-
-/**
- * @brief Deliver pending messages to tasks
- * 
- * Iterates through all active tasks and processes their pending
- * messages. For each task:
- * - Checks if task is active
- * - Processes queued messages
- * - Handles message cleanup
- * 
- * This method ensures messages are delivered in a fair manner
- * and maintains system responsiveness.
- */
-void Scheduler::deliver() {
-  // Process all messages in the queue
-  while (!message_queue.empty()) {
-    SharedMsg msg;
-    if (!message_queue.pop(msg)) break;
-    
-    if (msg->topic == 0) {
-      TaskNode* target_node = find_task_node(msg->dst_id);
-      if (target_node && target_node->task && target_node->task->is_active()) {
-        target_node->task->on_msg(*msg.get());
-      }
-    } else {
-      // Topic-based message - deliver to all subscribed tasks
-      TaskNode* curr = task_list;
-      while (curr) {
-        if (curr->task && curr->task->is_active() && curr->task->is_subscribed_to(msg->topic)) {
-          curr->task->on_msg(*msg.get());
-        }
-        curr = curr->next;
-      }
-    }
-  }
-}
-
-
-void Scheduler::enable_watchdog(uint8_t timeout) {
-#if defined(__AVR__)
-  wdt_enable(timeout);
-  watchdog_enabled = true;
-#endif
-}
-
-bool Scheduler::get_reset_info(ResetInfo& info) {
-  info = reset_info;
-  // Clear last task ID after reading to avoid stale info on next reset
-  reset_info.last_task_id = 255; 
-  return true;
-}
-
-#if defined(__AVR__)
-// Memory markers
-static const uint8_t HEAP_FREE_MARKER = 0xFF;
-static const uint16_t STACK_CANARY = 0xFEED;
-#endif
-
-/**
- * @brief Get memory usage information for a task
- * 
- * Calculates memory used by a task including:
- * - Task object size
- * - Subscription array size
- * - Message queue size
- * - Total allocated memory
- * 
- * @param task_id ID of task to analyze
- * @param info Reference to store memory info
- * @return true if task was found and info populated
- */
-bool Scheduler::get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) const {
-    TaskNode* node = find_task_node(task_id);
-    if (!node || !node->task) return false;
-
-    Task* task = node->task;
-    info.task_struct_size = sizeof(Task);
-    info.subscription_size = task->subscription_count;
-    info.queue_size = sizeof(LinkedQueue<SharedMsg>);
-    
-    // Calculate total allocated memory
-    info.total_allocated = info.task_struct_size + 
-                          info.subscription_size +
-                          info.queue_size;
-    
+    freeTaskNodeHead = prev;
+    taskNodePoolInitialized = true;
     return true;
 }
 
-bool Scheduler::get_system_memory_info(SystemMemoryInfo& info) const {
-#if defined(__AVR__)
-    extern int __heap_start, *__brkval;
-    extern uint8_t __data_start, __data_end;
-    extern uint8_t __bss_start, __bss_end;
-    extern uint8_t _etext, __stack;
-    
-    // Static Memory
-    info.total_ram = RAMEND - RAMSTART + 1;
-    info.static_data_size = (&__data_end - &__data_start) + (&__bss_end - &__bss_start);
-    info.heap_size = (__brkval == 0 ? (uint16_t)&__heap_start : (uint16_t)__brkval) - (uint16_t)&__heap_start;
-    
-    // Dynamic Memory
-    info.free_ram = get_free_memory();
-    info.heap_fragments = count_heap_fragments();
-    info.largest_block = get_largest_block();
-    
-    // Task Memory
-    info.total_tasks = task_count;
-    info.task_memory = task_count * (sizeof(TaskNode) + sizeof(Task));
-    
-    // Message Memory
-    uint8_t msg_count = 0;
-    uint16_t msg_mem = 0;
-    TaskNode* curr = task_list;
-    while (curr) {
-        if (curr->task) {
-            msg_count += curr->task->suspended_msg_queue.size();
-            msg_mem += sizeof(MsgData) * curr->task->suspended_msg_queue.size();
+TaskNode *Scheduler::acquireTaskNode(Task *task)
+{
+    if (!taskNodePoolInitialized && !initializeTaskNodePool())
+    {
+        return nullptr;
+    }
+    if (!freeTaskNodeHead)
+    {
+        // Try to expand by one
+        TaskNode *node = (TaskNode *)malloc(sizeof(TaskNode));
+        if (!node)
+        {
+            return nullptr;
         }
-        curr = curr->next;
+        node->task = nullptr;
+        node->next = nullptr;
+        freeTaskNodeHead = node;
+        taskNodePoolCapacity++;
     }
-    info.active_messages = msg_count;
-    info.message_memory = msg_mem;
-    
-    // Stack Memory
-    info.stack_size = RAMEND - (uint16_t)&__stack;
-    uint16_t* p = (uint16_t*)RAMEND;
-    while (p > (uint16_t*)&__stack && *p == STACK_CANARY) {
-        p--;
+    TaskNode *node = freeTaskNodeHead;
+    freeTaskNodeHead = freeTaskNodeHead->next;
+    node->task = task;
+    node->next = nullptr;
+    return node;
+}
+
+void Scheduler::releaseTaskNode(TaskNode *node)
+{
+    if (!node)
+    {
+        return;
     }
-    info.stack_free = (uint16_t)RAMEND - (uint16_t)p;
-    info.stack_used = info.stack_size - info.stack_free;
-    
-    // Program Memory
-    info.flash_used = (uint32_t)&_etext;
-    info.flash_free = (uint32_t)FLASHEND - info.flash_used;
-    
+    node->task = nullptr;
+    node->next = freeTaskNodeHead;
+    freeTaskNodeHead = node;
+}
+
+bool Scheduler::add(Task *task)
+{
+    if (!task)
+    {
+        return false;
+    }
+
+    // Acquire node from pool
+    TaskNode *newNode = acquireTaskNode(task);
+    if (!newNode)
+    {
+        return false;  // Pool allocation failed
+    }
+
+    // Assign task ID
+    task->taskId = nextTaskId++;
+    if (nextTaskId == 0)
+    {
+        nextTaskId = 1;    // Avoid zero task ID
+    }
+
+    // Add to linked list (singly-linked)
+    if (taskHead == nullptr)
+    {
+        // First task
+        taskHead = taskTail = newNode;
+    }
+    else
+    {
+        // Append to tail
+        taskTail->next = newNode;
+        taskTail = newNode;
+    }
+
+    taskCount++;
     return true;
-#else
-    // Non-AVR implementation
-    memset(&info, 0, sizeof(info));
-    return false;
-#endif
 }
 
-uint16_t Scheduler::get_free_memory() const {
-#if defined(__AVR__)
-    extern int __heap_start, *__brkval;
-    int v;
-    return (uint16_t)&v - (__brkval == 0 ? (uint16_t)&__heap_start : (uint16_t)__brkval);
-#else
-    return 0;
-#endif
-}
+bool Scheduler::remove(Task *task)
+{
+    if (!task)
+    {
+        return false;
+    }
 
-uint16_t Scheduler::get_largest_block() const {
-#if defined(__AVR__)
-    // Simplified implementation - return free memory as largest block
-    // This is not perfect but works for basic monitoring
-    return get_free_memory();
-#else
-    return 0;
-#endif
-}
+    // Find the node containing this task, tracking previous (singly-linked)
+    TaskNode *current = taskHead;
+    TaskNode *previous = nullptr;
+    while (current != nullptr)
+    {
+        if (current->task == task)
+        {
+            // Remove from linked list
+            if (previous)
+            {
+                previous->next = current->next;
+            }
+            else
+            {
+                // Removing head
+                taskHead = current->next;
+            }
 
-uint8_t Scheduler::get_heap_fragmentation() const {
-#if defined(__AVR__)
-    uint16_t total_free = get_free_memory();
-    uint16_t largest = get_largest_block();
-    
-    if (total_free == 0) return 100;
-    return (uint8_t)(100 - (largest * 100) / total_free);
-#else
-    return 0;
-#endif
-}
+            if (current == taskTail)
+            {
+                // Update tail if needed
+                taskTail = previous;
+            }
 
-uint8_t Scheduler::count_heap_fragments() const {
-#if defined(__AVR__)
-    // Simplified implementation - return 1 for basic monitoring
-    // This is not perfect but works for basic monitoring
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-uint8_t Scheduler::get_task_count() const {
-  return task_count;
-}
-
-TaskNode* Scheduler::find_task_node(uint8_t task_id) const {
-    TaskNode* curr = task_list;
-    while (curr) {
-        if (curr->id == task_id) {
-            return curr;
+            releaseTaskNode(current);
+            taskCount--;
+            return true;
         }
-        curr = curr->next;
+        previous = current;
+        current = current->next;
+    }
+
+    return false;
+}
+
+void Scheduler::removeAll()
+{
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        TaskNode *next = current->next;
+        current->task->stop();
+        releaseTaskNode(current);
+        current = next;
+    }
+    taskHead = taskTail = nullptr;
+    taskCount = 0;
+}
+
+Task *Scheduler::getTask(uint8_t task_id)
+{
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task && current->task->getId() == task_id)
+        {
+            return current->task;
+        }
+        current = current->next;
     }
     return nullptr;
 }
 
-Task* Scheduler::get_task(uint8_t task_id) const {
-    TaskNode* node = find_task_node(task_id);
-    return node ? node->task : nullptr;
-}
+// getTaskCount is now inline in header file
 
-bool Scheduler::get_task_stats(uint8_t task_id, TaskStats& stats) const {
-    TaskNode* node = find_task_node(task_id);
-    if (node) {
-        stats = node->stats;
-        return true;
-    }
-    return false;
-}
+uint16_t Scheduler::getMaxTasks() const { return taskNodePoolCapacity; }
 
-/* ================== Task Implementation ================== */
-
-/**
- * @brief Send a direct message to another task
- * 
- * @param dst_task_id Destination task ID
- * @param type Message type
- * @param arg Optional 16-bit argument
- * @param ptr Optional data pointer
- * @param is_dynamic Whether ptr is dynamically allocated
- * @return true if message was queued successfully
- */
-bool Task::tell(uint8_t dst_task_id, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
-  return OS.post(type, this->id, 0, dst_task_id, arg, ptr, is_dynamic);
-}
-
-/**
- * @brief Publish a message to a topic
- * 
- * @param topic Topic ID (1-255)
- * @param type Message type
- * @param arg Optional 16-bit argument
- * @param ptr Optional data pointer
- * @param is_dynamic Whether ptr is dynamically allocated
- * @return true if message was queued successfully
- */
-bool Task::publish(uint8_t topic, uint8_t type, uint16_t arg, void* ptr, bool is_dynamic) {
-  if (topic == 0) return false;
-  return OS.post(type, id, topic, 0, arg, ptr, is_dynamic);
-}
-
-/**
- * @brief Subscribe to a topic
- * 
- * Allows task to receive messages published to the specified topic.
- * 
- * @param topic Topic ID to subscribe to (1-255)
- */
-void Task::subscribe(uint8_t topic) {
-  if (topic == 0) return; // topic 0 reserved
-  // Avoid duplicates
-  SubNode* curr = subscription_head;
-  while (curr) {
-    if (curr->topic == topic) return;
-    curr = curr->next;
-  }
-  // Prepend new subscription
-  SubNode* node = new SubNode(topic);
-  node->next = subscription_head;
-  subscription_head = node;
-  if (subscription_count < 255) subscription_count++;
-  
-}
-
-/**
- * @brief Check if task is subscribed to a topic
- * 
- * @param topic Topic ID to check
- * @return true if task is subscribed to topic
- */
-bool Task::is_subscribed_to(uint8_t topic) {
-  if (topic == 0) return false;
-  SubNode* curr = subscription_head;
-  while (curr) {
-    if (curr->topic == topic) return true;
-    curr = curr->next;
-  }
-  return false;
-}
-
-/**
- * @brief Activate or resume task execution
- * 
- * If task was suspended:
- * - Calls on_resume() handler
- * - Processes queued messages
- * - Schedules next execution
- */
-void Task::activate() {
-  if (state == SUSPENDED) {
-    on_resume();
-    // Will process any queued message on next scheduler loop
-  }
-  state = ACTIVE;
-  next_due = OS.now() + period_ms;
-}
-
-/**
- * @brief Suspend task execution
- * 
- * When suspending:
- * - Calls on_suspend() handler
- * - Preserves message queue
- * - Stops task execution
- */
-void Task::suspend() {
-  if (state == ACTIVE) {
-    on_suspend();
-    state = SUSPENDED;
-    // Keep any queued message for when we resume
-  }
-}
-
-/**
- * @brief Permanently terminate task
- * 
- * Marks task for removal by scheduler.
- * Task will be deleted and resources freed
- * on next scheduler iteration.
- */
-void Task::terminate() {
-  state = INACTIVE;
-}
-
-uint8_t Task::get_id() const {
-  return id;
-}
-
-void Task::set_period(uint16_t period) {
-  period_ms = period;
-}
-
-uint16_t Task::get_period() const {
-  return period_ms;
-}
-
-void Task::set_queue_messages_while_suspended(bool queue_messages) {
-  queue_messages_while_suspended = queue_messages;
-}
-
-bool Task::get_queue_messages_while_suspended() const {
-  return queue_messages_while_suspended;
-}
-
-void Scheduler::enable_stack_monitoring() {
+void Scheduler::begin()
+{
+    // Initialize stack canary before tasks start executing
 #if defined(__AVR__)
-  extern uint8_t __stack;
-  uint16_t* p = (uint16_t*)&__stack;
-  uint16_t* stack_end = (uint16_t*)RAMEND;
-  while (p < stack_end) {
-    *p++ = STACK_CANARY;
-  }
+    init_stack_canary();
 #endif
+    // Set log level to INFO for better debugging
+    setLogLevel(LOG_INFO);
+
+    // Log startup message
+    logMessage(nullptr, LOG_INFO, F("FsmOS Scheduler starting"));
+
+    running = true;
+    systemTime = millis();
+
+#if defined(__AVR__)
+    init_stdio_to_serial();
+#endif
+
+    // Start all tasks
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task)
+        {
+            current->task->start();
+            feedWatchdog();
+        }
+        current = current->next;
+    }
+
+    // Log task count
+    logMessage(nullptr, LOG_INFO, F("Scheduler started successfully"));
 }
 
-int Scheduler::get_free_stack() const {
+void Scheduler::loopOnce()
+{
+    if (!running)
+    {
+        return;
+    }
+
+    updateSystemTime();
+
+    // Decrease remaining time for all active tasks
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task && current->task->isActive() && current->task->remainingTime > 0)
+        {
+            current->task->remainingTime--;
+        }
+        current = current->next;
+    }
+
+    // Feed watchdog timer
+    feedWatchdog();
+
+    // Process a limited number of queued messages per tick
+    processMessages();
+
+    Task *next_task = findNextTask();
+    if (next_task)
+    {
+        executeTask(next_task);
+    }
+}
+
+void Scheduler::loop()
+{
+    while (running)
+    {
+        loopOnce();
+    }
+}
+
+void Scheduler::stop() { running = false; }
+
+void Scheduler::publishMessage(uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
+{
+    // Enqueue for all subscribed tasks
+    TaskNode *node = taskHead;
+    while (node)
+    {
+        if (node->task && node->task->isActive() && node->task->isSubscribedToTopic(topic))
+        {
+            enqueueQueuedMessage(node->task->getId(), topic, type, arg, data, data_size);
+        }
+        node = node->next;
+    }
+}
+
+void Scheduler::sendMessage(uint8_t task_id, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
+{
+    Task *target_task = getTask(task_id);
+    if (!target_task || !target_task->isActive())
+    {
+        return;
+    }
+
+    enqueueQueuedMessage(task_id, 0, type, arg, data, data_size);
+}
+
+uint32_t Scheduler::now() const { return systemTime; }
+
+uint16_t Scheduler::getFreeMemory() const
+{
+    extern char __heap_start;      // start of heap (in .bss)
+    extern char *__brkval;         // current heap break (nullptr if none)
+    char v;                        // stack variable to get current stack address
+    // Difference between current stack pointer and heap end/start
+    return (uint16_t)(&v - (__brkval == 0 ? &__heap_start : __brkval));
+}
+
+void Scheduler::setLogLevel(LogLevel level) { currentLogLevel = level; }
+
+void Scheduler::logMessage(Task *task, LogLevel level, const char *msg)
+{
+    if (level < currentLogLevel)
+    {
+        return;
+    }
+
+    const char *level_str = "DEBUG";
+    switch (level)
+    {
+        case LOG_INFO:
+            level_str = "INFO";
+            break;
+        case LOG_WARN:
+            level_str = "WARN";
+            break;
+        case LOG_ERROR:
+            level_str = "ERROR";
+            break;
+        default:
+            break;
+    }
+
+    Serial.print(F("["));
+    Serial.print(level_str);
+    Serial.print(F("] "));
+
+    if (task)
+    {
+        Serial.print(F("Task "));
+        Serial.print(task->getId());
+        Serial.print(F(" ("));
+        Serial.print(task->getName());
+        Serial.print(F("): "));
+    }
+
+    Serial.println(msg);
+}
+
+void Scheduler::logMessage(Task *task, LogLevel level, const __FlashStringHelper *msg)
+{
+    if (level < currentLogLevel)
+    {
+        return;
+    }
+
+    const char *level_str = "DEBUG";
+    switch (level)
+    {
+        case LOG_INFO:
+            level_str = "INFO";
+            break;
+        case LOG_WARN:
+            level_str = "WARN";
+            break;
+        case LOG_ERROR:
+            level_str = "ERROR";
+            break;
+        default:
+            break;
+    }
+
+    Serial.print(F("["));
+    Serial.print(level_str);
+    Serial.print(F("] "));
+
+    if (task)
+    {
+        Serial.print(F("Task "));
+        Serial.print(task->getId());
+        Serial.print(F(" ("));
+        Serial.print(task->getName());
+        Serial.print(F("): "));
+    }
+
+    Serial.println(msg);
+}
+
+void Scheduler::onTick() { systemTime++; }
+
+void Scheduler::processMessages()
+{
+    while (true)
+    {
+        // Dequeue node to ensure we recycle only after handler finishes
+        if (msgCount == 0)
+        {
+            break;
+        }
+        MsgNode *node = msgHead;
+        msgHead = node->next;
+        if (!msgHead)
+        {
+            msgTail = nullptr;
+        }
+        msgCount--;
+
+        QueuedMessage &qm = node->payload;
+        Task *target = getTask(qm.targetTaskId);
+        if (target && target->isActive())
+        {
+            target->on_msg(qm.msg);
+        }
+
+        // Recycle node after handler returns; keep buffer for reuse
+        node->next = freeHead;
+        freeHead = node;
+    }
+}
+
+void Scheduler::updateSystemTime() { systemTime = millis(); }
+
+Task *Scheduler::findNextTask()
+{
+    Task *nextTask = nullptr;
+    uint16_t shortestTime = UINT16_MAX;
+
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task && current->task->isActive() && current->task->remainingTime == 0)
+        {
+            // If task declares a message production budget, ensure enough free queue slots
+            uint8_t budget = current->task->getMaxMessageBudget();
+            if (budget == 0)
+            {
+                budget = DEFAULT_TASK_MESSAGE_BUDGET;
+            }
+            if (getFreeQueueSlots() < budget)
+            {
+                // Skip this task for now; not enough capacity to accept its messages
+            }
+            else if (nextTask == nullptr)
+            {
+                nextTask = current->task;
+            }
+            else if (current->task->getPriority() > nextTask->getPriority())
+            {
+                // Higher priority wins
+                nextTask = current->task;
+            }
+            else if (current->task->getPriority() == nextTask->getPriority())
+            {
+                // Same priority, smaller task ID wins
+                if (current->task->getId() < nextTask->getId())
+                {
+                    nextTask = current->task;
+                }
+            }
+        }
+        else if (current->task && current->task->isActive() && current->task->remainingTime < shortestTime)
+        {
+            shortestTime = current->task->remainingTime;
+        }
+        current = current->next;
+    }
+
+    return nextTask;
+}
+
+void Scheduler::executeTask(Task *task)
+{
+    if (!task || !task->isActive())
+    {
+        return;
+    }
+
+    // Record execution start time for statistics
+    uint32_t execStart = micros();
+
+    // Reset remaining time for next execution
+    task->remainingTime = task->getPeriod();
+
+    // Execute task step
+    task->step();
+
+    // Calculate execution time and update minimalist statistics
+    uint32_t execTime = micros() - execStart;
+
+    // Convert to 16-bit (clamp to max value if needed)
+    uint16_t execTime16 = (execTime > 65535) ? 65535 : static_cast<uint16_t>(execTime);
+
+    // Update statistics
+    if (task->runCount < 65535)
+    {
+        task->runCount++;
+    }
+    // If runCount reaches max, keep it at max value
+
+    // Update max execution time
+    if (execTime16 > task->maxExecTimeUs)
+    {
+        task->maxExecTimeUs = execTime16;
+    }
+
+    // Update average execution time (simple moving average)
+    if (task->runCount == 1)
+    {
+        task->avgExecTimeUs = execTime16;
+    }
+    else if (task->runCount == 65535)
+    {
+        // When runCount is at max, use exponential moving average to avoid overflow
+        // EMA: new_avg = old_avg + alpha * (new_value - old_avg)
+        // Using alpha = 1/1000 for slow adaptation
+        uint32_t diff = execTime16 - task->avgExecTimeUs;
+        int32_t adjustment = diff / 1000;  // Slow adaptation
+        int32_t newAvg = task->avgExecTimeUs + adjustment;
+
+        // Clamp to valid range
+        if (newAvg < 0)
+        {
+            newAvg = 0;
+        }
+        if (newAvg > 65535)
+        {
+            newAvg = 65535;
+        }
+
+        task->avgExecTimeUs = static_cast<uint16_t>(newAvg);
+    }
+    else
+    {
+        // Simple moving average: new_avg = (old_avg * (n-1) + new_value) / n
+        uint32_t newAvg = ((uint32_t)task->avgExecTimeUs * (task->runCount - 1) + execTime16) / task->runCount;
+
+        // Clamp to 16-bit max value if calculation overflows
+        if (newAvg > 65535)
+        {
+            task->avgExecTimeUs = 65535;  // MAX 16-bit value
+        }
+        else
+        {
+            task->avgExecTimeUs = static_cast<uint16_t>(newAvg);
+        }
+    }
+
+    // Check for terminated tasks
+    if (task->getState() == Task::TERMINATED)
+    {
+        remove(task);
+    }
+}
+
+/* ================== Additional Scheduler Methods ================== */
+bool Scheduler::getResetInfo(ResetInfo &info)
+{
+    // Basic reset info
+    info.resetReason = 0;
+    info.resetTime = systemTime;
+    info.watchdogTimeout = 0;
+    info.lastTaskId = 0;
+
+    // Get reset cause information
+    info.optibootResetFlags = getResetCauseFlags();
+    info.optibootResetCause = getResetCause();
+
+    return true;
+}
+
+ResetCause Scheduler::getResetCause()
+{
+    uint8_t flags = getResetCauseFlags();
+
+    if (flags == 0)
+    {
+        return RESET_UNKNOWN;
+    }
+
+    // Check for multiple causes
+    uint8_t count = 0;
+    if (flags & RESET_CAUSE_POWER_ON)
+    {
+        count++;
+    }
+    if (flags & RESET_CAUSE_EXTERNAL)
+    {
+        count++;
+    }
+    if (flags & RESET_CAUSE_BROWN_OUT)
+    {
+        count++;
+    }
+    if (flags & RESET_CAUSE_WATCHDOG)
+    {
+        count++;
+    }
+
+    if (count > 1)
+    {
+        return RESET_MULTIPLE;
+    }
+
+    // Single cause
+    if (flags & RESET_CAUSE_POWER_ON)
+    {
+        return RESET_POWER_ON;
+    }
+    if (flags & RESET_CAUSE_EXTERNAL)
+    {
+        return RESET_EXTERNAL;
+    }
+    if (flags & RESET_CAUSE_BROWN_OUT)
+    {
+        return RESET_BROWN_OUT;
+    }
+    if (flags & RESET_CAUSE_WATCHDOG)
+    {
+        return RESET_WATCHDOG;
+    }
+
+    return RESET_UNKNOWN;
+}
+
+uint8_t Scheduler::getResetCauseFlags()
+{
 #if defined(__AVR__)
-  extern uint8_t __stack;
-  uint16_t* p = (uint16_t*)RAMEND;
-  while (p > (uint16_t*)&__stack && *p == STACK_CANARY) {
-    p--;
-  }
-  return (int)((uint16_t)RAMEND - (uint16_t)p);
+    return GPIOR0;
 #else
-  return 0;
+    return 0;  // Not available on non-AVR platforms
 #endif
 }
 
-void Task::process_messages() {
-  if (!suspended_msg_queue.empty() && is_active()) {
-    while (!suspended_msg_queue.empty()) {
-      SharedMsg msg;
-      if (!suspended_msg_queue.pop(msg)) break;
-      on_msg(*msg.get());
+bool Scheduler::wasResetCause(ResetCause cause) { return getResetCause() == cause; }
+
+bool Scheduler::getTaskStats(uint8_t task_id, TaskStats &stats)
+{
+    Task *task = getTask(task_id);
+    if (!task)
+    {
+        return false;
     }
-  }
+
+    stats.taskId = task->getId();
+    stats.name = task->getName();
+    stats.state = static_cast<uint8_t>(task->getState());
+    stats.periodMs = task->getPeriod();
+    stats.priority = task->getPriority();
+    stats.runCount = task->runCount;
+    stats.maxExecTimeUs = task->maxExecTimeUs;      // 16-bit max execution time
+    stats.totalExecTimeUs = task->avgExecTimeUs;    // Use avg as total for compatibility
+    stats.stackUsage = 0;         // Still placeholder - requires stack monitoring
+    return true;
 }
 
-void Scheduler::deallocate_message(MsgData* data) {
-  msg_pool.deallocate(data);
+bool Scheduler::getSystemMemoryInfo(SystemMemoryInfo &info)
+{
+    info.freeRam = getFreeMemory();
+    info.totalRam = 2048;    // AVR typical
+    // Heap size (bytes) from end of .bss to current break value (if any)
+#if defined(__AVR__)
+    extern char __bss_end;
+    extern char *__brkval;
+    if (__brkval)
+    {
+        info.heapSize = (uint16_t)((uint16_t)__brkval - (uint16_t)&__bss_end);
+    }
+    else
+    {
+        info.heapSize = 0;
+    }
+#else
+    info.heapSize = 0;
+#endif
+    info.largestBlock = 0;   // Not tracked
+    info.heapFragments = 0;  // Not tracked
+#if defined(__AVR__)
+    // Approximate stack usage based on canary region
+    extern char __bss_end;
+    extern char *__brkval;
+    uint16_t lower = (uint16_t)(__brkval ? __brkval : &__bss_end);
+    uint16_t upper = (uint16_t)RAMEND;
+    uint16_t approxUsed = measure_stack_used();
+    info.stackSize = (upper >= lower) ? (upper - lower + 1) : 0;
+    info.stackUsed = approxUsed;
+    info.stackFree = (approxUsed >= info.stackSize) ? 0 : (info.stackSize - approxUsed);
+#else
+    info.stackSize = 0;
+    info.stackUsed = 0;
+    info.stackFree = 0;
+#endif
+    info.totalTasks = taskCount;
+    // Sum estimated task memory (struct size + subscription bitfield)
+    uint16_t taskMem = 0;
+    TaskNode *tn = taskHead;
+    while (tn)
+    {
+        if (tn->task)
+        {
+            taskMem += tn->task->getTaskStructSize();
+            taskMem += sizeof(tn->task->subscribedTopics);
+        }
+        tn = tn->next;
+    }
+    info.taskMemory = taskMem;
+    info.activeMessages = msgCount;  // Provide actual active message count
+    // Approximate message memory: nodes + buffers across queue and free lists
+    uint16_t msgMem = 0;
+    MsgNode *mn = msgHead;
+    while (mn)
+    {
+        msgMem += sizeof(MsgNode);
+        msgMem += mn->payload.capacity;
+        mn = mn->next;
+    }
+    mn = freeHead;
+    while (mn)
+    {
+        msgMem += sizeof(MsgNode);
+        msgMem += mn->payload.capacity;
+        mn = mn->next;
+    }
+    info.messageMemory = msgMem;
+
+    // Flash usage from build-time constants
+#ifdef BUILD_FLASH_USED
+    // Use real build-time values injected by build script
+    info.flashUsed = BUILD_FLASH_USED;
+    info.flashFree = BUILD_FLASH_FREE;
+#else
+    info.flashUsed = 0;       // Not available at runtime
+    info.flashFree = 0;       // Not available at runtime
+#endif
+
+    // EEPROM usage (approximate based on known usage)
+#ifdef FSMOS_EEPROM_SIZE
+    // Estimate EEPROM usage based on known variables stored
+    // LightTask saves dim level (1 byte), other tasks may use EEPROM
+    uint16_t eepromUsed = 1;  // Conservative estimate
+    info.eepromUsed = eepromUsed;
+    info.eepromFree = FSMOS_EEPROM_SIZE - eepromUsed;
+#else
+    info.eepromUsed = 0;      // Not available at runtime
+    info.eepromFree = 0;      // Not available at runtime
+#endif
+    return true;
+}
+
+bool Scheduler::getTaskMemoryInfo(uint8_t task_id, TaskMemoryInfo &info)
+{
+    Task *task = getTask(task_id);
+    if (!task)
+    {
+        return false;
+    }
+
+    info.task_id = task->getId();
+    // Derive struct size via virtual API; if not implemented by a task, it won't link.
+    info.task_struct_size = task->getTaskStructSize();
+    info.subscription_size = sizeof(task->subscribedTopics);
+    info.queue_size = 0;         // No per-task queue in current design
+    info.total_allocated = info.task_struct_size + info.subscription_size;
+    return true;
+}
+
+uint8_t Scheduler::getHeapFragmentation()
+{
+    return 0;  // Placeholder
+}
+
+bool Scheduler::getMemoryLeakStats(MemoryStats &stats)
+{
+#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
+    stats = fsmos_memory_stats;
+    return true;
+#else
+    // Return zero stats if leak detection is disabled
+    stats.total_allocated = 0;
+    stats.total_freed = 0;
+    stats.peak_usage = 0;
+    stats.current_usage = 0;
+    return true;
+#endif
+}
+
+/* ================== Additional Logging Functions ================== */
+// Internal helpers to reuse formatted logging logic
+static void printLogHeader(Scheduler::LogLevel level)
+{
+#if defined(__AVR__)
+    const char *level_str = "DEBUG";
+    switch (level)
+    {
+        case Scheduler::LOG_INFO:
+            level_str = "INFO";
+            break;
+        case Scheduler::LOG_WARN:
+            level_str = "WARN";
+            break;
+        case Scheduler::LOG_ERROR:
+            level_str = "ERROR";
+            break;
+        default:
+            break;
+    }
+    Serial.print(F("["));
+    Serial.print(level_str);
+    Serial.print(F("] "));
+#else
+    (void)level;
+#endif
+}
+
+static void logFormattedV(Scheduler::LogLevel level, const __FlashStringHelper *format, va_list args)
+{
+#if defined(__AVR__)
+    printLogHeader(level);
+    vfprintf_P(stdout, (PGM_P)format, args);
+    Serial.println();
+#else
+    char formatted[128];
+    vsnprintf(formatted, sizeof(formatted), (const char *)format, args);
+    OS.logMessage(nullptr, level, formatted);
+#endif
+}
+void logDebugf(const __FlashStringHelper *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    logFormattedV(Scheduler::LOG_DEBUG, format, args);
+    va_end(args);
+}
+
+void logInfof(const __FlashStringHelper *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    logFormattedV(Scheduler::LOG_INFO, format, args);
+    va_end(args);
+}
+
+void logWarnf(const __FlashStringHelper *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    logFormattedV(Scheduler::LOG_WARN, format, args);
+    va_end(args);
+}
+
+void logErrorf(const __FlashStringHelper *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    logFormattedV(Scheduler::LOG_ERROR, format, args);
+    va_end(args);
+}
+
+/* ================== Additional Scheduler System Methods ================== */
+
+void Scheduler::enableWatchdog(uint8_t timeout)
+{
+#if defined(__AVR__)
+    wdt_enable(timeout);
+#endif
+}
+
+void Scheduler::feedWatchdog()
+{
+#if defined(__AVR__)
+    wdt_reset();
+#endif
+}
+
+void Scheduler::logFormatted(Task *task, LogLevel level, const __FlashStringHelper *format, ...)
+{
+    // Simplified implementation - just log the format string
+    logMessage(task, level, format);
+}
+
+uint8_t Scheduler::getFreeQueueSlots() const
+{
+    return static_cast<uint8_t>(MAX_MESSAGE_POOL_SIZE - msgCount);
+}
+
+bool Scheduler::allocateMsgNodesChunk()
+{
+    if (totalNodes >= MAX_MESSAGE_POOL_SIZE)
+    {
+        return false;
+    }
+
+    // Allocate up to 4 nodes, but don’t exceed hard cap
+    uint8_t canAdd = static_cast<uint8_t>(MAX_MESSAGE_POOL_SIZE - totalNodes);
+    uint8_t toAdd = (canAdd >= 4) ? 4 : canAdd;
+    for (uint8_t i = 0; i < toAdd; i++)
+    {
+        MsgNode *n = (MsgNode *)malloc(sizeof(MsgNode));
+        if (!n)
+        {
+            // Allocation failed; stop early
+            break;
+        }
+        // Initialize node payload to safe defaults
+        n->next = freeHead;
+        n->payload.targetTaskId = 0;
+        n->payload.msg.type = 0;
+        n->payload.msg.topic = 0;
+        n->payload.msg.arg = 0;
+        n->payload.msg.data = nullptr;
+        n->payload.msg.dataSize = 0;
+        n->payload.msg.refCount = 0;
+        n->payload.buffer = nullptr;
+        n->payload.capacity = 0;
+        freeHead = n;
+        totalNodes++;
+    }
+    return true;
+}
+
+bool Scheduler::enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+{
+    if (msgCount >= MAX_MESSAGE_POOL_SIZE)
+    {
+        return false;
+    }
+
+    if (!freeHead)
+    {
+        allocateMsgNodesChunk();
+        if (!freeHead)
+        {
+            return false;
+        }
+    }
+
+    MsgNode *node = freeHead;
+    freeHead = freeHead->next;
+
+    QueuedMessage &slot = node->payload;
+    slot.targetTaskId = targetTaskId;
+    slot.msg.type = type;
+    slot.msg.topic = topic;
+    slot.msg.arg = arg;
+    slot.msg.refCount = 0;
+
+    // Decide payload handling: allocate only if needed
+    if (data && dataSize > 0)
+    {
+        // If existing buffer is too small, try to reuse a slightly larger free node is not applicable here;
+        // we keep buffer per node; grow if needed.
+        if (!slot.buffer || slot.capacity < dataSize)
+        {
+            uint8_t newCap = dataSize;
+            uint8_t *newBuf = (uint8_t *)realloc(slot.buffer, newCap);
+            if (!newBuf)
+            {
+                // Put node back to free list and fail
+                node->next = freeHead;
+                freeHead = node;
+                return false;
+            }
+            slot.buffer = newBuf;
+            slot.capacity = newCap;
+        }
+        memcpy(slot.buffer, data, dataSize);
+        slot.msg.data = slot.buffer;
+        slot.msg.dataSize = dataSize;
+    }
+    else
+    {
+        slot.msg.data = nullptr;
+        slot.msg.dataSize = 0;
+    }
+
+    node->next = nullptr;
+    if (msgTail)
+    {
+        msgTail->next = node;
+        msgTail = node;
+    }
+    else
+    {
+        msgHead = msgTail = node;
+    }
+    msgCount++;
+    return true;
+}
+
+bool Scheduler::dequeueQueuedMessage(QueuedMessage &out)
+{
+    if (msgCount == 0)
+    {
+        return false;
+    }
+    MsgNode *node = msgHead;
+    msgHead = node->next;
+    if (!msgHead)
+    {
+        msgTail = nullptr;
+    }
+    out = node->payload;
+    // Node is not recycled here to avoid in-flight overwrite; caller should recycle
+    msgCount--;
+    return true;
 }

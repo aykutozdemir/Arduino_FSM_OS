@@ -51,7 +51,7 @@ CleanupTask* cleanup_task_ptr;
  * clean themselves up when their work is complete.
  */
 class WorkerTask : public Task {
-  Timer work_timer;         // Controls work step timing
+  Timer16 work_timer;       // 200ms step time - 4 bytes
   uint8_t step_count;       // Current step number
   const uint8_t MAX_STEPS;  // Total steps to perform
   const uint32_t STEP_TIME; // Time per step (ms)
@@ -69,11 +69,12 @@ public:
   void on_start() override {
     log_info(F("Worker #%d started - %d steps of %dms each"),
              get_id(), MAX_STEPS, STEP_TIME);
-    work_timer.start(STEP_TIME);
+    work_timer = create_timer_typed<Timer16>(STEP_TIME);
   }
 
   void step() override {
     if (work_timer.expired()) {
+      work_timer.start(STEP_TIME);
       step_count++;
       log_debug(F("Worker #%d: Step %d/%d"),
                 get_id(), step_count, MAX_STEPS);
@@ -83,9 +84,6 @@ public:
         log_info(F("Worker #%d: Work complete, terminating"),
                  get_id());
         terminate();  // Mark for cleanup
-      } else {
-        // Start next work step
-        work_timer.start(STEP_TIME);
       }
     }
   }
@@ -112,7 +110,7 @@ public:
  * - Task tracking and monitoring
  */
 class ProducerTask : public Task {
-  Timer produce_timer;        // Controls worker creation timing
+  Timer16 produce_timer;      // Variable spawn time - 4 bytes
   uint8_t worker_count;       // Number of workers created
   const uint8_t MAX_WORKERS;  // Maximum workers to create
   const uint32_t SPAWN_TIME;  // Time between spawn attempts (ms)
@@ -130,12 +128,13 @@ public:
   void on_start() override {
     log_info(F("Producer starting - Will attempt to create %d workers, one every %dms"),
              MAX_WORKERS, SPAWN_TIME);
-    produce_timer.start(SPAWN_TIME);
+    produce_timer = create_timer_typed<Timer16>(SPAWN_TIME);
   }
 
   void step() override {
     // Check if it's time to try creating a new worker
     if (produce_timer.expired()) {
+      produce_timer.start(SPAWN_TIME);
       // Only create if we haven't hit our limit
       if (worker_count < MAX_WORKERS) {
         worker_count++;
@@ -159,9 +158,6 @@ public:
                     worker_count);
           worker_count--;  // Roll back counter
         }
-        
-        // Schedule next attempt regardless of success
-        produce_timer.start(SPAWN_TIME);
       } else {
         log_info(F("Producer: Reached maximum worker count (%d)"), MAX_WORKERS);
       }
@@ -195,7 +191,7 @@ public:
  * safely removes them from the system, freeing their resources.
  */
 class CleanupTask : public Task {
-  Timer cleanup_timer;          // Controls cleanup timing
+  Timer16 cleanup_timer;        // Variable cleanup time - 4 bytes
   uint32_t total_cleaned;       // Total tasks cleaned up
   const uint32_t CLEANUP_TIME;  // Time between cleanup scans (ms)
 
@@ -210,11 +206,12 @@ public:
 
   void on_start() override {
     log_info(F("Cleanup task starting - Will scan every %dms"), CLEANUP_TIME);
-    cleanup_timer.start(CLEANUP_TIME);
+    cleanup_timer = create_timer_typed<Timer16>(CLEANUP_TIME);
   }
 
   void step() override {
     if (cleanup_timer.expired()) {
+      cleanup_timer.start(CLEANUP_TIME);
       uint8_t cleaned_this_cycle = 0;
       
       // Scan all task slots for terminated tasks
@@ -252,8 +249,6 @@ public:
       Serial.print(F("/"));
       Serial.println(FSMOS_MAX_TASKS);
       #endif
-      
-      cleanup_timer.start(CLEANUP_TIME);  // Schedule next cleanup
     }
   }
   
@@ -322,7 +317,7 @@ void loop() {
   
   // Optional: Add system monitoring here
   #ifdef MONITOR_SYSTEM
-  static Timer monitor_timer;
+  static Timer16 monitor_timer; // Variable monitoring - 4 bytes
   if (monitor_timer.expired()) {
     Serial.print(F("System uptime: "));
     Serial.print(millis() / 1000);

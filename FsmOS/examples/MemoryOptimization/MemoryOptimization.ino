@@ -12,12 +12,12 @@ enum {
 // Monitor available memory and system state
 class MemoryMonitorTask : public Task {
   const uint32_t report_interval;
-  uint32_t last_report;
+  Timer16 reportTimer;  // 5000ms report interval - 4 bytes
   uint16_t min_free_memory;
   
 public:
   MemoryMonitorTask(uint32_t interval_ms = 5000) 
-    : report_interval(interval_ms), last_report(0), min_free_memory(0xFFFF) {
+    : report_interval(interval_ms), min_free_memory(0xFFFF) {
     set_period(100);  // Check frequently but report less often
   }
 
@@ -28,9 +28,8 @@ protected:
       min_free_memory = free_mem;
     }
     
-    uint32_t now = OS.now();
-    if (now - last_report >= report_interval) {
-      last_report = now;
+    if (reportTimer.expired()) {
+      reportTimer.start(report_interval);
       
       Serial.println(F("Memory Status:"));
       Serial.print(F("Current Free: ")); Serial.println(free_mem);
@@ -57,7 +56,7 @@ class WorkerTask : public Task {
   const uint8_t id;
   uint8_t* buffer;
   uint16_t buffer_size;
-  uint32_t work_time;
+  Timer16 workTimer;  // 5000-15000ms work timing - 4 bytes
   
 public:
   WorkerTask(uint8_t worker_id, uint16_t mem_size) 
@@ -65,7 +64,7 @@ public:
     // Allocate memory
     buffer = new uint8_t[buffer_size];
     // Random work duration between 5-15 seconds
-    work_time = OS.now() + 5000 + (random(0, 10000));
+    workTimer = create_timer_typed<Timer16>(5000 + random(0, 10000));
     set_period(100);
   }
   
@@ -81,7 +80,7 @@ protected:
     }
     
     // Check if work time is up
-    if (OS.now() >= work_time) {
+    if (workTimer.expired()) {
       Serial.print(F("Worker ")); 
       Serial.print(id);
       Serial.println(F(" finished, cleaning up"));

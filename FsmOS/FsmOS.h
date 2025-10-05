@@ -3,10 +3,10 @@
  * @brief A lightweight cooperative task scheduler for Arduino
  * @author Aykut Ozdemir
  * @date 2025-10-02
- * 
+ *
  * FsmOS provides a simple, memory-efficient task scheduler for Arduino,
  * supporting cooperative multitasking, message passing, and system monitoring.
- * 
+ *
  * Key features:
  * - Cooperative task scheduling with configurable periods
  * - Inter-task communication through messages and events
@@ -14,835 +14,1429 @@
  * - Memory management and monitoring
  * - System diagnostics and profiling
  * - Logging system with multiple levels
- * 
+ *
  * @note This library is designed for AVR-based Arduino boards but includes
  * partial support for other architectures.
+ *
+ * @version 1.2.1 - Bug fixes
+ * @copyright 2025 Aykut Ozdemir
+ */
+/**
+ * @defgroup fsmos FsmOS
+ * @brief Lightweight cooperative scheduler and message-passing library for Arduino.
+ * @details Provides tasks, scheduler, message passing, synchronization primitives, and diagnostics
+ *          with a focus on small RAM/flash usage and clear APIs.
  */
 
-#pragma once
 
-/* ================== Core Types and Dependencies ================== */
+#ifndef FSMOS_H
+#define FSMOS_H
+
+/* ================== Core Dependencies ================== */
 #include <Arduino.h>
-#include <stdint.h>
-#include <util/atomic.h> // For ATOMIC_BLOCK
 #include <stdarg.h>
-#include <new> // For placement new operator
+#include <stdint.h>
+#include <util/atomic.h>  // For ATOMIC_BLOCK
+
+#include <new>  // For placement new operator
 
 #if defined(__AVR__)
-#include <avr/wdt.h> // For watchdog timer
+#include <avr/io.h>   // For GPIOR0 and MCUSR
+#include <avr/wdt.h>  // For watchdog timer
+#else
+// Fallback for non-AVR platforms
+#define ATOMIC_BLOCK(type) for (uint8_t _ab_once = 1; _ab_once; _ab_once = 0)
+#define ATOMIC_RESTORESTATE
 #endif
 
-// Forward declarations
-class Task;
-class Scheduler;
-
-/* Message/Event for inter-task communication with reference counting */
+// ================== Stack Canary Configuration ==================
 /**
- * @brief Message data structure for inter-task communication
- * 
- * This structure represents a message that can be passed between tasks.
- * It supports both direct messaging (task-to-task) and publish/subscribe
- * patterns through topics.
- * 
- * Messages can carry:
- * - Small payloads (16-bit argument)
- * - Large payloads (pointer to data)
- * - Dynamic memory that's automatically managed
+ * @brief Size of the stack canary region (bytes) used to estimate stack usage on AVR
+ * @note Consumes RAM in .bss; increase for finer resolution, decrease to save RAM
  */
-struct __attribute__((packed)) MsgData {
-  uint8_t type;         ///< User-defined event type
-  uint8_t src_id;       ///< Scheduler-assigned ID of the source task
-  uint8_t topic;        ///< Topic ID (0=direct message, 1-255=pub/sub topics)
-  uint8_t dst_id;       ///< Destination task ID (for direct messages only)
-  uint8_t ref_count: 7; ///< Number of tasks to process message (max 127)
-  bool is_dynamic: 1;   ///< Whether ptr points to dynamically allocated data
-  uint16_t arg;         ///< Small payload
-  void* ptr;            ///< Optional pointer to larger data
-  uint16_t dynamic_size;///< Size of dynamically allocated data
-  
-  MsgData() : type(0), src_id(0), topic(0), dst_id(0), ref_count(0), is_dynamic(0), arg(0), ptr(nullptr), dynamic_size(0) {}
-};
+#ifndef FSMOS_STACK_CANARY_SIZE
+#define FSMOS_STACK_CANARY_SIZE 128
+#endif
 
-// Smart pointer-like class for message reference counting
-class SharedMsg {
-  MsgData* data;
-
-public:
-  SharedMsg() : data(nullptr) {}
-  
-  explicit SharedMsg(MsgData* msg) : data(msg) {
-    if (data) {
-      ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { data->ref_count++; }
-    }
-  }
-  
-  SharedMsg(const SharedMsg& other) : data(other.data) {
-    if (data) {
-      ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { data->ref_count++; }
-    }
-  }
-  
-  SharedMsg& operator=(const SharedMsg& other) {
-    if (this != &other) {
-      release();
-      data = other.data;
-      if (data) {
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { data->ref_count++; }
-      }
-    }
-    return *this;
-  }
-  
-  ~SharedMsg() { release(); }
-  
-  void release();
-  
-  MsgData* get() const { return data; }
-  MsgData* operator->() const { return data; }
-  bool valid() const { return data != nullptr; }
-};
-
-class MsgDataPool {
-private:
-  struct PoolNode {
-    MsgData data;
-    PoolNode* next;
-    PoolNode() : data(), next(nullptr) {}
-  };
-  
-  PoolNode* free_list;
-  uint16_t pool_size;
-  uint16_t pool_limit;
-  uint16_t alloc_count;
-  uint16_t dealloc_count;
-  uint16_t peak_concurrent;
-  uint16_t current_in_use;
-  uint32_t last_update_ms;
-  
-public:
-  MsgDataPool() : free_list(nullptr), pool_size(0), pool_limit(3), 
-                  alloc_count(0), dealloc_count(0), peak_concurrent(0),
-                  current_in_use(0), last_update_ms(0) {}
-  
-  ~MsgDataPool() {
-    while (free_list) {
-      PoolNode* to_delete = free_list;
-      free_list = free_list->next;
-      delete to_delete;
-    }
-  }
-  
-  MsgData* allocate() {
-    alloc_count++;
-    current_in_use++;
-    if (current_in_use > peak_concurrent) {
-      peak_concurrent = current_in_use;
-    }
-    
-    if (free_list) {
-      PoolNode* node = free_list;
-      free_list = node->next;
-      pool_size--;
-      new (&node->data) MsgData();
-      return &node->data;
-    } else {
-      PoolNode* node = new PoolNode();
-      if (!node) return nullptr;
-      return &node->data;
-    }
-  }
-  
-  void deallocate(MsgData* data) {
-    if (!data) return;
-    
-    dealloc_count++;
-    current_in_use--;
-    
-    PoolNode* node = reinterpret_cast<PoolNode*>(
-      reinterpret_cast<char*>(data) - offsetof(PoolNode, data)
-    );
-    
-    if (pool_size < pool_limit) {
-      node->next = free_list;
-      free_list = node;
-      pool_size++;
-    } else {
-      delete node;
-    }
-  }
-  
-  void update_adaptive_limit(uint32_t now_ms) {
-    if (now_ms - last_update_ms >= 5000) {
-      // Calculate average concurrent usage for adaptive limit
-      uint16_t new_limit = peak_concurrent + (peak_concurrent / 5);
-      if (new_limit < 3) new_limit = 3;
-      if (new_limit > 255) new_limit = 255;
-      
-      pool_limit = new_limit;
-      
-      while (pool_size > pool_limit && free_list) {
-        PoolNode* to_delete = free_list;
-        free_list = to_delete->next;
-        delete to_delete;
-        pool_size--;
-      }
-      
-      alloc_count = 0;
-      dealloc_count = 0;
-      peak_concurrent = current_in_use;
-      last_update_ms = now_ms;
-    }
-  }
-  
-  uint16_t get_pool_size() const { return pool_size; }
-  uint16_t get_pool_limit() const { return pool_limit; }
-  uint16_t get_current_in_use() const { return current_in_use; }
-};
-
-/*
- * Lightweight, interrupt-safe linked queue.
+/**
+ * @brief Topic bitfield configuration
+ * @ingroup fsmos
+ * @details Choose the bitfield size based on your topic count:
+ * - TOPIC_BITFIELD_8: 8 topics max (1 byte)
+ * - TOPIC_BITFIELD_16: 16 topics max (2 bytes) - DEFAULT
+ * - TOPIC_BITFIELD_32: 32 topics max (4 bytes)
  */
-template<typename T>
-class LinkedQueue {
-private:
-  struct Node {
-    T data;
-    Node* next;
-    Node(const T& value) : data(value), next(nullptr) {}
-  };
+#ifndef TOPIC_BITFIELD_SIZE
+#define TOPIC_BITFIELD_SIZE 16  // Default: 16-bit bitfield
+#endif
 
-  Node* head;
-  Node* tail;
-  volatile uint8_t count;
+// Bitfield type selection based on define
+#if TOPIC_BITFIELD_SIZE <= 8
+typedef uint8_t TopicBitfield;
+#define MAX_TOPICS 8
+#elif TOPIC_BITFIELD_SIZE <= 16
+typedef uint16_t TopicBitfield;
+#define MAX_TOPICS 16
+#elif TOPIC_BITFIELD_SIZE <= 32
+typedef uint32_t TopicBitfield;
+#define MAX_TOPICS 32
+#else
+#error "TOPIC_BITFIELD_SIZE must be 8, 16, or 32"
+#endif
 
-public:
-  LinkedQueue() : head(nullptr), tail(nullptr), count(0) {}
+/* ================== Forward Declarations ================== */
+class Task;       ///< Forward declaration for Task class
+class Scheduler;  ///< Forward declaration for Scheduler class
+// ================== Message Queue Constants (must appear before use) ==================
+#ifndef MAX_MESSAGE_POOL_SIZE
+#define MAX_MESSAGE_POOL_SIZE 32
+#endif
+#ifndef MAX_MESSAGE_DATA_SIZE
+#define MAX_MESSAGE_DATA_SIZE 64
+#endif
 
-  ~LinkedQueue() {
-    while (head) {
-      Node* temp = head;
-      head = head->next;
-      delete temp;
-    }
-  }
+/* ================== Task Node Structure ================== */
+/**
+ * @brief Node structure for Task linked list
+ * @ingroup fsmos
+ */
+struct TaskNode
+{
+    Task *task;           ///< Pointer to the task
+    TaskNode *next;       ///< Pointer to next node
 
-  // Move constructor
-  LinkedQueue(LinkedQueue&& other) noexcept 
-    : head(other.head), tail(other.tail), count(other.count) {
-    other.head = nullptr;
-    other.tail = nullptr;
-    other.count = 0;
-  }
-
-  // Delete copy constructor to prevent double deletion
-  LinkedQueue(const LinkedQueue&) = delete;
-  LinkedQueue& operator=(const LinkedQueue&) = delete;
-
-  inline bool push(const T& v) {
-    Node* new_node = new Node(v);
-    if (!new_node) return false;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-      if (!head) { head = tail = new_node; }
-      else { tail->next = new_node; tail = new_node; }
-      count++;
-    }
-    return true;
-  }
-
-  inline bool pop(T& out) {
-    bool result = false;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-      if (head) {
-        out = head->data;
-        Node* temp = head;
-        head = head->next;
-        if (!head) tail = nullptr;
-        delete temp;
-        count--;
-        result = true;
-      }
-    }
-    return result;
-  }
-
-  inline bool empty() const {
-    bool is_empty;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { is_empty = (head == nullptr); }
-    return is_empty;
-  }
-
-  inline uint8_t size() const { return count; }
+    TaskNode(Task *t) : task(t), next(nullptr) {}
 };
 
-/* ================== Profiling & Reset Info ================== */
+/* ================== Additional Types and Structures ================== */
+/**
+ * @brief Memory tracking statistics
+ * @details Used for memory leak detection and monitoring
+ * @ingroup fsmos
+ */
+struct MemoryStats
+{
+    uint32_t total_allocated;  ///< Total bytes allocated
+    uint32_t total_freed;      ///< Total bytes freed
+    uint32_t peak_usage;       ///< Peak memory usage
+    uint32_t current_usage;    ///< Current memory usage
+};
+
 /**
  * @brief Task execution statistics
- * 
- * Tracks performance metrics for individual tasks including:
- * - Maximum execution time
- * - Total execution time
- * - Number of executions
+ * @details Used for performance monitoring and debugging
+ * @ingroup fsmos
  */
-struct __attribute__((packed)) TaskStats {
-  uint32_t max_exec_time_us = 0;    ///< Longest single execution time
-  uint32_t total_exec_time_us = 0;  ///< Total execution time
-  uint16_t run_count = 0;           ///< Number of times task has run
+struct TaskStats
+{
+    uint8_t taskId;              ///< Task identifier
+    const __FlashStringHelper *name;             ///< Task name
+    uint8_t state;                ///< Current task state (Task::State enum value)
+    uint16_t periodMs;           ///< Task period in milliseconds
+    uint8_t priority;             ///< Task priority
+    uint32_t runCount;           ///< Number of times task has run
+    uint32_t maxExecTimeUs;    ///< Maximum execution time in microseconds
+    uint32_t totalExecTimeUs;  ///< Total execution time in microseconds
+    uint16_t stackUsage;         ///< Stack usage in bytes
 };
 
 /**
  * @brief System reset information
- * 
- * Stores information about system resets and crashes including:
- * - Last task that was running
- * - Reason for reset (e.g., watchdog, brown-out)
- * 
- * This struct is placed in .noinit section to survive resets
+ * @details Used for debugging system resets and crashes
+ * @ingroup fsmos
  */
-struct ResetInfo {
-  uint8_t last_task_id;  ///< ID of task running during reset
-  uint8_t reset_reason;   ///< MCU status register value at reset
-};
+struct ResetInfo
+{
+    uint8_t resetReason;       ///< Reason for reset
+    uint32_t resetTime;        ///< Time of reset
+    uint16_t watchdogTimeout;  ///< Watchdog timeout value
+    uint8_t lastTaskId;       ///< ID of last running task
 
-/* ================== Memory Monitoring ================== */
-struct __attribute__((packed)) TaskMemoryInfo {
-  uint16_t task_struct_size;      // Size of task object
-  uint16_t subscription_size;      // Size of subscription array
-  uint16_t queue_size;            // Size of message queue
-  uint16_t total_allocated;       // Total memory allocated by task
+    // Optiboot reset flag information
+    uint8_t optibootResetFlags;  ///< Raw reset flags from Optiboot GPIOR0
+    uint8_t optibootResetCause;  ///< Processed reset cause (ResetCause enum)
 };
 
 /**
- * @brief Comprehensive system memory information
- * 
- * Provides detailed breakdown of memory usage across different
- * memory regions and subsystems. Useful for:
- * - Memory leak detection
- * - Resource usage optimization
- * - System health monitoring
+ * @brief Reset cause enumeration for Optiboot reset flags
+ * @details Used to identify the cause of system reset
+ * @ingroup fsmos
  */
-struct __attribute__((packed)) SystemMemoryInfo {
-  // Static Memory
-  uint16_t total_ram;         ///< Total RAM available on device
-  uint16_t static_data_size;  ///< Size of static/global variables
-  uint16_t heap_size;         ///< Total size of heap region
-  
-  // Dynamic Memory
-  uint16_t free_ram;          ///< Currently available RAM
-  uint16_t heap_fragments;    ///< Number of fragmented heap blocks
-  uint16_t largest_block;     ///< Size of largest contiguous block
-  
-  // Task Memory
-  uint8_t total_tasks;        ///< Number of active tasks
-  uint16_t task_memory;       ///< Total memory used by task objects
-  
-  // Message Memory
-  uint8_t active_messages;    ///< Number of pending messages
-  uint16_t message_memory;    ///< Memory used by message system
-  
-  // Stack Memory
-  uint16_t stack_size;        ///< Total allocated stack size
-  uint16_t stack_used;        ///< Currently used stack space
-  uint16_t stack_free;        ///< Remaining stack space
-  
-  // Program Memory
-  uint32_t flash_used;        ///< Used flash memory space
-  uint32_t flash_free;        ///< Available flash memory
+enum ResetCause
+{
+    RESET_UNKNOWN = 0,  ///< Unknown reset cause
+    RESET_POWER_ON,     ///< Power-on reset
+    RESET_EXTERNAL,     ///< External reset
+    RESET_BROWN_OUT,    ///< Brown-out reset
+    RESET_WATCHDOG,     ///< Watchdog reset
+    RESET_MULTIPLE      ///< Multiple reset causes detected
 };
 
-/* ================== Logging ================== */
 /**
- * @brief Log message severity levels
- * 
- * Defines different severity levels for log messages
- * to help with filtering and formatting output.
+ * @brief Reset cause flag constants from MCUSR register
+ * @details These flags are stored by Optiboot in GPIOR0
+ * @ingroup fsmos
  */
-enum LogLevel : uint8_t {
-  LOG_DEBUG = 0,    ///< Detailed debug information
-  LOG_INFO,         ///< General information
-  LOG_WARNING,      ///< Warning conditions
-  LOG_ERROR,        ///< Error conditions
-  LOG_NONE = 0xFF   ///< Disable logging
-};
-
-#ifndef FSMOS_LOG_LEVEL
-#define FSMOS_LOG_LEVEL LOG_INFO
-#endif
-
-/* ================== Logging convenience macros (printf-style) ================== */
-// Use inside Task methods. These call OS.logFormatted with PROGMEM format strings.
-#ifndef FSMOS_DISABLE_LOGGING
-#define log_debugf(fmt, ...)   OS.logFormatted(this, LOG_DEBUG,   fmt, ##__VA_ARGS__)
-#define log_infof(fmt, ...)    OS.logFormatted(this, LOG_INFO,    fmt, ##__VA_ARGS__)
-#define log_warnf(fmt, ...)    OS.logFormatted(this, LOG_WARNING, fmt, ##__VA_ARGS__)
-#define log_errorf(fmt, ...)   OS.logFormatted(this, LOG_ERROR,   fmt, ##__VA_ARGS__)
+#if defined(__AVR__)
+#define RESET_CAUSE_EXTERNAL (1 << EXTRF)  ///< External Reset flag
+#define RESET_CAUSE_BROWN_OUT (1 << BORF)  ///< Brown-out Reset flag
+#define RESET_CAUSE_POWER_ON (1 << PORF)   ///< Power-on Reset flag
+#define RESET_CAUSE_WATCHDOG (1 << WDRF)   ///< Watchdog Reset flag
 #else
-#define log_debugf(fmt, ...)
-#define log_infof(fmt, ...)
-#define log_warnf(fmt, ...)
-#define log_errorf(fmt, ...)
+#define RESET_CAUSE_EXTERNAL 0x01   ///< External Reset flag (fallback)
+#define RESET_CAUSE_BROWN_OUT 0x02  ///< Brown-out Reset flag (fallback)
+#define RESET_CAUSE_POWER_ON 0x04   ///< Power-on Reset flag (fallback)
+#define RESET_CAUSE_WATCHDOG 0x08   ///< Watchdog Reset flag (fallback)
 #endif
 
-/* ================== Task Node ================== */
-struct TaskNode {
-    Task* task;
-    TaskStats stats;
-    TaskNode* next;
-    uint8_t id;
-
-    TaskNode(Task* t, uint8_t task_id) 
-        : task(t), next(nullptr), id(task_id) {
-         stats.max_exec_time_us = 0;
-         stats.total_exec_time_us = 0;
-         stats.run_count = 0;
-    }
+/**
+ * @brief System memory information
+ * @details Comprehensive memory usage statistics
+ * @ingroup fsmos
+ */
+struct SystemMemoryInfo
+{
+    uint16_t freeRam;        ///< Free RAM in bytes
+    uint16_t totalRam;       ///< Total RAM in bytes
+    uint16_t heapSize;       ///< Heap size in bytes
+    uint16_t largestBlock;   ///< Largest free block in bytes
+    uint8_t heapFragments;   ///< Number of heap fragments
+    uint16_t stackSize;      ///< Stack size in bytes
+    uint16_t stackUsed;      ///< Stack used in bytes
+    uint16_t stackFree;      ///< Stack free in bytes
+    uint8_t totalTasks;      ///< Total number of tasks
+    uint16_t taskMemory;     ///< Memory used by tasks
+    uint8_t activeMessages;  ///< Number of active messages
+    uint16_t messageMemory;  ///< Memory used by messages
+    uint16_t flashUsed;      ///< Flash memory used
+    uint16_t flashFree;      ///< Flash memory free
+    uint16_t eepromUsed;     ///< EEPROM used in bytes
+    uint16_t eepromFree;     ///< EEPROM free in bytes
 };
 
-/* ================== Scheduler ================== */
 /**
- * @brief Core scheduler and task manager for FsmOS
- * 
- * The Scheduler class is the heart of FsmOS, managing task execution,
- * message delivery, and system resources. It provides:
- * - Task lifecycle management
- * - Message routing and delivery
- * - System timing and scheduling
- * - Memory monitoring and diagnostics
- * - Task statistics and profiling
+ * @brief Task memory information
+ * @details Memory usage statistics for individual tasks
+ * @ingroup fsmos
  */
-class Scheduler {
+struct TaskMemoryInfo
+{
+    uint8_t task_id;             ///< Task identifier
+    uint16_t task_struct_size;   ///< Size of task structure
+    uint16_t subscription_size;  ///< Size of subscription data
+    uint16_t queue_size;         ///< Size of message queue
+    uint16_t total_allocated;    ///< Total memory allocated for task
+};
+
+/* ================== Timer System ================== */
+/**
+ * @brief Memory-optimized template-based timer for specific duration ranges
+ * @ingroup fsmos
+ *
+ * @tparam T The integer type to use for timing (uint8_t, uint16_t, uint32_t)
+ *           Choose based on your maximum duration needs:
+ *           - uint8_t: 0-255ms (2 bytes total)
+ *           - uint16_t: 0-65535ms (4 bytes total)
+ *           - uint32_t: 0-4294967295ms (8 bytes total)
+ *
+ * @note This template allows memory optimization by using smaller data types
+ * for shorter timer durations, reducing RAM usage in memory-constrained systems.
+ */
+template <typename T>
+struct __attribute__((packed)) TimerT
+{
+    T startMs = 0;     ///< Timer start timestamp in milliseconds
+    T durationMs = 0;  ///< Timer duration in milliseconds
+
+    /**
+     * @brief Start the timer with specified duration
+     * @param d Duration in milliseconds
+     * @note Timer will be marked as expired if duration is 0
+     */
+    void startTimer(T d);
+
+    /**
+     * @brief Check if timer has expired
+     * @return true if timer duration has elapsed, false otherwise
+     * @note Handles type-specific overflow correctly
+     */
+    [[nodiscard]] bool isExpired() const;
+};
+
+/**
+ * @brief 8-bit timer for short durations (0-255ms)
+ * @details Uses 2 bytes total memory, ideal for debouncing and short delays
+ */
+using Timer8 = TimerT<uint8_t>;
+
+/**
+ * @brief 16-bit timer for medium durations (0-65535ms)
+ * @details Uses 4 bytes total memory, ideal for most timing needs
+ */
+using Timer16 = TimerT<uint16_t>;
+
+/**
+ * @brief 32-bit timer for long durations (0-4294967295ms)
+ * @details Uses 8 bytes total memory, for very long timing requirements
+ */
+using Timer32 = TimerT<uint32_t>;
+
+/* ================== Message System ================== */
+/**
+ * @brief Message data structure for inter-task communication
+ *
+ * This structure holds the actual message data and is managed by
+ * the message pool system for efficient memory usage.
+ *
+ * @note Messages are reference-counted and automatically returned
+ * to the pool when no longer needed.
+ * @ingroup fsmos
+ */
+struct __attribute__((packed)) MsgData
+{
+    uint8_t type;       ///< Message type identifier
+    uint8_t topic;      ///< Topic/channel for message routing
+    uint16_t arg;       ///< Additional argument data
+    uint8_t *data;      ///< Pointer to additional data (optional)
+    uint8_t dataSize;   ///< Size of additional data in bytes
+    uint8_t refCount;   ///< Reference count for memory management
+};
+
+/**
+ * @brief Smart pointer-like wrapper for MsgData with reference counting
+ *
+ * SharedMsg provides automatic memory management for messages through
+ * reference counting. When the last reference is destroyed, the message
+ * is automatically returned to the pool.
+ *
+ * @note This class is thread-safe for single-threaded cooperative multitasking.
+ * @warning Do not use across different scheduler instances.
+ * @ingroup fsmos
+ */
+class SharedMsg
+{
 public:
     /**
-     * @brief Initialize the scheduler
-     * Sets up internal data structures and timing system
+     * @brief Default constructor
+     * @details Creates an empty SharedMsg with no associated data
+     */
+    SharedMsg();
+
+    /**
+     * @brief Constructor from MsgData pointer
+     * @param data Pointer to MsgData to wrap
+     * @note Increments reference count of the message
+     */
+    explicit SharedMsg(MsgData *data);
+
+    /**
+     * @brief Copy constructor
+     * @param other SharedMsg to copy from
+     * @note Increments reference count of the shared message
+     */
+    SharedMsg(const SharedMsg &other);
+
+    /**
+     * @brief Assignment operator
+     * @param other SharedMsg to assign from
+     * @return Reference to this SharedMsg
+     * @note Properly manages reference counting
+     */
+    SharedMsg &operator=(const SharedMsg &other);
+
+    /**
+     * @brief Destructor
+     * @note Decrements reference count and frees message if count reaches 0
+     */
+    ~SharedMsg();
+
+    /**
+     * @brief Get raw MsgData pointer
+     * @return Pointer to MsgData, or nullptr if invalid
+     */
+    MsgData *getData() const;
+
+    /**
+     * @brief Arrow operator for direct access to MsgData
+     * @return Pointer to MsgData for member access
+     */
+    MsgData *operator->() const;
+
+    /**
+     * @brief Check if SharedMsg contains valid data
+     * @return true if valid, false if empty or invalid
+     */
+    bool isValid() const;
+
+private:
+    MsgData *msgData;  ///< Pointer to the wrapped MsgData
+    void release();     ///< Internal method to release reference
+};
+
+/**
+ * @brief Memory pool for efficient MsgData allocation
+ *
+ * MsgDataPool manages a pool of MsgData objects to avoid frequent
+ * memory allocation/deallocation. It uses an adaptive limit system
+ * to balance memory usage and performance.
+ *
+ * @note The pool automatically adjusts its size based on usage patterns.
+ * @ingroup fsmos
+ */
+class MsgDataPool
+{
+public:
+    /**
+     * @brief Constructor
+     * @details Initializes the message pool with default settings
+     */
+    MsgDataPool();
+
+    /**
+     * @brief Destructor
+     * @details Frees all allocated memory
+     */
+    ~MsgDataPool();
+
+    /**
+     * @brief Allocate a new MsgData from the pool
+     * @return Pointer to allocated MsgData, or nullptr if pool is full
+     * @note Returns nullptr if no memory available
+     */
+    MsgData *allocate();
+
+    /**
+     * @brief Return a MsgData to the pool
+     * @param msg Pointer to MsgData to deallocate
+     * @note Frees any associated data and returns MsgData to pool
+     */
+    void deallocate(MsgData *msg);
+
+    /**
+     * @brief Update adaptive pool limit based on usage
+     * @details Automatically adjusts pool size for optimal performance
+     */
+    void updateAdaptiveLimit();
+
+    /**
+     * @brief Get current pool size
+     * @return Current number of MsgData objects in pool
+     */
+    uint8_t getPoolSize() const;
+
+    /**
+     * @brief Get maximum pool limit
+     * @return Maximum number of MsgData objects allowed
+     */
+    uint8_t getPoolLimit() const;
+
+    /**
+     * @brief Get number of currently allocated messages
+     * @return Number of messages currently in use
+     */
+    uint8_t getCurrentInUse() const;
+
+    /**
+     * @brief Initialize the message pool if not already initialized
+     * @return true if pool was initialized successfully, false if already initialized or failed
+     * @note This method performs lazy initialization to avoid static allocation issues
+     */
+    bool initialize();
+
+private:
+    MsgData *pool;           ///< Array of MsgData objects
+    uint8_t poolSize;        ///< Current pool size
+    uint8_t poolLimit;       ///< Maximum pool size
+    uint8_t currentInUse;    ///< Number of messages currently in use
+    uint8_t nextFree;        ///< Index of next free message
+};
+
+/* ================== Data Structures ================== */
+/**
+ * @brief Lightweight, interrupt-safe linked queue
+ *
+ * LinkedQueue provides a simple queue implementation that is safe
+ * to use from interrupt context. It uses a linked list structure
+ * for efficient insertion and removal.
+ *
+ * @tparam T Type of elements to store in the queue
+ * @note This queue is not thread-safe for concurrent access
+ * @ingroup fsmos
+ */
+template <typename T>
+class LinkedQueue
+{
+public:
+    /**
+     * @brief Node structure for linked list
+     */
+    struct Node
+    {
+        T data;      ///< Data stored in the node
+        Node *next;  ///< Pointer to next node
+    };
+
+    /**
+     * @brief Default constructor
+     * @details Creates an empty queue
+     */
+    LinkedQueue();
+
+    /**
+     * @brief Destructor
+     * @details Frees all nodes in the queue
+     */
+    ~LinkedQueue();
+
+    /**
+     * @brief Move constructor
+     * @param other Queue to move from
+     * @note Transfers ownership of nodes from other queue
+     */
+    LinkedQueue(LinkedQueue &&other) noexcept;
+
+    /**
+     * @brief Add item to the end of the queue
+     * @param item Item to add
+     * @note Allocates new node for the item
+     */
+    void push(const T &item);
+
+    /**
+     * @brief Remove item from the front of the queue
+     * @param item Reference to store the removed item
+     * @return true if item was removed, false if queue was empty
+     */
+    bool pop(T &item);
+
+    /**
+     * @brief Check if queue is empty
+     * @return true if queue is empty, false otherwise
+     */
+    bool isEmpty() const;
+
+    /**
+     * @brief Get number of items in queue
+     * @return Number of items currently in queue
+     */
+    uint8_t getSize() const;
+
+private:
+    Node *head;     ///< Pointer to first node
+    Node *tail;     ///< Pointer to last node
+    uint8_t count;  ///< Number of items in queue
+};
+
+/* ================== Synchronization Primitives ================== */
+/**
+ * @brief Mutex for cooperative task synchronization
+ *
+ * Mutex provides mutual exclusion for shared resources in a
+ * cooperative multitasking environment. Only one task can
+ * hold the mutex at a time.
+ *
+ * @note This mutex is designed for cooperative multitasking only.
+ * It does not provide blocking behavior - tasks must check
+ * try_lock() and yield if the mutex is not available.
+ * @ingroup fsmos
+ */
+class Mutex
+{
+public:
+    /**
+     * @brief Default constructor
+     * @details Creates an unlocked mutex
+     */
+    Mutex();
+
+    /**
+     * @brief Try to acquire the mutex
+     * @param task_id ID of the task attempting to acquire the mutex
+     * @return true if mutex was acquired, false if already locked
+     */
+    [[nodiscard]] bool tryLock(uint8_t task_id);
+
+    /**
+     * @brief Release the mutex
+     * @param task_id ID of the task releasing the mutex
+     * @note Only the task that acquired the mutex can release it
+     */
+    void unlock(uint8_t task_id);
+
+    /**
+     * @brief Check if mutex is currently locked
+     * @return true if locked, false if available
+     */
+    [[nodiscard]] bool isLocked() const;
+
+    /**
+     * @brief Get ID of task that owns the mutex
+     * @return Task ID of owner, or 0 if unlocked
+     */
+    uint8_t getOwner() const;
+
+private:
+    volatile bool locked;       ///< Lock state
+    volatile uint8_t owner_id;  ///< ID of owning task
+};
+
+/**
+ * @brief Semaphore for resource counting and synchronization
+ *
+ * Semaphore allows a limited number of tasks to access a resource
+ * simultaneously. It maintains a count of available resources.
+ *
+ * @note This semaphore is designed for cooperative multitasking only.
+ * Tasks must check wait() and yield if no resources are available.
+ * @ingroup fsmos
+ */
+class Semaphore
+{
+public:
+    /**
+     * @brief Constructor
+     * @param initial_count Initial number of available resources
+     * @param max_count Maximum number of resources
+     */
+    Semaphore(uint8_t initial_count, uint8_t max_count);
+
+    /**
+     * @brief Try to acquire a resource
+     * @param task_id ID of the task attempting to acquire resource
+     * @return true if resource was acquired, false if none available
+     */
+    [[nodiscard]] bool wait(uint8_t task_id);
+
+    /**
+     * @brief Release a resource
+     * @note Increments the available resource count
+     */
+    void signal();
+
+    /**
+     * @brief Get current resource count
+     * @return Number of available resources
+     */
+    uint8_t getCount() const;
+
+    /**
+     * @brief Get maximum resource count
+     * @return Maximum number of resources
+     */
+    uint8_t getMaxCount() const;
+
+private:
+    volatile uint8_t count;  ///< Current resource count
+    uint8_t max_count;       ///< Maximum resource count
+};
+
+/* ================== Task System ================== */
+/**
+ * @brief Base class for all tasks in FsmOS
+ * @ingroup fsmos
+ *
+ * Task provides the foundation for cooperative multitasking.
+ * Each task runs in its own context and can communicate with
+ * other tasks through messages and events.
+ *
+ * @note Tasks must implement the step() method to define their behavior.
+ * The scheduler calls step() periodically based on the task's period.
+ */
+/**
+ * @brief Base class for all tasks in FsmOS
+ */
+class Task
+{
+public:
+    /**
+     * @brief Constructor
+     * @param name Optional name for the task (for debugging)
+     * @details Creates a new task in INACTIVE state
+     */
+    explicit Task(const __FlashStringHelper *name = nullptr);
+
+    /**
+     * @brief Virtual destructor
+     * @details Ensures proper cleanup of derived classes
+     */
+    virtual ~Task();
+
+    /**
+     * @brief Get total number of Task instances ever created
+     */
+    static uint16_t getCreatedInstanceCount() { return createdInstanceCount; }
+
+    // Task lifecycle
+    /**
+     * @brief Called when task is started
+     * @details Override this method to perform initialization
+     * @note Called once when task transitions to ACTIVE state
+     */
+    virtual void on_start() {}
+
+    /**
+     * @brief Main task execution method
+     * @details This method is called periodically by the scheduler
+     * @note Must be implemented by derived classes
+     */
+    virtual void step() = 0;
+
+    /**
+     * @brief Called when task is stopped
+     * @details Override this method to perform cleanup
+     * @note Called when task transitions to INACTIVE state
+     */
+    virtual void on_stop() {}
+
+    /**
+     * @brief Handle incoming messages
+     * @param msg The received message
+     * @details Override this method to handle specific message types
+     * @note Called automatically when messages are received
+     */
+    virtual void on_msg(const MsgData &msg) {}
+
+    // Task control
+    /**
+     * @brief Start the task
+     * @details Transitions task to ACTIVE state and calls on_start()
+     */
+    void start();
+
+    /**
+     * @brief Stop the task
+     * @details Transitions task to INACTIVE state and calls on_stop()
+     */
+    void stop();
+
+    /**
+     * @brief Suspend the task
+     * @details Task remains in memory but is not scheduled
+     */
+    void suspend();
+
+    /**
+     * @brief Resume the task
+     * @details Task returns to scheduling queue
+     */
+    void resume();
+
+    /**
+     * @brief Terminate the task
+     * @details Marks task for removal from scheduler
+     */
+    void terminate();
+
+    // Task configuration
+    /**
+     * @brief Set task execution period
+     * @param period_ms Period in milliseconds
+     * @note Minimum period is 1ms, maximum is 65535ms
+     */
+    void setPeriod(uint16_t period_ms);
+
+    /**
+     * @brief Get task execution period
+     * @return Period in milliseconds
+     */
+    uint16_t getPeriod() const;
+
+    // Task priority
+    /**
+     * @brief Task priority levels
+     * @details Priority levels for task scheduling
+     */
+    enum Priority
+    {
+        PRIORITY_LOWEST = 0,    ///< Lowest priority (0)
+        PRIORITY_LOW = 1,       ///< Low priority (1)
+        PRIORITY_NORMAL = 2,    ///< Normal priority (2)
+        PRIORITY_HIGH = 3,      ///< High priority (3)
+        PRIORITY_HIGHEST = 4,   ///< Highest priority (4)
+        PRIORITY_CRITICAL = 5,  ///< Critical priority (5)
+        PRIORITY_REALTIME = 6,  ///< Real-time priority (6)
+        PRIORITY_SYSTEM = 7,    ///< System priority (7)
+        PRIORITY_MAX = 15       ///< Maximum priority (15)
+    };
+
+    /**
+     * @brief Set task priority
+     * @param priority Priority level
+     * @details Sets the task priority for scheduling
+     */
+    void setPriority(Priority priority);
+
+    /**
+     * @brief Set task priority (legacy)
+     * @param priority Priority level (0-15)
+     * @details Sets the task priority for scheduling
+     */
+    void setPriority(uint8_t priority);
+
+    /**
+     * @brief Get task priority
+     * @return Priority level
+     */
+    uint8_t getPriority() const;
+
+    /**
+     * @brief Declare the maximum number of messages this task may produce in one step()
+     * @details Used by the scheduler to avoid running producers when the global
+     *          message queue has fewer free slots than the declared budget. 0 disables gating.
+     */
+    void setMaxMessageBudget(uint8_t budget);
+
+    /**
+     * @brief Get the maximum number of messages this task may produce in one step()
+     * @ingroup fsmos
+     * @details Scheduler uses this to ensure there are at least this many
+     *          free message slots before running the task.
+     * @return Planned message production budget for the upcoming step
+     */
+    virtual uint8_t getMaxMessageBudget() const = 0;
+
+    /**
+     * @brief Get the size in bytes of the concrete task object
+     * @details Implement in each derived Task as: return sizeof(DerivedClass);
+     */
+    virtual uint16_t getTaskStructSize() const = 0;
+
+protected:
+    /**
+     * @brief Access the configured budget set via setMaxMessageBudget()
+     * @return The configured budget value
+     */
+    uint8_t getConfiguredMessageBudget() const { return maxMessageBudget; }
+
+    // Task state
+    /**
+     * @brief Task state enumeration
+     */
+    enum State
+    {
+        INACTIVE,   ///< Task is not running
+        ACTIVE,     ///< Task is running and scheduled
+        SUSPENDED,  ///< Task is paused
+        TERMINATED  ///< Task is marked for removal
+    };
+
+    /**
+     * @brief Get current task state
+     * @return Current state of the task
+     */
+    State getState() const;
+
+    /**
+     * @brief Set task state
+     * @param newState New state to set
+     */
+    void setState(State newState);
+
+    /**
+     * @brief Check if task is in expected state
+     * @param expected Expected state to check against
+     * @return true if task is in expected state
+     */
+    bool checkState(State expected) const;
+
+    /**
+     * @brief Check if task is active
+     * @return true if task is in ACTIVE state
+     */
+    bool isActive() const;
+
+    /**
+     * @brief Check if task is inactive
+     * @return true if task is in INACTIVE state
+     */
+    bool isInactive() const;
+
+    // Task identification
+    /**
+     * @brief Get unique task ID
+     * @return Task ID assigned by scheduler
+     */
+    uint8_t getId() const;
+
+    /**
+     * @brief Get task name
+     * @return Task name string
+     */
+    const __FlashStringHelper *getName() const;
+public:
+    /**
+     * @brief Public helper to read another task's name safely from diagnostics
+     */
+    static const __FlashStringHelper *readTaskName(const Task *t) { return t ? t->getName() : nullptr; }
+protected:
+
+    /**
+     * @brief Set task name
+     * @param name New name for the task
+     */
+    void setName(const __FlashStringHelper *name);
+
+    // Message handling
+    /**
+     * @brief Subscribe to a message topic
+     * @param topic Topic ID to subscribe to
+     * @note Task will receive messages published to this topic
+     */
+    void subscribe(uint8_t topic)
+    {
+        if (topic < MAX_TOPICS)
+        {
+            subscribedTopics |= (static_cast<TopicBitfield>(1) << topic);
+        }
+    }
+
+    /**
+     * @brief Unsubscribe from a message topic
+     * @param topic Topic ID to unsubscribe from
+     */
+    void unsubscribe(uint8_t topic)
+    {
+        if (topic < MAX_TOPICS)
+        {
+            subscribedTopics &= ~(static_cast<TopicBitfield>(1) << topic);
+        }
+    }
+
+    /**
+     * @brief Check if task is subscribed to a topic
+     * @param topic Topic ID to check
+     * @return true if subscribed, false otherwise
+     */
+    bool isSubscribedToTopic(uint8_t topic) const
+    {
+        if (topic >= MAX_TOPICS)
+        {
+            return false;
+        }
+        return (subscribedTopics & (static_cast<TopicBitfield>(1) << topic)) != 0;
+    }
+
+    /**
+     * @brief Get the number of subscribed topics
+     * @return Number of subscribed topics
+     */
+    uint8_t getTopicCount() const
+    {
+#if TOPIC_BITFIELD_SIZE <= 8
+        return __builtin_popcount(static_cast<uint8_t>(subscribedTopics));
+#elif TOPIC_BITFIELD_SIZE <= 16
+        return __builtin_popcount(static_cast<uint16_t>(subscribedTopics));
+#else
+        return __builtin_popcountl(static_cast<unsigned long>(subscribedTopics));
+#endif
+    }
+
+    /**
+     * @brief Publish a message to a topic
+     * @param topic Topic ID to publish to
+     * @param type Message type
+     * @param arg Additional argument data
+     * @param data Optional data pointer
+     * @param data_size Size of optional data
+     * @note All subscribed tasks will receive this message
+     */
+    void publish(uint8_t topic, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+
+    /**
+     * @brief Send a direct message to a specific task
+     * @param task_id ID of target task
+     * @param type Message type
+     * @param arg Additional argument data
+     * @param data Optional data pointer
+     * @param data_size Size of optional data
+     */
+    void tell(uint8_t task_id, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+
+    // Logging
+    /**
+     * @brief Log an info message
+     * @param msg Message to log
+     */
+    void log(const __FlashStringHelper *msg);
+
+    /**
+     * @brief Log a debug message
+     * @param msg Message to log
+     */
+    void logDebug(const __FlashStringHelper *msg);
+
+    /**
+     * @brief Log an info message
+     * @param msg Message to log
+     */
+    void logInfo(const __FlashStringHelper *msg);
+
+    /**
+     * @brief Log a warning message
+     * @param msg Message to log
+     */
+    void logWarn(const __FlashStringHelper *msg);
+
+    /**
+     * @brief Log an error message
+     * @param msg Message to log
+     */
+    void logError(const __FlashStringHelper *msg);
+
+    // Timer utility methods
+    /**
+     * @brief Create a memory-optimized timer
+     * @tparam T Timer type (Timer8, Timer16, Timer32)
+     * @param duration_ms Duration in milliseconds
+     * @return Timer object ready to use
+     * @note Choose timer type based on expected duration for memory optimization
+     */
+    template <typename T>
+    T createTimerTyped(uint32_t duration_ms) const;
+
+    /**
+     * @brief Process pending messages for this task
+     * @note Called automatically by scheduler, rarely needs direct use
+     */
+    void processMessages();
+
+private:
+    friend class Scheduler;
+
+    uint16_t remainingTime = 0;  ///< Remaining time until next execution (in ms)
+    uint16_t periodMs = 1;       ///< Task execution period in milliseconds
+    uint8_t taskId = 0;     ///< Unique task identifier
+    uint8_t stateAndPriority = 0; ///< Combined state and priority (4 bits each)
+    const __FlashStringHelper *name;       ///< Task name for debugging
+
+    // Minimalist task statistics (RAM optimized)
+    uint16_t runCount = 0;           ///< Number of times task has run (16-bit for space)
+    uint16_t maxExecTimeUs = 0;      ///< Maximum execution time in microseconds (16-bit)
+    uint16_t avgExecTimeUs = 0;      ///< Average execution time in microseconds (16-bit)
+
+    TopicBitfield subscribedTopics = 0;   ///< Bitfield for subscribed topics
+
+    // Scheduler gating: maximum messages this task may produce in a single step()
+    uint8_t maxMessageBudget = 0;
+
+    // Global count of created Task instances (for diagnostics/pool sizing hints)
+    static uint16_t createdInstanceCount;
+};
+
+/* ================== Scheduler System ================== */
+/**
+ * @brief Core scheduler and task manager for FsmOS
+ * @ingroup fsmos
+ *
+ * Scheduler manages the execution of tasks, message routing,
+ * and system resources. It provides the main interface for
+ * task management and system control.
+ *
+ * @note Only one scheduler instance should exist per application.
+ * The global OS instance is provided for convenience.
+ */
+/**
+ * @brief Core scheduler and task manager for FsmOS
+ */
+class Scheduler
+{
+public:
+    /**
+     * @brief Constructor
+     * @details Initializes scheduler with default settings
+     */
+    Scheduler();
+
+    /**
+     * @brief Destructor
+     * @details Removes all tasks and cleans up resources
+     */
+    ~Scheduler();
+
+    // Task management
+    /**
+     * @brief Add a task to the scheduler
+     * @param task Pointer to task to add
+     * @return true if task was added successfully, false if scheduler is full
+     * @note Task starts in INACTIVE state
+     */
+    bool add(Task *task);
+
+    /**
+     * @brief Remove a task from the scheduler
+     * @param task Pointer to task to remove
+     * @return true if task was removed, false if not found
+     */
+    bool remove(Task *task);
+
+    /**
+     * @brief Remove all tasks from the scheduler
+     * @details Stops and removes all tasks
+     */
+    void removeAll();
+
+    /**
+     * @brief Get task by ID
+     * @param task_id ID of task to find
+     * @return Pointer to task, or nullptr if not found
+     */
+    Task *getTask(uint8_t task_id);
+
+    /**
+     * @brief Get number of active tasks
+     * @return Number of tasks currently in scheduler
+     */
+    uint8_t getTaskCount() const { return taskCount; }
+
+    /**
+     * @brief Get maximum number of tasks
+     * @return Maximum number of tasks supported
+     */
+    uint16_t getMaxTasks() const;
+
+    // System control
+    /**
+     * @brief Start the scheduler
+     * @details Starts all tasks and begins scheduling
      */
     void begin();
 
     /**
-     * @brief Initialize with logging capabilities
-     * Currently an alias for begin(), reserved for future use
+     * @brief Execute one scheduling step
+     * @details Processes messages and executes one ready task
      */
-    void begin_with_logger();
+    void loopOnce();
 
     /**
-     * @brief Add a new task to the scheduler
-     * @param t Pointer to the task to add
-     * @return Task ID (255 if failed)
+     * @brief Run scheduler continuously
+     * @details Runs scheduler until stop() is called
      */
-    uint8_t add(Task* t);
+    void loop();
 
     /**
-     * @brief Remove a task from the scheduler
-     * @param task_id ID of the task to remove
-     * @return true if task was found and removed
+     * @brief Stop the scheduler
+     * @details Stops all tasks and halts scheduling
      */
-    bool remove(uint8_t task_id);
+    void stop();
+
+    // Message system
+    /**
+     * @brief Publish a message to a topic
+     * @param topic Topic ID to publish to
+     * @param type Message type
+     * @param arg Additional argument data
+     * @param data Optional data pointer
+     * @param data_size Size of optional data
+     * @note All tasks subscribed to the topic will receive this message
+     */
+    void publishMessage(uint8_t topic, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
 
     /**
-     * @brief Post a message to the system
-     * @param type User-defined message type
-     * @param src_id Source task ID
-     * @param topic Topic ID (0 for direct, 1-255 for pub/sub)
-     * @param dst_id Destination task ID (for direct messages only, ignored for topics)
-     * @param arg Optional 16-bit payload
-     * @param ptr Optional pointer to larger data
-     * @param is_dynamic Whether ptr is dynamically allocated
-     * @return true if message was queued successfully
+     * @brief Send a direct message to a specific task
+     * @param task_id ID of target task
+     * @param type Message type
+     * @param arg Additional argument data
+     * @param data Optional data pointer
+     * @param data_size Size of optional data
      */
-    bool post(uint8_t type, uint8_t src_id, uint8_t topic, uint8_t dst_id = 0,
-              uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
+    void sendMessage(uint8_t task_id, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
 
     /**
-     * @brief Execute one iteration of the scheduler
-     * Processes messages and runs due tasks
+     * @brief Get number of free slots in the global message queue
      */
-    void loop_once();
+    uint8_t getFreeQueueSlots() const;
+
+    // System monitoring
+    /**
+     * @brief Get current system time
+     * @return Current time in milliseconds
+     */
+    uint32_t now() const;
 
     /**
-     * @brief System tick handler
-     * Updates internal time counter
+     * @brief Get amount of free memory
+     * @return Free memory in bytes
+     * @note AVR-specific implementation
      */
-    inline void on_tick() { ms++; }
+    uint16_t getFreeMemory() const;
+
+    // Logging system
+    /**
+     * @brief Log level enumeration
+     */
+    enum LogLevel
+    {
+        LOG_DEBUG = 0,  ///< Debug level messages
+        LOG_INFO = 1,   ///< Info level messages
+        LOG_WARN = 2,   ///< Warning level messages
+        LOG_ERROR = 3   ///< Error level messages
+    };
 
     /**
-     * @brief Get current system time in milliseconds
-     * @return Current time since boot
+     * @brief Set minimum log level
+     * @param level Minimum level to display
+     * @note Messages below this level will be filtered out
      */
-    uint32_t now() const { return ms; }
+    void setLogLevel(LogLevel level);
 
     /**
-     * @brief Enable the watchdog timer
-     * @param timeout Watchdog timeout period
+     * @brief Log a message
+     * @param task Task that generated the message (can be nullptr)
+     * @param level Log level
+     * @param msg Message to log
      */
-    void enable_watchdog(uint8_t timeout = WDTO_1S);
+    void logMessage(Task *task, LogLevel level, const char *msg);
+    void logMessage(Task *task, LogLevel level, const __FlashStringHelper *msg);
 
+    // System callbacks
     /**
-     * @brief Enable stack usage monitoring
-     * Installs stack canaries for overflow detection
+     * @brief Handle system tick
+     * @details Called by system timer interrupt
+     * @note Updates internal system time
      */
-    void enable_stack_monitoring();
+    void onTick();
 
+    // Additional diagnostic methods
     /**
-     * @brief Get remaining free stack space
-     * @return Number of free bytes in stack
-     */
-    int get_free_stack() const;
-
-    /**
-     * @brief Get execution statistics for a task
-     * @param task_id ID of the task
-     * @param stats Reference to store statistics
-     * @return true if task was found
-     */
-    bool get_task_stats(uint8_t task_id, TaskStats& stats) const;
-
-    /**
-     * @brief Get total number of active tasks
-     * @return Number of tasks in the system
-     */
-    uint8_t get_task_count() const;
-
-    /**
-     * @brief Get pointer to a task by ID
-     * @param task_id ID of the task to find
-     * @return Pointer to task or nullptr if not found
-     */
-    Task* get_task(uint8_t task_id) const;
-
-    /**
-     * @brief Get information about last system reset
+     * @brief Get system reset information
      * @param info Reference to store reset information
-     * @return true if information was available
+     * @return true if reset info was retrieved successfully
      */
-    bool get_reset_info(ResetInfo& info);
+    bool getResetInfo(ResetInfo &info);
 
-    // Logging API
-    void logMessage(Task* task, LogLevel level, const __FlashStringHelper* message);
-    void logFormatted(Task* task, LogLevel level, const __FlashStringHelper* fmt, ...);
+    /**
+     * @brief Get reset cause from system
+     * @return ResetCause enumeration value
+     * @note Combines Optiboot and other reset sources
+     */
+    ResetCause getResetCause();
 
-    // Diagnostics (public)
-    bool get_task_memory_info(uint8_t task_id, TaskMemoryInfo& info) const;
-    bool get_system_memory_info(SystemMemoryInfo& info) const;
-    uint16_t get_free_memory() const;
-    uint16_t get_largest_block() const;
-    uint8_t get_heap_fragmentation() const;
-    uint8_t count_heap_fragments() const;
+    /**
+     * @brief Get raw reset flags from system
+     * @return Raw reset flags byte
+     * @note Internal method for reset cause processing
+     */
+    uint8_t getResetCauseFlags();
 
-    // Message processing
-    SharedMsg get_next_message(uint8_t task_id);
-    void process_message(SharedMsg& msg);
-    
-    // Message pool access for SharedMsg
-    void deallocate_message(MsgData* data);
+    /**
+     * @brief Check if a specific reset cause occurred
+     * @param cause Reset cause to check for
+     * @return true if the specified cause occurred
+     */
+    bool wasResetCause(ResetCause cause);
+
+    /**
+     * @brief Get task statistics
+     * @param task_id ID of task to get stats for
+     * @param stats Reference to store task statistics
+     * @return true if stats were retrieved successfully
+     */
+    bool getTaskStats(uint8_t task_id, TaskStats &stats);
+
+    /**
+     * @brief Get system memory information
+     * @param info Reference to store memory information
+     * @return true if memory info was retrieved successfully
+     */
+    bool getSystemMemoryInfo(SystemMemoryInfo &info);
+
+    /**
+     * @brief Get task memory information
+     * @param task_id ID of task to get memory info for
+     * @param info Reference to store task memory information
+     * @return true if memory info was retrieved successfully
+     */
+    bool getTaskMemoryInfo(uint8_t task_id, TaskMemoryInfo &info);
+
+    /**
+     * @brief Get heap fragmentation percentage
+     * @return Heap fragmentation as percentage (0-100)
+     */
+    uint8_t getHeapFragmentation();
+
+    /**
+     * @brief Get memory leak detection statistics
+     * @param stats Reference to store memory leak statistics
+     * @return true if stats were retrieved successfully
+     */
+    bool getMemoryLeakStats(MemoryStats &stats);
+
+    // Additional system methods
+
+    /**
+     * @brief Enable hardware watchdog timer
+     * @param timeout Watchdog timeout value
+     * @note AVR-specific feature
+     */
+    void enableWatchdog(uint8_t timeout);
+    void feedWatchdog();
+
+    /**
+     * @brief Log a formatted message
+     * @param task Task that generated the message (can be nullptr)
+     * @param level Log level
+     * @param format Format string (FlashStringHelper)
+     * @param ... Variable arguments for formatting
+     * @note Simplified implementation - just logs the format string
+     */
+    void logFormatted(Task *task, LogLevel level, const __FlashStringHelper *format, ...);
 
 private:
-    void _print_log_prefix(Task* task, LogLevel level);
-    void deliver();
-    TaskNode* find_task_node(uint8_t task_id) const;
-    
-    LinkedQueue<SharedMsg> message_queue;
-    TaskNode* task_list;
-    uint8_t task_count;
-    volatile uint32_t ms;
-    uint8_t watchdog_enabled:1;
-    uint8_t next_task_id;
-    MsgDataPool msg_pool;
+    TaskNode *taskHead = nullptr;          ///< Head of task linked list
+    TaskNode *taskTail = nullptr;          ///< Tail of task linked list
+    // Preallocated node pool (initialized on first add)
+    TaskNode *freeTaskNodeHead = nullptr;  ///< Head of free-list for TaskNode pool
+    bool taskNodePoolInitialized = false;  ///< Whether pool has been initialized
+    uint16_t taskNodePoolCapacity = 0;     ///< Total nodes currently allocated to pool/list
+    uint8_t taskCount = 0;                 ///< Current number of tasks
+    uint8_t nextTaskId = 1;                ///< Next available task ID
 
-public:
-  Scheduler() = default;
-  ~Scheduler() {
-    while (task_list) {
-      TaskNode* next = task_list->next;
-      delete task_list;
-      task_list = next;
-    }
-  }
-  Scheduler(const Scheduler&) = delete;
-  Scheduler& operator=(const Scheduler&) = delete;
+    MsgDataPool msgPool;  ///< Message pool for efficient allocation
+    uint32_t systemTime;  ///< Current system time
+    bool running;         ///< Scheduler running state
+
+    LogLevel currentLogLevel;     ///< Current minimum log level
+
+    friend class SharedMsg;  ///< Allow SharedMsg to access msgPool
+
+    /**
+     * @brief Process pending messages for all tasks
+     * @details Internal method called by step()
+     */
+    void processMessages();
+
+    /**
+     * @brief Update system time
+     * @details Internal method to update system time from millis()
+     */
+    void updateSystemTime();
+
+    /**
+     * @brief Find next task to execute
+     * @return Pointer to next task to execute, or nullptr if none ready
+     */
+    Task *findNextTask();
+
+    /**
+     * @brief Execute a task
+     * @param task Task to execute
+     * @details Updates task timing and calls task->step()
+     */
+    void executeTask(Task *task);
+
+    // ================== Message Queue (bounded, no dynamic allocation) ==================
+    struct QueuedMessage
+    {
+        uint8_t targetTaskId;
+        MsgData msg;               // msg.data points to buffer when dataSize > 0
+        uint8_t *buffer;           // retained across free-list reuse
+        uint8_t capacity;          // allocated size of buffer
+    };
+
+    // Linked-list node for queued messages
+    struct MsgNode
+    {
+        MsgNode *next;
+        QueuedMessage payload;
+    };
+
+    // Queue (linked list) and free-node pool
+    MsgNode *msgHead = nullptr;
+    MsgNode *msgTail = nullptr;
+    MsgNode *freeHead = nullptr;
+    uint8_t msgCount = 0;        // number of enqueued messages
+    uint8_t totalNodes = 0;      // total nodes allocated into pool
+
+    // Grow the pool by a chunk (4 nodes) up to MAX_MESSAGE_POOL_SIZE
+    bool allocateMsgNodesChunk();
+
+    // Enqueue a message destined for a specific task
+    bool enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize);
+
+    // Dequeue next message into out; returns false if empty
+    bool dequeueQueuedMessage(QueuedMessage &out);
+
+    // Dequeue and return node itself; caller is responsible for recycling node
+    bool dequeueQueuedMessageNode(MsgNode *&outNode);
+
+    // Allocate TaskNode pool on first use
+    bool initializeTaskNodePool();
+    // Acquire a node from pool
+    TaskNode *acquireTaskNode(Task *task);
+    // Return a node to pool
+    void releaseTaskNode(TaskNode *node);
 };
 
+/* ================== Global Scheduler Instance ================== */
+/**
+ * @brief Global scheduler instance
+ * @details Convenient global instance for easy access
+ * @note This is the main scheduler instance used by most applications
+ * @ingroup fsmos
+ */
 extern Scheduler OS;
 
-/* ================== Task base class ================== */
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
-struct MemoryStats {
-  uint16_t allocations;
-  uint16_t deallocations;
-  uint16_t current_bytes;
-  uint16_t peak_bytes;
-};
-extern MemoryStats fsmos_memory_stats;
-#endif
+/* ================== System Constants ================== */
+/**
+ * @brief Default task period in milliseconds
+ * @ingroup fsmos
+ */
+const uint16_t DEFAULT_TASK_PERIOD = 100;
 
 /**
- * @brief Base class for all tasks in FsmOS
- * 
- * The Task class provides the foundation for implementing cooperative
- * multitasking. Each task represents an independent unit of work that
- * can run periodically, respond to messages, and manage its own lifecycle.
- * 
- * Key features:
- * - Periodic execution with configurable intervals
- * - Message handling through callbacks
- * - Lifecycle management (start, suspend, resume, terminate)
- * - Resource cleanup on termination
- * - Topic-based message subscription
+ * @brief Minimum allowed task period in milliseconds
+ * @ingroup fsmos
  */
-class Task {
-public:
-  /** @brief Possible states a task can be in */
-  enum TaskState : uint8_t { 
-    ACTIVE = 0,    ///< Task is running normally
-    SUSPENDED = 1, ///< Task is temporarily paused
-    INACTIVE = 2   ///< Task is terminated and ready for cleanup
-  };
+const uint16_t MIN_TASK_PERIOD = 1;
 
-  /** @brief Called when the task is first added to the scheduler */
-  virtual void on_start() {}
-  
-  /** 
-   * @brief Called when a message is received
-   * @param m The received message
-   */
-  virtual void on_msg(const MsgData& m) { (void)m; }
-  
-  /** 
-   * @brief Main task function, called periodically by the scheduler
-   * @note Must be implemented by derived classes
-   */
-  virtual void step() = 0;
-  
-  /** @brief Called before the task enters suspended state */
-  virtual void on_suspend() {}
-  
-  /** @brief Called when task resumes from suspended state */
-  virtual void on_resume() {}
-  
-  /** 
-   * @brief Called when task is being terminated
-   * Cleans up resources and pending messages
-   */
-  virtual void on_terminate() {}
-
-  virtual ~Task() {
-    on_terminate();
-    SharedMsg msg;
-    while (suspended_msg_queue.pop(msg)) { msg.release(); }
-    // Free subscription linked list
-    while (subscription_head) {
-      SubNode* next = subscription_head->next;
-      delete subscription_head;
-      subscription_head = next;
-    }
-  }
-
-  /**
-   * @brief Activate or resume the task
-   * Task will resume normal execution in next scheduler cycle
-   */
-  void activate();
-
-  /**
-   * @brief Temporarily suspend task execution
-   * Task can be resumed later with activate()
-   */
-  void suspend();
-
-  /**
-   * @brief Permanently terminate the task
-   * Task will be removed and cleaned up by scheduler
-   */
-  void terminate();
-
-  /**
-   * @brief Get current task state
-   * @return Current TaskState
-   */
-  TaskState get_state() const { return static_cast<TaskState>(state); }
-
-  /**
-   * @brief Check if task is in a specific state
-   * @param s State to check against
-   * @return true if task is in specified state
-   */
-  bool check_state(TaskState s) const { return state == s; }
-
-  /**
-   * @brief Check if task is currently active
-   * @return true if task is in ACTIVE state
-   */
-  bool is_active() const { return state == ACTIVE; }
-
-  /**
-   * @brief Check if task is terminated
-   * @return true if task is in INACTIVE state
-   */
-  bool is_inactive() const { return state == INACTIVE; }
-
-  /**
-   * @brief Send a direct message to another task
-   * @param dst_task_id ID of the destination task
-   * @param type User-defined message type
-   * @param arg Optional 16-bit argument
-   * @param ptr Optional pointer to larger data
-   * @param is_dynamic Whether ptr points to dynamically allocated data
-   * @return true if message was successfully queued
-   */
-  bool tell(uint8_t dst_task_id, uint8_t type, uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
-
-  /**
-   * @brief Publish a message to all subscribers of a topic
-   * @param topic Topic ID (1-255, 0 is reserved for direct messages)
-   * @param type User-defined message type
-   * @param arg Optional 16-bit argument
-   * @param ptr Optional pointer to larger data
-   * @param is_dynamic Whether ptr points to dynamically allocated data
-   * @return true if message was successfully queued
-   */
-  bool publish(uint8_t topic, uint8_t type, uint16_t arg = 0, void* ptr = nullptr, bool is_dynamic = false);
-
-  /** 
-   * @brief Subscribe to messages on a specific topic
-   * @param topic Topic ID to subscribe to (1-255)
-   */
-  void subscribe(uint8_t topic);
-
-  /**
-   * @brief Check if task is subscribed to a topic
-   * @param topic Topic ID to check
-   * @return true if task is subscribed to the topic
-   */
-  bool is_subscribed_to(uint8_t topic);
-
-  /**
-   * @brief Get the task's unique identifier
-   * @return Task ID assigned by scheduler
-   */
-  uint8_t get_id() const;
-
-  /**
-   * @brief Set the task's execution period
-   * @param period Time in milliseconds between step() calls
-   */
-  void set_period(uint16_t period);
-
-  /**
-   * @brief Get the task's current execution period
-   * @return Time in milliseconds between step() calls
-   */
-  uint16_t get_period() const;
-
-  /**
-   * @brief Configure message queueing during suspension
-   * @param queue_messages true to queue messages, false to discard
-   */
-  void set_queue_messages_while_suspended(bool queue_messages);
-
-  /**
-   * @brief Check message queueing configuration
-   * @return true if messages are queued during suspension
-   */
-  bool get_queue_messages_while_suspended() const;
-
-  /**
-   * @brief Set the task's name (stored in flash memory)
-   * @param name Flash string pointer to task name
-   */
-  void set_name(const __FlashStringHelper* name) { task_name = name; }
-
-  /**
-   * @brief Get the task's name
-   * @return Flash string pointer to task name or "Unknown"
-   */
-  const __FlashStringHelper* get_name() const { return task_name ? task_name : F("Unknown"); }
-
-  /**
-   * @brief Log a message with specified severity level
-   * @param level Message severity level
-   * @param msg Message text (stored in flash)
-   */
-  inline void log(LogLevel level, const __FlashStringHelper* msg) { OS.logMessage(this, level, msg); }
-
-  /**
-   * @brief Log a debug message
-   * @param msg Debug message text (stored in flash)
-   */
-  inline void log_debug(const __FlashStringHelper* msg) { OS.logMessage(this, LOG_DEBUG, msg); }
-
-  /**
-   * @brief Log an informational message
-   * @param msg Info message text (stored in flash)
-   */
-  inline void log_info(const __FlashStringHelper* msg) { OS.logMessage(this, LOG_INFO, msg); }
-
-  /**
-   * @brief Log a warning message
-   * @param msg Warning message text (stored in flash)
-   */
-  inline void log_warn(const __FlashStringHelper* msg) { OS.logMessage(this, LOG_WARNING, msg); }
-
-  /**
-   * @brief Log an error message
-   * @param msg Error message text (stored in flash)
-   */
-  inline void log_error(const __FlashStringHelper* msg) { OS.logMessage(this, LOG_ERROR, msg); }
-
-  /**
-   * @brief Process pending messages for this task
-   * @note Called automatically by scheduler, rarely needs direct use
-   */
-  void process_messages();
-
-private:
-  friend class Scheduler;
-
-  uint32_t next_due = 0;
-  uint16_t period_ms = 1;
-  uint8_t id = 255;
-  uint8_t subscription_count = 0;
-  const __FlashStringHelper* task_name = nullptr;
-  TaskState state;
-  uint8_t queue_messages_while_suspended:1;
-  
-  // Subscription linked list (unlimited topics)
-  struct SubNode { uint8_t topic; SubNode* next; SubNode(uint8_t t) : topic(t), next(nullptr) {} };
-  SubNode* subscription_head = nullptr;
-  LinkedQueue<SharedMsg> suspended_msg_queue;
-
-public:
-  explicit Task(const __FlashStringHelper* name = nullptr) {
-    task_name = name;
-    subscription_count = 0;
-    state = ACTIVE;
-    queue_messages_while_suspended = 1;
-    subscription_head = nullptr;
-  }
-};
-
-/* ================== Utility: soft-timer for FSMs ================== */
 /**
- * @brief Lightweight timer for time-based state machines
- * 
- * Timer provides a simple way to manage time-based events in tasks.
- * It supports:
- * - One-shot timing
- * - Duration checking
- * - Automatic time overflow handling
+ * @brief Maximum allowed task period in milliseconds
+ * @ingroup fsmos
  */
-struct __attribute__((packed)) Timer {
-  uint32_t start_ms = 0;     ///< Timer start timestamp
-  uint32_t duration_ms = 0;   ///< Timer duration in milliseconds
+const uint16_t MAX_TASK_PERIOD = 65535;
 
-  /**
-   * @brief Start the timer
-   * @param d Duration in milliseconds
-   */
-  inline void start(uint32_t d) { start_ms = OS.now(); duration_ms = d; }
+/**
+ * @brief Default per-task message production budget
+ * @ingroup fsmos
+ * @details If a task does not explicitly declare a budget via
+ *          Task::setMaxMessageBudget, the scheduler applies this
+ *          default to ensure capacity checks are enforced.
+ */
+const uint8_t DEFAULT_TASK_MESSAGE_BUDGET = 1;
 
-  /**
-   * @brief Check if timer has expired
-   * @return true if timer duration has elapsed
-   */
-  inline bool expired() const { 
-    return duration_ms == 0 || (int32_t)(OS.now() - start_ms) >= (int32_t)duration_ms; 
-  }
-};
+// Backward compatibility direct constants removed; use Scheduler::LogLevel
+
+/* ================== Additional Scheduler Methods ================== */
+/**
+ * @brief Log a debug message with formatting
+ * @param format Format string (FlashStringHelper)
+ * @param ... Variable arguments for formatting
+ * @ingroup fsmos
+ */
+void logDebugf(const __FlashStringHelper *format, ...);
+
+/**
+ * @brief Log an info message with formatting
+ * @param format Format string (FlashStringHelper)
+ * @param ... Variable arguments for formatting
+ * @ingroup fsmos
+ */
+void logInfof(const __FlashStringHelper *format, ...);
+
+/**
+ * @brief Log a warning message with formatting
+ * @param format Format string (FlashStringHelper)
+ * @param ... Variable arguments for formatting
+ * @ingroup fsmos
+ */
+void logWarnf(const __FlashStringHelper *format, ...);
+
+/**
+ * @brief Log an error message with formatting
+ * @param format Format string (FlashStringHelper)
+ * @param ... Variable arguments for formatting
+ * @ingroup fsmos
+ */
+void logErrorf(const __FlashStringHelper *format, ...);
+
+#endif  // FSMOS_H

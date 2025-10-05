@@ -43,7 +43,7 @@ class BlinkTask : public Task {
   const uint8_t pin;          // LED pin number
   bool state;                 // Current LED state
   const char* blink_type;    // Description of blink rate (for logging)
-  Timer blink_timer;         // Timer for blinking
+  Timer16 blink_timer;       // Variable blink timing - 4 bytes
   
 public:
   BlinkTask(uint8_t led_pin, uint32_t period_ms, const char* type) 
@@ -101,7 +101,7 @@ class ControlTask : public Task {
   BlinkTask* fast_blink;     // Fast blinking LED task
   BlinkTask* slow_blink;     // Slow blinking LED task
   uint8_t phase;             // Current demo phase
-  Timer phase_timer;         // Timer for phase transitions
+  Timer16 phase_timer;       // 5000ms phase duration - 4 bytes
   
   // Phase durations
   static const uint32_t PHASE_DURATION = 5000;  // 5 seconds per phase
@@ -117,7 +117,7 @@ public:
   void on_start() override {
     log_info(F("\n=== Task Lifecycle Demo Started ==="));
     log_info(F("Phase duration: %d seconds"), PHASE_DURATION/1000);
-    phase_timer.start(PHASE_DURATION);
+    phase_timer = create_timer_typed<Timer16>(PHASE_DURATION);
   }
 
 protected:
