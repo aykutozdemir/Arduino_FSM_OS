@@ -13,7 +13,7 @@
  * - System diagnostics and profiling
  * - Hardware watchdog integration
  *
- * @version 1.2.1 - Bug fixes
+ * @version 1.3.0 - Major refactoring and code organization
  */
 
 #include "FsmOS.h"
@@ -596,6 +596,27 @@ void Task::processMessages()
     // Messages are now handled directly by the scheduler
 }
 
+// Task timing monitoring methods
+uint16_t Task::getDelayCount() const
+{
+    return delayCount;
+}
+
+uint16_t Task::getMaxDelay() const
+{
+    return maxDelayMs;
+}
+
+uint32_t Task::getScheduledTime() const
+{
+    return scheduledTime;
+}
+
+uint32_t Task::getActualStartTime() const
+{
+    return actualStartTime;
+}
+
 /* ================== Scheduler Implementation ================== */
 Scheduler::Scheduler()
     : taskCount(0),
@@ -680,42 +701,6 @@ bool Scheduler::initializeTaskNodePool()
     return true;
 }
 
-TaskNode *Scheduler::acquireTaskNode(Task *task)
-{
-    if (!taskNodePoolInitialized && !initializeTaskNodePool())
-    {
-        return nullptr;
-    }
-    if (!freeTaskNodeHead)
-    {
-        // Try to expand by one
-        TaskNode *node = (TaskNode *)malloc(sizeof(TaskNode));
-        if (!node)
-        {
-            return nullptr;
-        }
-        node->task = nullptr;
-        node->next = nullptr;
-        freeTaskNodeHead = node;
-        taskNodePoolCapacity++;
-    }
-    TaskNode *node = freeTaskNodeHead;
-    freeTaskNodeHead = freeTaskNodeHead->next;
-    node->task = task;
-    node->next = nullptr;
-    return node;
-}
-
-void Scheduler::releaseTaskNode(TaskNode *node)
-{
-    if (!node)
-    {
-        return;
-    }
-    node->task = nullptr;
-    node->next = freeTaskNodeHead;
-    freeTaskNodeHead = node;
-}
 
 bool Scheduler::add(Task *task)
 {
@@ -724,8 +709,8 @@ bool Scheduler::add(Task *task)
         return false;
     }
 
-    // Acquire node from pool
-    TaskNode *newNode = acquireTaskNode(task);
+    // Acquire node from pool using helper method
+    TaskNode *newNode = allocateTaskNode(task);
     if (!newNode)
     {
         return false;  // Pool allocation failed
@@ -786,7 +771,7 @@ bool Scheduler::remove(Task *task)
                 taskTail = previous;
             }
 
-            releaseTaskNode(current);
+            deallocateTaskNode(current);
             taskCount--;
             return true;
         }
@@ -804,7 +789,7 @@ void Scheduler::removeAll()
     {
         TaskNode *next = current->next;
         current->task->stop();
-        releaseTaskNode(current);
+        deallocateTaskNode(current);
         current = next;
     }
     taskHead = taskTail = nullptr;
@@ -813,16 +798,7 @@ void Scheduler::removeAll()
 
 Task *Scheduler::getTask(uint8_t task_id)
 {
-    TaskNode *current = taskHead;
-    while (current != nullptr)
-    {
-        if (current->task && current->task->getId() == task_id)
-        {
-            return current->task;
-        }
-        current = current->next;
-    }
-    return nullptr;
+    return findTask([task_id](Task* task) { return task->getId() == task_id; });
 }
 
 // getTaskCount is now inline in header file
@@ -839,7 +815,7 @@ void Scheduler::begin()
     setLogLevel(LOG_INFO);
 
     // Log startup message
-    logMessage(nullptr, LOG_INFO, F("FsmOS Scheduler starting"));
+    logSystemEvent(LOG_INFO, F("FsmOS Scheduler starting"));
 
     running = true;
     systemTime = millis();
@@ -849,19 +825,13 @@ void Scheduler::begin()
 #endif
 
     // Start all tasks
-    TaskNode *current = taskHead;
-    while (current != nullptr)
-    {
-        if (current->task)
-        {
-            current->task->start();
-            feedWatchdog();
-        }
-        current = current->next;
-    }
+    forEachTask([](Task* task) {
+        task->start();
+        feedWatchdog();
+    });
 
     // Log task count
-    logMessage(nullptr, LOG_INFO, F("Scheduler started successfully"));
+    logSystemEvent(LOG_INFO, F("Scheduler started successfully"));
 }
 
 void Scheduler::loopOnce()
@@ -871,18 +841,15 @@ void Scheduler::loopOnce()
         return;
     }
 
-    updateSystemTime();
+        updateSystemTime();
 
     // Decrease remaining time for all active tasks
-    TaskNode *current = taskHead;
-    while (current != nullptr)
-    {
-        if (current->task && current->task->isActive() && current->task->remainingTime > 0)
+    forEachTask([](Task* task) {
+        if (task->isActive() && task->remainingTime > 0)
         {
-            current->task->remainingTime--;
+            task->remainingTime--;
         }
-        current = current->next;
-    }
+    });
 
     // Feed watchdog timer
     feedWatchdog();
@@ -910,15 +877,12 @@ void Scheduler::stop() { running = false; }
 void Scheduler::publishMessage(uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
 {
     // Enqueue for all subscribed tasks
-    TaskNode *node = taskHead;
-    while (node)
-    {
-        if (node->task && node->task->isActive() && node->task->isSubscribedToTopic(topic))
+    forEachTask([topic, type, arg, data, data_size](Task* task) {
+        if (task->isActive() && task->isSubscribedToTopic(topic))
         {
-            enqueueQueuedMessage(node->task->getId(), topic, type, arg, data, data_size);
+            enqueueQueuedMessage(task->getId(), topic, type, arg, data, data_size);
         }
-        node = node->next;
-    }
+    });
 }
 
 void Scheduler::sendMessage(uint8_t task_id, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
@@ -1080,16 +1044,16 @@ Task *Scheduler::findNextTask()
             else if (nextTask == nullptr)
             {
                 nextTask = current->task;
-            }
-            else if (current->task->getPriority() > nextTask->getPriority())
-            {
+                        }
+                        else if (current->task->getPriority() > nextTask->getPriority())
+                        {
                 // Higher priority wins
                 nextTask = current->task;
-            }
-            else if (current->task->getPriority() == nextTask->getPriority())
-            {
+                        }
+                        else if (current->task->getPriority() == nextTask->getPriority())
+                        {
                 // Same priority, smaller task ID wins
-                if (current->task->getId() < nextTask->getId())
+                            if (current->task->getId() < nextTask->getId())
                 {
                     nextTask = current->task;
                 }
@@ -1112,27 +1076,70 @@ void Scheduler::executeTask(Task *task)
         return;
     }
 
-    // Record execution start time for statistics
     uint32_t execStart = micros();
+    uint32_t currentTime = systemTime;
+    
+    // Handle task timing monitoring
+    handleTaskTiming(task, currentTime);
+    
+    // Execute the actual task step
+    executeTaskStep(task);
+    
+    // Update task execution statistics
+    updateTaskStatistics(task, execStart);
+    
+    // Update timing monitoring variables
+    updateTimingVariables(task);
+    
+    // Check for terminated tasks
+    checkForTerminatedTask(task);
+}
 
+// Refactored helper methods for executeTask
+void Scheduler::handleTaskTiming(Task *task, uint32_t currentTime)
+{
+    // Set scheduled time (when task should have started)
+    task->scheduledTime = currentTime - task->getPeriod();
+    task->actualStartTime = currentTime;
+    
+    // Check for delay
+    if (task->actualStartTime > task->scheduledTime)
+    {
+        uint32_t delay = task->actualStartTime - task->scheduledTime;
+        uint16_t delayMs = (delay > 65535) ? 65535 : static_cast<uint16_t>(delay);
+        
+        // Update delay statistics
+        task->delayCount++;
+        if (delayMs > task->maxDelayMs)
+        {
+            task->maxDelayMs = delayMs;
+        }
+        
+        // Log delay with attribution
+        logTaskDelay(task, delayMs, lastExecutedTaskId);
+    }
+}
+
+void Scheduler::executeTaskStep(Task *task)
+{
     // Reset remaining time for next execution
     task->remainingTime = task->getPeriod();
-
+    
     // Execute task step
     task->step();
+}
 
-    // Calculate execution time and update minimalist statistics
+void Scheduler::updateTaskStatistics(Task *task, uint32_t execStart)
+{
+    // Calculate execution time
     uint32_t execTime = micros() - execStart;
-
-    // Convert to 16-bit (clamp to max value if needed)
     uint16_t execTime16 = (execTime > 65535) ? 65535 : static_cast<uint16_t>(execTime);
 
-    // Update statistics
+    // Update run count
     if (task->runCount < 65535)
     {
         task->runCount++;
     }
-    // If runCount reaches max, keep it at max value
 
     // Update max execution time
     if (execTime16 > task->maxExecTimeUs)
@@ -1140,52 +1147,205 @@ void Scheduler::executeTask(Task *task)
         task->maxExecTimeUs = execTime16;
     }
 
-    // Update average execution time (simple moving average)
+    // Update average execution time
     if (task->runCount == 1)
     {
         task->avgExecTimeUs = execTime16;
     }
     else if (task->runCount == 65535)
     {
-        // When runCount is at max, use exponential moving average to avoid overflow
-        // EMA: new_avg = old_avg + alpha * (new_value - old_avg)
-        // Using alpha = 1/1000 for slow adaptation
+        // Exponential moving average to avoid overflow
         uint32_t diff = execTime16 - task->avgExecTimeUs;
         int32_t adjustment = diff / 1000;  // Slow adaptation
         int32_t newAvg = task->avgExecTimeUs + adjustment;
 
         // Clamp to valid range
-        if (newAvg < 0)
-        {
-            newAvg = 0;
-        }
-        if (newAvg > 65535)
-        {
-            newAvg = 65535;
-        }
-
+        if (newAvg < 0) newAvg = 0;
+        if (newAvg > 65535) newAvg = 65535;
+        
         task->avgExecTimeUs = static_cast<uint16_t>(newAvg);
     }
     else
     {
-        // Simple moving average: new_avg = (old_avg * (n-1) + new_value) / n
+        // Simple moving average
         uint32_t newAvg = ((uint32_t)task->avgExecTimeUs * (task->runCount - 1) + execTime16) / task->runCount;
-
-        // Clamp to 16-bit max value if calculation overflows
-        if (newAvg > 65535)
-        {
-            task->avgExecTimeUs = 65535;  // MAX 16-bit value
-        }
-        else
-        {
-            task->avgExecTimeUs = static_cast<uint16_t>(newAvg);
-        }
+        task->avgExecTimeUs = (newAvg > 65535) ? 65535 : static_cast<uint16_t>(newAvg);
     }
+}
 
-    // Check for terminated tasks
+void Scheduler::updateTimingVariables(Task *task)
+{
+    lastExecutedTaskId = task->getId();
+    lastTaskEndTime = systemTime;
+}
+
+void Scheduler::checkForTerminatedTask(Task *task)
+{
     if (task->getState() == Task::TERMINATED)
     {
         remove(task);
+    }
+}
+
+void Scheduler::logTaskDelay(Task *task, uint16_t delayMs, uint8_t causingTaskId)
+{
+    if (causingTaskId != 0 && causingTaskId != task->getId())
+    {
+        Task *delayingTask = getTask(causingTaskId);
+        if (delayingTask)
+        {
+            Serial.print(F("[WARN] Task "));
+            Serial.print(task->getId());
+            Serial.print(F(" ("));
+            Serial.print(task->getName());
+            Serial.print(F(") delayed by "));
+            Serial.print(delayMs);
+            Serial.print(F("ms - caused by Task "));
+            Serial.print(causingTaskId);
+            Serial.print(F(" ("));
+            Serial.print(delayingTask->getName());
+            Serial.println(F(")"));
+        }
+    }
+    else
+    {
+        Serial.print(F("[WARN] Task "));
+        Serial.print(task->getId());
+        Serial.print(F(" ("));
+        Serial.print(task->getName());
+        Serial.print(F(") delayed by "));
+        Serial.print(delayMs);
+        Serial.println(F("ms"));
+    }
+}
+
+// Task iteration template methods
+template<typename Func>
+void Scheduler::forEachTask(Func func)
+{
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task)
+        {
+            func(current->task);
+        }
+        current = current->next;
+    }
+}
+
+template<typename Func>
+Task* Scheduler::findTask(Func predicate)
+{
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task && predicate(current->task))
+        {
+            return current->task;
+        }
+        current = current->next;
+    }
+    return nullptr;
+}
+
+// Explicit template instantiations for common use cases
+template void Scheduler::forEachTask<void(*)(Task*)>(void(*)(Task*));
+template Task* Scheduler::findTask<bool(*)(Task*)>(bool(*)(Task*));
+
+// Memory management helpers
+TaskNode* Scheduler::allocateTaskNode(Task *task)
+{
+    if (!taskNodePoolInitialized && !initializeTaskNodePool())
+    {
+        return nullptr;
+    }
+    if (!freeTaskNodeHead)
+    {
+        // Try to expand by one
+        TaskNode *node = (TaskNode *)malloc(sizeof(TaskNode));
+        if (!node)
+        {
+            return nullptr;
+        }
+        node->task = nullptr;
+        node->next = nullptr;
+        freeTaskNodeHead = node;
+        taskNodePoolCapacity++;
+    }
+    TaskNode *node = freeTaskNodeHead;
+    freeTaskNodeHead = freeTaskNodeHead->next;
+    node->task = task;
+    node->next = nullptr;
+    return node;
+}
+
+void Scheduler::deallocateTaskNode(TaskNode *node)
+{
+    if (!node)
+    {
+        return;
+    }
+    node->task = nullptr;
+    node->next = freeTaskNodeHead;
+    freeTaskNodeHead = node;
+}
+
+MsgNode* Scheduler::allocateMsgNode()
+{
+    if (!freeHead)
+    {
+        if (!allocateMsgNodesChunk())
+        {
+            return nullptr;
+        }
+    }
+    
+    MsgNode *node = freeHead;
+    freeHead = freeHead->next;
+    node->next = nullptr;
+    return node;
+}
+
+void Scheduler::deallocateMsgNode(MsgNode *node)
+{
+    if (!node)
+    {
+        return;
+    }
+    
+    // Reset message data
+    node->payload.targetTaskId = 0;
+    node->payload.msg.type = 0;
+    node->payload.msg.topic = 0;
+    node->payload.msg.arg = 0;
+    node->payload.msg.data = nullptr;
+    node->payload.msg.dataSize = 0;
+    node->payload.msg.refCount = 0;
+    
+    // Return to free list
+    node->next = freeHead;
+    freeHead = node;
+}
+
+// Logging system helpers
+void Scheduler::logSystemEvent(LogLevel level, const __FlashStringHelper *msg)
+{
+    logMessage(nullptr, level, msg);
+}
+
+void Scheduler::logTaskExecution(Task *task, uint32_t execTime)
+{
+    // Only log if execution time is unusually long (>10ms)
+    if (execTime > 10000)
+    {
+        Serial.print(F("[INFO] Task "));
+        Serial.print(task->getId());
+        Serial.print(F(" ("));
+        Serial.print(task->getName());
+        Serial.print(F(") execution time: "));
+        Serial.print(execTime);
+        Serial.println(F("us"));
     }
 }
 
@@ -1287,6 +1447,8 @@ bool Scheduler::getTaskStats(uint8_t task_id, TaskStats &stats)
     stats.maxExecTimeUs = task->maxExecTimeUs;      // 16-bit max execution time
     stats.totalExecTimeUs = task->avgExecTimeUs;    // Use avg as total for compatibility
     stats.stackUsage = 0;         // Still placeholder - requires stack monitoring
+    stats.delayCount = task->delayCount;           // Task delay count
+    stats.maxDelayMs = task->maxDelayMs;           // Maximum delay experienced
     return true;
 }
 
@@ -1517,6 +1679,25 @@ void Scheduler::logFormatted(Task *task, LogLevel level, const __FlashStringHelp
 uint8_t Scheduler::getFreeQueueSlots() const
 {
     return static_cast<uint8_t>(MAX_MESSAGE_POOL_SIZE - msgCount);
+}
+
+uint8_t Scheduler::getMostDelayingTask() const
+{
+    uint8_t mostDelayingTaskId = 0;
+    uint16_t maxDelayCount = 0;
+    
+    TaskNode *current = taskHead;
+    while (current != nullptr)
+    {
+        if (current->task && current->task->getDelayCount() > maxDelayCount)
+        {
+            maxDelayCount = current->task->getDelayCount();
+            mostDelayingTaskId = current->task->getId();
+        }
+        current = current->next;
+    }
+    
+    return mostDelayingTaskId;
 }
 
 bool Scheduler::allocateMsgNodesChunk()

@@ -18,7 +18,7 @@
  * @note This library is designed for AVR-based Arduino boards but includes
  * partial support for other architectures.
  *
- * @version 1.2.1 - Bug fixes
+ * @version 1.3.0 - Major refactoring and code organization
  * @copyright 2025 Aykut Ozdemir
  */
 /**
@@ -138,6 +138,8 @@ struct TaskStats
     uint32_t maxExecTimeUs;    ///< Maximum execution time in microseconds
     uint32_t totalExecTimeUs;  ///< Total execution time in microseconds
     uint16_t stackUsage;         ///< Stack usage in bytes
+    uint16_t delayCount;         ///< Number of times task was delayed
+    uint16_t maxDelayMs;         ///< Maximum delay experienced in milliseconds
 };
 
 /**
@@ -999,6 +1001,31 @@ protected:
      * @note Called automatically by scheduler, rarely needs direct use
      */
     void processMessages();
+    
+    // Task timing monitoring methods
+    /**
+     * @brief Get number of times this task was delayed
+     * @return Number of delay occurrences
+     */
+    uint16_t getDelayCount() const;
+    
+    /**
+     * @brief Get maximum delay experienced by this task
+     * @return Maximum delay in milliseconds
+     */
+    uint16_t getMaxDelay() const;
+    
+    /**
+     * @brief Get scheduled execution time
+     * @return Scheduled time in milliseconds
+     */
+    uint32_t getScheduledTime() const;
+    
+    /**
+     * @brief Get actual start time of last execution
+     * @return Actual start time in milliseconds
+     */
+    uint32_t getActualStartTime() const;
 
 private:
     friend class Scheduler;
@@ -1013,6 +1040,12 @@ private:
     uint16_t runCount = 0;           ///< Number of times task has run (16-bit for space)
     uint16_t maxExecTimeUs = 0;      ///< Maximum execution time in microseconds (16-bit)
     uint16_t avgExecTimeUs = 0;      ///< Average execution time in microseconds (16-bit)
+    
+    // Task timing monitoring
+    uint32_t scheduledTime = 0;      ///< When this task was scheduled to run
+    uint32_t actualStartTime = 0;    ///< When this task actually started running
+    uint16_t delayCount = 0;         ///< Number of times this task was delayed
+    uint16_t maxDelayMs = 0;         ///< Maximum delay experienced in milliseconds
 
     TopicBitfield subscribedTopics = 0;   ///< Bitfield for subscribed topics
 
@@ -1280,6 +1313,13 @@ public:
      * @note Simplified implementation - just logs the format string
      */
     void logFormatted(Task *task, LogLevel level, const __FlashStringHelper *format, ...);
+    
+    // Task timing monitoring
+    /**
+     * @brief Get task that caused the most delays
+     * @return Task ID of the task causing most delays, or 0 if none
+     */
+    uint8_t getMostDelayingTask() const;
 
 private:
     TaskNode *taskHead = nullptr;          ///< Head of task linked list
@@ -1296,6 +1336,10 @@ private:
     bool running;         ///< Scheduler running state
 
     LogLevel currentLogLevel;     ///< Current minimum log level
+    
+    // Task timing monitoring (always active)
+    uint8_t lastExecutedTaskId = 0;         ///< ID of last executed task (for delay attribution)
+    uint32_t lastTaskEndTime = 0;           ///< When the last task finished execution
 
     friend class SharedMsg;  ///< Allow SharedMsg to access msgPool
 
@@ -1323,6 +1367,106 @@ private:
      * @details Updates task timing and calls task->step()
      */
     void executeTask(Task *task);
+    
+    // Refactored helper methods for executeTask
+    /**
+     * @brief Handle task timing monitoring
+     * @param task Task to monitor
+     * @param currentTime Current system time
+     */
+    void handleTaskTiming(Task *task, uint32_t currentTime);
+    
+    /**
+     * @brief Execute the actual task step
+     * @param task Task to execute
+     */
+    void executeTaskStep(Task *task);
+    
+    /**
+     * @brief Update task execution statistics
+     * @param task Task to update
+     * @param execStart Execution start time in microseconds
+     */
+    void updateTaskStatistics(Task *task, uint32_t execStart);
+    
+    /**
+     * @brief Update timing monitoring variables
+     * @param task Task that was executed
+     */
+    void updateTimingVariables(Task *task);
+    
+    /**
+     * @brief Check if task should be terminated and remove if needed
+     * @param task Task to check
+     */
+    void checkForTerminatedTask(Task *task);
+    
+    /**
+     * @brief Log task delay with attribution
+     * @param task Delayed task
+     * @param delayMs Delay amount in milliseconds
+     * @param causingTaskId ID of task that caused the delay
+     */
+    void logTaskDelay(Task *task, uint16_t delayMs, uint8_t causingTaskId);
+    
+    // Task iteration helpers
+    /**
+     * @brief Iterate through all tasks with a function
+     * @tparam Func Function type that takes Task* parameter
+     * @param func Function to call for each task
+     */
+    template<typename Func>
+    void forEachTask(Func func);
+    
+    /**
+     * @brief Find a task using a predicate function
+     * @tparam Func Function type that takes Task* and returns bool
+     * @param predicate Function that returns true for the desired task
+     * @return Pointer to found task, or nullptr if not found
+     */
+    template<typename Func>
+    Task* findTask(Func predicate);
+    
+    // Memory management helpers
+    /**
+     * @brief Allocate a TaskNode from the pool
+     * @param task Task to wrap in the node
+     * @return Pointer to allocated TaskNode, or nullptr if failed
+     */
+    TaskNode* allocateTaskNode(Task *task);
+    
+    /**
+     * @brief Deallocate a TaskNode back to the pool
+     * @param node TaskNode to deallocate
+     */
+    void deallocateTaskNode(TaskNode *node);
+    
+    /**
+     * @brief Allocate a MsgNode from the pool
+     * @return Pointer to allocated MsgNode, or nullptr if failed
+     */
+    MsgNode* allocateMsgNode();
+    
+    /**
+     * @brief Deallocate a MsgNode back to the pool
+     * @param node MsgNode to deallocate
+     */
+    void deallocateMsgNode(MsgNode *node);
+    
+    // Logging system helpers
+    /**
+     * @brief Log a system event message
+     * @param level Log level
+     * @param msg Message to log
+     */
+    void logSystemEvent(LogLevel level, const __FlashStringHelper *msg);
+    
+    /**
+     * @brief Log a task execution event
+     * @param task Task that was executed
+     * @param execTime Execution time in microseconds
+     */
+    void logTaskExecution(Task *task, uint32_t execTime);
 
     // ================== Message Queue (bounded, no dynamic allocation) ==================
     struct QueuedMessage
