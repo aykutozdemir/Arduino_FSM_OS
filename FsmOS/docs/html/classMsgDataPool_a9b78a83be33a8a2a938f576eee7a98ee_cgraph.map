@@ -1,0 +1,5 @@
+<map id="MsgDataPool::deallocate" name="MsgDataPool::deallocate">
+<area shape="rect" id="Node000001" title="Return a MsgData to the pool." alt="" coords="5,13,173,38"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#aec9292e845c522cd14c90764b8bfc054" title="Update adaptive pool limit based on usage." alt="" coords="221,5,420,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+</map>

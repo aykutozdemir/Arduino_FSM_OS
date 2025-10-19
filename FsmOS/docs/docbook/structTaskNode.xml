@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structTaskNode" xml:lang="en-US">
+<title>TaskNode Struct Reference</title>
+<indexterm><primary>TaskNode</primary></indexterm>
+<para>
+
+<para>Node structure for <link linkend="_classTask">Task</link> linked list. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+Collaboration diagram for TaskNode:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="structTaskNode__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_structTaskNode_1a0d859f161eaee61a367a76f70687f89a">TaskNode</link> (<link linkend="_classTask">Task</link> *t)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classTask">Task</link> * <link linkend="_structTaskNode_1a04f109a440464fd95c18d0f3758ee0af">task</link></para>
+
+<para>Pointer to the task. </para>
+</listitem>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd">next</link></para>
+
+<para>Pointer to next node. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Node structure for <link linkend="_classTask">Task</link> linked list. </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00100">100</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_structTaskNode_1a0d859f161eaee61a367a76f70687f89a"/><section>
+    <title>TaskNode()</title>
+<indexterm><primary>TaskNode</primary><secondary>TaskNode</secondary></indexterm>
+<indexterm><primary>TaskNode</primary><secondary>TaskNode</secondary></indexterm>
+<para><computeroutput>TaskNode::TaskNode (<link linkend="_classTask">Task</link> * t)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00105">105</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd"/><section>
+    <title>next</title>
+<indexterm><primary>next</primary><secondary>TaskNode</secondary></indexterm>
+<indexterm><primary>TaskNode</primary><secondary>next</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link>* TaskNode::next</computeroutput></para><para>
+
+<para>Pointer to next node. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00103">103</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskNode_1a04f109a440464fd95c18d0f3758ee0af"/><section>
+    <title>task</title>
+<indexterm><primary>task</primary><secondary>TaskNode</secondary></indexterm>
+<indexterm><primary>TaskNode</primary><secondary>task</secondary></indexterm>
+<para><computeroutput><link linkend="_classTask">Task</link>* TaskNode::task</computeroutput></para><para>
+
+<para>Pointer to the task. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00102">102</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classSemaphore" kind="class" language="C++" prot="public">
+    <compoundname>Semaphore</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classSemaphore_1a3a416166d840dc83b6283b20bccd072a" prot="private" static="no" mutable="no">
+        <type>volatile uint8_t</type>
+        <definition>volatile uint8_t Semaphore::count</definition>
+        <argsstring></argsstring>
+        <name>count</name>
+        <qualifiedname>Semaphore::count</qualifiedname>
+        <briefdescription>
+<para>Current resource count. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="626" column="22" bodyfile="FsmOS.h" bodystart="626" bodyend="-1"/>
+        <referencedby refid="classSemaphore_1a0c65b57daf4e089e6e6241f4669d6f1f" compoundref="FsmOS_8cpp" startline="453" endline="453">getCount</referencedby>
+        <referencedby refid="classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a" compoundref="FsmOS_8cpp" startline="442" endline="451">signal</referencedby>
+        <referencedby refid="classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e" compoundref="FsmOS_8cpp" startline="428" endline="440">wait</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Semaphore::max_count</definition>
+        <argsstring></argsstring>
+        <name>max_count</name>
+        <qualifiedname>Semaphore::max_count</qualifiedname>
+        <briefdescription>
+<para>Maximum resource count. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="627" column="13" bodyfile="FsmOS.h" bodystart="627" bodyend="-1"/>
+        <referencedby refid="classSemaphore_1a5dc46274b490015edf89edf3048512a8" compoundref="FsmOS_8cpp" startline="455" endline="455">getMaxCount</referencedby>
+        <referencedby refid="classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a" compoundref="FsmOS_8cpp" startline="442" endline="451">signal</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSemaphore_1a9f8febef61d91a380337f05e3fc0678c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Semaphore::Semaphore</definition>
+        <argsstring>(uint8_t initial_count, uint8_t max_count)</argsstring>
+        <name>Semaphore</name>
+        <qualifiedname>Semaphore::Semaphore</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>initial_count</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>max_count</declname>
+        </param>
+        <briefdescription>
+<para>Constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initial_count</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial number of available resources </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_count</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of resources </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="598" column="5" bodyfile="FsmOS.cpp" bodystart="426" bodyend="426"/>
+      </memberdef>
+      <memberdef kind="function" id="classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Semaphore::wait</definition>
+        <argsstring>(uint8_t task_id)</argsstring>
+        <name>wait</name>
+        <qualifiedname>Semaphore::wait</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <briefdescription>
+<para>Try to acquire a resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the task attempting to acquire resource </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if resource was acquired, false if none available </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="605" column="11" bodyfile="FsmOS.cpp" bodystart="428" bodyend="440"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classSemaphore_1a3a416166d840dc83b6283b20bccd072a" compoundref="FsmOS_8h" startline="626">count</references>
+      </memberdef>
+      <memberdef kind="function" id="classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Semaphore::signal</definition>
+        <argsstring>()</argsstring>
+        <name>signal</name>
+        <qualifiedname>Semaphore::signal</qualifiedname>
+        <briefdescription>
+<para>Release a resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Increments the available resource count </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="611" column="10" bodyfile="FsmOS.cpp" bodystart="442" bodyend="451"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classSemaphore_1a3a416166d840dc83b6283b20bccd072a" compoundref="FsmOS_8h" startline="626">count</references>
+        <references refid="classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e" compoundref="FsmOS_8h" startline="627">max_count</references>
+      </memberdef>
+      <memberdef kind="function" id="classSemaphore_1a0c65b57daf4e089e6e6241f4669d6f1f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Semaphore::getCount</definition>
+        <argsstring>() const</argsstring>
+        <name>getCount</name>
+        <qualifiedname>Semaphore::getCount</qualifiedname>
+        <briefdescription>
+<para>Get current resource count. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of available resources </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="617" column="13" bodyfile="FsmOS.cpp" bodystart="453" bodyend="453"/>
+        <references refid="classSemaphore_1a3a416166d840dc83b6283b20bccd072a" compoundref="FsmOS_8h" startline="626">count</references>
+      </memberdef>
+      <memberdef kind="function" id="classSemaphore_1a5dc46274b490015edf89edf3048512a8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Semaphore::getMaxCount</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaxCount</name>
+        <qualifiedname>Semaphore::getMaxCount</qualifiedname>
+        <briefdescription>
+<para>Get maximum resource count. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Maximum number of resources </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="623" column="13" bodyfile="FsmOS.cpp" bodystart="455" bodyend="455"/>
+        <references refid="classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e" compoundref="FsmOS_8h" startline="627">max_count</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classSemaphore" kindref="compound">Semaphore</ref> for resource counting and synchronization. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="classSemaphore" kindref="compound">Semaphore</ref> allows a limited number of tasks to access a resource simultaneously. It maintains a count of available resources.</para>
+<para><simplesect kind="note"><para>This semaphore is designed for cooperative multitasking only. Tasks must check <ref refid="classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e" kindref="member">wait()</ref> and yield if no resources are available. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="590" column="1" bodyfile="FsmOS.h" bodystart="591" bodyend="628"/>
+    <listofallmembers>
+      <member refid="classSemaphore_1a3a416166d840dc83b6283b20bccd072a" prot="private" virt="non-virtual"><scope>Semaphore</scope><name>count</name></member>
+      <member refid="classSemaphore_1a0c65b57daf4e089e6e6241f4669d6f1f" prot="public" virt="non-virtual"><scope>Semaphore</scope><name>getCount</name></member>
+      <member refid="classSemaphore_1a5dc46274b490015edf89edf3048512a8" prot="public" virt="non-virtual"><scope>Semaphore</scope><name>getMaxCount</name></member>
+      <member refid="classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e" prot="private" virt="non-virtual"><scope>Semaphore</scope><name>max_count</name></member>
+      <member refid="classSemaphore_1a9f8febef61d91a380337f05e3fc0678c" prot="public" virt="non-virtual"><scope>Semaphore</scope><name>Semaphore</name></member>
+      <member refid="classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a" prot="public" virt="non-virtual"><scope>Semaphore</scope><name>signal</name></member>
+      <member refid="classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e" prot="public" virt="non-virtual"><scope>Semaphore</scope><name>wait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

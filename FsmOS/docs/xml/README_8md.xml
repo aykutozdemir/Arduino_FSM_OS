@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="README_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>FsmOS<sp/>-<sp/>Arduino<sp/>Finite<sp/>State<sp/>Machine<sp/>Operating<sp/>System</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A<sp/>lightweight,<sp/>cooperative<sp/>task<sp/>scheduler<sp/>for<sp/>Arduino<sp/>that<sp/>helps<sp/>you<sp/>organize<sp/>your<sp/>code<sp/>into<sp/>independent<sp/>tasks<sp/>and<sp/>manage<sp/>communication<sp/>between<sp/>them.<sp/>This<sp/>library<sp/>is<sp/>perfect<sp/>for<sp/>projects<sp/>that<sp/>need<sp/>to<sp/>handle<sp/>multiple<sp/>operations<sp/>without<sp/>blocking<sp/>or<sp/>complex<sp/>interrupt<sp/>management.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Key<sp/>Features</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>**Cooperative<sp/>Multitasking**:<sp/>Run<sp/>multiple<sp/>tasks<sp/>without<sp/>preemption</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Message<sp/>Passing**:<sp/>Inter-task<sp/>communication<sp/>with<sp/>publish/subscribe<sp/>(type<sp/>+<sp/>arg<sp/>only)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Memory<sp/>Efficient**:<sp/>Optimized<sp/>for<sp/>AVR<sp/>microcontrollers<sp/>with<sp/>accurate<sp/>memory<sp/>reporting</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Debug<sp/>Support**:<sp/>Built-in<sp/>logging<sp/>and<sp/>diagnostics<sp/>with<sp/>formatted<sp/>output</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Task<sp/>Budgeting**:<sp/>Prevent<sp/>message<sp/>queue<sp/>overruns<sp/>with<sp/>per-task<sp/>message<sp/>budgets</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Memory<sp/>Monitoring**:<sp/>Real-time<sp/>RAM,<sp/>stack,<sp/>heap,<sp/>flash,<sp/>and<sp/>EEPROM<sp/>usage<sp/>tracking</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Stack<sp/>Canary<sp/>Protection**:<sp/>Automatic<sp/>stack<sp/>overflow<sp/>detection</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Memory<sp/>Leak<sp/>Detection**:<sp/>Built-in<sp/>memory<sp/>allocation<sp/>tracking</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Task<sp/>Limit<sp/>Control**:<sp/>Configurable<sp/>maximum<sp/>task<sp/>count<sp/>based<sp/>on<sp/>topic<sp/>bitfield<sp/>size</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Installation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Arduino<sp/>IDE<sp/>Library<sp/>Manager<sp/>(Recommended)</highlight></codeline>
+<codeline><highlight class="normal">1.<sp/>Open<sp/>Arduino<sp/>IDE</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Go<sp/>to<sp/>`Sketch<sp/>&gt;<sp/>Include<sp/>Library<sp/>&gt;<sp/>Manage<sp/>Libraries...`</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>Search<sp/>for<sp/>&quot;FsmOS&quot;</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>Click<sp/>Install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Manual<sp/>Installation</highlight></codeline>
+<codeline><highlight class="normal">1.<sp/>Download<sp/>this<sp/>repository</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Copy<sp/>the<sp/>`FsmOS`<sp/>folder<sp/>to<sp/>your<sp/>Arduino<sp/>libraries<sp/>directory</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>Restart<sp/>Arduino<sp/>IDE</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Quick<sp/>Start</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;FsmOS.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Define<sp/>a<sp/>simple<sp/>blinking<sp/>task</highlight></codeline>
+<codeline><highlight class="normal">class<sp/>BlinkTask<sp/>:<sp/>public<sp/>Task</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>BlinkTask()<sp/>:<sp/>Task(F(&quot;Blinker&quot;))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set_period(500);<sp/><sp/>//<sp/>Run<sp/>every<sp/>500ms</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>getMaxMessageBudget()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>0;<sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>getTaskStructSize()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>sizeof(*this);<sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>on_start()<sp/>override</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pinMode(LED_BUILTIN,<sp/>OUTPUT);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>logInfo(F(&quot;Blink<sp/>task<sp/>started&quot;));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>step()<sp/>override</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(LED_BUILTIN,<sp/>!digitalRead(LED_BUILTIN));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">BlinkTask<sp/>blinker;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>setup()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Serial.begin(9600);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>OS.begin_with_logger();<sp/><sp/>//<sp/>Initialize<sp/>with<sp/>logging</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>OS.add(&amp;blinker);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>loop()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>OS.loop_once();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Examples</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Check<sp/>the<sp/>`examples`<sp/>folder<sp/>for<sp/>more<sp/>demonstrations:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`BasicBlink`:<sp/>Simple<sp/>LED<sp/>blinking<sp/>task</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`ButtonLed`:<sp/>Inter-task<sp/>communication<sp/>with<sp/>publish/subscribe</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`Diagnostics`:<sp/>System<sp/>monitoring<sp/>and<sp/>debugging</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`Logger`:<sp/>Using<sp/>the<sp/>built-in<sp/>logging<sp/>system<sp/>with<sp/>different<sp/>levels</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`MemoryMonitoring`:<sp/>Comprehensive<sp/>memory<sp/>usage<sp/>tracking</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`MemoryOptimization`:<sp/>Memory-efficient<sp/>coding<sp/>practices</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`MemoryOptimizedTimers`:<sp/>Timer<sp/>usage<sp/>optimization</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`MessageQueueing`:<sp/>Message<sp/>handling<sp/>during<sp/>task<sp/>suspension</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`TaskLifecycle`:<sp/>Task<sp/>state<sp/>management</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`DynamicTasks`:<sp/>Runtime<sp/>task<sp/>creation/deletion</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`TaskNames`:<sp/>Named<sp/>tasks<sp/>and<sp/>state<sp/>tracking</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`MutexExample`:<sp/>Mutual<sp/>exclusion<sp/>synchronization</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`SemaphoreExample`:<sp/>Semaphore-based<sp/>synchronization</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`TaskTimingMonitoring`:<sp/>Task<sp/>execution<sp/>timing<sp/>analysis</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Key<sp/>Concepts</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Task<sp/>Structure</highlight></codeline>
+<codeline><highlight class="normal">Every<sp/>task<sp/>must<sp/>implement<sp/>two<sp/>pure<sp/>virtual<sp/>methods:</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>X;<sp/>}<sp/><sp/>//<sp/>Max<sp/>messages<sp/>per<sp/>step</highlight></codeline>
+<codeline><highlight class="normal">uint16_t<sp/>getTaskStructSize()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>sizeof(*this);<sp/>}<sp/><sp/>//<sp/>Memory<sp/>tracking</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Message<sp/>System</highlight></codeline>
+<codeline><highlight class="normal">FsmOS<sp/>uses<sp/>a<sp/>simplified<sp/>message<sp/>system<sp/>with<sp/>only<sp/>type<sp/>and<sp/>argument<sp/>data:</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Publish<sp/>a<sp/>message</highlight></codeline>
+<codeline><highlight class="normal">publish(TOPIC_LED_EVENTS,<sp/>EVT_LED_ON,<sp/>1);<sp/><sp/>//<sp/>topic,<sp/>type,<sp/>arg</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Handle<sp/>messages</highlight></codeline>
+<codeline><highlight class="normal">void<sp/>on_msg(const<sp/>MsgData<sp/>&amp;msg)<sp/>override</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>switch<sp/>(msg.type)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>case<sp/>EVT_LED_ON:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(LED_PIN,<sp/>msg.arg);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>break;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Message<sp/>Budgeting</highlight></codeline>
+<codeline><highlight class="normal">Tasks<sp/>declare<sp/>their<sp/>maximum<sp/>message<sp/>production<sp/>budget.<sp/>The<sp/>scheduler<sp/>ensures<sp/>sufficient<sp/>queue<sp/>space<sp/>before<sp/>execution:</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Button<sp/>task<sp/>that<sp/>publishes<sp/>events</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>2;<sp/>}<sp/><sp/>//<sp/>Press<sp/>+<sp/>Release</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>LED<sp/>task<sp/>that<sp/>only<sp/>receives</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()<sp/>const<sp/>override<sp/>{<sp/>return<sp/>1;<sp/>}<sp/><sp/>//<sp/>Minimal</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Memory<sp/>Monitoring</highlight></codeline>
+<codeline><highlight class="normal">Access<sp/>comprehensive<sp/>memory<sp/>information:</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">SystemMemoryInfo<sp/>info;</highlight></codeline>
+<codeline><highlight class="normal">OS.getSystemMemoryInfo(info);</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>info.freeRam,<sp/>info.stackUsed,<sp/>info.flashUsed,<sp/>info.eepromUsed,<sp/>etc.</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Formatted<sp/>Logging</highlight></codeline>
+<codeline><highlight class="normal">Use<sp/>memory-efficient<sp/>formatted<sp/>logging:</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">logDebugf(F(&quot;Value:<sp/>%d,<sp/>Status:<sp/>%s&quot;),<sp/>value,<sp/>status);</highlight></codeline>
+<codeline><highlight class="normal">logInfof(F(&quot;Operation<sp/>%d<sp/>complete&quot;),<sp/>operation_id);</highlight></codeline>
+<codeline><highlight class="normal">logWarnf(F(&quot;Low<sp/>memory:<sp/>%d<sp/>bytes&quot;),<sp/>free_memory);</highlight></codeline>
+<codeline><highlight class="normal">logErrorf(F(&quot;Failed<sp/>after<sp/>%d<sp/>attempts&quot;),<sp/>attempts);</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Configuration<sp/>Parameters</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Stack<sp/>Canary<sp/>Protection</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>FSMOS_STACK_CANARY_MARGIN</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>FSMOS_STACK_CANARY_MARGIN<sp/>32<sp/><sp/>//<sp/>Safety<sp/>margin<sp/>in<sp/>bytes</highlight></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Topic<sp/>Bitfield<sp/>Size</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>TOPIC_BITFIELD_SIZE</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>TOPIC_BITFIELD_SIZE<sp/>16<sp/><sp/>//<sp/>8,<sp/>16,<sp/>or<sp/>32<sp/>topics<sp/>max</highlight></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Message<sp/>Pool<sp/>Size</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>MAX_MESSAGE_POOL_SIZE</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>MAX_MESSAGE_POOL_SIZE<sp/>32<sp/><sp/>//<sp/>Maximum<sp/>messages<sp/>in<sp/>pool</highlight></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Default<sp/>Values</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>uint8_t<sp/>DEFAULT_TASK_MESSAGE_BUDGET<sp/>=<sp/>1;<sp/><sp/>//<sp/>Messages<sp/>per<sp/>step</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>uint16_t<sp/>DEFAULT_TASK_PERIOD<sp/>=<sp/>100;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Default<sp/>period<sp/>in<sp/>ms</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Memory<sp/>Optimization<sp/>Features</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Stack<sp/>Canary</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Automatic<sp/>stack<sp/>overflow<sp/>detection</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Configurable<sp/>safety<sp/>margin</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Marks<sp/>entire<sp/>free<sp/>RAM<sp/>region<sp/>between<sp/>heap<sp/>and<sp/>stack</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Memory<sp/>Leak<sp/>Detection</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Tracks<sp/>all<sp/>memory<sp/>allocations<sp/>and<sp/>deallocations</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Provides<sp/>peak<sp/>usage<sp/>and<sp/>current<sp/>usage<sp/>statistics</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Always<sp/>active<sp/>(no<sp/>conditional<sp/>compilation)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Task<sp/>Limit<sp/>Control</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Prevents<sp/>adding<sp/>more<sp/>tasks<sp/>than<sp/>`MAX_TOPICS`<sp/>allows</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Runtime<sp/>logging<sp/>and<sp/>rejection<sp/>of<sp/>excess<sp/>tasks</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Based<sp/>on<sp/>`TOPIC_BITFIELD_SIZE`<sp/>configuration</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Message<sp/>Data<sp/>Optimization</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Simplified<sp/>message<sp/>structure<sp/>(type<sp/>+<sp/>arg<sp/>only)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>No<sp/>dynamic<sp/>data<sp/>allocation<sp/>for<sp/>messages</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Reduced<sp/>memory<sp/>footprint<sp/>per<sp/>message</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Platformio<sp/>Configuration</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">For<sp/>optimal<sp/>performance<sp/>with<sp/>Arduino<sp/>Nano,<sp/>use<sp/>these<sp/>build<sp/>flags:</highlight></codeline>
+<codeline><highlight class="normal">```ini</highlight></codeline>
+<codeline><highlight class="normal">build_flags<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-Os<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Size<sp/>optimization</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-ffunction-sections<sp/><sp/><sp/><sp/>#<sp/>Function<sp/>sectioning</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fdata-sections<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Data<sp/>sectioning</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-exceptions<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Remove<sp/>exception<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DTOPIC_BITFIELD_SIZE=16<sp/><sp/>#<sp/>Topic<sp/>bitfield<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-Wl,--gc-sections<sp/><sp/><sp/><sp/><sp/>#<sp/>Dead<sp/>code<sp/>elimination</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-lto<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Disable<sp/>LTO</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DNDEBUG<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Remove<sp/>debug<sp/>symbols</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-mmcu=atmega328p<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>AVR<sp/>architecture</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-stack-protector<sp/><sp/>#<sp/>Reduce<sp/>stack<sp/>usage</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fpack-struct=1<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Memory<sp/>alignment</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DFSMOS_FLASH_SIZE=30720<sp/><sp/>#<sp/>Flash<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DFSMOS_EEPROM_SIZE=1024<sp/><sp/>#<sp/>EEPROM<sp/>size</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Memory<sp/>Usage</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Typical<sp/>memory<sp/>usage<sp/>on<sp/>Arduino<sp/>Nano<sp/>(ATmega328P):</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**RAM**:<sp/>~1.3KB<sp/>(64%<sp/>of<sp/>2KB)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Flash**:<sp/>~29KB<sp/>(95%<sp/>of<sp/>30KB)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Message<sp/>Pool**:<sp/>32<sp/>messages<sp/>×<sp/>5<sp/>bytes<sp/>=<sp/>160<sp/>bytes</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**Stack<sp/>Canary**:<sp/>32<sp/>bytes<sp/>safety<sp/>margin</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>API<sp/>Reference</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Core<sp/>Functions</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.begin()`<sp/>-<sp/>Initialize<sp/>scheduler</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.begin_with_logger()`<sp/>-<sp/>Initialize<sp/>with<sp/>logging</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.add(task)`<sp/>-<sp/>Add<sp/>task<sp/>to<sp/>scheduler</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.loop_once()`<sp/>-<sp/>Run<sp/>one<sp/>scheduler<sp/>cycle</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.getTaskCount()`<sp/>-<sp/>Get<sp/>current<sp/>task<sp/>count</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.getFreeMemory()`<sp/>-<sp/>Get<sp/>free<sp/>RAM</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Task<sp/>Methods</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`set_period(ms)`<sp/>-<sp/>Set<sp/>task<sp/>period</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`set_priority(level)`<sp/>-<sp/>Set<sp/>task<sp/>priority</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`publish(topic,<sp/>type,<sp/>arg)`<sp/>-<sp/>Publish<sp/>message</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`subscribe(topic)`<sp/>-<sp/>Subscribe<sp/>to<sp/>topic</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`logInfo(msg)`<sp/>-<sp/>Log<sp/>info<sp/>message</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`logDebug(msg)`<sp/>-<sp/>Log<sp/>debug<sp/>message</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`logWarn(msg)`<sp/>-<sp/>Log<sp/>warning<sp/>message</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`logError(msg)`<sp/>-<sp/>Log<sp/>error<sp/>message</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Memory<sp/>Functions</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.getSystemMemoryInfo(info)`<sp/>-<sp/>Get<sp/>comprehensive<sp/>memory<sp/>info</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.getMemoryStats()`<sp/>-<sp/>Get<sp/>memory<sp/>allocation<sp/>statistics</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`OS.getTaskStats()`<sp/>-<sp/>Get<sp/>task<sp/>execution<sp/>statistics</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Troubleshooting</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Common<sp/>Issues</highlight></codeline>
+<codeline><highlight class="normal">1.<sp/>**Task<sp/>limit<sp/>reached**:<sp/>Reduce<sp/>`TOPIC_BITFIELD_SIZE`<sp/>or<sp/>optimize<sp/>task<sp/>count</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>**Memory<sp/>overflow**:<sp/>Check<sp/>stack<sp/>canary<sp/>warnings<sp/>and<sp/>reduce<sp/>memory<sp/>usage</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>**Message<sp/>queue<sp/>full**:<sp/>Increase<sp/>`MAX_MESSAGE_POOL_SIZE`<sp/>or<sp/>optimize<sp/>message<sp/>budgets</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>**Compilation<sp/>errors**:<sp/>Ensure<sp/>all<sp/>required<sp/>methods<sp/>are<sp/>implemented</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Debug<sp/>Commands</highlight></codeline>
+<codeline><highlight class="normal">Use<sp/>serial<sp/>commands<sp/>for<sp/>debugging:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`s`<sp/>-<sp/>System<sp/>statistics</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`mem`<sp/>-<sp/>Memory<sp/>information</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`tl`<sp/>-<sp/>Task<sp/>limit<sp/>check</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`st`<sp/>-<sp/>Task<sp/>status</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Contributing</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>Fork<sp/>the<sp/>repository</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Create<sp/>your<sp/>feature<sp/>branch</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>Commit<sp/>your<sp/>changes</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>Push<sp/>to<sp/>the<sp/>branch</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>Create<sp/>a<sp/>Pull<sp/>Request</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>License</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>project<sp/>is<sp/>licensed<sp/>under<sp/>the<sp/>MIT<sp/>License.<sp/>See<sp/>the<sp/>LICENSE<sp/>file<sp/>for<sp/>details.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Changelog</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Version<sp/>1.3.0</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Removed<sp/>message<sp/>data<sp/>system<sp/>for<sp/>memory<sp/>optimization</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Enhanced<sp/>stack<sp/>canary<sp/>protection</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Added<sp/>task<sp/>limit<sp/>control</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Improved<sp/>memory<sp/>leak<sp/>detection</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Optimized<sp/>message<sp/>structure<sp/>(type<sp/>+<sp/>arg<sp/>only)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Reduced<sp/>memory<sp/>footprint<sp/>per<sp/>message<sp/>by<sp/>7<sp/>bytes</highlight></codeline>
+    </programlisting>
+    <location file="README.md"/>
+  </compounddef>
+</doxygen>

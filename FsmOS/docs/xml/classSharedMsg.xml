@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classSharedMsg" kind="class" language="C++" prot="public">
+    <compoundname>SharedMsg</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" prot="private" static="no" mutable="no">
+        <type>MsgData *</type>
+        <definition>MsgData* SharedMsg::msgData</definition>
+        <argsstring></argsstring>
+        <name>msgData</name>
+        <qualifiedname>SharedMsg::msgData</qualifiedname>
+        <briefdescription>
+<para>Pointer to the wrapped MsgData. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="369" column="13" bodyfile="FsmOS.h" bodystart="369" bodyend="-1"/>
+        <referencedby refid="classSharedMsg_1aa20f39d8440882aa6260e5802833e67e" compoundref="FsmOS_8cpp" startline="176" endline="176">getData</referencedby>
+        <referencedby refid="classSharedMsg_1aaba8448183f8a5204bd8bc887c7b4ec3" compoundref="FsmOS_8cpp" startline="180" endline="180">isValid</referencedby>
+        <referencedby refid="classSharedMsg_1ae7a947149acda480996050de99ee1b88" compoundref="FsmOS_8cpp" startline="178" endline="178">operator-&gt;</referencedby>
+        <referencedby refid="classSharedMsg_1ad7ce8df960b49c88f0d4264c23c93f81" compoundref="FsmOS_8cpp" startline="121" endline="156">operator=</referencedby>
+        <referencedby refid="classSharedMsg_1a458f5ccc07be87e716ef117e2eb0bce9" compoundref="FsmOS_8cpp" startline="163" endline="174">release</referencedby>
+        <referencedby refid="classSharedMsg_1a46d80a6afd7326ea7e692e14d2cbc6b8" compoundref="FsmOS_8cpp" startline="113" endline="119">SharedMsg</referencedby>
+        <referencedby refid="classSharedMsg_1a432ceb0eefbe4e0affadab97f3fd2c36" compoundref="FsmOS_8cpp" startline="105" endline="111">SharedMsg</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSharedMsg_1a71c37ab34ce77dcdf80c756635b68ff2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SharedMsg::SharedMsg</definition>
+        <argsstring>()</argsstring>
+        <name>SharedMsg</name>
+        <qualifiedname>SharedMsg::SharedMsg</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an empty <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> with no associated data </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="320" column="5" bodyfile="FsmOS.cpp" bodystart="103" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1a432ceb0eefbe4e0affadab97f3fd2c36" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SharedMsg::SharedMsg</definition>
+        <argsstring>(MsgData *data)</argsstring>
+        <name>SharedMsg</name>
+        <qualifiedname>SharedMsg::SharedMsg</qualifiedname>
+        <param>
+          <type>MsgData *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from MsgData pointer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to MsgData to wrap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Increments reference count of the message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="327" column="14" bodyfile="FsmOS.cpp" bodystart="105" bodyend="111"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1a46d80a6afd7326ea7e692e14d2cbc6b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SharedMsg::SharedMsg</definition>
+        <argsstring>(const SharedMsg &amp;other)</argsstring>
+        <name>SharedMsg</name>
+        <qualifiedname>SharedMsg::SharedMsg</qualifiedname>
+        <param>
+          <type>const <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> to copy from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Increments reference count of the shared message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="334" column="5" bodyfile="FsmOS.cpp" bodystart="113" bodyend="119"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1ad7ce8df960b49c88f0d4264c23c93f81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> &amp;</type>
+        <definition>SharedMsg &amp; SharedMsg::operator=</definition>
+        <argsstring>(const SharedMsg &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>SharedMsg::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> to assign from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to this <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> </para>
+</simplesect>
+<simplesect kind="note"><para>Properly manages reference counting </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="342" column="15" bodyfile="FsmOS.cpp" bodystart="121" bodyend="156"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee" compoundref="FsmOS_8cpp" startline="236" endline="256">MsgDataPool::deallocate</references>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+        <references refid="classScheduler_1a4025d35f57b05649764c44f3583fc2b6" compoundref="FsmOS_8h" startline="1329">Scheduler::msgPool</references>
+        <references refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" compoundref="FsmOS_8cpp" startline="48">OS</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1a1819d3340c3fa3d00950eb087cd97131" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SharedMsg::~SharedMsg</definition>
+        <argsstring>()</argsstring>
+        <name>~SharedMsg</name>
+        <qualifiedname>SharedMsg::~SharedMsg</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Decrements reference count and frees message if count reaches 0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="348" column="5" bodyfile="FsmOS.cpp" bodystart="158" bodyend="161"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classSharedMsg_1a458f5ccc07be87e716ef117e2eb0bce9" compoundref="FsmOS_8cpp" startline="163" endline="174">release</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1aa20f39d8440882aa6260e5802833e67e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>MsgData *</type>
+        <definition>MsgData * SharedMsg::getData</definition>
+        <argsstring>() const</argsstring>
+        <name>getData</name>
+        <qualifiedname>SharedMsg::getData</qualifiedname>
+        <briefdescription>
+<para>Get raw MsgData pointer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to MsgData, or nullptr if invalid </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="354" column="13" bodyfile="FsmOS.cpp" bodystart="176" bodyend="176"/>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1ae7a947149acda480996050de99ee1b88" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>MsgData *</type>
+        <definition>MsgData * SharedMsg::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <qualifiedname>SharedMsg::operator-&gt;</qualifiedname>
+        <briefdescription>
+<para>Arrow operator for direct access to MsgData. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to MsgData for member access </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="360" column="13" bodyfile="FsmOS.cpp" bodystart="178" bodyend="178"/>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+      </memberdef>
+      <memberdef kind="function" id="classSharedMsg_1aaba8448183f8a5204bd8bc887c7b4ec3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SharedMsg::isValid</definition>
+        <argsstring>() const</argsstring>
+        <name>isValid</name>
+        <qualifiedname>SharedMsg::isValid</qualifiedname>
+        <briefdescription>
+<para>Check if <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> contains valid data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if valid, false if empty or invalid </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="366" column="10" bodyfile="FsmOS.cpp" bodystart="180" bodyend="180"/>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classSharedMsg_1a458f5ccc07be87e716ef117e2eb0bce9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SharedMsg::release</definition>
+        <argsstring>()</argsstring>
+        <name>release</name>
+        <qualifiedname>SharedMsg::release</qualifiedname>
+        <briefdescription>
+<para>Internal method to release reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="370" column="10" bodyfile="FsmOS.cpp" bodystart="163" bodyend="174"/>
+        <references refid="classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee" compoundref="FsmOS_8cpp" startline="236" endline="256">MsgDataPool::deallocate</references>
+        <references refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" compoundref="FsmOS_8h" startline="369">msgData</references>
+        <references refid="classScheduler_1a4025d35f57b05649764c44f3583fc2b6" compoundref="FsmOS_8h" startline="1329">Scheduler::msgPool</references>
+        <references refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" compoundref="FsmOS_8cpp" startline="48">OS</references>
+        <referencedby refid="classSharedMsg_1a1819d3340c3fa3d00950eb087cd97131" compoundref="FsmOS_8cpp" startline="158" endline="161">~SharedMsg</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Smart pointer-like wrapper for MsgData with reference counting. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> provides automatic memory management for messages through reference counting. When the last reference is destroyed, the message is automatically returned to the pool.</para>
+<para><simplesect kind="note"><para>This class is thread-safe for single-threaded cooperative multitasking. </para>
+</simplesect>
+<simplesect kind="warning"><para>Do not use across different scheduler instances. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="313" column="1" bodyfile="FsmOS.h" bodystart="314" bodyend="371"/>
+    <listofallmembers>
+      <member refid="classSharedMsg_1aa20f39d8440882aa6260e5802833e67e" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>getData</name></member>
+      <member refid="classSharedMsg_1aaba8448183f8a5204bd8bc887c7b4ec3" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>isValid</name></member>
+      <member refid="classSharedMsg_1a53039c707f1dc8a52c05f33af2cb24ea" prot="private" virt="non-virtual"><scope>SharedMsg</scope><name>msgData</name></member>
+      <member refid="classSharedMsg_1ae7a947149acda480996050de99ee1b88" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>operator-&gt;</name></member>
+      <member refid="classSharedMsg_1ad7ce8df960b49c88f0d4264c23c93f81" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>operator=</name></member>
+      <member refid="classSharedMsg_1a458f5ccc07be87e716ef117e2eb0bce9" prot="private" virt="non-virtual"><scope>SharedMsg</scope><name>release</name></member>
+      <member refid="classSharedMsg_1a71c37ab34ce77dcdf80c756635b68ff2" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>SharedMsg</name></member>
+      <member refid="classSharedMsg_1a432ceb0eefbe4e0affadab97f3fd2c36" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>SharedMsg</name></member>
+      <member refid="classSharedMsg_1a46d80a6afd7326ea7e692e14d2cbc6b8" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>SharedMsg</name></member>
+      <member refid="classSharedMsg_1a1819d3340c3fa3d00950eb087cd97131" prot="public" virt="non-virtual"><scope>SharedMsg</scope><name>~SharedMsg</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

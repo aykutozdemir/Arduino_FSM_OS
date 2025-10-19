@@ -1,0 +1,455 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_mainpage" xml:lang="en-US">
+<title>FsmOS - Arduino Finite State Machine Operating System</title>
+<indexterm><primary>FsmOS - Arduino Finite State Machine Operating System</primary></indexterm>
+
+<para><anchor xml:id="_index_1md_README"/> A lightweight, cooperative task scheduler for Arduino that helps you organize your code into independent tasks and manage communication between them. This library is perfect for projects that need to handle multiple operations without blocking or complex interrupt management.</para>
+
+<para><formalpara><title>Key Features</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para><emphasis role="bold">Cooperative Multitasking</emphasis>: Run multiple tasks without preemption</para>
+</listitem><listitem>
+<para><emphasis role="bold">Message Passing</emphasis>: Inter-task communication with publish/subscribe (type + arg only)</para>
+</listitem><listitem>
+<para><emphasis role="bold">Memory Efficient</emphasis>: Optimized for AVR microcontrollers with accurate memory reporting</para>
+</listitem><listitem>
+<para><emphasis role="bold">Debug Support</emphasis>: Built-in logging and diagnostics with formatted output</para>
+</listitem><listitem>
+<para><emphasis role="bold"><link linkend="_classTask">Task</link> Budgeting</emphasis>: Prevent message queue overruns with per-task message budgets</para>
+</listitem><listitem>
+<para><emphasis role="bold">Memory Monitoring</emphasis>: Real-time RAM, stack, heap, flash, and EEPROM usage tracking</para>
+</listitem><listitem>
+<para><emphasis role="bold">Stack Canary Protection</emphasis>: Automatic stack overflow detection</para>
+</listitem><listitem>
+<para><emphasis role="bold">Memory Leak Detection</emphasis>: Built-in memory allocation tracking</para>
+</listitem><listitem>
+<para><emphasis role="bold"><link linkend="_classTask">Task</link> Limit Control</emphasis>: Configurable maximum task count based on topic bitfield size</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Installation</title></formalpara>
+</para>
+
+<para><formalpara><title>Arduino IDE Library Manager (Recommended)</title></formalpara>
+</para>
+
+<para><orderedlist>
+<listitem>
+<para>Open Arduino IDE</para>
+</listitem><listitem>
+<para>Go to <computeroutput>Sketch &gt; Include Library &gt; Manage Libraries...</computeroutput></para>
+</listitem><listitem>
+<para>Search for &quot;FsmOS&quot;</para>
+</listitem><listitem>
+<para>Click Install</para>
+</listitem></orderedlist>
+</para>
+
+<para><formalpara><title>Manual Installation</title></formalpara>
+</para>
+
+<para><orderedlist>
+<listitem>
+<para>Download this repository</para>
+</listitem><listitem>
+<para>Copy the <computeroutput>FsmOS</computeroutput> folder to your Arduino libraries directory</para>
+</listitem><listitem>
+<para>Restart Arduino IDE</para>
+</listitem></orderedlist>
+</para>
+
+<para><formalpara><title>Quick Start</title></formalpara>
+</para>
+
+<para><literallayout><computeroutput>#include&#32;&lt;FsmOS.h&gt;
+
+//&#32;Define&#32;a&#32;simple&#32;blinking&#32;task
+class&#32;BlinkTask&#32;:&#32;public&#32;Task
+{
+public:
+&#32;&#32;&#32;&#32;BlinkTask()&#32;:&#32;Task(F(&quot;Blinker&quot;))
+&#32;&#32;&#32;&#32;{
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set_period(500);&#32;&#32;//&#32;Run&#32;every&#32;500ms
+&#32;&#32;&#32;&#32;}
+
+&#32;&#32;&#32;&#32;uint8_t&#32;getMaxMessageBudget()&#32;const&#32;override&#32;{&#32;return&#32;0;&#32;}
+&#32;&#32;&#32;&#32;uint16_t&#32;getTaskStructSize()&#32;const&#32;override&#32;{&#32;return&#32;sizeof(*this);&#32;}
+
+&#32;&#32;&#32;&#32;void&#32;on_start()&#32;override
+&#32;&#32;&#32;&#32;{
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pinMode(LED_BUILTIN,&#32;OUTPUT);
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;logInfo(F(&quot;Blink&#32;task&#32;started&quot;));
+&#32;&#32;&#32;&#32;}
+
+&#32;&#32;&#32;&#32;void&#32;step()&#32;override
+&#32;&#32;&#32;&#32;{
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;digitalWrite(LED_BUILTIN,&#32;!digitalRead(LED_BUILTIN));
+&#32;&#32;&#32;&#32;}
+};
+
+BlinkTask&#32;blinker;
+
+void&#32;setup()
+{
+&#32;&#32;&#32;&#32;Serial.begin(9600);
+&#32;&#32;&#32;&#32;OS.begin_with_logger();&#32;&#32;//&#32;Initialize&#32;with&#32;logging
+&#32;&#32;&#32;&#32;OS.add(&amp;blinker);
+}
+
+void&#32;loop()
+{
+&#32;&#32;&#32;&#32;OS.loop_once();
+}
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Examples</title></formalpara>
+</para>
+
+<para>Check the <computeroutput>examples</computeroutput> folder for more demonstrations:<itemizedlist>
+<listitem>
+<para><computeroutput>BasicBlink</computeroutput>: Simple LED blinking task</para>
+</listitem><listitem>
+<para><computeroutput>ButtonLed</computeroutput>: Inter-task communication with publish/subscribe</para>
+</listitem><listitem>
+<para><computeroutput>Diagnostics</computeroutput>: System monitoring and debugging</para>
+</listitem><listitem>
+<para><computeroutput>Logger</computeroutput>: Using the built-in logging system with different levels</para>
+</listitem><listitem>
+<para><computeroutput>MemoryMonitoring</computeroutput>: Comprehensive memory usage tracking</para>
+</listitem><listitem>
+<para><computeroutput>MemoryOptimization</computeroutput>: Memory-efficient coding practices</para>
+</listitem><listitem>
+<para><computeroutput>MemoryOptimizedTimers</computeroutput>: Timer usage optimization</para>
+</listitem><listitem>
+<para><computeroutput>MessageQueueing</computeroutput>: Message handling during task suspension</para>
+</listitem><listitem>
+<para><computeroutput>TaskLifecycle</computeroutput>: <link linkend="_classTask">Task</link> state management</para>
+</listitem><listitem>
+<para><computeroutput>DynamicTasks</computeroutput>: Runtime task creation/deletion</para>
+</listitem><listitem>
+<para><computeroutput>TaskNames</computeroutput>: Named tasks and state tracking</para>
+</listitem><listitem>
+<para><computeroutput>MutexExample</computeroutput>: Mutual exclusion synchronization</para>
+</listitem><listitem>
+<para><computeroutput>SemaphoreExample</computeroutput>: Semaphore-based synchronization</para>
+</listitem><listitem>
+<para><computeroutput>TaskTimingMonitoring</computeroutput>: <link linkend="_classTask">Task</link> execution timing analysis</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Key Concepts</title></formalpara>
+</para>
+
+<para><formalpara><title><link linkend="_classTask">Task</link> Structure</title></formalpara>
+</para>
+
+<para>Every task must implement two pure virtual methods: <literallayout><computeroutput>uint8_t&#32;getMaxMessageBudget()&#32;const&#32;override&#32;{&#32;return&#32;X;&#32;}&#32;&#32;//&#32;Max&#32;messages&#32;per&#32;step
+uint16_t&#32;getTaskStructSize()&#32;const&#32;override&#32;{&#32;return&#32;sizeof(*this);&#32;}&#32;&#32;//&#32;Memory&#32;tracking
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Message System</title></formalpara>
+</para>
+
+<para>FsmOS uses a simplified message system with only type and argument data: <literallayout><computeroutput>//&#32;Publish&#32;a&#32;message
+publish(TOPIC_LED_EVENTS,&#32;EVT_LED_ON,&#32;1);&#32;&#32;//&#32;topic,&#32;type,&#32;arg
+
+//&#32;Handle&#32;messages
+void&#32;on_msg(const&#32;MsgData&#32;&amp;msg)&#32;override
+{
+&#32;&#32;&#32;&#32;switch&#32;(msg.type)
+&#32;&#32;&#32;&#32;{
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;case&#32;EVT_LED_ON:
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;digitalWrite(LED_PIN,&#32;msg.arg);
+&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;break;
+&#32;&#32;&#32;&#32;}
+}
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Message Budgeting</title></formalpara>
+</para>
+
+<para>Tasks declare their maximum message production budget. The scheduler ensures sufficient queue space before execution: <literallayout><computeroutput>//&#32;Button&#32;task&#32;that&#32;publishes&#32;events
+uint8_t&#32;getMaxMessageBudget()&#32;const&#32;override&#32;{&#32;return&#32;2;&#32;}&#32;&#32;//&#32;Press&#32;+&#32;Release
+
+//&#32;LED&#32;task&#32;that&#32;only&#32;receives
+uint8_t&#32;getMaxMessageBudget()&#32;const&#32;override&#32;{&#32;return&#32;1;&#32;}&#32;&#32;//&#32;Minimal
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Memory Monitoring</title></formalpara>
+</para>
+
+<para>Access comprehensive memory information: <literallayout><computeroutput>SystemMemoryInfo&#32;info;
+OS.getSystemMemoryInfo(info);
+//&#32;info.freeRam,&#32;info.stackUsed,&#32;info.flashUsed,&#32;info.eepromUsed,&#32;etc.
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Formatted Logging</title></formalpara>
+</para>
+
+<para>Use memory-efficient formatted logging: <literallayout><computeroutput>logDebugf(F(&quot;Value:&#32;%d,&#32;Status:&#32;%s&quot;),&#32;value,&#32;status);
+logInfof(F(&quot;Operation&#32;%d&#32;complete&quot;),&#32;operation_id);
+logWarnf(F(&quot;Low&#32;memory:&#32;%d&#32;bytes&quot;),&#32;free_memory);
+logErrorf(F(&quot;Failed&#32;after&#32;%d&#32;attempts&quot;),&#32;attempts);
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Configuration Parameters</title></formalpara>
+</para>
+
+<para><formalpara><title>Stack Canary Protection</title></formalpara>
+</para>
+
+<para><literallayout><computeroutput>#ifndef&#32;FSMOS_STACK_CANARY_MARGIN
+#define&#32;FSMOS_STACK_CANARY_MARGIN&#32;32&#32;&#32;//&#32;Safety&#32;margin&#32;in&#32;bytes
+#endif
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Topic Bitfield Size</title></formalpara>
+</para>
+
+<para><literallayout><computeroutput>#ifndef&#32;TOPIC_BITFIELD_SIZE
+#define&#32;TOPIC_BITFIELD_SIZE&#32;16&#32;&#32;//&#32;8,&#32;16,&#32;or&#32;32&#32;topics&#32;max
+#endif
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Message Pool Size</title></formalpara>
+</para>
+
+<para><literallayout><computeroutput>#ifndef&#32;MAX_MESSAGE_POOL_SIZE
+#define&#32;MAX_MESSAGE_POOL_SIZE&#32;32&#32;&#32;//&#32;Maximum&#32;messages&#32;in&#32;pool
+#endif
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Default Values</title></formalpara>
+</para>
+
+<para><literallayout><computeroutput>const&#32;uint8_t&#32;DEFAULT_TASK_MESSAGE_BUDGET&#32;=&#32;1;&#32;&#32;//&#32;Messages&#32;per&#32;step
+const&#32;uint16_t&#32;DEFAULT_TASK_PERIOD&#32;=&#32;100;&#32;&#32;&#32;&#32;&#32;&#32;&#32;//&#32;Default&#32;period&#32;in&#32;ms
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Memory Optimization Features</title></formalpara>
+</para>
+
+<para><formalpara><title>Stack Canary</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Automatic stack overflow detection</para>
+</listitem><listitem>
+<para>Configurable safety margin</para>
+</listitem><listitem>
+<para>Marks entire free RAM region between heap and stack</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Memory Leak Detection</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Tracks all memory allocations and deallocations</para>
+</listitem><listitem>
+<para>Provides peak usage and current usage statistics</para>
+</listitem><listitem>
+<para>Always active (no conditional compilation)</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title><link linkend="_classTask">Task</link> Limit Control</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Prevents adding more tasks than <computeroutput>MAX_TOPICS</computeroutput> allows</para>
+</listitem><listitem>
+<para>Runtime logging and rejection of excess tasks</para>
+</listitem><listitem>
+<para>Based on <computeroutput>TOPIC_BITFIELD_SIZE</computeroutput> configuration</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Message Data Optimization</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Simplified message structure (type + arg only)</para>
+</listitem><listitem>
+<para>No dynamic data allocation for messages</para>
+</listitem><listitem>
+<para>Reduced memory footprint per message</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Platformio Configuration</title></formalpara>
+</para>
+
+<para>For optimal performance with Arduino Nano, use these build flags: <literallayout><computeroutput>build_flags&#32;=
+&#32;&#32;-Os&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Size&#32;optimization
+&#32;&#32;-ffunction-sections&#32;&#32;&#32;&#32;#&#32;Function&#32;sectioning
+&#32;&#32;-fdata-sections&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Data&#32;sectioning
+&#32;&#32;-fno-exceptions&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Remove&#32;exception&#32;handling
+&#32;&#32;-DTOPIC_BITFIELD_SIZE=16&#32;&#32;#&#32;Topic&#32;bitfield&#32;size
+&#32;&#32;-Wl,--gc-sections&#32;&#32;&#32;&#32;&#32;#&#32;Dead&#32;code&#32;elimination
+&#32;&#32;-fno-lto&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Disable&#32;LTO
+&#32;&#32;-DNDEBUG&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Remove&#32;debug&#32;symbols
+&#32;&#32;-mmcu=atmega328p&#32;&#32;&#32;&#32;&#32;&#32;#&#32;AVR&#32;architecture
+&#32;&#32;-fno-stack-protector&#32;&#32;#&#32;Reduce&#32;stack&#32;usage
+&#32;&#32;-fpack-struct=1&#32;&#32;&#32;&#32;&#32;&#32;&#32;#&#32;Memory&#32;alignment
+&#32;&#32;-DFSMOS_FLASH_SIZE=30720&#32;&#32;#&#32;Flash&#32;size
+&#32;&#32;-DFSMOS_EEPROM_SIZE=1024&#32;&#32;#&#32;EEPROM&#32;size
+</computeroutput></literallayout></para>
+
+<para><formalpara><title>Memory Usage</title></formalpara>
+</para>
+
+<para>Typical memory usage on Arduino Nano (ATmega328P):<itemizedlist>
+<listitem>
+<para><emphasis role="bold">RAM</emphasis>: ~1.3KB (64% of 2KB)</para>
+</listitem><listitem>
+<para><emphasis role="bold">Flash</emphasis>: ~29KB (95% of 30KB)</para>
+</listitem><listitem>
+<para><emphasis role="bold">Message Pool</emphasis>: 32 messages × 5 bytes = 160 bytes</para>
+</listitem><listitem>
+<para><emphasis role="bold">Stack Canary</emphasis>: 32 bytes safety margin</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>API Reference</title></formalpara>
+</para>
+
+<para><formalpara><title>Core Functions</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para><computeroutput>OS.begin()</computeroutput> - Initialize scheduler</para>
+</listitem><listitem>
+<para><computeroutput>OS.begin_with_logger()</computeroutput> - Initialize with logging</para>
+</listitem><listitem>
+<para><computeroutput>OS.add(task)</computeroutput> - Add task to scheduler</para>
+</listitem><listitem>
+<para><computeroutput>OS.loop_once()</computeroutput> - Run one scheduler cycle</para>
+</listitem><listitem>
+<para><computeroutput>OS.getTaskCount()</computeroutput> - Get current task count</para>
+</listitem><listitem>
+<para><computeroutput>OS.getFreeMemory()</computeroutput> - Get free RAM</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title><link linkend="_classTask">Task</link> Methods</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para><computeroutput>set_period(ms)</computeroutput> - Set task period</para>
+</listitem><listitem>
+<para><computeroutput>set_priority(level)</computeroutput> - Set task priority</para>
+</listitem><listitem>
+<para><computeroutput>publish(topic, type, arg)</computeroutput> - Publish message</para>
+</listitem><listitem>
+<para><computeroutput>subscribe(topic)</computeroutput> - Subscribe to topic</para>
+</listitem><listitem>
+<para><computeroutput>logInfo(msg)</computeroutput> - Log info message</para>
+</listitem><listitem>
+<para><computeroutput>logDebug(msg)</computeroutput> - Log debug message</para>
+</listitem><listitem>
+<para><computeroutput>logWarn(msg)</computeroutput> - Log warning message</para>
+</listitem><listitem>
+<para><computeroutput>logError(msg)</computeroutput> - Log error message</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Memory Functions</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para><computeroutput>OS.getSystemMemoryInfo(info)</computeroutput> - Get comprehensive memory info</para>
+</listitem><listitem>
+<para><computeroutput>OS.getMemoryStats()</computeroutput> - Get memory allocation statistics</para>
+</listitem><listitem>
+<para><computeroutput>OS.getTaskStats()</computeroutput> - Get task execution statistics</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Troubleshooting</title></formalpara>
+</para>
+
+<para><formalpara><title>Common Issues</title></formalpara>
+</para>
+
+<para><orderedlist>
+<listitem>
+<para><emphasis role="bold"><link linkend="_classTask">Task</link> limit reached</emphasis>: Reduce <computeroutput>TOPIC_BITFIELD_SIZE</computeroutput> or optimize task count</para>
+</listitem><listitem>
+<para><emphasis role="bold">Memory overflow</emphasis>: Check stack canary warnings and reduce memory usage</para>
+</listitem><listitem>
+<para><emphasis role="bold">Message queue full</emphasis>: Increase <computeroutput>MAX_MESSAGE_POOL_SIZE</computeroutput> or optimize message budgets</para>
+</listitem><listitem>
+<para><emphasis role="bold">Compilation errors</emphasis>: Ensure all required methods are implemented</para>
+</listitem></orderedlist>
+</para>
+
+<para><formalpara><title>Debug Commands</title></formalpara>
+</para>
+
+<para>Use serial commands for debugging:<itemizedlist>
+<listitem>
+<para><computeroutput>s</computeroutput> - System statistics</para>
+</listitem><listitem>
+<para><computeroutput>mem</computeroutput> - Memory information</para>
+</listitem><listitem>
+<para><computeroutput>tl</computeroutput> - <link linkend="_classTask">Task</link> limit check</para>
+</listitem><listitem>
+<para><computeroutput>st</computeroutput> - <link linkend="_classTask">Task</link> status</para>
+</listitem></itemizedlist>
+</para>
+
+<para><formalpara><title>Contributing</title></formalpara>
+</para>
+
+<para><orderedlist>
+<listitem>
+<para>Fork the repository</para>
+</listitem><listitem>
+<para>Create your feature branch</para>
+</listitem><listitem>
+<para>Commit your changes</para>
+</listitem><listitem>
+<para>Push to the branch</para>
+</listitem><listitem>
+<para>Create a Pull Request</para>
+</listitem></orderedlist>
+</para>
+
+<para><formalpara><title>License</title></formalpara>
+</para>
+
+<para>This project is licensed under the MIT License. See the LICENSE file for details.</para>
+
+<para><formalpara><title>Changelog</title></formalpara>
+</para>
+
+<para><formalpara><title>Version 1.3.0</title></formalpara>
+</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Removed message data system for memory optimization</para>
+</listitem><listitem>
+<para>Enhanced stack canary protection</para>
+</listitem><listitem>
+<para>Added task limit control</para>
+</listitem><listitem>
+<para>Improved memory leak detection</para>
+</listitem><listitem>
+<para>Optimized message structure (type + arg only)</para>
+</listitem><listitem>
+<para>Reduced memory footprint per message by 7 bytes </para>
+</listitem></itemizedlist>
+</para>
+</chapter>

@@ -1,0 +1,9 @@
+<map id="Scheduler::feedWatchdog" name="Scheduler::feedWatchdog">
+<area shape="rect" id="Node000001" title=" " alt="" coords="356,31,527,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="177,5,296,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="342,34,296,28,297,23,342,28"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,55,308,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="342,58,308,62,308,56,342,52"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,55,117,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="152,70,117,70,117,65,152,65"/>
+</map>

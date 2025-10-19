@@ -1,0 +1,9 @@
+<map id="MsgDataPool::deallocate" name="MsgDataPool::deallocate">
+<area shape="rect" id="Node000001" title="Return a MsgData to the pool." alt="" coords="423,31,591,56"/>
+<area shape="rect" id="Node000002" href="$classSharedMsg.html#ad7ce8df960b49c88f0d4264c23c93f81" title="Assignment operator." alt="" coords="224,5,375,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="408,34,375,30,376,25,409,29"/>
+<area shape="rect" id="Node000003" href="$classSharedMsg.html#a458f5ccc07be87e716ef117e2eb0bce9" title="Internal method to release reference." alt="" coords="230,55,369,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="409,57,369,62,369,57,408,52"/>
+<area shape="rect" id="Node000004" href="$classSharedMsg.html#a1819d3340c3fa3d00950eb087cd97131" title="Destructor." alt="" coords="5,55,176,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="216,70,176,70,176,65,216,65"/>
+</map>

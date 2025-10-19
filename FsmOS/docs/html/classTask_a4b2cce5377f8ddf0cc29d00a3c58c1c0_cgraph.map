@@ -1,0 +1,13 @@
+<map id="Task::publish" name="Task::publish">
+<area shape="rect" id="Node000001" title="Publish a message to a topic." alt="" coords="5,55,104,80"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a6212cb4fdc7a3ed5c9e50e97729cff8d" title="Publish a message to a topic." alt="" coords="152,55,335,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,65,138,65,138,70,104,70"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a3c9f6290c6ae7231b96c9ba6da36382b" title="Iterate through all tasks with a function." alt="" coords="391,5,553,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="302,52,398,31,399,36,303,57"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="419,55,525,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="335,65,405,65,405,70,335,70"/>
+<area shape="rect" id="Node000006" href="$classTask.html#a1f356af32a2d49b158ead810225d00be" title="Check if task is subscribed to a topic." alt="" coords="383,104,561,129"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="303,77,399,98,398,104,302,83"/>
+<area shape="rect" id="Node000005" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="609,55,716,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="525,65,595,65,595,70,525,70"/>
+</map>

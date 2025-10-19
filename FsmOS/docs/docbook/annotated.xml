@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_annotated" xml:lang="en-US">
+<title>Class List</title>
+Here are the classes, structs, unions and interfaces with brief descriptions:<link linkend="_classLinkedQueue">LinkedQueue&lt; T &gt;</link>
+<para>Lightweight, interrupt-safe linked queue </para>
+<link linkend="_structMemoryStats">MemoryStats</link>
+<para>Memory tracking statistics </para>
+<link linkend="_classMsgDataPool">MsgDataPool</link>
+<para>Memory pool for efficient MsgData allocation </para>
+<link linkend="_structScheduler_1_1MsgNode">Scheduler::MsgNode</link><link linkend="_classMutex">Mutex</link>
+<para><link linkend="_classMutex">Mutex</link> for cooperative task synchronization </para>
+<link linkend="_structLinkedQueue_1_1Node">LinkedQueue&lt; T &gt;::Node</link>
+<para><link linkend="_structLinkedQueue_1_1Node">Node</link> structure for linked list </para>
+<link linkend="_structScheduler_1_1QueuedMessage">Scheduler::QueuedMessage</link><link linkend="_structResetInfo">ResetInfo</link>
+<para>System reset information </para>
+<link linkend="_classScheduler">Scheduler</link>
+<para>Core scheduler and task manager for FsmOS </para>
+<link linkend="_classSemaphore">Semaphore</link>
+<para><link linkend="_classSemaphore">Semaphore</link> for resource counting and synchronization </para>
+<link linkend="_classSharedMsg">SharedMsg</link>
+<para>Smart pointer-like wrapper for MsgData with reference counting </para>
+<link linkend="_structSystemMemoryInfo">SystemMemoryInfo</link>
+<para>System memory information </para>
+<link linkend="_classTask">Task</link>
+<para>Base class for all tasks in FsmOS </para>
+<link linkend="_structTaskMemoryInfo">TaskMemoryInfo</link>
+<para><link linkend="_classTask">Task</link> memory information </para>
+<link linkend="_structTaskNode">TaskNode</link>
+<para>Node structure for <link linkend="_classTask">Task</link> linked list </para>
+<link linkend="_structTaskStats">TaskStats</link>
+<para><link linkend="_classTask">Task</link> execution statistics </para>
+</section>

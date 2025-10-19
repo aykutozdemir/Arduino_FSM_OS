@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classMutex" kind="class" language="C++" prot="public">
+    <compoundname>Mutex</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classMutex_1a833a30ffb34001c68aa2a37570dbf56e" prot="private" static="no" mutable="no">
+        <type>volatile bool</type>
+        <definition>volatile bool Mutex::locked</definition>
+        <argsstring></argsstring>
+        <name>locked</name>
+        <qualifiedname>Mutex::locked</qualifiedname>
+        <briefdescription>
+<para>Lock state. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="576" column="19" bodyfile="FsmOS.h" bodystart="576" bodyend="-1"/>
+        <referencedby refid="classMutex_1ac54a451ca9a856271f5f434f1aaee3d5" compoundref="FsmOS_8cpp" startline="421" endline="421">isLocked</referencedby>
+        <referencedby refid="classMutex_1a25133a881d7392b966786263d41bde79" compoundref="FsmOS_8cpp" startline="395" endline="407">tryLock</referencedby>
+        <referencedby refid="classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd" compoundref="FsmOS_8cpp" startline="409" endline="419">unlock</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classMutex_1ae818e65daf468eed3d03a3aad59e1281" prot="private" static="no" mutable="no">
+        <type>volatile uint8_t</type>
+        <definition>volatile uint8_t Mutex::owner_id</definition>
+        <argsstring></argsstring>
+        <name>owner_id</name>
+        <qualifiedname>Mutex::owner_id</qualifiedname>
+        <briefdescription>
+<para>ID of owning task. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="577" column="22" bodyfile="FsmOS.h" bodystart="577" bodyend="-1"/>
+        <referencedby refid="classMutex_1ae155c790be1a23e17700cd8b8c2636b4" compoundref="FsmOS_8cpp" startline="423" endline="423">getOwner</referencedby>
+        <referencedby refid="classMutex_1a25133a881d7392b966786263d41bde79" compoundref="FsmOS_8cpp" startline="395" endline="407">tryLock</referencedby>
+        <referencedby refid="classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd" compoundref="FsmOS_8cpp" startline="409" endline="419">unlock</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMutex_1a593423d868daf926c7b0d63a833ae29a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Mutex::Mutex</definition>
+        <argsstring>()</argsstring>
+        <name>Mutex</name>
+        <qualifiedname>Mutex::Mutex</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an unlocked mutex </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="547" column="5" bodyfile="FsmOS.cpp" bodystart="393" bodyend="393"/>
+      </memberdef>
+      <memberdef kind="function" id="classMutex_1a25133a881d7392b966786263d41bde79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Mutex::tryLock</definition>
+        <argsstring>(uint8_t task_id)</argsstring>
+        <name>tryLock</name>
+        <qualifiedname>Mutex::tryLock</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <briefdescription>
+<para>Try to acquire the mutex. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the task attempting to acquire the mutex </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if mutex was acquired, false if already locked </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="554" column="11" bodyfile="FsmOS.cpp" bodystart="395" bodyend="407"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classMutex_1a833a30ffb34001c68aa2a37570dbf56e" compoundref="FsmOS_8h" startline="576">locked</references>
+        <references refid="classMutex_1ae818e65daf468eed3d03a3aad59e1281" compoundref="FsmOS_8h" startline="577">owner_id</references>
+      </memberdef>
+      <memberdef kind="function" id="classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Mutex::unlock</definition>
+        <argsstring>(uint8_t task_id)</argsstring>
+        <name>unlock</name>
+        <qualifiedname>Mutex::unlock</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <briefdescription>
+<para>Release the mutex. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the task releasing the mutex </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Only the task that acquired the mutex can release it </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="561" column="10" bodyfile="FsmOS.cpp" bodystart="409" bodyend="419"/>
+        <references refid="FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4" compoundref="FsmOS_8h" startline="48">ATOMIC_BLOCK</references>
+        <references refid="FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef" compoundref="FsmOS_8h" startline="49">ATOMIC_RESTORESTATE</references>
+        <references refid="classMutex_1a833a30ffb34001c68aa2a37570dbf56e" compoundref="FsmOS_8h" startline="576">locked</references>
+        <references refid="classMutex_1ae818e65daf468eed3d03a3aad59e1281" compoundref="FsmOS_8h" startline="577">owner_id</references>
+      </memberdef>
+      <memberdef kind="function" id="classMutex_1ac54a451ca9a856271f5f434f1aaee3d5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Mutex::isLocked</definition>
+        <argsstring>() const</argsstring>
+        <name>isLocked</name>
+        <qualifiedname>Mutex::isLocked</qualifiedname>
+        <briefdescription>
+<para>Check if mutex is currently locked. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if locked, false if available </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="567" column="11" bodyfile="FsmOS.cpp" bodystart="421" bodyend="421"/>
+        <references refid="classMutex_1a833a30ffb34001c68aa2a37570dbf56e" compoundref="FsmOS_8h" startline="576">locked</references>
+      </memberdef>
+      <memberdef kind="function" id="classMutex_1ae155c790be1a23e17700cd8b8c2636b4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Mutex::getOwner</definition>
+        <argsstring>() const</argsstring>
+        <name>getOwner</name>
+        <qualifiedname>Mutex::getOwner</qualifiedname>
+        <briefdescription>
+<para>Get ID of task that owns the mutex. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="classTask" kindref="compound">Task</ref> ID of owner, or 0 if unlocked </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="573" column="13" bodyfile="FsmOS.cpp" bodystart="423" bodyend="423"/>
+        <references refid="classMutex_1ae818e65daf468eed3d03a3aad59e1281" compoundref="FsmOS_8h" startline="577">owner_id</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classMutex" kindref="compound">Mutex</ref> for cooperative task synchronization. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="classMutex" kindref="compound">Mutex</ref> provides mutual exclusion for shared resources in a cooperative multitasking environment. Only one task can hold the mutex at a time.</para>
+<para><simplesect kind="note"><para>This mutex is designed for cooperative multitasking only. It does not provide blocking behavior - tasks must check try_lock() and yield if the mutex is not available. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="540" column="1" bodyfile="FsmOS.h" bodystart="541" bodyend="578"/>
+    <listofallmembers>
+      <member refid="classMutex_1ae155c790be1a23e17700cd8b8c2636b4" prot="public" virt="non-virtual"><scope>Mutex</scope><name>getOwner</name></member>
+      <member refid="classMutex_1ac54a451ca9a856271f5f434f1aaee3d5" prot="public" virt="non-virtual"><scope>Mutex</scope><name>isLocked</name></member>
+      <member refid="classMutex_1a833a30ffb34001c68aa2a37570dbf56e" prot="private" virt="non-virtual"><scope>Mutex</scope><name>locked</name></member>
+      <member refid="classMutex_1a593423d868daf926c7b0d63a833ae29a" prot="public" virt="non-virtual"><scope>Mutex</scope><name>Mutex</name></member>
+      <member refid="classMutex_1ae818e65daf468eed3d03a3aad59e1281" prot="private" virt="non-virtual"><scope>Mutex</scope><name>owner_id</name></member>
+      <member refid="classMutex_1a25133a881d7392b966786263d41bde79" prot="public" virt="non-virtual"><scope>Mutex</scope><name>tryLock</name></member>
+      <member refid="classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd" prot="public" virt="non-virtual"><scope>Mutex</scope><name>unlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

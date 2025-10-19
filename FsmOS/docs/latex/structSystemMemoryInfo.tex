@@ -1,0 +1,287 @@
+\doxysection{System\+Memory\+Info Struct Reference}
+\hypertarget{structSystemMemoryInfo}{}\label{structSystemMemoryInfo}\index{SystemMemoryInfo@{SystemMemoryInfo}}
+
+
+System memory information.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a3fead35bc0c51a87ca8cb5630eea2fe6}{free\+Ram}}
+\begin{DoxyCompactList}\small\item\em Free RAM in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a74fd6f112cb2a361579343bc609ba3bd}{total\+Ram}}
+\begin{DoxyCompactList}\small\item\em Total RAM in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_ab46e008190c5d4dc58a098653fc96e21}{heap\+Size}}
+\begin{DoxyCompactList}\small\item\em Heap size in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_aafc733c82678f25b4579ac80ff3f3416}{largest\+Block}}
+\begin{DoxyCompactList}\small\item\em Largest free block in bytes. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_aa49fcb6068c10bdab13a7cfa97241c27}{heap\+Fragments}}
+\begin{DoxyCompactList}\small\item\em Number of heap fragments. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a12ed83e6ef3ab65b2e708eb7634ae3d9}{stack\+Size}}
+\begin{DoxyCompactList}\small\item\em Stack size in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a23c2b52b7aa05bdd6c8316280fafb35e}{stack\+Used}}
+\begin{DoxyCompactList}\small\item\em Stack used in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_aa09da446795f6a14640ac228f8775332}{stack\+Free}}
+\begin{DoxyCompactList}\small\item\em Stack free in bytes. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_ab4646e94bacfe136033551f29c88127f}{total\+Tasks}}
+\begin{DoxyCompactList}\small\item\em Total number of tasks. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_ad53218d4a3a0bd2bf27ee57618c502f9}{task\+Memory}}
+\begin{DoxyCompactList}\small\item\em Memory used by tasks. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_af922c19a62e2db75d2d35abc96282760}{active\+Messages}}
+\begin{DoxyCompactList}\small\item\em Number of active messages. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a76bfcb475e0cfe6757e0fbbc04ad371e}{message\+Memory}}
+\begin{DoxyCompactList}\small\item\em Memory used by messages. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_ae527fbdfcb22a4136b2f6f24d60c895a}{flash\+Used}}
+\begin{DoxyCompactList}\small\item\em Flash memory used. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_abdbd97bb0a5a2fece0b70320ccedffc4}{flash\+Free}}
+\begin{DoxyCompactList}\small\item\em Flash memory free. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_a863feffbb30f9ba2b8bf031421830f31}{eeprom\+Used}}
+\begin{DoxyCompactList}\small\item\em EEPROM used in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structSystemMemoryInfo_afbf8d2df35ecd00576f480561255f04d}{eeprom\+Free}}
+\begin{DoxyCompactList}\small\item\em EEPROM free in bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+System memory information. 
+
+Comprehensive memory usage statistics 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00196}{196}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structSystemMemoryInfo_af922c19a62e2db75d2d35abc96282760}\label{structSystemMemoryInfo_af922c19a62e2db75d2d35abc96282760} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!activeMessages@{activeMessages}}
+\index{activeMessages@{activeMessages}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{activeMessages}{activeMessages}}
+{\footnotesize\ttfamily uint8\+\_\+t System\+Memory\+Info\+::active\+Messages}
+
+
+
+Number of active messages. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00208}{208}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_afbf8d2df35ecd00576f480561255f04d}\label{structSystemMemoryInfo_afbf8d2df35ecd00576f480561255f04d} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!eepromFree@{eepromFree}}
+\index{eepromFree@{eepromFree}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{eepromFree}{eepromFree}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::eeprom\+Free}
+
+
+
+EEPROM free in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00213}{213}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a863feffbb30f9ba2b8bf031421830f31}\label{structSystemMemoryInfo_a863feffbb30f9ba2b8bf031421830f31} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!eepromUsed@{eepromUsed}}
+\index{eepromUsed@{eepromUsed}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{eepromUsed}{eepromUsed}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::eeprom\+Used}
+
+
+
+EEPROM used in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00212}{212}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_abdbd97bb0a5a2fece0b70320ccedffc4}\label{structSystemMemoryInfo_abdbd97bb0a5a2fece0b70320ccedffc4} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!flashFree@{flashFree}}
+\index{flashFree@{flashFree}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{flashFree}{flashFree}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::flash\+Free}
+
+
+
+Flash memory free. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00211}{211}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_ae527fbdfcb22a4136b2f6f24d60c895a}\label{structSystemMemoryInfo_ae527fbdfcb22a4136b2f6f24d60c895a} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!flashUsed@{flashUsed}}
+\index{flashUsed@{flashUsed}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{flashUsed}{flashUsed}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::flash\+Used}
+
+
+
+Flash memory used. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00210}{210}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a3fead35bc0c51a87ca8cb5630eea2fe6}\label{structSystemMemoryInfo_a3fead35bc0c51a87ca8cb5630eea2fe6} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!freeRam@{freeRam}}
+\index{freeRam@{freeRam}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{freeRam}{freeRam}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::free\+Ram}
+
+
+
+Free RAM in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00198}{198}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_aa49fcb6068c10bdab13a7cfa97241c27}\label{structSystemMemoryInfo_aa49fcb6068c10bdab13a7cfa97241c27} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!heapFragments@{heapFragments}}
+\index{heapFragments@{heapFragments}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{heapFragments}{heapFragments}}
+{\footnotesize\ttfamily uint8\+\_\+t System\+Memory\+Info\+::heap\+Fragments}
+
+
+
+Number of heap fragments. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00202}{202}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_ab46e008190c5d4dc58a098653fc96e21}\label{structSystemMemoryInfo_ab46e008190c5d4dc58a098653fc96e21} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!heapSize@{heapSize}}
+\index{heapSize@{heapSize}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{heapSize}{heapSize}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::heap\+Size}
+
+
+
+Heap size in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00200}{200}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_aafc733c82678f25b4579ac80ff3f3416}\label{structSystemMemoryInfo_aafc733c82678f25b4579ac80ff3f3416} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!largestBlock@{largestBlock}}
+\index{largestBlock@{largestBlock}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{largestBlock}{largestBlock}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::largest\+Block}
+
+
+
+Largest free block in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00201}{201}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a76bfcb475e0cfe6757e0fbbc04ad371e}\label{structSystemMemoryInfo_a76bfcb475e0cfe6757e0fbbc04ad371e} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!messageMemory@{messageMemory}}
+\index{messageMemory@{messageMemory}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{messageMemory}{messageMemory}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::message\+Memory}
+
+
+
+Memory used by messages. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00209}{209}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_aa09da446795f6a14640ac228f8775332}\label{structSystemMemoryInfo_aa09da446795f6a14640ac228f8775332} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!stackFree@{stackFree}}
+\index{stackFree@{stackFree}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{stackFree}{stackFree}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::stack\+Free}
+
+
+
+Stack free in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00205}{205}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a12ed83e6ef3ab65b2e708eb7634ae3d9}\label{structSystemMemoryInfo_a12ed83e6ef3ab65b2e708eb7634ae3d9} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!stackSize@{stackSize}}
+\index{stackSize@{stackSize}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{stackSize}{stackSize}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::stack\+Size}
+
+
+
+Stack size in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00203}{203}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a23c2b52b7aa05bdd6c8316280fafb35e}\label{structSystemMemoryInfo_a23c2b52b7aa05bdd6c8316280fafb35e} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!stackUsed@{stackUsed}}
+\index{stackUsed@{stackUsed}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{stackUsed}{stackUsed}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::stack\+Used}
+
+
+
+Stack used in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00204}{204}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_ad53218d4a3a0bd2bf27ee57618c502f9}\label{structSystemMemoryInfo_ad53218d4a3a0bd2bf27ee57618c502f9} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!taskMemory@{taskMemory}}
+\index{taskMemory@{taskMemory}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{taskMemory}{taskMemory}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::task\+Memory}
+
+
+
+Memory used by tasks. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00207}{207}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_a74fd6f112cb2a361579343bc609ba3bd}\label{structSystemMemoryInfo_a74fd6f112cb2a361579343bc609ba3bd} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!totalRam@{totalRam}}
+\index{totalRam@{totalRam}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{totalRam}{totalRam}}
+{\footnotesize\ttfamily uint16\+\_\+t System\+Memory\+Info\+::total\+Ram}
+
+
+
+Total RAM in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00199}{199}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structSystemMemoryInfo_ab4646e94bacfe136033551f29c88127f}\label{structSystemMemoryInfo_ab4646e94bacfe136033551f29c88127f} 
+\index{SystemMemoryInfo@{SystemMemoryInfo}!totalTasks@{totalTasks}}
+\index{totalTasks@{totalTasks}!SystemMemoryInfo@{SystemMemoryInfo}}
+\doxysubsubsection{\texorpdfstring{totalTasks}{totalTasks}}
+{\footnotesize\ttfamily uint8\+\_\+t System\+Memory\+Info\+::total\+Tasks}
+
+
+
+Total number of tasks. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00206}{206}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,1047 @@
+.TH "Task" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Task \- Base class for all tasks in FsmOS\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "enum \fBPriority\fP { \fBPRIORITY_LOWEST\fP = 0, \fBPRIORITY_LOW\fP = 1, \fBPRIORITY_NORMAL\fP = 2, \fBPRIORITY_HIGH\fP = 3, \fBPRIORITY_HIGHEST\fP = 4, \fBPRIORITY_CRITICAL\fP = 5, \fBPRIORITY_REALTIME\fP = 6, \fBPRIORITY_SYSTEM\fP = 7, \fBPRIORITY_MAX\fP = 15 }"
+.br
+.RI "\fBTask\fP priority levels\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTask\fP (const __FlashStringHelper *\fBname\fP=nullptr)"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "virtual \fB~Task\fP ()"
+.br
+.RI "Virtual destructor\&. "
+.ti -1c
+.RI "virtual void \fBon_start\fP ()"
+.br
+.RI "Called when task is started\&. "
+.ti -1c
+.RI "virtual void \fBstep\fP ()=0"
+.br
+.RI "Main task execution method\&. "
+.ti -1c
+.RI "virtual void \fBon_stop\fP ()"
+.br
+.RI "Called when task is stopped\&. "
+.ti -1c
+.RI "virtual void \fBon_msg\fP (const MsgData &msg)"
+.br
+.RI "Handle incoming messages\&. "
+.ti -1c
+.RI "void \fBstart\fP ()"
+.br
+.RI "Start the task\&. "
+.ti -1c
+.RI "void \fBstop\fP ()"
+.br
+.RI "Stop the task\&. "
+.ti -1c
+.RI "void \fBsuspend\fP ()"
+.br
+.RI "Suspend the task\&. "
+.ti -1c
+.RI "void \fBresume\fP ()"
+.br
+.RI "Resume the task\&. "
+.ti -1c
+.RI "void \fBterminate\fP ()"
+.br
+.RI "Terminate the task\&. "
+.ti -1c
+.RI "void \fBsetPeriod\fP (uint16_t period_ms)"
+.br
+.RI "Set task execution period\&. "
+.ti -1c
+.RI "uint16_t \fBgetPeriod\fP () const"
+.br
+.RI "Get task execution period\&. "
+.ti -1c
+.RI "void \fBsetPriority\fP (\fBPriority\fP priority)"
+.br
+.RI "Set task priority\&. "
+.ti -1c
+.RI "void \fBsetPriority\fP (uint8_t priority)"
+.br
+.RI "Set task priority (legacy) "
+.ti -1c
+.RI "uint8_t \fBgetPriority\fP () const"
+.br
+.RI "Get task priority\&. "
+.ti -1c
+.RI "void \fBsetMaxMessageBudget\fP (uint8_t budget)"
+.br
+.RI "Declare the maximum number of messages this task may produce in one \fBstep()\fP "
+.ti -1c
+.RI "virtual uint8_t \fBgetMaxMessageBudget\fP () const"
+.br
+.RI "Get the maximum number of messages this task may produce in one \fBstep()\fP "
+.ti -1c
+.RI "virtual uint16_t \fBgetTaskStructSize\fP () const"
+.br
+.RI "Get the size in bytes of the concrete task object\&. "
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static uint16_t \fBgetCreatedInstanceCount\fP ()"
+.br
+.RI "Get total number of \fBTask\fP instances ever created\&. "
+.ti -1c
+.RI "static const __FlashStringHelper * \fBreadTaskName\fP (const \fBTask\fP *t)"
+.br
+.RI "Public helper to read another task's name safely from diagnostics\&. "
+.in -1c
+.SS "Protected Types"
+
+.in +1c
+.ti -1c
+.RI "enum \fBState\fP { \fBINACTIVE\fP, \fBACTIVE\fP, \fBSUSPENDED\fP, \fBTERMINATED\fP }"
+.br
+.RI "\fBTask\fP state enumeration\&. "
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "uint8_t \fBgetConfiguredMessageBudget\fP () const"
+.br
+.RI "Access the configured budget set via \fBsetMaxMessageBudget()\fP "
+.ti -1c
+.RI "\fBState\fP \fBgetState\fP () const"
+.br
+.RI "Get current task state\&. "
+.ti -1c
+.RI "void \fBsetState\fP (\fBState\fP newState)"
+.br
+.RI "Set task state\&. "
+.ti -1c
+.RI "bool \fBcheckState\fP (\fBState\fP expected) const"
+.br
+.RI "Check if task is in expected state\&. "
+.ti -1c
+.RI "bool \fBisActive\fP () const"
+.br
+.RI "Check if task is active\&. "
+.ti -1c
+.RI "bool \fBisInactive\fP () const"
+.br
+.RI "Check if task is inactive\&. "
+.ti -1c
+.RI "uint8_t \fBgetId\fP () const"
+.br
+.RI "Get unique task ID\&. "
+.ti -1c
+.RI "const __FlashStringHelper * \fBgetName\fP () const"
+.br
+.RI "Get task name\&. "
+.ti -1c
+.RI "void \fBsetName\fP (const __FlashStringHelper *\fBname\fP)"
+.br
+.RI "Set task name\&. "
+.ti -1c
+.RI "void \fBsubscribe\fP (uint8_t topic)"
+.br
+.RI "Subscribe to a message topic\&. "
+.ti -1c
+.RI "void \fBunsubscribe\fP (uint8_t topic)"
+.br
+.RI "Unsubscribe from a message topic\&. "
+.ti -1c
+.RI "bool \fBisSubscribedToTopic\fP (uint8_t topic) const"
+.br
+.RI "Check if task is subscribed to a topic\&. "
+.ti -1c
+.RI "uint8_t \fBgetTopicCount\fP () const"
+.br
+.RI "Get the number of subscribed topics\&. "
+.ti -1c
+.RI "void \fBpublish\fP (uint8_t topic, uint8_t type, uint16_t arg=0)"
+.br
+.RI "Publish a message to a topic\&. "
+.ti -1c
+.RI "void \fBtell\fP (uint8_t task_id, uint8_t type, uint16_t arg=0)"
+.br
+.RI "Send a direct message to a specific task\&. "
+.ti -1c
+.RI "void \fBlog\fP (const __FlashStringHelper *msg)"
+.br
+.RI "Log an info message\&. "
+.ti -1c
+.RI "void \fBlogDebug\fP (const __FlashStringHelper *msg)"
+.br
+.RI "Log a debug message\&. "
+.ti -1c
+.RI "void \fBlogInfo\fP (const __FlashStringHelper *msg)"
+.br
+.RI "Log an info message\&. "
+.ti -1c
+.RI "void \fBlogWarn\fP (const __FlashStringHelper *msg)"
+.br
+.RI "Log a warning message\&. "
+.ti -1c
+.RI "void \fBlogError\fP (const __FlashStringHelper *msg)"
+.br
+.RI "Log an error message\&. "
+.ti -1c
+.RI "template<typename T > T \fBcreateTimerTyped\fP (uint32_t duration_ms) const"
+.br
+.RI "Create a memory-optimized timer\&. "
+.ti -1c
+.RI "void \fBprocessMessages\fP ()"
+.br
+.RI "Process pending messages for this task\&. "
+.ti -1c
+.RI "uint16_t \fBgetDelayCount\fP () const"
+.br
+.RI "Get number of times this task was delayed\&. "
+.ti -1c
+.RI "uint16_t \fBgetMaxDelay\fP () const"
+.br
+.RI "Get maximum delay experienced by this task\&. "
+.ti -1c
+.RI "uint32_t \fBgetScheduledTime\fP () const"
+.br
+.RI "Get scheduled execution time\&. "
+.ti -1c
+.RI "uint32_t \fBgetActualStartTime\fP () const"
+.br
+.RI "Get actual start time of last execution\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "uint16_t \fBremainingTime\fP = 0"
+.br
+.RI "Remaining time until next execution (in ms) "
+.ti -1c
+.RI "uint16_t \fBperiodMs\fP = 1"
+.br
+.RI "\fBTask\fP execution period in milliseconds\&. "
+.ti -1c
+.RI "uint8_t \fBtaskId\fP = 0"
+.br
+.RI "Unique task identifier\&. "
+.ti -1c
+.RI "uint8_t \fBstateAndPriority\fP = 0"
+.br
+.RI "Combined state and priority (4 bits each) "
+.ti -1c
+.RI "const __FlashStringHelper * \fBname\fP"
+.br
+.RI "\fBTask\fP name for debugging\&. "
+.ti -1c
+.RI "uint16_t \fBrunCount\fP = 0"
+.br
+.RI "Number of times task has run (16-bit for space) "
+.ti -1c
+.RI "uint16_t \fBmaxExecTimeUs\fP = 0"
+.br
+.RI "Maximum execution time in microseconds (16-bit) "
+.ti -1c
+.RI "uint16_t \fBavgExecTimeUs\fP = 0"
+.br
+.RI "Average execution time in microseconds (16-bit) "
+.ti -1c
+.RI "uint32_t \fBscheduledTime\fP = 0"
+.br
+.RI "When this task was scheduled to run\&. "
+.ti -1c
+.RI "uint32_t \fBactualStartTime\fP = 0"
+.br
+.RI "When this task actually started running\&. "
+.ti -1c
+.RI "uint16_t \fBdelayCount\fP = 0"
+.br
+.RI "Number of times this task was delayed\&. "
+.ti -1c
+.RI "uint16_t \fBmaxDelayMs\fP = 0"
+.br
+.RI "Maximum delay experienced in milliseconds\&. "
+.ti -1c
+.RI "\fBTopicBitfield\fP \fBsubscribedTopics\fP = 0"
+.br
+.RI "Bitfield for subscribed topics\&. "
+.ti -1c
+.RI "uint8_t \fBmaxMessageBudget\fP = 0"
+.br
+.in -1c
+.SS "Static Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "static uint16_t \fBcreatedInstanceCount\fP = 0"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBScheduler\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Base class for all tasks in FsmOS\&. 
+.PP
+Definition at line \fB653\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Enumeration Documentation"
+.PP 
+.SS "enum \fBTask::Priority\fP"
+
+.PP
+\fBTask\fP priority levels\&. Priority levels for task scheduling 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIPRIORITY_LOWEST \fP\fP
+Lowest priority (0) 
+.TP
+\fB\fIPRIORITY_LOW \fP\fP
+Low priority (1) 
+.TP
+\fB\fIPRIORITY_NORMAL \fP\fP
+Normal priority (2) 
+.TP
+\fB\fIPRIORITY_HIGH \fP\fP
+High priority (3) 
+.TP
+\fB\fIPRIORITY_HIGHEST \fP\fP
+Highest priority (4) 
+.TP
+\fB\fIPRIORITY_CRITICAL \fP\fP
+Critical priority (5) 
+.TP
+\fB\fIPRIORITY_REALTIME \fP\fP
+Real-time priority (6) 
+.TP
+\fB\fIPRIORITY_SYSTEM \fP\fP
+System priority (7) 
+.TP
+\fB\fIPRIORITY_MAX \fP\fP
+Maximum priority (15) 
+.PP
+Definition at line \fB754\fP of file \fBFsmOS\&.h\fP\&.
+.SS "enum \fBTask::State\fP\fC [protected]\fP"
+
+.PP
+\fBTask\fP state enumeration\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIINACTIVE \fP\fP
+\fBTask\fP is not running\&. 
+.TP
+\fB\fIACTIVE \fP\fP
+\fBTask\fP is running and scheduled\&. 
+.TP
+\fB\fISUSPENDED \fP\fP
+\fBTask\fP is paused\&. 
+.TP
+\fB\fITERMINATED \fP\fP
+\fBTask\fP is marked for removal\&. 
+.PP
+Definition at line \fB820\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Task::Task (const __FlashStringHelper * name = \fCnullptr\fP)\fC [explicit]\fP"
+
+.PP
+Constructor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Optional name for the task (for debugging)
+.RE
+.PP
+Creates a new task in INACTIVE state 
+.PP
+Definition at line \fB460\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "Task::~Task ()\fC [virtual]\fP"
+
+.PP
+Virtual destructor\&. Ensures proper cleanup of derived classes 
+.PP
+Definition at line \fB471\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Task::checkState (\fBState\fP expected) const\fC [protected]\fP"
+
+.PP
+Check if task is in expected state\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIexpected\fP Expected state to check against 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if task is in expected state 
+.RE
+.PP
+
+.PP
+Definition at line \fB540\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > template \fBTimer32\fP Task::createTimerTyped< \fBTimer32\fP > (uint32_t duration_ms) const\fC [protected]\fP"
+
+.PP
+Create a memory-optimized timer\&. 
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP Timer type (Timer8, Timer16, Timer32) 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIduration_ms\fP Duration in milliseconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Timer object ready to use 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Choose timer type based on expected duration for memory optimization 
+.RE
+.PP
+
+.PP
+Definition at line \fB575\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint32_t Task::getActualStartTime () const\fC [protected]\fP"
+
+.PP
+Get actual start time of last execution\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Actual start time in milliseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB614\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Task::getConfiguredMessageBudget () const\fC [inline]\fP, \fC [protected]\fP"
+
+.PP
+Access the configured budget set via \fBsetMaxMessageBudget()\fP 
+.PP
+\fBReturns\fP
+.RS 4
+The configured budget value 
+.RE
+.PP
+
+.PP
+Definition at line \fB814\fP of file \fBFsmOS\&.h\fP\&.
+.SS "static uint16_t Task::getCreatedInstanceCount ()\fC [inline]\fP, \fC [static]\fP"
+
+.PP
+Get total number of \fBTask\fP instances ever created\&. 
+.PP
+Definition at line \fB672\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::getDelayCount () const\fC [protected]\fP"
+
+.PP
+Get number of times this task was delayed\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of delay occurrences 
+.RE
+.PP
+
+.PP
+Definition at line \fB599\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Task::getId () const\fC [protected]\fP"
+
+.PP
+Get unique task ID\&. 
+.PP
+\fBReturns\fP
+.RS 4
+\fBTask\fP ID assigned by scheduler 
+.RE
+.PP
+
+.PP
+Definition at line \fB546\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint16_t Task::getMaxDelay () const\fC [protected]\fP"
+
+.PP
+Get maximum delay experienced by this task\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Maximum delay in milliseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB604\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "const __FlashStringHelper * Task::getName () const\fC [protected]\fP"
+
+.PP
+Get task name\&. 
+.PP
+\fBReturns\fP
+.RS 4
+\fBTask\fP name string 
+.RE
+.PP
+
+.PP
+Definition at line \fB548\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint16_t Task::getPeriod () const"
+
+.PP
+Get task execution period\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Period in milliseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB522\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Task::getPriority () const"
+
+.PP
+Get task priority\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Priority level 
+.RE
+.PP
+
+.PP
+Definition at line \fB528\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint32_t Task::getScheduledTime () const\fC [protected]\fP"
+
+.PP
+Get scheduled execution time\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Scheduled time in milliseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB609\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBTask::State\fP Task::getState () const\fC [protected]\fP"
+
+.PP
+Get current task state\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Current state of the task 
+.RE
+.PP
+
+.PP
+Definition at line \fB536\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "virtual uint16_t Task::getTaskStructSize () const\fC [inline]\fP, \fC [virtual]\fP"
+
+.PP
+Get the size in bytes of the concrete task object\&. Implement in each derived \fBTask\fP as: return sizeof(DerivedClass); 
+.PP
+Definition at line \fB807\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Task::getTopicCount () const\fC [inline]\fP, \fC [protected]\fP"
+
+.PP
+Get the number of subscribed topics\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of subscribed topics 
+.RE
+.PP
+
+.PP
+Definition at line \fB928\fP of file \fBFsmOS\&.h\fP\&.
+.SS "bool Task::isActive () const\fC [protected]\fP"
+
+.PP
+Check if task is active\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if task is in ACTIVE state 
+.RE
+.PP
+
+.PP
+Definition at line \fB542\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Task::isInactive () const\fC [protected]\fP"
+
+.PP
+Check if task is inactive\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if task is in INACTIVE state 
+.RE
+.PP
+
+.PP
+Definition at line \fB544\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Task::isSubscribedToTopic (uint8_t topic) const\fC [inline]\fP, \fC [protected]\fP"
+
+.PP
+Check if task is subscribed to a topic\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItopic\fP Topic ID to check 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if subscribed, false otherwise 
+.RE
+.PP
+
+.PP
+Definition at line \fB915\fP of file \fBFsmOS\&.h\fP\&.
+.SS "void Task::log (const __FlashStringHelper * msg)\fC [protected]\fP"
+
+.PP
+Log an info message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB564\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::logDebug (const __FlashStringHelper * msg)\fC [protected]\fP"
+
+.PP
+Log a debug message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB566\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::logError (const __FlashStringHelper * msg)\fC [protected]\fP"
+
+.PP
+Log an error message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB572\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::logInfo (const __FlashStringHelper * msg)\fC [protected]\fP"
+
+.PP
+Log an info message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB568\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::logWarn (const __FlashStringHelper * msg)\fC [protected]\fP"
+
+.PP
+Log a warning message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB570\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "virtual void Task::on_msg (const MsgData & msg)\fC [inline]\fP, \fC [virtual]\fP"
+
+.PP
+Handle incoming messages\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP The received message
+.RE
+.PP
+Override this method to handle specific message types 
+.PP
+\fBNote\fP
+.RS 4
+Called automatically when messages are received 
+.RE
+.PP
+
+.PP
+Definition at line \fB702\fP of file \fBFsmOS\&.h\fP\&.
+.SS "virtual void Task::on_start ()\fC [inline]\fP, \fC [virtual]\fP"
+
+.PP
+Called when task is started\&. Override this method to perform initialization 
+.PP
+\fBNote\fP
+.RS 4
+Called once when task transitions to ACTIVE state 
+.RE
+.PP
+
+.PP
+Definition at line \fB680\fP of file \fBFsmOS\&.h\fP\&.
+.SS "virtual void Task::on_stop ()\fC [inline]\fP, \fC [virtual]\fP"
+
+.PP
+Called when task is stopped\&. Override this method to perform cleanup 
+.PP
+\fBNote\fP
+.RS 4
+Called when task transitions to INACTIVE state 
+.RE
+.PP
+
+.PP
+Definition at line \fB694\fP of file \fBFsmOS\&.h\fP\&.
+.SS "void Task::processMessages ()\fC [protected]\fP"
+
+.PP
+Process pending messages for this task\&. 
+.PP
+\fBNote\fP
+.RS 4
+Called automatically by scheduler, rarely needs direct use 
+.RE
+.PP
+
+.PP
+Definition at line \fB592\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::publish (uint8_t topic, uint8_t type, uint16_t arg = \fC0\fP)\fC [protected]\fP"
+
+.PP
+Publish a message to a topic\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItopic\fP Topic ID to publish to 
+.br
+\fItype\fP Message type 
+.br
+\fIarg\fP Additional argument data 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+All subscribed tasks will receive this message 
+.RE
+.PP
+
+.PP
+Definition at line \fB554\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "static const __FlashStringHelper * Task::readTaskName (const \fBTask\fP * t)\fC [inline]\fP, \fC [static]\fP"
+
+.PP
+Public helper to read another task's name safely from diagnostics\&. 
+.PP
+Definition at line \fB875\fP of file \fBFsmOS\&.h\fP\&.
+.SS "void Task::resume ()"
+
+.PP
+Resume the task\&. \fBTask\fP returns to scheduling queue 
+.PP
+Definition at line \fB506\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setMaxMessageBudget (uint8_t budget)"
+
+.PP
+Declare the maximum number of messages this task may produce in one \fBstep()\fP Used by the scheduler to avoid running producers when the global message queue has fewer free slots than the declared budget\&. 0 disables gating\&. 
+.PP
+Definition at line \fB530\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setName (const __FlashStringHelper * name)\fC [protected]\fP"
+
+.PP
+Set task name\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP New name for the task 
+.RE
+.PP
+
+.PP
+Definition at line \fB550\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setPeriod (uint16_t period_ms)"
+
+.PP
+Set task execution period\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIperiod_ms\fP Period in milliseconds 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Minimum period is 1ms, maximum is 65535ms 
+.RE
+.PP
+
+.PP
+Definition at line \fB517\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setPriority (\fBPriority\fP priority)"
+
+.PP
+Set task priority\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP Priority level
+.RE
+.PP
+Sets the task priority for scheduling 
+.PP
+Definition at line \fB524\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setPriority (uint8_t priority)"
+
+.PP
+Set task priority (legacy) 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP Priority level (0-15)
+.RE
+.PP
+Sets the task priority for scheduling 
+.PP
+Definition at line \fB526\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::setState (\fBState\fP newState)\fC [protected]\fP"
+
+.PP
+Set task state\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInewState\fP New state to set 
+.RE
+.PP
+
+.PP
+Definition at line \fB538\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::start ()"
+
+.PP
+Start the task\&. Transitions task to ACTIVE state and calls \fBon_start()\fP 
+.PP
+Definition at line \fB479\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "virtual void Task::step ()\fC [pure virtual]\fP"
+
+.PP
+Main task execution method\&. This method is called periodically by the scheduler 
+.PP
+\fBNote\fP
+.RS 4
+Must be implemented by derived classes 
+.RE
+.PP
+
+.SS "void Task::stop ()"
+
+.PP
+Stop the task\&. Transitions task to INACTIVE state and calls \fBon_stop()\fP 
+.PP
+Definition at line \fB489\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::subscribe (uint8_t topic)\fC [inline]\fP, \fC [protected]\fP"
+
+.PP
+Subscribe to a message topic\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItopic\fP Topic ID to subscribe to 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fBTask\fP will receive messages published to this topic 
+.RE
+.PP
+
+.PP
+Definition at line \fB890\fP of file \fBFsmOS\&.h\fP\&.
+.SS "void Task::suspend ()"
+
+.PP
+Suspend the task\&. \fBTask\fP remains in memory but is not scheduled 
+.PP
+Definition at line \fB498\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::tell (uint8_t task_id, uint8_t type, uint16_t arg = \fC0\fP)\fC [protected]\fP"
+
+.PP
+Send a direct message to a specific task\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of target task 
+.br
+\fItype\fP Message type 
+.br
+\fIarg\fP Additional argument data 
+.RE
+.PP
+
+.PP
+Definition at line \fB559\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::terminate ()"
+
+.PP
+Terminate the task\&. Marks task for removal from scheduler 
+.PP
+Definition at line \fB515\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Task::unsubscribe (uint8_t topic)\fC [inline]\fP, \fC [protected]\fP"
+
+.PP
+Unsubscribe from a message topic\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItopic\fP Topic ID to unsubscribe from 
+.RE
+.PP
+
+.PP
+Definition at line \fB902\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Friends And Related Symbol Documentation"
+.PP 
+.SS "friend class \fBScheduler\fP\fC [friend]\fP"
+
+.PP
+Definition at line \fB1030\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "uint32_t Task::actualStartTime = 0\fC [private]\fP"
+
+.PP
+When this task actually started running\&. 
+.PP
+Definition at line \fB1045\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::avgExecTimeUs = 0\fC [private]\fP"
+
+.PP
+Average execution time in microseconds (16-bit) 
+.PP
+Definition at line \fB1041\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::createdInstanceCount = 0\fC [static]\fP, \fC [private]\fP"
+
+.PP
+Definition at line \fB1055\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::delayCount = 0\fC [private]\fP"
+
+.PP
+Number of times this task was delayed\&. 
+.PP
+Definition at line \fB1046\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::maxDelayMs = 0\fC [private]\fP"
+
+.PP
+Maximum delay experienced in milliseconds\&. 
+.PP
+Definition at line \fB1047\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::maxExecTimeUs = 0\fC [private]\fP"
+
+.PP
+Maximum execution time in microseconds (16-bit) 
+.PP
+Definition at line \fB1040\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Task::maxMessageBudget = 0\fC [private]\fP"
+
+.PP
+Definition at line \fB1052\fP of file \fBFsmOS\&.h\fP\&.
+.SS "const __FlashStringHelper* Task::name\fC [private]\fP"
+
+.PP
+\fBTask\fP name for debugging\&. 
+.PP
+Definition at line \fB1036\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::periodMs = 1\fC [private]\fP"
+
+.PP
+\fBTask\fP execution period in milliseconds\&. 
+.PP
+Definition at line \fB1033\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::remainingTime = 0\fC [private]\fP"
+
+.PP
+Remaining time until next execution (in ms) 
+.PP
+Definition at line \fB1032\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Task::runCount = 0\fC [private]\fP"
+
+.PP
+Number of times task has run (16-bit for space) 
+.PP
+Definition at line \fB1039\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t Task::scheduledTime = 0\fC [private]\fP"
+
+.PP
+When this task was scheduled to run\&. 
+.PP
+Definition at line \fB1044\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Task::stateAndPriority = 0\fC [private]\fP"
+
+.PP
+Combined state and priority (4 bits each) 
+.PP
+Definition at line \fB1035\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBTopicBitfield\fP Task::subscribedTopics = 0\fC [private]\fP"
+
+.PP
+Bitfield for subscribed topics\&. 
+.PP
+Definition at line \fB1049\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Task::taskId = 0\fC [private]\fP"
+
+.PP
+Unique task identifier\&. 
+.PP
+Definition at line \fB1034\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

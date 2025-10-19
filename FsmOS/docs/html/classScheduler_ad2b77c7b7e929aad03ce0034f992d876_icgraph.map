@@ -1,0 +1,19 @@
+<map id="Scheduler::findTask" name="Scheduler::findTask">
+<area shape="rect" id="Node000001" title="Find a task using a predicate function." alt="" coords="789,80,927,105"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#aabf3840938cc797555cdee88f5d19dd2" title="Get task by ID." alt="" coords="607,80,741,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="776,95,742,95,742,90,776,90"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a7170da5c7dfd33bd0a5bd6509538d84f" title="Get task memory information." alt="" coords="356,5,559,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="634,76,558,45,519,33,520,28,560,39,636,72"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a4a491d929e3bee5c1bb5db4ad9a13dc3" title="Get task statistics." alt="" coords="375,55,540,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="592,86,540,80,541,74,593,81"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#aef20dca5b8efdd71b4e91f91d5e0240f" title="Process pending messages for all tasks." alt="" coords="360,104,555,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="593,104,555,109,555,103,592,99"/>
+<area shape="rect" id="Node000008" href="$classScheduler.html#a4f3960871e36fdf7234b151f81f04120" title="Send a direct message to a specific task." alt="" coords="373,153,542,179"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="636,113,560,145,520,156,518,151,558,139,634,109"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,104,308,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="346,119,308,119,308,114,346,114"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,104,117,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="152,119,117,119,117,114,152,114"/>
+<area shape="rect" id="Node000009" href="$classTask.html#adbd4d278e42780bd4b6c1d918d0f85c9" title="Send a direct message to a specific task." alt="" coords="199,153,274,179"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="359,169,274,169,274,163,359,163"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Scheduler::getResetCause" name="Scheduler::getResetCause">
+<area shape="rect" id="Node000001" title="Get reset cause from system." alt="" coords="5,13,184,38"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a06438be1e9b5f2e9441b9c8c7c0d696e" title="Get raw reset flags from system." alt="" coords="232,5,411,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,23,218,23,218,28,185,28"/>
+</map>

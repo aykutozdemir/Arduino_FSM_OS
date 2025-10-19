@@ -1,0 +1,131 @@
+\doxysection{Fsm\+OS.\+cpp File Reference}
+\hypertarget{FsmOS_8cpp}{}\label{FsmOS_8cpp}\index{FsmOS.cpp@{FsmOS.cpp}}
+
+
+Implementation of the Fsm\+OS cooperative task scheduler.  
+
+
+{\ttfamily \#include "{}Fsm\+OS.\+h"{}}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include "{}../../src/\+Build\+Memory\+Info.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for Fsm\+OS.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FsmOS_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{FsmOS_8cpp_ade20b4a6bf510c7319a727cdf86ebe37}{print\+Log\+Header}} (\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Scheduler\+::\+Log\+Level}} level)
+\item 
+static void \mbox{\hyperlink{FsmOS_8cpp_a239a4328ae320786411ee555c3a20250}{log\+FormattedV}} (\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Scheduler\+::\+Log\+Level}} level, const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format, va\+\_\+list args)
+\item 
+void \mbox{\hyperlink{group__fsmos_gac6c8dbf1f133ab906d0f3490e0de5d74}{log\+Debugf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Default per-\/task message production budget. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb}{log\+Infof}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log an info message with formatting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_ga58264bc1f779d2cd6cb6a8c733a17a21}{log\+Warnf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log a warning message with formatting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_gade3c130d653bf887af5b2f6120f388ad}{log\+Errorf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log an error message with formatting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classScheduler}{Scheduler}} \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}
+\begin{DoxyCompactList}\small\item\em Global scheduler instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMemoryStats}{Memory\+Stats}} \mbox{\hyperlink{FsmOS_8cpp_a4b161d5fdd35540a17153452e7c6af01}{fsmos\+\_\+memory\+\_\+stats}} = \{0, 0, 0, 0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the Fsm\+OS cooperative task scheduler. 
+
+\begin{DoxyAuthor}{Author}
+Aykut Özdemir \href{mailto:aykutozdemirgyte@gmail.com}{\texttt{ aykutozdemirgyte@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/10-\/02
+\end{DoxyDate}
+This file contains the implementation of the Fsm\+OS scheduler and task management system. It provides\+:
+
+
+\begin{DoxyItemize}
+\item \doxylink{classTask}{Task} scheduling and execution
+\item Message passing and event handling
+\item Memory management and monitoring
+\item System diagnostics and profiling
+\item Hardware watchdog integration
+\end{DoxyItemize}
+
+\begin{DoxyVersion}{Version}
+1.\+3.\+0 -\/ Major refactoring and code organization 
+\end{DoxyVersion}
+
+
+Definition in file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{FsmOS_8cpp_a239a4328ae320786411ee555c3a20250}\label{FsmOS_8cpp_a239a4328ae320786411ee555c3a20250} 
+\index{FsmOS.cpp@{FsmOS.cpp}!logFormattedV@{logFormattedV}}
+\index{logFormattedV@{logFormattedV}!FsmOS.cpp@{FsmOS.cpp}}
+\doxysubsubsection{\texorpdfstring{logFormattedV()}{logFormattedV()}}
+{\footnotesize\ttfamily static void log\+FormattedV (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Scheduler\+::\+Log\+Level}}}]{level,  }\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}}]{format,  }\item[{va\+\_\+list}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01683}{1683}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FsmOS_8cpp_a239a4328ae320786411ee555c3a20250_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FsmOS_8cpp_a239a4328ae320786411ee555c3a20250_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{FsmOS_8cpp_ade20b4a6bf510c7319a727cdf86ebe37}\label{FsmOS_8cpp_ade20b4a6bf510c7319a727cdf86ebe37} 
+\index{FsmOS.cpp@{FsmOS.cpp}!printLogHeader@{printLogHeader}}
+\index{printLogHeader@{printLogHeader}!FsmOS.cpp@{FsmOS.cpp}}
+\doxysubsubsection{\texorpdfstring{printLogHeader()}{printLogHeader()}}
+{\footnotesize\ttfamily static void print\+Log\+Header (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Scheduler\+::\+Log\+Level}}}]{level }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01657}{1657}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FsmOS_8cpp_ade20b4a6bf510c7319a727cdf86ebe37_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{FsmOS_8cpp_a4b161d5fdd35540a17153452e7c6af01}\label{FsmOS_8cpp_a4b161d5fdd35540a17153452e7c6af01} 
+\index{FsmOS.cpp@{FsmOS.cpp}!fsmos\_memory\_stats@{fsmos\_memory\_stats}}
+\index{fsmos\_memory\_stats@{fsmos\_memory\_stats}!FsmOS.cpp@{FsmOS.cpp}}
+\doxysubsubsection{\texorpdfstring{fsmos\_memory\_stats}{fsmos\_memory\_stats}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMemoryStats}{Memory\+Stats}} fsmos\+\_\+memory\+\_\+stats = \{0, 0, 0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00050}{50}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+

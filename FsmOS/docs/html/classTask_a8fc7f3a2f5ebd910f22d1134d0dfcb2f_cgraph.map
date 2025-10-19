@@ -1,0 +1,7 @@
+<map id="Task::resume" name="Task::resume">
+<area shape="rect" id="Node000001" title="Resume the task." alt="" coords="5,31,107,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="155,5,261,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,32,141,26,142,32,108,38"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a7a79169eed523ffdafa76f3c9d07ff27" title="Set task state." alt="" coords="155,55,261,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,49,142,54,141,59,107,54"/>
+</map>

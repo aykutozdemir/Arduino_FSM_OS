@@ -1,0 +1,36 @@
+<map id="Scheduler::logMessage" name="Scheduler::logMessage">
+<area shape="rect" id="Node000001" title="Log a message." alt="" coords="597,203,756,228"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#aed7f37c999de507b0441f863a4942f2a" title="Initialize the message pool if not already initialized." alt="" coords="379,5,535,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="662,191,644,158,619,118,586,78,548,44,526,33,528,28,551,40,590,74,623,115,649,155,666,189"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a8bc9456ebb7dfbb657f040320af1a6ef" title="Log an info message." alt="" coords="420,55,495,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="656,194,610,143,581,116,548,94,521,82,494,75,495,70,523,77,551,89,584,112,614,139,660,190"/>
+<area shape="rect" id="Node000005" href="$classTask.html#aa961a934509f354a023b8f32d3656e95" title="Log a debug message." alt="" coords="401,104,514,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="645,197,600,169,548,143,513,131,515,126,550,138,603,165,648,193"/>
+<area shape="rect" id="Node000006" href="$classTask.html#aa4c091b4c65870bd83c6111d23ecee21" title="Log an error message." alt="" coords="406,153,509,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="606,202,508,180,509,175,607,197"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a1ded1b3c0e167dde6574bc8b4a0aca63" title="Log a formatted message." alt="" coords="375,203,539,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="583,218,540,218,540,213,583,213"/>
+<area shape="rect" id="Node000008" href="$FsmOS_8cpp.html#a239a4328ae320786411ee555c3a20250" title=" " alt="" coords="404,252,511,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="607,234,512,255,510,250,606,228"/>
+<area shape="rect" id="Node000014" href="$classTask.html#a24f4e032e0dd55e6e2e7ef44c715e9ca" title="Log an info message." alt="" coords="409,301,506,327"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="647,238,603,265,550,291,507,306,505,301,548,286,600,260,644,233"/>
+<area shape="rect" id="Node000015" href="$classScheduler.html#a1c6dd608a209d55e1925a4dbf5fb4344" title="Log a system event message." alt="" coords="365,351,549,376"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="659,241,614,291,584,318,551,340,521,353,519,348,548,336,580,313,610,287,655,237"/>
+<area shape="rect" id="Node000017" href="$classTask.html#a36592cc85ff1d08bf6cb2442055188f6" title="Log a warning message." alt="" coords="405,400,510,425"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="666,242,648,276,622,315,590,355,551,390,511,407,509,402,548,385,586,352,618,312,643,273,661,239"/>
+<area shape="rect" id="Node000003" href="$classMsgDataPool.html#a5249e1c96225998fac71ba67c691740d" title="Allocate a new MsgData from the pool." alt="" coords="163,5,317,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,21,318,21,318,15,365,15"/>
+<area shape="rect" id="Node000009" href="$group__fsmos.html#gac6c8dbf1f133ab906d0f3490e0de5d74" title="Default per&#45;task message production budget." alt="" coords="199,152,281,177"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="390,253,364,242,348,229,339,216,330,203,316,191,280,175,282,171,319,186,334,199,343,213,352,225,367,237,392,249"/>
+<area shape="rect" id="Node000010" href="$group__fsmos.html#gade3c130d653bf887af5b2f6120f388ad" title="Log an error message with formatting." alt="" coords="205,201,275,227"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="390,252,275,225,276,220,391,247"/>
+<area shape="rect" id="Node000011" href="$group__fsmos.html#ga0fd80592a7d1d2fd9b1b52081a8d69cb" title="Log an info message with formatting." alt="" coords="207,251,273,276"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="390,267,273,266,273,261,390,262"/>
+<area shape="rect" id="Node000013" href="$group__fsmos.html#ga58264bc1f779d2cd6cb6a8c733a17a21" title="Log a warning message with formatting." alt="" coords="203,300,277,325"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="391,282,278,307,277,302,390,277"/>
+<area shape="rect" id="Node000012" href="$classScheduler.html#a278e9940ce3dd1c708c5bd55b0e4059b" title="Add a task to the scheduler." alt="" coords="5,301,115,327"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="195,279,106,304,105,299,193,274"/>
+<area shape="poly" id="edge15_Node000015_Node000012" title=" " alt="" coords="351,360,259,352,162,339,112,329,113,324,163,334,260,346,352,354"/>
+<area shape="rect" id="Node000016" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="181,401,299,427"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="389,382,296,404,295,399,388,377"/>
+</map>

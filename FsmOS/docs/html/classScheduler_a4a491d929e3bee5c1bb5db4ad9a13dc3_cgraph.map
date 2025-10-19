@@ -1,0 +1,18 @@
+<map id="Scheduler::getTaskStats" name="Scheduler::getTaskStats">
+<area shape="rect" id="Node000001" title="Get task statistics." alt="" coords="5,106,171,132"/>
+<area shape="rect" id="Node000002" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="427,81,513,106"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,104,146,59,180,35,218,17,255,6,286,3,317,7,354,17,380,27,405,40,446,70,443,74,402,45,378,32,353,22,316,12,286,8,256,11,220,22,183,39,150,63,102,108"/>
+<area shape="rect" id="Node000003" href="$classTask.html#aae9b70f6c6542469cd8c3c122536964c" title="Get task name." alt="" coords="231,32,341,57"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,104,218,66,235,59,237,64,220,71,122,109"/>
+<area shape="rect" id="Node000004" href="$classTask.html#aa096c58dddc4fb8f7f8d5f40e1815d2d" title="Get task execution period." alt="" coords="229,81,343,106"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,106,215,100,216,105,171,111"/>
+<area shape="rect" id="Node000005" href="$classTask.html#aef8cf69a9b677977003d8b72d66d36d8" title="Get task priority." alt="" coords="227,130,345,156"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="171,126,214,132,213,137,171,132"/>
+<area shape="rect" id="Node000006" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="233,180,339,205"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="124,129,238,172,237,177,122,134"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#aabf3840938cc797555cdee88f5d19dd2" title="Get task by ID." alt="" coords="219,229,353,254"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="105,130,154,171,220,215,232,222,230,226,217,220,151,175,101,134"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="330,227,352,216,382,192,409,166,450,116,454,119,413,169,385,196,355,220,333,231"/>
+<area shape="rect" id="Node000008" href="$classScheduler.html#ad2b77c7b7e929aad03ce0034f992d876" title="Find a task using a predicate function." alt="" coords="401,229,539,254"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="354,239,387,239,387,244,354,244"/>
+</map>

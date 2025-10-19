@@ -1,0 +1,5 @@
+<map id="Scheduler::removeAll" name="Scheduler::removeAll">
+<area shape="rect" id="Node000001" title="Remove all tasks from the scheduler." alt="" coords="208,5,355,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#afc8187779b46f64039d3ffa58f0dbe51" title="Destructor." alt="" coords="5,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,21,160,21,160,15,194,15"/>
+</map>

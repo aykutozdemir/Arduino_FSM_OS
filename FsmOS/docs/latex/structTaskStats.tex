@@ -1,0 +1,207 @@
+\doxysection{Task\+Stats Struct Reference}
+\hypertarget{structTaskStats}{}\label{structTaskStats}\index{TaskStats@{TaskStats}}
+
+
+\doxylink{classTask}{Task} execution statistics.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structTaskStats_a1fc9ad09023166819ea34a6c9e00a956}{task\+Id}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} identifier. \end{DoxyCompactList}\item 
+const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structTaskStats_acee85734ca75baa7fe01cad1c24fc34b}{name}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} name. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structTaskStats_ad14bdd478708018fae0f1bbceb19d2d0}{state}}
+\begin{DoxyCompactList}\small\item\em Current task state (\doxylink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{Task\+::\+State} enum value) \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structTaskStats_a28271d6c20d6bfccfea9f21fcdb7dd63}{period\+Ms}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} period in milliseconds. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structTaskStats_a434524846cef9e3a82b15d7f7b5d439d}{priority}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} priority. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structTaskStats_afb9812d3db56b4a74e3534a0b1046b8c}{run\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of times task has run. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structTaskStats_a922dffb9309c234de882457919f7cb66}{max\+Exec\+Time\+Us}}
+\begin{DoxyCompactList}\small\item\em Maximum execution time in microseconds. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structTaskStats_a68e1e0b13b6fc7e48ac77f22bc338492}{total\+Exec\+Time\+Us}}
+\begin{DoxyCompactList}\small\item\em Total execution time in microseconds. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structTaskStats_ab319b8455c244af5111b6c2e395ffad9}{stack\+Usage}}
+\begin{DoxyCompactList}\small\item\em Stack usage in bytes. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structTaskStats_abbf27ee4cb7f8272b150152df12c3da0}{delay\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of times task was delayed. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structTaskStats_ac2ef063a104bca4c81457a8db057a51a}{max\+Delay\+Ms}}
+\begin{DoxyCompactList}\small\item\em Maximum delay experienced in milliseconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classTask}{Task} execution statistics. 
+
+Used for performance monitoring and debugging 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00127}{127}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structTaskStats_abbf27ee4cb7f8272b150152df12c3da0}\label{structTaskStats_abbf27ee4cb7f8272b150152df12c3da0} 
+\index{TaskStats@{TaskStats}!delayCount@{delayCount}}
+\index{delayCount@{delayCount}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{delayCount}{delayCount}}
+{\footnotesize\ttfamily uint16\+\_\+t Task\+Stats\+::delay\+Count}
+
+
+
+Number of times task was delayed. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00138}{138}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_ac2ef063a104bca4c81457a8db057a51a}\label{structTaskStats_ac2ef063a104bca4c81457a8db057a51a} 
+\index{TaskStats@{TaskStats}!maxDelayMs@{maxDelayMs}}
+\index{maxDelayMs@{maxDelayMs}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{maxDelayMs}{maxDelayMs}}
+{\footnotesize\ttfamily uint16\+\_\+t Task\+Stats\+::max\+Delay\+Ms}
+
+
+
+Maximum delay experienced in milliseconds. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00139}{139}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_a922dffb9309c234de882457919f7cb66}\label{structTaskStats_a922dffb9309c234de882457919f7cb66} 
+\index{TaskStats@{TaskStats}!maxExecTimeUs@{maxExecTimeUs}}
+\index{maxExecTimeUs@{maxExecTimeUs}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{maxExecTimeUs}{maxExecTimeUs}}
+{\footnotesize\ttfamily uint32\+\_\+t Task\+Stats\+::max\+Exec\+Time\+Us}
+
+
+
+Maximum execution time in microseconds. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00135}{135}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_acee85734ca75baa7fe01cad1c24fc34b}\label{structTaskStats_acee85734ca75baa7fe01cad1c24fc34b} 
+\index{TaskStats@{TaskStats}!name@{name}}
+\index{name@{name}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily const \+\_\+\+\_\+\+Flash\+String\+Helper\texorpdfstring{$\ast$}{*} Task\+Stats\+::name}
+
+
+
+\doxylink{classTask}{Task} name. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00130}{130}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_a28271d6c20d6bfccfea9f21fcdb7dd63}\label{structTaskStats_a28271d6c20d6bfccfea9f21fcdb7dd63} 
+\index{TaskStats@{TaskStats}!periodMs@{periodMs}}
+\index{periodMs@{periodMs}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{periodMs}{periodMs}}
+{\footnotesize\ttfamily uint16\+\_\+t Task\+Stats\+::period\+Ms}
+
+
+
+\doxylink{classTask}{Task} period in milliseconds. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00132}{132}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_a434524846cef9e3a82b15d7f7b5d439d}\label{structTaskStats_a434524846cef9e3a82b15d7f7b5d439d} 
+\index{TaskStats@{TaskStats}!priority@{priority}}
+\index{priority@{priority}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{priority}{priority}}
+{\footnotesize\ttfamily uint8\+\_\+t Task\+Stats\+::priority}
+
+
+
+\doxylink{classTask}{Task} priority. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00133}{133}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_afb9812d3db56b4a74e3534a0b1046b8c}\label{structTaskStats_afb9812d3db56b4a74e3534a0b1046b8c} 
+\index{TaskStats@{TaskStats}!runCount@{runCount}}
+\index{runCount@{runCount}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{runCount}{runCount}}
+{\footnotesize\ttfamily uint32\+\_\+t Task\+Stats\+::run\+Count}
+
+
+
+Number of times task has run. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00134}{134}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_ab319b8455c244af5111b6c2e395ffad9}\label{structTaskStats_ab319b8455c244af5111b6c2e395ffad9} 
+\index{TaskStats@{TaskStats}!stackUsage@{stackUsage}}
+\index{stackUsage@{stackUsage}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{stackUsage}{stackUsage}}
+{\footnotesize\ttfamily uint16\+\_\+t Task\+Stats\+::stack\+Usage}
+
+
+
+Stack usage in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00137}{137}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_ad14bdd478708018fae0f1bbceb19d2d0}\label{structTaskStats_ad14bdd478708018fae0f1bbceb19d2d0} 
+\index{TaskStats@{TaskStats}!state@{state}}
+\index{state@{state}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily uint8\+\_\+t Task\+Stats\+::state}
+
+
+
+Current task state (\doxylink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{Task\+::\+State} enum value) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00131}{131}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_a1fc9ad09023166819ea34a6c9e00a956}\label{structTaskStats_a1fc9ad09023166819ea34a6c9e00a956} 
+\index{TaskStats@{TaskStats}!taskId@{taskId}}
+\index{taskId@{taskId}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{taskId}{taskId}}
+{\footnotesize\ttfamily uint8\+\_\+t Task\+Stats\+::task\+Id}
+
+
+
+\doxylink{classTask}{Task} identifier. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00129}{129}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structTaskStats_a68e1e0b13b6fc7e48ac77f22bc338492}\label{structTaskStats_a68e1e0b13b6fc7e48ac77f22bc338492} 
+\index{TaskStats@{TaskStats}!totalExecTimeUs@{totalExecTimeUs}}
+\index{totalExecTimeUs@{totalExecTimeUs}!TaskStats@{TaskStats}}
+\doxysubsubsection{\texorpdfstring{totalExecTimeUs}{totalExecTimeUs}}
+{\footnotesize\ttfamily uint32\+\_\+t Task\+Stats\+::total\+Exec\+Time\+Us}
+
+
+
+Total execution time in microseconds. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00136}{136}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\end{DoxyCompactItemize}

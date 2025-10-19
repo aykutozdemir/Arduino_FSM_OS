@@ -1,0 +1,7 @@
+<map id="Scheduler::logTaskExecution" name="Scheduler::logTaskExecution">
+<area shape="rect" id="Node000001" title="Log a task execution event." alt="" coords="5,31,196,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="256,5,343,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,242,23,243,28,197,34"/>
+<area shape="rect" id="Node000003" href="$classTask.html#aae9b70f6c6542469cd8c3c122536964c" title="Get task name." alt="" coords="244,55,355,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,52,231,56,230,62,196,58"/>
+</map>

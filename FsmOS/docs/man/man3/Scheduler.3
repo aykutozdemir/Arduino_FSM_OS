@@ -1,0 +1,1231 @@
+.TH "Scheduler" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Scheduler \- Core scheduler and task manager for FsmOS\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBMsgNode\fP"
+.br
+.ti -1c
+.RI "struct \fBQueuedMessage\fP"
+.br
+.in -1c
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "enum \fBLogLevel\fP { \fBLOG_DEBUG\fP = 0, \fBLOG_INFO\fP = 1, \fBLOG_WARN\fP = 2, \fBLOG_ERROR\fP = 3 }"
+.br
+.RI "Log level enumeration\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBScheduler\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fB~Scheduler\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "bool \fBadd\fP (\fBTask\fP *task)"
+.br
+.RI "Add a task to the scheduler\&. "
+.ti -1c
+.RI "bool \fBremove\fP (\fBTask\fP *task)"
+.br
+.RI "Remove a task from the scheduler\&. "
+.ti -1c
+.RI "void \fBremoveAll\fP ()"
+.br
+.RI "Remove all tasks from the scheduler\&. "
+.ti -1c
+.RI "\fBTask\fP * \fBgetTask\fP (uint8_t task_id)"
+.br
+.RI "Get task by ID\&. "
+.ti -1c
+.RI "uint8_t \fBgetTaskCount\fP () const"
+.br
+.RI "Get number of active tasks\&. "
+.ti -1c
+.RI "uint16_t \fBgetMaxTasks\fP () const"
+.br
+.RI "Get maximum number of tasks\&. "
+.ti -1c
+.RI "void \fBbegin\fP ()"
+.br
+.RI "Start the scheduler\&. "
+.ti -1c
+.RI "void \fBloopOnce\fP ()"
+.br
+.RI "Execute one scheduling step\&. "
+.ti -1c
+.RI "void \fBloop\fP ()"
+.br
+.RI "Run scheduler continuously\&. "
+.ti -1c
+.RI "void \fBstop\fP ()"
+.br
+.RI "Stop the scheduler\&. "
+.ti -1c
+.RI "void \fBpublishMessage\fP (uint8_t topic, uint8_t type, uint16_t arg=0)"
+.br
+.RI "Publish a message to a topic\&. "
+.ti -1c
+.RI "void \fBsendMessage\fP (uint8_t task_id, uint8_t type, uint16_t arg=0)"
+.br
+.RI "Send a direct message to a specific task\&. "
+.ti -1c
+.RI "uint8_t \fBgetFreeQueueSlots\fP () const"
+.br
+.RI "Get number of free slots in the global message queue\&. "
+.ti -1c
+.RI "uint32_t \fBnow\fP () const"
+.br
+.RI "Get current system time\&. "
+.ti -1c
+.RI "uint16_t \fBgetFreeMemory\fP () const"
+.br
+.RI "Get amount of free memory\&. "
+.ti -1c
+.RI "void \fBsetLogLevel\fP (\fBLogLevel\fP level)"
+.br
+.RI "Set minimum log level\&. "
+.ti -1c
+.RI "void \fBlogMessage\fP (\fBTask\fP *task, \fBLogLevel\fP level, const char *msg)"
+.br
+.RI "Log a message\&. "
+.ti -1c
+.RI "void \fBlogMessage\fP (\fBTask\fP *task, \fBLogLevel\fP level, const __FlashStringHelper *msg)"
+.br
+.ti -1c
+.RI "void \fBonTick\fP ()"
+.br
+.RI "Handle system tick\&. "
+.ti -1c
+.RI "bool \fBgetResetInfo\fP (\fBResetInfo\fP &info)"
+.br
+.RI "Get system reset information\&. "
+.ti -1c
+.RI "\fBResetCause\fP \fBgetResetCause\fP ()"
+.br
+.RI "Get reset cause from system\&. "
+.ti -1c
+.RI "uint8_t \fBgetResetCauseFlags\fP ()"
+.br
+.RI "Get raw reset flags from system\&. "
+.ti -1c
+.RI "bool \fBwasResetCause\fP (\fBResetCause\fP cause)"
+.br
+.RI "Check if a specific reset cause occurred\&. "
+.ti -1c
+.RI "bool \fBgetTaskStats\fP (uint8_t task_id, \fBTaskStats\fP &stats)"
+.br
+.RI "Get task statistics\&. "
+.ti -1c
+.RI "bool \fBgetSystemMemoryInfo\fP (\fBSystemMemoryInfo\fP &info)"
+.br
+.RI "Get system memory information\&. "
+.ti -1c
+.RI "bool \fBgetTaskMemoryInfo\fP (uint8_t task_id, \fBTaskMemoryInfo\fP &info)"
+.br
+.RI "Get task memory information\&. "
+.ti -1c
+.RI "uint8_t \fBgetHeapFragmentation\fP ()"
+.br
+.RI "Get heap fragmentation percentage\&. "
+.ti -1c
+.RI "bool \fBgetMemoryLeakStats\fP (\fBMemoryStats\fP &stats)"
+.br
+.RI "Get memory leak detection statistics\&. "
+.ti -1c
+.RI "void \fBenableWatchdog\fP (uint8_t timeout)"
+.br
+.RI "Enable hardware watchdog timer\&. "
+.ti -1c
+.RI "void \fBfeedWatchdog\fP ()"
+.br
+.ti -1c
+.RI "void \fBlogFormatted\fP (\fBTask\fP *task, \fBLogLevel\fP level, const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log a formatted message\&. "
+.ti -1c
+.RI "uint8_t \fBgetMostDelayingTask\fP () const"
+.br
+.RI "Get task that caused the most delays\&. "
+.in -1c
+.SS "Private Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprocessMessages\fP ()"
+.br
+.RI "Process pending messages for all tasks\&. "
+.ti -1c
+.RI "void \fBupdateSystemTime\fP ()"
+.br
+.RI "Update system time\&. "
+.ti -1c
+.RI "\fBTask\fP * \fBfindNextTask\fP ()"
+.br
+.RI "Find next task to execute\&. "
+.ti -1c
+.RI "void \fBexecuteTask\fP (\fBTask\fP *task)"
+.br
+.RI "Execute a task\&. "
+.ti -1c
+.RI "void \fBhandleTaskTiming\fP (\fBTask\fP *task, uint32_t currentTime)"
+.br
+.RI "Handle task timing monitoring\&. "
+.ti -1c
+.RI "void \fBexecuteTaskStep\fP (\fBTask\fP *task)"
+.br
+.RI "Execute the actual task step\&. "
+.ti -1c
+.RI "void \fBupdateTaskStatistics\fP (\fBTask\fP *task, uint32_t execStart)"
+.br
+.RI "Update task execution statistics\&. "
+.ti -1c
+.RI "void \fBupdateTimingVariables\fP (\fBTask\fP *task)"
+.br
+.RI "Update timing monitoring variables\&. "
+.ti -1c
+.RI "void \fBcheckForTerminatedTask\fP (\fBTask\fP *task)"
+.br
+.RI "Check if task should be terminated and remove if needed\&. "
+.ti -1c
+.RI "void \fBlogTaskDelay\fP (\fBTask\fP *task, uint16_t delayMs, uint8_t causingTaskId)"
+.br
+.RI "Log task delay with attribution\&. "
+.ti -1c
+.RI "template<typename Func > void \fBforEachTask\fP (Func func)"
+.br
+.RI "Iterate through all tasks with a function\&. "
+.ti -1c
+.RI "template<typename Func > \fBTask\fP * \fBfindTask\fP (Func predicate)"
+.br
+.RI "Find a task using a predicate function\&. "
+.ti -1c
+.RI "\fBTaskNode\fP * \fBallocateTaskNode\fP (\fBTask\fP *task)"
+.br
+.RI "Allocate a \fBTaskNode\fP from the pool\&. "
+.ti -1c
+.RI "void \fBdeallocateTaskNode\fP (\fBTaskNode\fP *node)"
+.br
+.RI "Deallocate a \fBTaskNode\fP back to the pool\&. "
+.ti -1c
+.RI "void \fBlogSystemEvent\fP (\fBLogLevel\fP level, const __FlashStringHelper *msg)"
+.br
+.RI "Log a system event message\&. "
+.ti -1c
+.RI "void \fBlogTaskExecution\fP (\fBTask\fP *task, uint32_t execTime)"
+.br
+.RI "Log a task execution event\&. "
+.ti -1c
+.RI "bool \fBallocateMsgNodesChunk\fP ()"
+.br
+.ti -1c
+.RI "bool \fBenqueueQueuedMessage\fP (uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)"
+.br
+.ti -1c
+.RI "bool \fBdequeueQueuedMessage\fP (\fBQueuedMessage\fP &out)"
+.br
+.ti -1c
+.RI "bool \fBdequeueQueuedMessageNode\fP (\fBMsgNode\fP *&outNode)"
+.br
+.ti -1c
+.RI "bool \fBinitializeTaskNodePool\fP ()"
+.br
+.ti -1c
+.RI "\fBTaskNode\fP * \fBacquireTaskNode\fP (\fBTask\fP *task)"
+.br
+.ti -1c
+.RI "void \fBreleaseTaskNode\fP (\fBTaskNode\fP *node)"
+.br
+.ti -1c
+.RI "\fBMsgNode\fP * \fBallocateMsgNode\fP ()"
+.br
+.ti -1c
+.RI "void \fBdeallocateMsgNode\fP (\fBMsgNode\fP *node)"
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBTaskNode\fP * \fBtaskHead\fP = nullptr"
+.br
+.RI "Head of task linked list\&. "
+.ti -1c
+.RI "\fBTaskNode\fP * \fBtaskTail\fP = nullptr"
+.br
+.RI "Tail of task linked list\&. "
+.ti -1c
+.RI "\fBTaskNode\fP * \fBfreeTaskNodeHead\fP = nullptr"
+.br
+.RI "Head of free-list for \fBTaskNode\fP pool\&. "
+.ti -1c
+.RI "bool \fBtaskNodePoolInitialized\fP = false"
+.br
+.RI "Whether pool has been initialized\&. "
+.ti -1c
+.RI "uint16_t \fBtaskNodePoolCapacity\fP = 0"
+.br
+.RI "Total nodes currently allocated to pool/list\&. "
+.ti -1c
+.RI "uint8_t \fBtaskCount\fP = 0"
+.br
+.RI "Current number of tasks\&. "
+.ti -1c
+.RI "uint8_t \fBnextTaskId\fP = 1"
+.br
+.RI "Next available task ID\&. "
+.ti -1c
+.RI "\fBMsgDataPool\fP \fBmsgPool\fP"
+.br
+.RI "Message pool for efficient allocation\&. "
+.ti -1c
+.RI "uint32_t \fBsystemTime\fP"
+.br
+.RI "Current system time\&. "
+.ti -1c
+.RI "bool \fBrunning\fP"
+.br
+.RI "\fBScheduler\fP running state\&. "
+.ti -1c
+.RI "\fBLogLevel\fP \fBcurrentLogLevel\fP"
+.br
+.RI "Current minimum log level\&. "
+.ti -1c
+.RI "uint8_t \fBlastExecutedTaskId\fP = 0"
+.br
+.RI "ID of last executed task (for delay attribution) "
+.ti -1c
+.RI "uint32_t \fBlastTaskEndTime\fP = 0"
+.br
+.RI "When the last task finished execution\&. "
+.ti -1c
+.RI "\fBMsgNode\fP * \fBmsgHead\fP = nullptr"
+.br
+.ti -1c
+.RI "\fBMsgNode\fP * \fBmsgTail\fP = nullptr"
+.br
+.ti -1c
+.RI "\fBMsgNode\fP * \fBfreeHead\fP = nullptr"
+.br
+.ti -1c
+.RI "uint8_t \fBmsgCount\fP = 0"
+.br
+.ti -1c
+.RI "uint8_t \fBtotalNodes\fP = 0"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBSharedMsg\fP"
+.br
+.RI "Allow \fBSharedMsg\fP to access msgPool\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Core scheduler and task manager for FsmOS\&. 
+
+\fBScheduler\fP manages the execution of tasks, message routing, and system resources\&. It provides the main interface for task management and system control\&.
+.PP
+\fBNote\fP
+.RS 4
+Only one scheduler instance should exist per application\&. The global OS instance is provided for convenience\&.
+.RE
+.PP
+Core scheduler and task manager for FsmOS 
+.PP
+Definition at line \fB1073\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Enumeration Documentation"
+.PP 
+.SS "enum \fBScheduler::LogLevel\fP"
+
+.PP
+Log level enumeration\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fILOG_DEBUG \fP\fP
+Debug level messages\&. 
+.TP
+\fB\fILOG_INFO \fP\fP
+Info level messages\&. 
+.TP
+\fB\fILOG_WARN \fP\fP
+Warning level messages\&. 
+.TP
+\fB\fILOG_ERROR \fP\fP
+Error level messages\&. 
+.PP
+Definition at line \fB1195\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Scheduler::Scheduler ()"
+
+.PP
+Constructor\&. Initializes scheduler with default settings 
+.PP
+Definition at line \fB620\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "Scheduler::~Scheduler ()"
+
+.PP
+Destructor\&. Removes all tasks and cleans up resources 
+.PP
+Definition at line \fB707\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBTaskNode\fP * Scheduler::acquireTaskNode (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Definition at line \fB710\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::add (\fBTask\fP * task)"
+
+.PP
+Add a task to the scheduler\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP Pointer to task to add 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if task was added successfully, false if scheduler is full 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fBTask\fP starts in INACTIVE state 
+.RE
+.PP
+
+.PP
+Definition at line \fB783\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBScheduler::MsgNode\fP * Scheduler::allocateMsgNode ()\fC [private]\fP"
+
+.PP
+Definition at line \fB1365\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::allocateMsgNodesChunk ()\fC [private]\fP"
+
+.PP
+Definition at line \fB1773\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBTaskNode\fP * Scheduler::allocateTaskNode (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Allocate a \fBTaskNode\fP from the pool\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to wrap in the node 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to allocated \fBTaskNode\fP, or nullptr if failed 
+.RE
+.PP
+
+.PP
+Definition at line \fB1328\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::begin ()"
+
+.PP
+Start the scheduler\&. Starts all tasks and begins scheduling 
+.PP
+Definition at line \fB894\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::checkForTerminatedTask (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Check if task should be terminated and remove if needed\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to check 
+.RE
+.PP
+
+.PP
+Definition at line \fB1277\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::deallocateMsgNode (\fBScheduler::MsgNode\fP * node)\fC [private]\fP"
+
+.PP
+Definition at line \fB1381\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::deallocateTaskNode (\fBTaskNode\fP * node)\fC [private]\fP"
+
+.PP
+Deallocate a \fBTaskNode\fP back to the pool\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInode\fP \fBTaskNode\fP to deallocate 
+.RE
+.PP
+
+.PP
+Definition at line \fB1354\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::dequeueQueuedMessage (\fBQueuedMessage\fP & out)\fC [private]\fP"
+
+.PP
+Definition at line \fB1846\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::dequeueQueuedMessageNode (\fBMsgNode\fP *& outNode)\fC [private]\fP"
+
+.PP
+Definition at line \fB720\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::enableWatchdog (uint8_t timeout)"
+
+.PP
+Enable hardware watchdog timer\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItimeout\fP Watchdog timeout value 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+AVR-specific feature 
+.RE
+.PP
+
+.PP
+Definition at line \fB1729\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::enqueueQueuedMessage (uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)\fC [private]\fP"
+
+.PP
+Definition at line \fB1806\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::executeTask (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Execute a task\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to execute
+.RE
+.PP
+Updates task timing and calls task->step() 
+.PP
+Definition at line \fB1161\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::executeTaskStep (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Execute the actual task step\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to execute 
+.RE
+.PP
+
+.PP
+Definition at line \fB1212\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::feedWatchdog ()"
+
+.PP
+Definition at line \fB1736\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBTask\fP * Scheduler::findNextTask ()\fC [private]\fP"
+
+.PP
+Find next task to execute\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to next task to execute, or nullptr if none ready 
+.RE
+.PP
+
+.PP
+Definition at line \fB1109\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename Func > template \fBTask\fP * Scheduler::findTask< bool(*)(\fBTask\fP *)> (Func predicate)\fC [private]\fP"
+
+.PP
+Find a task using a predicate function\&. 
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIFunc\fP Function type that takes Task* and returns bool 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIpredicate\fP Function that returns true for the desired task 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to found task, or nullptr if not found 
+.RE
+.PP
+
+.PP
+Definition at line \fB1309\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename Func > template void Scheduler::forEachTask< void(*)(\fBTask\fP *)> (Func func)\fC [private]\fP"
+
+.PP
+Iterate through all tasks with a function\&. 
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIFunc\fP Function type that takes Task* parameter 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP Function to call for each task 
+.RE
+.PP
+
+.PP
+Definition at line \fB1295\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint16_t Scheduler::getFreeMemory () const"
+
+.PP
+Get amount of free memory\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Free memory in bytes 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+AVR-specific implementation 
+.RE
+.PP
+
+.PP
+Definition at line \fB990\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Scheduler::getFreeQueueSlots () const"
+
+.PP
+Get number of free slots in the global message queue\&. 
+.PP
+Definition at line \fB1749\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Scheduler::getHeapFragmentation ()"
+
+.PP
+Get heap fragmentation percentage\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Heap fragmentation as percentage (0-100) 
+.RE
+.PP
+
+.PP
+Definition at line \fB1644\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint16_t Scheduler::getMaxTasks () const"
+
+.PP
+Get maximum number of tasks\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Maximum number of tasks supported 
+.RE
+.PP
+
+.PP
+Definition at line \fB892\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::getMemoryLeakStats (\fBMemoryStats\fP & stats)"
+
+.PP
+Get memory leak detection statistics\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstats\fP Reference to store memory leak statistics 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if stats were retrieved successfully 
+.RE
+.PP
+
+.PP
+Definition at line \fB1649\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Scheduler::getMostDelayingTask () const"
+
+.PP
+Get task that caused the most delays\&. 
+.PP
+\fBReturns\fP
+.RS 4
+\fBTask\fP ID of the task causing most delays, or 0 if none 
+.RE
+.PP
+
+.PP
+Definition at line \fB1754\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBResetCause\fP Scheduler::getResetCause ()"
+
+.PP
+Get reset cause from system\&. 
+.PP
+\fBReturns\fP
+.RS 4
+ResetCause enumeration value 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Combines Optiboot and other reset sources 
+.RE
+.PP
+
+.PP
+Definition at line \fB1437\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Scheduler::getResetCauseFlags ()"
+
+.PP
+Get raw reset flags from system\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Raw reset flags byte 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Internal method for reset cause processing 
+.RE
+.PP
+
+.PP
+Definition at line \fB1491\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::getResetInfo (\fBResetInfo\fP & info)"
+
+.PP
+Get system reset information\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIinfo\fP Reference to store reset information 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if reset info was retrieved successfully 
+.RE
+.PP
+
+.PP
+Definition at line \fB1422\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::getSystemMemoryInfo (\fBSystemMemoryInfo\fP & info)"
+
+.PP
+Get system memory information\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIinfo\fP Reference to store memory information 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if memory info was retrieved successfully 
+.RE
+.PP
+
+.PP
+Definition at line \fB1524\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBTask\fP * Scheduler::getTask (uint8_t task_id)"
+
+.PP
+Get task by ID\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of task to find 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to task, or nullptr if not found 
+.RE
+.PP
+
+.PP
+Definition at line \fB885\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Scheduler::getTaskCount () const\fC [inline]\fP"
+
+.PP
+Get number of active tasks\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of tasks currently in scheduler 
+.RE
+.PP
+
+.PP
+Definition at line \fB1121\fP of file \fBFsmOS\&.h\fP\&.
+.SS "bool Scheduler::getTaskMemoryInfo (uint8_t task_id, \fBTaskMemoryInfo\fP & info)"
+
+.PP
+Get task memory information\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of task to get memory info for 
+.br
+\fIinfo\fP Reference to store task memory information 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if memory info was retrieved successfully 
+.RE
+.PP
+
+.PP
+Definition at line \fB1627\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::getTaskStats (uint8_t task_id, \fBTaskStats\fP & stats)"
+
+.PP
+Get task statistics\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of task to get stats for 
+.br
+\fIstats\fP Reference to store task statistics 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if stats were retrieved successfully 
+.RE
+.PP
+
+.PP
+Definition at line \fB1502\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::handleTaskTiming (\fBTask\fP * task, uint32_t currentTime)\fC [private]\fP"
+
+.PP
+Handle task timing monitoring\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to monitor 
+.br
+\fIcurrentTime\fP Current system time 
+.RE
+.PP
+
+.PP
+Definition at line \fB1188\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::initializeTaskNodePool ()\fC [private]\fP"
+
+.PP
+Definition at line \fB742\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logFormatted (\fBTask\fP * task, \fBLogLevel\fP level, const __FlashStringHelper * format,  \&.\&.\&.)"
+
+.PP
+Log a formatted message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP that generated the message (can be nullptr) 
+.br
+\fIlevel\fP Log level 
+.br
+\fIformat\fP Format string (FlashStringHelper) 
+.br
+\fI\&.\&.\&.\fP Variable arguments for formatting 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Simplified implementation - just logs the format string 
+.RE
+.PP
+
+.PP
+Definition at line \fB1743\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logMessage (\fBTask\fP * task, \fBLogLevel\fP level, const __FlashStringHelper * msg)"
+
+.PP
+Definition at line \fB1038\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logMessage (\fBTask\fP * task, \fBLogLevel\fP level, const char * msg)"
+
+.PP
+Log a message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP that generated the message (can be nullptr) 
+.br
+\fIlevel\fP Log level 
+.br
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB1001\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logSystemEvent (\fBLogLevel\fP level, const __FlashStringHelper * msg)\fC [private]\fP"
+
+.PP
+Log a system event message\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlevel\fP Log level 
+.br
+\fImsg\fP Message to log 
+.RE
+.PP
+
+.PP
+Definition at line \fB1409\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logTaskDelay (\fBTask\fP * task, uint16_t delayMs, uint8_t causingTaskId)\fC [private]\fP"
+
+.PP
+Log task delay with attribution\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP Delayed task 
+.br
+\fIdelayMs\fP Delay amount in milliseconds 
+.br
+\fIcausingTaskId\fP ID of task that caused the delay 
+.RE
+.PP
+
+.PP
+Definition at line \fB1285\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::logTaskExecution (\fBTask\fP * task, uint32_t execTime)\fC [private]\fP"
+
+.PP
+Log a task execution event\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP that was executed 
+.br
+\fIexecTime\fP Execution time in microseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB1414\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::loop ()"
+
+.PP
+Run scheduler continuously\&. Runs scheduler until \fBstop()\fP is called 
+.PP
+Definition at line \fB955\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::loopOnce ()"
+
+.PP
+Execute one scheduling step\&. Processes messages and executes one ready task 
+.PP
+Definition at line \fB924\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint32_t Scheduler::now () const"
+
+.PP
+Get current system time\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Current time in milliseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB988\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::onTick ()"
+
+.PP
+Handle system tick\&. Called by system timer interrupt 
+.PP
+\fBNote\fP
+.RS 4
+Updates internal system time 
+.RE
+.PP
+
+.PP
+Definition at line \fB1075\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::processMessages ()\fC [private]\fP"
+
+.PP
+Process pending messages for all tasks\&. Internal method called by step() 
+.PP
+Definition at line \fB1077\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::publishMessage (uint8_t topic, uint8_t type, uint16_t arg = \fC0\fP)"
+
+.PP
+Publish a message to a topic\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItopic\fP Topic ID to publish to 
+.br
+\fItype\fP Message type 
+.br
+\fIarg\fP Additional argument data 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+All tasks subscribed to the topic will receive this message 
+.RE
+.PP
+
+.PP
+Definition at line \fB965\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::releaseTaskNode (\fBTaskNode\fP * node)\fC [private]\fP"
+
+.PP
+Definition at line \fB715\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::remove (\fBTask\fP * task)"
+
+.PP
+Remove a task from the scheduler\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP Pointer to task to remove 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if task was removed, false if not found 
+.RE
+.PP
+
+.PP
+Definition at line \fB829\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::removeAll ()"
+
+.PP
+Remove all tasks from the scheduler\&. Stops and removes all tasks 
+.PP
+Definition at line \fB871\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::sendMessage (uint8_t task_id, uint8_t type, uint16_t arg = \fC0\fP)"
+
+.PP
+Send a direct message to a specific task\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of target task 
+.br
+\fItype\fP Message type 
+.br
+\fIarg\fP Additional argument data 
+.RE
+.PP
+
+.PP
+Definition at line \fB977\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::setLogLevel (\fBLogLevel\fP level)"
+
+.PP
+Set minimum log level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlevel\fP Minimum level to display 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Messages below this level will be filtered out 
+.RE
+.PP
+
+.PP
+Definition at line \fB999\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::stop ()"
+
+.PP
+Stop the scheduler\&. Stops all tasks and halts scheduling 
+.PP
+Definition at line \fB963\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::updateSystemTime ()\fC [private]\fP"
+
+.PP
+Update system time\&. Internal method to update system time from millis() 
+.PP
+Definition at line \fB1107\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::updateTaskStatistics (\fBTask\fP * task, uint32_t execStart)\fC [private]\fP"
+
+.PP
+Update task execution statistics\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP to update 
+.br
+\fIexecStart\fP Execution start time in microseconds 
+.RE
+.PP
+
+.PP
+Definition at line \fB1221\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Scheduler::updateTimingVariables (\fBTask\fP * task)\fC [private]\fP"
+
+.PP
+Update timing monitoring variables\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask\fP \fBTask\fP that was executed 
+.RE
+.PP
+
+.PP
+Definition at line \fB1271\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Scheduler::wasResetCause (\fBResetCause\fP cause)"
+
+.PP
+Check if a specific reset cause occurred\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcause\fP Reset cause to check for 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the specified cause occurred 
+.RE
+.PP
+
+.PP
+Definition at line \fB1500\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Friends And Related Symbol Documentation"
+.PP 
+.SS "friend class \fBSharedMsg\fP\fC [friend]\fP"
+
+.PP
+Allow \fBSharedMsg\fP to access msgPool\&. 
+.PP
+Definition at line \fB1339\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBLogLevel\fP Scheduler::currentLogLevel\fC [private]\fP"
+
+.PP
+Current minimum log level\&. 
+.PP
+Definition at line \fB1333\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBMsgNode\fP* Scheduler::freeHead = nullptr\fC [private]\fP"
+
+.PP
+Definition at line \fB1473\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBTaskNode\fP* Scheduler::freeTaskNodeHead = nullptr\fC [private]\fP"
+
+.PP
+Head of free-list for \fBTaskNode\fP pool\&. 
+.PP
+Definition at line \fB1323\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Scheduler::lastExecutedTaskId = 0\fC [private]\fP"
+
+.PP
+ID of last executed task (for delay attribution) 
+.PP
+Definition at line \fB1336\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t Scheduler::lastTaskEndTime = 0\fC [private]\fP"
+
+.PP
+When the last task finished execution\&. 
+.PP
+Definition at line \fB1337\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Scheduler::msgCount = 0\fC [private]\fP"
+
+.PP
+Definition at line \fB1474\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBMsgNode\fP* Scheduler::msgHead = nullptr\fC [private]\fP"
+
+.PP
+Definition at line \fB1471\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBMsgDataPool\fP Scheduler::msgPool\fC [private]\fP"
+
+.PP
+Message pool for efficient allocation\&. 
+.PP
+Definition at line \fB1329\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBMsgNode\fP* Scheduler::msgTail = nullptr\fC [private]\fP"
+
+.PP
+Definition at line \fB1472\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Scheduler::nextTaskId = 1\fC [private]\fP"
+
+.PP
+Next available task ID\&. 
+.PP
+Definition at line \fB1327\fP of file \fBFsmOS\&.h\fP\&.
+.SS "bool Scheduler::running\fC [private]\fP"
+
+.PP
+\fBScheduler\fP running state\&. 
+.PP
+Definition at line \fB1331\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t Scheduler::systemTime\fC [private]\fP"
+
+.PP
+Current system time\&. 
+.PP
+Definition at line \fB1330\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Scheduler::taskCount = 0\fC [private]\fP"
+
+.PP
+Current number of tasks\&. 
+.PP
+Definition at line \fB1326\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBTaskNode\fP* Scheduler::taskHead = nullptr\fC [private]\fP"
+
+.PP
+Head of task linked list\&. 
+.PP
+Definition at line \fB1320\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t Scheduler::taskNodePoolCapacity = 0\fC [private]\fP"
+
+.PP
+Total nodes currently allocated to pool/list\&. 
+.PP
+Definition at line \fB1325\fP of file \fBFsmOS\&.h\fP\&.
+.SS "bool Scheduler::taskNodePoolInitialized = false\fC [private]\fP"
+
+.PP
+Whether pool has been initialized\&. 
+.PP
+Definition at line \fB1324\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBTaskNode\fP* Scheduler::taskTail = nullptr\fC [private]\fP"
+
+.PP
+Tail of task linked list\&. 
+.PP
+Definition at line \fB1321\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Scheduler::totalNodes = 0\fC [private]\fP"
+
+.PP
+Definition at line \fB1475\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

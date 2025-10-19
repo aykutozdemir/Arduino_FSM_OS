@@ -1,0 +1,180 @@
+\doxysection{Mutex Class Reference}
+\hypertarget{classMutex}{}\label{classMutex}\index{Mutex@{Mutex}}
+
+
+\doxylink{classMutex}{Mutex} for cooperative task synchronization.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMutex_a593423d868daf926c7b0d63a833ae29a}{Mutex}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classMutex_a25133a881d7392b966786263d41bde79}{try\+Lock}} (uint8\+\_\+t task\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Try to acquire the mutex. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMutex_ac72a20fa83ef3beb121bb11bb452e9cd}{unlock}} (uint8\+\_\+t task\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Release the mutex. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classMutex_ac54a451ca9a856271f5f434f1aaee3d5}{is\+Locked}} () const
+\begin{DoxyCompactList}\small\item\em Check if mutex is currently locked. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classMutex_ae155c790be1a23e17700cd8b8c2636b4}{get\+Owner}} () const
+\begin{DoxyCompactList}\small\item\em Get ID of task that owns the mutex. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+volatile bool \mbox{\hyperlink{classMutex_a833a30ffb34001c68aa2a37570dbf56e}{locked}}
+\begin{DoxyCompactList}\small\item\em Lock state. \end{DoxyCompactList}\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{classMutex_ae818e65daf468eed3d03a3aad59e1281}{owner\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em ID of owning task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classMutex}{Mutex} for cooperative task synchronization. 
+
+\doxylink{classMutex}{Mutex} provides mutual exclusion for shared resources in a cooperative multitasking environment. Only one task can hold the mutex at a time.
+
+\begin{DoxyNote}{Note}
+This mutex is designed for cooperative multitasking only. It does not provide blocking behavior -\/ tasks must check try\+\_\+lock() and yield if the mutex is not available. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00540}{540}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMutex_a593423d868daf926c7b0d63a833ae29a}\label{classMutex_a593423d868daf926c7b0d63a833ae29a} 
+\index{Mutex@{Mutex}!Mutex@{Mutex}}
+\index{Mutex@{Mutex}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{Mutex()}{Mutex()}}
+{\footnotesize\ttfamily Mutex\+::\+Mutex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates an unlocked mutex 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00393}{393}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMutex_ae155c790be1a23e17700cd8b8c2636b4}\label{classMutex_ae155c790be1a23e17700cd8b8c2636b4} 
+\index{Mutex@{Mutex}!getOwner@{getOwner}}
+\index{getOwner@{getOwner}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{getOwner()}{getOwner()}}
+{\footnotesize\ttfamily uint8\+\_\+t Mutex\+::get\+Owner (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get ID of task that owns the mutex. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classTask}{Task} ID of owner, or 0 if unlocked 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00423}{423}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMutex_ac54a451ca9a856271f5f434f1aaee3d5}\label{classMutex_ac54a451ca9a856271f5f434f1aaee3d5} 
+\index{Mutex@{Mutex}!isLocked@{isLocked}}
+\index{isLocked@{isLocked}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{isLocked()}{isLocked()}}
+{\footnotesize\ttfamily bool Mutex\+::is\+Locked (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Check if mutex is currently locked. 
+
+\begin{DoxyReturn}{Returns}
+true if locked, false if available 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00421}{421}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMutex_a25133a881d7392b966786263d41bde79}\label{classMutex_a25133a881d7392b966786263d41bde79} 
+\index{Mutex@{Mutex}!tryLock@{tryLock}}
+\index{tryLock@{tryLock}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{tryLock()}{tryLock()}}
+{\footnotesize\ttfamily bool Mutex\+::try\+Lock (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Try to acquire the mutex. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of the task attempting to acquire the mutex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if mutex was acquired, false if already locked 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00395}{395}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMutex_ac72a20fa83ef3beb121bb11bb452e9cd}\label{classMutex_ac72a20fa83ef3beb121bb11bb452e9cd} 
+\index{Mutex@{Mutex}!unlock@{unlock}}
+\index{unlock@{unlock}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{unlock()}{unlock()}}
+{\footnotesize\ttfamily void Mutex\+::unlock (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Release the mutex. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of the task releasing the mutex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Only the task that acquired the mutex can release it 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00409}{409}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classMutex_a833a30ffb34001c68aa2a37570dbf56e}\label{classMutex_a833a30ffb34001c68aa2a37570dbf56e} 
+\index{Mutex@{Mutex}!locked@{locked}}
+\index{locked@{locked}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{locked}{locked}}
+{\footnotesize\ttfamily volatile bool Mutex\+::locked\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lock state. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00576}{576}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classMutex_ae818e65daf468eed3d03a3aad59e1281}\label{classMutex_ae818e65daf468eed3d03a3aad59e1281} 
+\index{Mutex@{Mutex}!owner\_id@{owner\_id}}
+\index{owner\_id@{owner\_id}!Mutex@{Mutex}}
+\doxysubsubsection{\texorpdfstring{owner\_id}{owner\_id}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t Mutex\+::owner\+\_\+id\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+ID of owning task. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00577}{577}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

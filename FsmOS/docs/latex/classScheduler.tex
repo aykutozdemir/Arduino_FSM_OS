@@ -1,0 +1,2057 @@
+\doxysection{Scheduler Class Reference}
+\hypertarget{classScheduler}{}\label{classScheduler}\index{Scheduler@{Scheduler}}
+
+
+Core scheduler and task manager for Fsm\+OS.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+
+
+Collaboration diagram for Scheduler\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}}
+\item 
+struct \mbox{\hyperlink{structScheduler_1_1QueuedMessage}{Queued\+Message}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} \{ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7}{LOG\+\_\+\+DEBUG}} = 0
+, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327}{LOG\+\_\+\+INFO}} = 1
+, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286}{LOG\+\_\+\+WARN}} = 2
+, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805}{LOG\+\_\+\+ERROR}} = 3
+ \}
+\begin{DoxyCompactList}\small\item\em Log level enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classScheduler_a3b61aac11466cd45ae42ab8c2b0013f6}{Scheduler}} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}{\texorpdfstring{$\sim$}{\string~}\+Scheduler}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b}{add}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Add a task to the scheduler. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a303a5bd8d44b55803e6da7b4108401c2}{remove}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Remove a task from the scheduler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_aaa234e0155e99b4fcbae695898663eea}{remove\+All}} ()
+\begin{DoxyCompactList}\small\item\em Remove all tasks from the scheduler. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_aabf3840938cc797555cdee88f5d19dd2}{get\+Task}} (uint8\+\_\+t task\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Get task by ID. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a7a84b715133d1f8dd473e1511b2498a2}{get\+Task\+Count}} () const
+\begin{DoxyCompactList}\small\item\em Get number of active tasks. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classScheduler_acb0612339205f7e921b0034768dba4c5}{get\+Max\+Tasks}} () const
+\begin{DoxyCompactList}\small\item\em Get maximum number of tasks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b}{begin}} ()
+\begin{DoxyCompactList}\small\item\em Start the scheduler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e}{loop\+Once}} ()
+\begin{DoxyCompactList}\small\item\em Execute one scheduling step. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a81607abe2905dee2e7cf9222a9e35b8f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Run scheduler continuously. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a7ac470a1b0421f2db78e5b478a6b28b1}{stop}} ()
+\begin{DoxyCompactList}\small\item\em Stop the scheduler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d}{publish\+Message}} (uint8\+\_\+t topic, uint8\+\_\+t type, uint16\+\_\+t arg=0)
+\begin{DoxyCompactList}\small\item\em Publish a message to a topic. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a4f3960871e36fdf7234b151f81f04120}{send\+Message}} (uint8\+\_\+t task\+\_\+id, uint8\+\_\+t type, uint16\+\_\+t arg=0)
+\begin{DoxyCompactList}\small\item\em Send a direct message to a specific task. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b}{get\+Free\+Queue\+Slots}} () const
+\begin{DoxyCompactList}\small\item\em Get number of free slots in the global message queue. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{classScheduler_afe202befb3d6eac9dbb6acd1a4b09401}{now}} () const
+\begin{DoxyCompactList}\small\item\em Get current system time. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab}{get\+Free\+Memory}} () const
+\begin{DoxyCompactList}\small\item\em Get amount of free memory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a612b33338832de0d18ebf5859b3d7037}{set\+Log\+Level}} (\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} level)
+\begin{DoxyCompactList}\small\item\em Set minimum log level. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_acaab28b4949d5a175212d134c04cf406}{log\+Message}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} level, const char \texorpdfstring{$\ast$}{*}msg)
+\begin{DoxyCompactList}\small\item\em Log a message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_af5334fe39dbfc2286e91ee358087d3b5}{log\+Message}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} level, const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}msg)
+\item 
+void \mbox{\hyperlink{classScheduler_aab0e31c53df15af0ffbcd97d0510c9a2}{on\+Tick}} ()
+\begin{DoxyCompactList}\small\item\em Handle system tick. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4}{get\+Reset\+Info}} (\mbox{\hyperlink{structResetInfo}{Reset\+Info}} \&info)
+\begin{DoxyCompactList}\small\item\em Get system reset information. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{Reset\+Cause}} \mbox{\hyperlink{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea}{get\+Reset\+Cause}} ()
+\begin{DoxyCompactList}\small\item\em Get reset cause from system. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e}{get\+Reset\+Cause\+Flags}} ()
+\begin{DoxyCompactList}\small\item\em Get raw reset flags from system. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a1ad7c1772cfa11033b280e9b5de86d35}{was\+Reset\+Cause}} (\mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{Reset\+Cause}} cause)
+\begin{DoxyCompactList}\small\item\em Check if a specific reset cause occurred. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3}{get\+Task\+Stats}} (uint8\+\_\+t task\+\_\+id, \mbox{\hyperlink{structTaskStats}{Task\+Stats}} \&stats)
+\begin{DoxyCompactList}\small\item\em Get task statistics. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a7c61b8b908a19416283e66c0fb076a40}{get\+System\+Memory\+Info}} (\mbox{\hyperlink{structSystemMemoryInfo}{System\+Memory\+Info}} \&info)
+\begin{DoxyCompactList}\small\item\em Get system memory information. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f}{get\+Task\+Memory\+Info}} (uint8\+\_\+t task\+\_\+id, \mbox{\hyperlink{structTaskMemoryInfo}{Task\+Memory\+Info}} \&info)
+\begin{DoxyCompactList}\small\item\em Get task memory information. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a69444823d403c8c84670eda2c0d594a4}{get\+Heap\+Fragmentation}} ()
+\begin{DoxyCompactList}\small\item\em Get heap fragmentation percentage. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a26f332614d3126f5efdc42092138b0e6}{get\+Memory\+Leak\+Stats}} (\mbox{\hyperlink{structMemoryStats}{Memory\+Stats}} \&stats)
+\begin{DoxyCompactList}\small\item\em Get memory leak detection statistics. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_aaba5575657eb6345d1da5442be50f29c}{enable\+Watchdog}} (uint8\+\_\+t timeout)
+\begin{DoxyCompactList}\small\item\em Enable hardware watchdog timer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_aa541036ba6db4765a2270d39f74c8758}{feed\+Watchdog}} ()
+\item 
+void \mbox{\hyperlink{classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63}{log\+Formatted}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} level, const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted message. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9}{get\+Most\+Delaying\+Task}} () const
+\begin{DoxyCompactList}\small\item\em Get task that caused the most delays. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f}{process\+Messages}} ()
+\begin{DoxyCompactList}\small\item\em Process pending messages for all tasks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a0a80134fcc4380c2577a5281352847eb}{update\+System\+Time}} ()
+\begin{DoxyCompactList}\small\item\em Update system time. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_aafdaee288f465a178ef154e1fce57cf4}{find\+Next\+Task}} ()
+\begin{DoxyCompactList}\small\item\em Find next task to execute. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a42e220f60192016791fa56855fcc8e46}{execute\+Task}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Execute a task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a22a32d58cf6898fff48880c5349c115f}{handle\+Task\+Timing}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, uint32\+\_\+t current\+Time)
+\begin{DoxyCompactList}\small\item\em Handle task timing monitoring. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7}{execute\+Task\+Step}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Execute the actual task step. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a23437fce9b79f76f4534c402e832d4f5}{update\+Task\+Statistics}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, uint32\+\_\+t exec\+Start)
+\begin{DoxyCompactList}\small\item\em Update task execution statistics. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a6ee466fc5e47301d6101c246c691c131}{update\+Timing\+Variables}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Update timing monitoring variables. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_af423092ed6af17160b11a8fab79c2eab}{check\+For\+Terminated\+Task}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Check if task should be terminated and remove if needed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a40371a166759f310c2223ef082526829}{log\+Task\+Delay}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, uint16\+\_\+t delay\+Ms, uint8\+\_\+t causing\+Task\+Id)
+\begin{DoxyCompactList}\small\item\em Log task delay with attribution. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Func $>$ }\\void \mbox{\hyperlink{classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b}{for\+Each\+Task}} (Func func)
+\begin{DoxyCompactList}\small\item\em Iterate through all tasks with a function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Func $>$ }\\\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_ad2b77c7b7e929aad03ce0034f992d876}{find\+Task}} (Func predicate)
+\begin{DoxyCompactList}\small\item\em Find a task using a predicate function. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a38cf4a79d14bd68514a26946b19d3d53}{allocate\+Task\+Node}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\begin{DoxyCompactList}\small\item\em Allocate a \doxylink{structTaskNode}{Task\+Node} from the pool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a419ac926b5685ea804fe7eae086066e3}{deallocate\+Task\+Node}} (\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*}node)
+\begin{DoxyCompactList}\small\item\em Deallocate a \doxylink{structTaskNode}{Task\+Node} back to the pool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344}{log\+System\+Event}} (\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} level, const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}msg)
+\begin{DoxyCompactList}\small\item\em Log a system event message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScheduler_a46f4a6ce080b281fd2941aa35450c3c0}{log\+Task\+Execution}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task, uint32\+\_\+t exec\+Time)
+\begin{DoxyCompactList}\small\item\em Log a task execution event. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2}{allocate\+Msg\+Nodes\+Chunk}} ()
+\item 
+bool \mbox{\hyperlink{classScheduler_acb1eb89034fcb709b8769ff9060063e5}{enqueue\+Queued\+Message}} (uint8\+\_\+t target\+Task\+Id, uint8\+\_\+t topic, uint8\+\_\+t type, uint16\+\_\+t arg)
+\item 
+bool \mbox{\hyperlink{classScheduler_a13c5cff92aab0d7516c469cb7196c1ba}{dequeue\+Queued\+Message}} (\mbox{\hyperlink{structScheduler_1_1QueuedMessage}{Queued\+Message}} \&out)
+\item 
+bool \mbox{\hyperlink{classScheduler_ac6614605ec1477ed4e44d93e613e3ed4}{dequeue\+Queued\+Message\+Node}} (\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*}\&out\+Node)
+\item 
+bool \mbox{\hyperlink{classScheduler_aaa8cc86207802e4a457202396b2f7441}{initialize\+Task\+Node\+Pool}} ()
+\item 
+\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_afa07db3c7014412af426ee1c304ebc4b}{acquire\+Task\+Node}} (\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}task)
+\item 
+void \mbox{\hyperlink{classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4}{release\+Task\+Node}} (\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966}{allocate\+Msg\+Node}} ()
+\item 
+void \mbox{\hyperlink{classScheduler_a4d40d84c82a4b3f5366d1a7fe5fd9307}{deallocate\+Msg\+Node}} (\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*}node)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a9eb682b2716a34e7c3eb742782aa42e2}{task\+Head}} = nullptr
+\begin{DoxyCompactList}\small\item\em Head of task linked list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a7dbc17482550f15704cdc4e5bbdde2d9}{task\+Tail}} = nullptr
+\begin{DoxyCompactList}\small\item\em Tail of task linked list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_ae4384c1ec8e5ef486776d6dc255a501a}{free\+Task\+Node\+Head}} = nullptr
+\begin{DoxyCompactList}\small\item\em Head of free-\/list for \doxylink{structTaskNode}{Task\+Node} pool. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a6f21f46d36e9c56a43fadfa6cc32aad7}{task\+Node\+Pool\+Initialized}} = false
+\begin{DoxyCompactList}\small\item\em Whether pool has been initialized. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classScheduler_a72d0e1044f04173955e8783b8c1c9bb0}{task\+Node\+Pool\+Capacity}} = 0
+\begin{DoxyCompactList}\small\item\em Total nodes currently allocated to pool/list. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6}{task\+Count}} = 0
+\begin{DoxyCompactList}\small\item\em Current number of tasks. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a89473e616865792db671bdb2551aa338}{next\+Task\+Id}} = 1
+\begin{DoxyCompactList}\small\item\em Next available task ID. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool}{Msg\+Data\+Pool}} \mbox{\hyperlink{classScheduler_a4025d35f57b05649764c44f3583fc2b6}{msg\+Pool}}
+\begin{DoxyCompactList}\small\item\em Message pool for efficient allocation. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{classScheduler_ac66364f021223ea49e76680b6dbcb56a}{system\+Time}}
+\begin{DoxyCompactList}\small\item\em Current system time. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classScheduler_a8a0b0619fdfbda3338fc4964999b3ffd}{running}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classScheduler}{Scheduler} running state. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} \mbox{\hyperlink{classScheduler_a720b2ff4a9e770649fe7b63d3098613d}{current\+Log\+Level}}
+\begin{DoxyCompactList}\small\item\em Current minimum log level. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_ac44741f6b01d7d8f914851b72f538617}{last\+Executed\+Task\+Id}} = 0
+\begin{DoxyCompactList}\small\item\em ID of last executed task (for delay attribution) \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{classScheduler_a4e2da8da4d0ca8ce7da09e92fcc04ffc}{last\+Task\+End\+Time}} = 0
+\begin{DoxyCompactList}\small\item\em When the last task finished execution. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_afc800a55be0f3da82ef2e79dad96496d}{msg\+Head}} = nullptr
+\item 
+\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a2503ab5f7acb13a3bd46f35036af3c02}{msg\+Tail}} = nullptr
+\item 
+\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classScheduler_a59fa5a068cd9a36672b39362982c2e97}{free\+Head}} = nullptr
+\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a13367b7d53dc7bf804d9158e57bff5f7}{msg\+Count}} = 0
+\item 
+uint8\+\_\+t \mbox{\hyperlink{classScheduler_a15bd5f3410a22f750d9cc40579e11084}{total\+Nodes}} = 0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classScheduler_adad5641aac7a2fe0b15a675a053fd4fb}{Shared\+Msg}}
+\begin{DoxyCompactList}\small\item\em Allow \doxylink{classSharedMsg}{Shared\+Msg} to access msg\+Pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Core scheduler and task manager for Fsm\+OS. 
+
+\doxylink{classScheduler}{Scheduler} manages the execution of tasks, message routing, and system resources. It provides the main interface for task management and system control.
+
+\begin{DoxyNote}{Note}
+Only one scheduler instance should exist per application. The global OS instance is provided for convenience.
+\end{DoxyNote}
+Core scheduler and task manager for Fsm\+OS 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01073}{1073}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}\label{classScheduler_ab2bd6aa333e3f108343fedb022eaca79} 
+\index{Scheduler@{Scheduler}!LogLevel@{LogLevel}}
+\index{LogLevel@{LogLevel}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{LogLevel}{LogLevel}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Scheduler\+::\+Log\+Level}}}
+
+
+
+Log level enumeration. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOG\_DEBUG@{LOG\_DEBUG}!Scheduler@{Scheduler}}\index{Scheduler@{Scheduler}!LOG\_DEBUG@{LOG\_DEBUG}}}\Hypertarget{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7}\label{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7} 
+LOG\+\_\+\+DEBUG&Debug level messages. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOG\_INFO@{LOG\_INFO}!Scheduler@{Scheduler}}\index{Scheduler@{Scheduler}!LOG\_INFO@{LOG\_INFO}}}\Hypertarget{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327}\label{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327} 
+LOG\+\_\+\+INFO&Info level messages. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOG\_WARN@{LOG\_WARN}!Scheduler@{Scheduler}}\index{Scheduler@{Scheduler}!LOG\_WARN@{LOG\_WARN}}}\Hypertarget{classScheduler_ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286}\label{classScheduler_ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286} 
+LOG\+\_\+\+WARN&Warning level messages. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOG\_ERROR@{LOG\_ERROR}!Scheduler@{Scheduler}}\index{Scheduler@{Scheduler}!LOG\_ERROR@{LOG\_ERROR}}}\Hypertarget{classScheduler_ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805}\label{classScheduler_ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805} 
+LOG\+\_\+\+ERROR&Error level messages. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01195}{1195}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classScheduler_a3b61aac11466cd45ae42ab8c2b0013f6}\label{classScheduler_a3b61aac11466cd45ae42ab8c2b0013f6} 
+\index{Scheduler@{Scheduler}!Scheduler@{Scheduler}}
+\index{Scheduler@{Scheduler}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{Scheduler()}{Scheduler()}}
+{\footnotesize\ttfamily Scheduler\+::\+Scheduler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Initializes scheduler with default settings 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00620}{620}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}\label{classScheduler_afc8187779b46f64039d3ffa58f0dbe51} 
+\index{Scheduler@{Scheduler}!````~Scheduler@{\texorpdfstring{$\sim$}{\string~}Scheduler}}
+\index{````~Scheduler@{\texorpdfstring{$\sim$}{\string~}Scheduler}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Scheduler()}{\string~Scheduler()}}
+{\footnotesize\ttfamily Scheduler\+::\texorpdfstring{$\sim$}{\string~}\+Scheduler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Removes all tasks and cleans up resources 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00707}{707}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_afc8187779b46f64039d3ffa58f0dbe51_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classScheduler_afa07db3c7014412af426ee1c304ebc4b}\label{classScheduler_afa07db3c7014412af426ee1c304ebc4b} 
+\index{Scheduler@{Scheduler}!acquireTaskNode@{acquireTaskNode}}
+\index{acquireTaskNode@{acquireTaskNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{acquireTaskNode()}{acquireTaskNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} Scheduler\+::acquire\+Task\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00710}{710}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_afa07db3c7014412af426ee1c304ebc4b_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b}\label{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b} 
+\index{Scheduler@{Scheduler}!add@{add}}
+\index{add@{add}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily bool Scheduler\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})}
+
+
+
+Add a task to the scheduler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & Pointer to task to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if task was added successfully, false if scheduler is full 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+\doxylink{classTask}{Task} starts in INACTIVE state 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00783}{783}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966}\label{classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966} 
+\index{Scheduler@{Scheduler}!allocateMsgNode@{allocateMsgNode}}
+\index{allocateMsgNode@{allocateMsgNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{allocateMsgNode()}{allocateMsgNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structScheduler_1_1MsgNode}{Scheduler\+::\+Msg\+Node}} \texorpdfstring{$\ast$}{*} Scheduler\+::allocate\+Msg\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01365}{1365}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2}\label{classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2} 
+\index{Scheduler@{Scheduler}!allocateMsgNodesChunk@{allocateMsgNodesChunk}}
+\index{allocateMsgNodesChunk@{allocateMsgNodesChunk}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{allocateMsgNodesChunk()}{allocateMsgNodesChunk()}}
+{\footnotesize\ttfamily bool Scheduler\+::allocate\+Msg\+Nodes\+Chunk (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01773}{1773}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a38cf4a79d14bd68514a26946b19d3d53}\label{classScheduler_a38cf4a79d14bd68514a26946b19d3d53} 
+\index{Scheduler@{Scheduler}!allocateTaskNode@{allocateTaskNode}}
+\index{allocateTaskNode@{allocateTaskNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{allocateTaskNode()}{allocateTaskNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*} Scheduler\+::allocate\+Task\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Allocate a \doxylink{structTaskNode}{Task\+Node} from the pool. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to wrap in the node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to allocated \doxylink{structTaskNode}{Task\+Node}, or nullptr if failed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01328}{1328}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a38cf4a79d14bd68514a26946b19d3d53_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a38cf4a79d14bd68514a26946b19d3d53_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b}\label{classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b} 
+\index{Scheduler@{Scheduler}!begin@{begin}}
+\index{begin@{begin}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily void Scheduler\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Start the scheduler. 
+
+Starts all tasks and begins scheduling 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00894}{894}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_af423092ed6af17160b11a8fab79c2eab}\label{classScheduler_af423092ed6af17160b11a8fab79c2eab} 
+\index{Scheduler@{Scheduler}!checkForTerminatedTask@{checkForTerminatedTask}}
+\index{checkForTerminatedTask@{checkForTerminatedTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{checkForTerminatedTask()}{checkForTerminatedTask()}}
+{\footnotesize\ttfamily void Scheduler\+::check\+For\+Terminated\+Task (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Check if task should be terminated and remove if needed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to check \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01277}{1277}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_af423092ed6af17160b11a8fab79c2eab_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_af423092ed6af17160b11a8fab79c2eab_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a4d40d84c82a4b3f5366d1a7fe5fd9307}\label{classScheduler_a4d40d84c82a4b3f5366d1a7fe5fd9307} 
+\index{Scheduler@{Scheduler}!deallocateMsgNode@{deallocateMsgNode}}
+\index{deallocateMsgNode@{deallocateMsgNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{deallocateMsgNode()}{deallocateMsgNode()}}
+{\footnotesize\ttfamily void Scheduler\+::deallocate\+Msg\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structScheduler_1_1MsgNode}{Scheduler\+::\+Msg\+Node}} \texorpdfstring{$\ast$}{*}}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01381}{1381}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_a419ac926b5685ea804fe7eae086066e3}\label{classScheduler_a419ac926b5685ea804fe7eae086066e3} 
+\index{Scheduler@{Scheduler}!deallocateTaskNode@{deallocateTaskNode}}
+\index{deallocateTaskNode@{deallocateTaskNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{deallocateTaskNode()}{deallocateTaskNode()}}
+{\footnotesize\ttfamily void Scheduler\+::deallocate\+Task\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*}}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Deallocate a \doxylink{structTaskNode}{Task\+Node} back to the pool. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & \doxylink{structTaskNode}{Task\+Node} to deallocate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01354}{1354}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a419ac926b5685ea804fe7eae086066e3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a13c5cff92aab0d7516c469cb7196c1ba}\label{classScheduler_a13c5cff92aab0d7516c469cb7196c1ba} 
+\index{Scheduler@{Scheduler}!dequeueQueuedMessage@{dequeueQueuedMessage}}
+\index{dequeueQueuedMessage@{dequeueQueuedMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{dequeueQueuedMessage()}{dequeueQueuedMessage()}}
+{\footnotesize\ttfamily bool Scheduler\+::dequeue\+Queued\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structScheduler_1_1QueuedMessage}{Queued\+Message}} \&}]{out }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01846}{1846}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_ac6614605ec1477ed4e44d93e613e3ed4}\label{classScheduler_ac6614605ec1477ed4e44d93e613e3ed4} 
+\index{Scheduler@{Scheduler}!dequeueQueuedMessageNode@{dequeueQueuedMessageNode}}
+\index{dequeueQueuedMessageNode@{dequeueQueuedMessageNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{dequeueQueuedMessageNode()}{dequeueQueuedMessageNode()}}
+{\footnotesize\ttfamily bool Scheduler\+::dequeue\+Queued\+Message\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}} \texorpdfstring{$\ast$}{*}\&}]{out\+Node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00720}{720}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_aaba5575657eb6345d1da5442be50f29c}\label{classScheduler_aaba5575657eb6345d1da5442be50f29c} 
+\index{Scheduler@{Scheduler}!enableWatchdog@{enableWatchdog}}
+\index{enableWatchdog@{enableWatchdog}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{enableWatchdog()}{enableWatchdog()}}
+{\footnotesize\ttfamily void Scheduler\+::enable\+Watchdog (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{timeout }\end{DoxyParamCaption})}
+
+
+
+Enable hardware watchdog timer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timeout} & Watchdog timeout value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+AVR-\/specific feature 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01729}{1729}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_acb1eb89034fcb709b8769ff9060063e5}\label{classScheduler_acb1eb89034fcb709b8769ff9060063e5} 
+\index{Scheduler@{Scheduler}!enqueueQueuedMessage@{enqueueQueuedMessage}}
+\index{enqueueQueuedMessage@{enqueueQueuedMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{enqueueQueuedMessage()}{enqueueQueuedMessage()}}
+{\footnotesize\ttfamily bool Scheduler\+::enqueue\+Queued\+Message (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{target\+Task\+Id,  }\item[{uint8\+\_\+t}]{topic,  }\item[{uint8\+\_\+t}]{type,  }\item[{uint16\+\_\+t}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01806}{1806}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_acb1eb89034fcb709b8769ff9060063e5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_acb1eb89034fcb709b8769ff9060063e5_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a42e220f60192016791fa56855fcc8e46}\label{classScheduler_a42e220f60192016791fa56855fcc8e46} 
+\index{Scheduler@{Scheduler}!executeTask@{executeTask}}
+\index{executeTask@{executeTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{executeTask()}{executeTask()}}
+{\footnotesize\ttfamily void Scheduler\+::execute\+Task (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Execute a task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to execute\\
+\hline
+\end{DoxyParams}
+Updates task timing and calls task-\/\texorpdfstring{$>$}{>}step() 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01161}{1161}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a42e220f60192016791fa56855fcc8e46_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a42e220f60192016791fa56855fcc8e46_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7}\label{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7} 
+\index{Scheduler@{Scheduler}!executeTaskStep@{executeTaskStep}}
+\index{executeTaskStep@{executeTaskStep}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{executeTaskStep()}{executeTaskStep()}}
+{\footnotesize\ttfamily void Scheduler\+::execute\+Task\+Step (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Execute the actual task step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to execute \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01212}{1212}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=343pt]{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_aa541036ba6db4765a2270d39f74c8758}\label{classScheduler_aa541036ba6db4765a2270d39f74c8758} 
+\index{Scheduler@{Scheduler}!feedWatchdog@{feedWatchdog}}
+\index{feedWatchdog@{feedWatchdog}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{feedWatchdog()}{feedWatchdog()}}
+{\footnotesize\ttfamily void Scheduler\+::feed\+Watchdog (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01736}{1736}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aa541036ba6db4765a2270d39f74c8758_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_aafdaee288f465a178ef154e1fce57cf4}\label{classScheduler_aafdaee288f465a178ef154e1fce57cf4} 
+\index{Scheduler@{Scheduler}!findNextTask@{findNextTask}}
+\index{findNextTask@{findNextTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{findNextTask()}{findNextTask()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} Scheduler\+::find\+Next\+Task (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Find next task to execute. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to next task to execute, or nullptr if none ready 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01109}{1109}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aafdaee288f465a178ef154e1fce57cf4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aafdaee288f465a178ef154e1fce57cf4_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_ad2b77c7b7e929aad03ce0034f992d876}\label{classScheduler_ad2b77c7b7e929aad03ce0034f992d876} 
+\index{Scheduler@{Scheduler}!findTask@{findTask}}
+\index{findTask@{findTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{findTask()}{findTask()}}
+{\footnotesize\ttfamily template$<$typename Func $>$ \\
+template \mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} Scheduler\+::find\+Task$<$ bool(\texorpdfstring{$\ast$}{*})(\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*})$>$ (\begin{DoxyParamCaption}\item[{Func}]{predicate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Find a task using a predicate function. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Func} & Function type that takes Task\texorpdfstring{$\ast$}{*} and returns bool \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & Function that returns true for the desired task \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to found task, or nullptr if not found 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01309}{1309}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_ad2b77c7b7e929aad03ce0034f992d876_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b}\label{classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b} 
+\index{Scheduler@{Scheduler}!forEachTask@{forEachTask}}
+\index{forEachTask@{forEachTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{forEachTask()}{forEachTask()}}
+{\footnotesize\ttfamily template$<$typename Func $>$ \\
+template void Scheduler\+::for\+Each\+Task$<$ void(\texorpdfstring{$\ast$}{*})(\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*})$>$ (\begin{DoxyParamCaption}\item[{Func}]{func }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Iterate through all tasks with a function. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Func} & Function type that takes Task\texorpdfstring{$\ast$}{*} parameter \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em func} & Function to call for each task \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01295}{1295}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab}\label{classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab} 
+\index{Scheduler@{Scheduler}!getFreeMemory@{getFreeMemory}}
+\index{getFreeMemory@{getFreeMemory}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getFreeMemory()}{getFreeMemory()}}
+{\footnotesize\ttfamily uint16\+\_\+t Scheduler\+::get\+Free\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get amount of free memory. 
+
+\begin{DoxyReturn}{Returns}
+Free memory in bytes 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+AVR-\/specific implementation 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00990}{990}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b}\label{classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b} 
+\index{Scheduler@{Scheduler}!getFreeQueueSlots@{getFreeQueueSlots}}
+\index{getFreeQueueSlots@{getFreeQueueSlots}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getFreeQueueSlots()}{getFreeQueueSlots()}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::get\+Free\+Queue\+Slots (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get number of free slots in the global message queue. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01749}{1749}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a69444823d403c8c84670eda2c0d594a4}\label{classScheduler_a69444823d403c8c84670eda2c0d594a4} 
+\index{Scheduler@{Scheduler}!getHeapFragmentation@{getHeapFragmentation}}
+\index{getHeapFragmentation@{getHeapFragmentation}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getHeapFragmentation()}{getHeapFragmentation()}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::get\+Heap\+Fragmentation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get heap fragmentation percentage. 
+
+\begin{DoxyReturn}{Returns}
+Heap fragmentation as percentage (0-\/100) 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01644}{1644}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_acb0612339205f7e921b0034768dba4c5}\label{classScheduler_acb0612339205f7e921b0034768dba4c5} 
+\index{Scheduler@{Scheduler}!getMaxTasks@{getMaxTasks}}
+\index{getMaxTasks@{getMaxTasks}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getMaxTasks()}{getMaxTasks()}}
+{\footnotesize\ttfamily uint16\+\_\+t Scheduler\+::get\+Max\+Tasks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get maximum number of tasks. 
+
+\begin{DoxyReturn}{Returns}
+Maximum number of tasks supported 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00892}{892}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_a26f332614d3126f5efdc42092138b0e6}\label{classScheduler_a26f332614d3126f5efdc42092138b0e6} 
+\index{Scheduler@{Scheduler}!getMemoryLeakStats@{getMemoryLeakStats}}
+\index{getMemoryLeakStats@{getMemoryLeakStats}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getMemoryLeakStats()}{getMemoryLeakStats()}}
+{\footnotesize\ttfamily bool Scheduler\+::get\+Memory\+Leak\+Stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMemoryStats}{Memory\+Stats}} \&}]{stats }\end{DoxyParamCaption})}
+
+
+
+Get memory leak detection statistics. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stats} & Reference to store memory leak statistics \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if stats were retrieved successfully 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01649}{1649}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9}\label{classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9} 
+\index{Scheduler@{Scheduler}!getMostDelayingTask@{getMostDelayingTask}}
+\index{getMostDelayingTask@{getMostDelayingTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getMostDelayingTask()}{getMostDelayingTask()}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::get\+Most\+Delaying\+Task (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get task that caused the most delays. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classTask}{Task} ID of the task causing most delays, or 0 if none 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01754}{1754}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea}\label{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea} 
+\index{Scheduler@{Scheduler}!getResetCause@{getResetCause}}
+\index{getResetCause@{getResetCause}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getResetCause()}{getResetCause()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{Reset\+Cause}} Scheduler\+::get\+Reset\+Cause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get reset cause from system. 
+
+\begin{DoxyReturn}{Returns}
+Reset\+Cause enumeration value 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Combines Optiboot and other reset sources 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01437}{1437}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e}\label{classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e} 
+\index{Scheduler@{Scheduler}!getResetCauseFlags@{getResetCauseFlags}}
+\index{getResetCauseFlags@{getResetCauseFlags}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getResetCauseFlags()}{getResetCauseFlags()}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::get\+Reset\+Cause\+Flags (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get raw reset flags from system. 
+
+\begin{DoxyReturn}{Returns}
+Raw reset flags byte 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Internal method for reset cause processing 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01491}{1491}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4}\label{classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4} 
+\index{Scheduler@{Scheduler}!getResetInfo@{getResetInfo}}
+\index{getResetInfo@{getResetInfo}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getResetInfo()}{getResetInfo()}}
+{\footnotesize\ttfamily bool Scheduler\+::get\+Reset\+Info (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structResetInfo}{Reset\+Info}} \&}]{info }\end{DoxyParamCaption})}
+
+
+
+Get system reset information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & Reference to store reset information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if reset info was retrieved successfully 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01422}{1422}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a7c61b8b908a19416283e66c0fb076a40}\label{classScheduler_a7c61b8b908a19416283e66c0fb076a40} 
+\index{Scheduler@{Scheduler}!getSystemMemoryInfo@{getSystemMemoryInfo}}
+\index{getSystemMemoryInfo@{getSystemMemoryInfo}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getSystemMemoryInfo()}{getSystemMemoryInfo()}}
+{\footnotesize\ttfamily bool Scheduler\+::get\+System\+Memory\+Info (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structSystemMemoryInfo}{System\+Memory\+Info}} \&}]{info }\end{DoxyParamCaption})}
+
+
+
+Get system memory information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & Reference to store memory information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if memory info was retrieved successfully 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01524}{1524}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a7c61b8b908a19416283e66c0fb076a40_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_aabf3840938cc797555cdee88f5d19dd2}\label{classScheduler_aabf3840938cc797555cdee88f5d19dd2} 
+\index{Scheduler@{Scheduler}!getTask@{getTask}}
+\index{getTask@{getTask}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getTask()}{getTask()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*} Scheduler\+::get\+Task (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Get task by ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of task to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to task, or nullptr if not found 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00885}{885}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classScheduler_aabf3840938cc797555cdee88f5d19dd2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aabf3840938cc797555cdee88f5d19dd2_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a7a84b715133d1f8dd473e1511b2498a2}\label{classScheduler_a7a84b715133d1f8dd473e1511b2498a2} 
+\index{Scheduler@{Scheduler}!getTaskCount@{getTaskCount}}
+\index{getTaskCount@{getTaskCount}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getTaskCount()}{getTaskCount()}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::get\+Task\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get number of active tasks. 
+
+\begin{DoxyReturn}{Returns}
+Number of tasks currently in scheduler 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01121}{1121}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f}\label{classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f} 
+\index{Scheduler@{Scheduler}!getTaskMemoryInfo@{getTaskMemoryInfo}}
+\index{getTaskMemoryInfo@{getTaskMemoryInfo}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getTaskMemoryInfo()}{getTaskMemoryInfo()}}
+{\footnotesize\ttfamily bool Scheduler\+::get\+Task\+Memory\+Info (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id,  }\item[{\mbox{\hyperlink{structTaskMemoryInfo}{Task\+Memory\+Info}} \&}]{info }\end{DoxyParamCaption})}
+
+
+
+Get task memory information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of task to get memory info for \\
+\hline
+{\em info} & Reference to store task memory information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if memory info was retrieved successfully 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01627}{1627}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3}\label{classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3} 
+\index{Scheduler@{Scheduler}!getTaskStats@{getTaskStats}}
+\index{getTaskStats@{getTaskStats}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{getTaskStats()}{getTaskStats()}}
+{\footnotesize\ttfamily bool Scheduler\+::get\+Task\+Stats (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id,  }\item[{\mbox{\hyperlink{structTaskStats}{Task\+Stats}} \&}]{stats }\end{DoxyParamCaption})}
+
+
+
+Get task statistics. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of task to get stats for \\
+\hline
+{\em stats} & Reference to store task statistics \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if stats were retrieved successfully 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01502}{1502}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a22a32d58cf6898fff48880c5349c115f}\label{classScheduler_a22a32d58cf6898fff48880c5349c115f} 
+\index{Scheduler@{Scheduler}!handleTaskTiming@{handleTaskTiming}}
+\index{handleTaskTiming@{handleTaskTiming}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{handleTaskTiming()}{handleTaskTiming()}}
+{\footnotesize\ttfamily void Scheduler\+::handle\+Task\+Timing (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{uint32\+\_\+t}]{current\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handle task timing monitoring. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to monitor \\
+\hline
+{\em current\+Time} & Current system time \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01188}{1188}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a22a32d58cf6898fff48880c5349c115f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a22a32d58cf6898fff48880c5349c115f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_aaa8cc86207802e4a457202396b2f7441}\label{classScheduler_aaa8cc86207802e4a457202396b2f7441} 
+\index{Scheduler@{Scheduler}!initializeTaskNodePool@{initializeTaskNodePool}}
+\index{initializeTaskNodePool@{initializeTaskNodePool}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{initializeTaskNodePool()}{initializeTaskNodePool()}}
+{\footnotesize\ttfamily bool Scheduler\+::initialize\+Task\+Node\+Pool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00742}{742}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aaa8cc86207802e4a457202396b2f7441_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aaa8cc86207802e4a457202396b2f7441_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63}\label{classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63} 
+\index{Scheduler@{Scheduler}!logFormatted@{logFormatted}}
+\index{logFormatted@{logFormatted}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logFormatted()}{logFormatted()}}
+{\footnotesize\ttfamily void Scheduler\+::log\+Formatted (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}}}]{level,  }\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Log a formatted message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} that generated the message (can be nullptr) \\
+\hline
+{\em level} & Log level \\
+\hline
+{\em format} & Format string (Flash\+String\+Helper) \\
+\hline
+{\em ...} & Variable arguments for formatting \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Simplified implementation -\/ just logs the format string 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01743}{1743}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_af5334fe39dbfc2286e91ee358087d3b5}\label{classScheduler_af5334fe39dbfc2286e91ee358087d3b5} 
+\index{Scheduler@{Scheduler}!logMessage@{logMessage}}
+\index{logMessage@{logMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logMessage()}{logMessage()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Scheduler\+::log\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}}}]{level,  }\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01038}{1038}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{classScheduler_af5334fe39dbfc2286e91ee358087d3b5_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_acaab28b4949d5a175212d134c04cf406}\label{classScheduler_acaab28b4949d5a175212d134c04cf406} 
+\index{Scheduler@{Scheduler}!logMessage@{logMessage}}
+\index{logMessage@{logMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logMessage()}{logMessage()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Scheduler\+::log\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}}}]{level,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+
+
+Log a message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} that generated the message (can be nullptr) \\
+\hline
+{\em level} & Log level \\
+\hline
+{\em msg} & Message to log \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01001}{1001}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{classScheduler_acaab28b4949d5a175212d134c04cf406_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_acaab28b4949d5a175212d134c04cf406_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344}\label{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344} 
+\index{Scheduler@{Scheduler}!logSystemEvent@{logSystemEvent}}
+\index{logSystemEvent@{logSystemEvent}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logSystemEvent()}{logSystemEvent()}}
+{\footnotesize\ttfamily void Scheduler\+::log\+System\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}}}]{level,  }\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Log a system event message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & Log level \\
+\hline
+{\em msg} & Message to log \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01409}{1409}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=343pt]{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a40371a166759f310c2223ef082526829}\label{classScheduler_a40371a166759f310c2223ef082526829} 
+\index{Scheduler@{Scheduler}!logTaskDelay@{logTaskDelay}}
+\index{logTaskDelay@{logTaskDelay}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logTaskDelay()}{logTaskDelay()}}
+{\footnotesize\ttfamily void Scheduler\+::log\+Task\+Delay (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{uint16\+\_\+t}]{delay\+Ms,  }\item[{uint8\+\_\+t}]{causing\+Task\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Log task delay with attribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & Delayed task \\
+\hline
+{\em delay\+Ms} & Delay amount in milliseconds \\
+\hline
+{\em causing\+Task\+Id} & ID of task that caused the delay \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01285}{1285}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a40371a166759f310c2223ef082526829_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a46f4a6ce080b281fd2941aa35450c3c0}\label{classScheduler_a46f4a6ce080b281fd2941aa35450c3c0} 
+\index{Scheduler@{Scheduler}!logTaskExecution@{logTaskExecution}}
+\index{logTaskExecution@{logTaskExecution}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{logTaskExecution()}{logTaskExecution()}}
+{\footnotesize\ttfamily void Scheduler\+::log\+Task\+Execution (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{uint32\+\_\+t}]{exec\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Log a task execution event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} that was executed \\
+\hline
+{\em exec\+Time} & Execution time in microseconds \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01414}{1414}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_a81607abe2905dee2e7cf9222a9e35b8f}\label{classScheduler_a81607abe2905dee2e7cf9222a9e35b8f} 
+\index{Scheduler@{Scheduler}!loop@{loop}}
+\index{loop@{loop}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void Scheduler\+::loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Run scheduler continuously. 
+
+Runs scheduler until \doxylink{classScheduler_a7ac470a1b0421f2db78e5b478a6b28b1}{stop()} is called 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00955}{955}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a81607abe2905dee2e7cf9222a9e35b8f_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e}\label{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e} 
+\index{Scheduler@{Scheduler}!loopOnce@{loopOnce}}
+\index{loopOnce@{loopOnce}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{loopOnce()}{loopOnce()}}
+{\footnotesize\ttfamily void Scheduler\+::loop\+Once (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Execute one scheduling step. 
+
+Processes messages and executes one ready task 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00924}{924}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_afe202befb3d6eac9dbb6acd1a4b09401}\label{classScheduler_afe202befb3d6eac9dbb6acd1a4b09401} 
+\index{Scheduler@{Scheduler}!now@{now}}
+\index{now@{now}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{now()}{now()}}
+{\footnotesize\ttfamily uint32\+\_\+t Scheduler\+::now (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get current system time. 
+
+\begin{DoxyReturn}{Returns}
+Current time in milliseconds 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00988}{988}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_aab0e31c53df15af0ffbcd97d0510c9a2}\label{classScheduler_aab0e31c53df15af0ffbcd97d0510c9a2} 
+\index{Scheduler@{Scheduler}!onTick@{onTick}}
+\index{onTick@{onTick}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{onTick()}{onTick()}}
+{\footnotesize\ttfamily void Scheduler\+::on\+Tick (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handle system tick. 
+
+Called by system timer interrupt \begin{DoxyNote}{Note}
+Updates internal system time 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01075}{1075}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f}\label{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f} 
+\index{Scheduler@{Scheduler}!processMessages@{processMessages}}
+\index{processMessages@{processMessages}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{processMessages()}{processMessages()}}
+{\footnotesize\ttfamily void Scheduler\+::process\+Messages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Process pending messages for all tasks. 
+
+Internal method called by step() 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01077}{1077}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d}\label{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d} 
+\index{Scheduler@{Scheduler}!publishMessage@{publishMessage}}
+\index{publishMessage@{publishMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{publishMessage()}{publishMessage()}}
+{\footnotesize\ttfamily void Scheduler\+::publish\+Message (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{topic,  }\item[{uint8\+\_\+t}]{type,  }\item[{uint16\+\_\+t}]{arg = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Publish a message to a topic. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic} & Topic ID to publish to \\
+\hline
+{\em type} & Message type \\
+\hline
+{\em arg} & Additional argument data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+All tasks subscribed to the topic will receive this message 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00965}{965}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4}\label{classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4} 
+\index{Scheduler@{Scheduler}!releaseTaskNode@{releaseTaskNode}}
+\index{releaseTaskNode@{releaseTaskNode}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{releaseTaskNode()}{releaseTaskNode()}}
+{\footnotesize\ttfamily void Scheduler\+::release\+Task\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTaskNode}{Task\+Node}} \texorpdfstring{$\ast$}{*}}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00715}{715}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a303a5bd8d44b55803e6da7b4108401c2}\label{classScheduler_a303a5bd8d44b55803e6da7b4108401c2} 
+\index{Scheduler@{Scheduler}!remove@{remove}}
+\index{remove@{remove}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily bool Scheduler\+::remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})}
+
+
+
+Remove a task from the scheduler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & Pointer to task to remove \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if task was removed, false if not found 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00829}{829}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a303a5bd8d44b55803e6da7b4108401c2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a303a5bd8d44b55803e6da7b4108401c2_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_aaa234e0155e99b4fcbae695898663eea}\label{classScheduler_aaa234e0155e99b4fcbae695898663eea} 
+\index{Scheduler@{Scheduler}!removeAll@{removeAll}}
+\index{removeAll@{removeAll}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{removeAll()}{removeAll()}}
+{\footnotesize\ttfamily void Scheduler\+::remove\+All (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Remove all tasks from the scheduler. 
+
+Stops and removes all tasks 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00871}{871}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_aaa234e0155e99b4fcbae695898663eea_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classScheduler_aaa234e0155e99b4fcbae695898663eea_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a4f3960871e36fdf7234b151f81f04120}\label{classScheduler_a4f3960871e36fdf7234b151f81f04120} 
+\index{Scheduler@{Scheduler}!sendMessage@{sendMessage}}
+\index{sendMessage@{sendMessage}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{sendMessage()}{sendMessage()}}
+{\footnotesize\ttfamily void Scheduler\+::send\+Message (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id,  }\item[{uint8\+\_\+t}]{type,  }\item[{uint16\+\_\+t}]{arg = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Send a direct message to a specific task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of target task \\
+\hline
+{\em type} & Message type \\
+\hline
+{\em arg} & Additional argument data \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00977}{977}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a4f3960871e36fdf7234b151f81f04120_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{classScheduler_a4f3960871e36fdf7234b151f81f04120_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a612b33338832de0d18ebf5859b3d7037}\label{classScheduler_a612b33338832de0d18ebf5859b3d7037} 
+\index{Scheduler@{Scheduler}!setLogLevel@{setLogLevel}}
+\index{setLogLevel@{setLogLevel}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{setLogLevel()}{setLogLevel()}}
+{\footnotesize\ttfamily void Scheduler\+::set\+Log\+Level (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}}}]{level }\end{DoxyParamCaption})}
+
+
+
+Set minimum log level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & Minimum level to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Messages below this level will be filtered out 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00999}{999}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classScheduler_a612b33338832de0d18ebf5859b3d7037_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a7ac470a1b0421f2db78e5b478a6b28b1}\label{classScheduler_a7ac470a1b0421f2db78e5b478a6b28b1} 
+\index{Scheduler@{Scheduler}!stop@{stop}}
+\index{stop@{stop}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily void Scheduler\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stop the scheduler. 
+
+Stops all tasks and halts scheduling 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00963}{963}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classScheduler_a0a80134fcc4380c2577a5281352847eb}\label{classScheduler_a0a80134fcc4380c2577a5281352847eb} 
+\index{Scheduler@{Scheduler}!updateSystemTime@{updateSystemTime}}
+\index{updateSystemTime@{updateSystemTime}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{updateSystemTime()}{updateSystemTime()}}
+{\footnotesize\ttfamily void Scheduler\+::update\+System\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Update system time. 
+
+Internal method to update system time from millis() 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01107}{1107}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a0a80134fcc4380c2577a5281352847eb_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a23437fce9b79f76f4534c402e832d4f5}\label{classScheduler_a23437fce9b79f76f4534c402e832d4f5} 
+\index{Scheduler@{Scheduler}!updateTaskStatistics@{updateTaskStatistics}}
+\index{updateTaskStatistics@{updateTaskStatistics}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{updateTaskStatistics()}{updateTaskStatistics()}}
+{\footnotesize\ttfamily void Scheduler\+::update\+Task\+Statistics (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task,  }\item[{uint32\+\_\+t}]{exec\+Start }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Update task execution statistics. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} to update \\
+\hline
+{\em exec\+Start} & Execution start time in microseconds \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01221}{1221}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a23437fce9b79f76f4534c402e832d4f5_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a6ee466fc5e47301d6101c246c691c131}\label{classScheduler_a6ee466fc5e47301d6101c246c691c131} 
+\index{Scheduler@{Scheduler}!updateTimingVariables@{updateTimingVariables}}
+\index{updateTimingVariables@{updateTimingVariables}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{updateTimingVariables()}{updateTimingVariables()}}
+{\footnotesize\ttfamily void Scheduler\+::update\+Timing\+Variables (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTask}{Task}} \texorpdfstring{$\ast$}{*}}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Update timing monitoring variables. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & \doxylink{classTask}{Task} that was executed \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01271}{1271}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classScheduler_a6ee466fc5e47301d6101c246c691c131_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a6ee466fc5e47301d6101c246c691c131_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classScheduler_a1ad7c1772cfa11033b280e9b5de86d35}\label{classScheduler_a1ad7c1772cfa11033b280e9b5de86d35} 
+\index{Scheduler@{Scheduler}!wasResetCause@{wasResetCause}}
+\index{wasResetCause@{wasResetCause}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{wasResetCause()}{wasResetCause()}}
+{\footnotesize\ttfamily bool Scheduler\+::was\+Reset\+Cause (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{Reset\+Cause}}}]{cause }\end{DoxyParamCaption})}
+
+
+
+Check if a specific reset cause occurred. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cause} & Reset cause to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the specified cause occurred 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l01500}{1500}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classScheduler_a1ad7c1772cfa11033b280e9b5de86d35_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{classScheduler_adad5641aac7a2fe0b15a675a053fd4fb}\label{classScheduler_adad5641aac7a2fe0b15a675a053fd4fb} 
+\index{Scheduler@{Scheduler}!SharedMsg@{SharedMsg}}
+\index{SharedMsg@{SharedMsg}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{SharedMsg}{SharedMsg}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Allow \doxylink{classSharedMsg}{Shared\+Msg} to access msg\+Pool. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01339}{1339}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classScheduler_a720b2ff4a9e770649fe7b63d3098613d}\label{classScheduler_a720b2ff4a9e770649fe7b63d3098613d} 
+\index{Scheduler@{Scheduler}!currentLogLevel@{currentLogLevel}}
+\index{currentLogLevel@{currentLogLevel}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{currentLogLevel}{currentLogLevel}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{Log\+Level}} Scheduler\+::current\+Log\+Level\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Current minimum log level. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01333}{1333}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a59fa5a068cd9a36672b39362982c2e97}\label{classScheduler_a59fa5a068cd9a36672b39362982c2e97} 
+\index{Scheduler@{Scheduler}!freeHead@{freeHead}}
+\index{freeHead@{freeHead}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{freeHead}{freeHead}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::free\+Head = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01473}{1473}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_ae4384c1ec8e5ef486776d6dc255a501a}\label{classScheduler_ae4384c1ec8e5ef486776d6dc255a501a} 
+\index{Scheduler@{Scheduler}!freeTaskNodeHead@{freeTaskNodeHead}}
+\index{freeTaskNodeHead@{freeTaskNodeHead}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{freeTaskNodeHead}{freeTaskNodeHead}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTaskNode}{Task\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::free\+Task\+Node\+Head = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Head of free-\/list for \doxylink{structTaskNode}{Task\+Node} pool. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01323}{1323}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_ac44741f6b01d7d8f914851b72f538617}\label{classScheduler_ac44741f6b01d7d8f914851b72f538617} 
+\index{Scheduler@{Scheduler}!lastExecutedTaskId@{lastExecutedTaskId}}
+\index{lastExecutedTaskId@{lastExecutedTaskId}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{lastExecutedTaskId}{lastExecutedTaskId}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::last\+Executed\+Task\+Id = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+ID of last executed task (for delay attribution) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01336}{1336}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a4e2da8da4d0ca8ce7da09e92fcc04ffc}\label{classScheduler_a4e2da8da4d0ca8ce7da09e92fcc04ffc} 
+\index{Scheduler@{Scheduler}!lastTaskEndTime@{lastTaskEndTime}}
+\index{lastTaskEndTime@{lastTaskEndTime}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{lastTaskEndTime}{lastTaskEndTime}}
+{\footnotesize\ttfamily uint32\+\_\+t Scheduler\+::last\+Task\+End\+Time = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+When the last task finished execution. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01337}{1337}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a13367b7d53dc7bf804d9158e57bff5f7}\label{classScheduler_a13367b7d53dc7bf804d9158e57bff5f7} 
+\index{Scheduler@{Scheduler}!msgCount@{msgCount}}
+\index{msgCount@{msgCount}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{msgCount}{msgCount}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::msg\+Count = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01474}{1474}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_afc800a55be0f3da82ef2e79dad96496d}\label{classScheduler_afc800a55be0f3da82ef2e79dad96496d} 
+\index{Scheduler@{Scheduler}!msgHead@{msgHead}}
+\index{msgHead@{msgHead}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{msgHead}{msgHead}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::msg\+Head = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01471}{1471}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a4025d35f57b05649764c44f3583fc2b6}\label{classScheduler_a4025d35f57b05649764c44f3583fc2b6} 
+\index{Scheduler@{Scheduler}!msgPool@{msgPool}}
+\index{msgPool@{msgPool}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{msgPool}{msgPool}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool}{Msg\+Data\+Pool}} Scheduler\+::msg\+Pool\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Message pool for efficient allocation. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01329}{1329}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a2503ab5f7acb13a3bd46f35036af3c02}\label{classScheduler_a2503ab5f7acb13a3bd46f35036af3c02} 
+\index{Scheduler@{Scheduler}!msgTail@{msgTail}}
+\index{msgTail@{msgTail}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{msgTail}{msgTail}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structScheduler_1_1MsgNode}{Msg\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::msg\+Tail = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01472}{1472}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a89473e616865792db671bdb2551aa338}\label{classScheduler_a89473e616865792db671bdb2551aa338} 
+\index{Scheduler@{Scheduler}!nextTaskId@{nextTaskId}}
+\index{nextTaskId@{nextTaskId}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{nextTaskId}{nextTaskId}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::next\+Task\+Id = 1\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Next available task ID. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01327}{1327}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a8a0b0619fdfbda3338fc4964999b3ffd}\label{classScheduler_a8a0b0619fdfbda3338fc4964999b3ffd} 
+\index{Scheduler@{Scheduler}!running@{running}}
+\index{running@{running}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{running}{running}}
+{\footnotesize\ttfamily bool Scheduler\+::running\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxylink{classScheduler}{Scheduler} running state. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01331}{1331}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_ac66364f021223ea49e76680b6dbcb56a}\label{classScheduler_ac66364f021223ea49e76680b6dbcb56a} 
+\index{Scheduler@{Scheduler}!systemTime@{systemTime}}
+\index{systemTime@{systemTime}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{systemTime}{systemTime}}
+{\footnotesize\ttfamily uint32\+\_\+t Scheduler\+::system\+Time\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Current system time. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01330}{1330}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6}\label{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6} 
+\index{Scheduler@{Scheduler}!taskCount@{taskCount}}
+\index{taskCount@{taskCount}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskCount}{taskCount}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::task\+Count = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Current number of tasks. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01326}{1326}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a9eb682b2716a34e7c3eb742782aa42e2}\label{classScheduler_a9eb682b2716a34e7c3eb742782aa42e2} 
+\index{Scheduler@{Scheduler}!taskHead@{taskHead}}
+\index{taskHead@{taskHead}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskHead}{taskHead}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTaskNode}{Task\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::task\+Head = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Head of task linked list. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01320}{1320}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a72d0e1044f04173955e8783b8c1c9bb0}\label{classScheduler_a72d0e1044f04173955e8783b8c1c9bb0} 
+\index{Scheduler@{Scheduler}!taskNodePoolCapacity@{taskNodePoolCapacity}}
+\index{taskNodePoolCapacity@{taskNodePoolCapacity}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskNodePoolCapacity}{taskNodePoolCapacity}}
+{\footnotesize\ttfamily uint16\+\_\+t Scheduler\+::task\+Node\+Pool\+Capacity = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Total nodes currently allocated to pool/list. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01325}{1325}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a6f21f46d36e9c56a43fadfa6cc32aad7}\label{classScheduler_a6f21f46d36e9c56a43fadfa6cc32aad7} 
+\index{Scheduler@{Scheduler}!taskNodePoolInitialized@{taskNodePoolInitialized}}
+\index{taskNodePoolInitialized@{taskNodePoolInitialized}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskNodePoolInitialized}{taskNodePoolInitialized}}
+{\footnotesize\ttfamily bool Scheduler\+::task\+Node\+Pool\+Initialized = false\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Whether pool has been initialized. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01324}{1324}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a7dbc17482550f15704cdc4e5bbdde2d9}\label{classScheduler_a7dbc17482550f15704cdc4e5bbdde2d9} 
+\index{Scheduler@{Scheduler}!taskTail@{taskTail}}
+\index{taskTail@{taskTail}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskTail}{taskTail}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTaskNode}{Task\+Node}}\texorpdfstring{$\ast$}{*} Scheduler\+::task\+Tail = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tail of task linked list. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01321}{1321}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classScheduler_a15bd5f3410a22f750d9cc40579e11084}\label{classScheduler_a15bd5f3410a22f750d9cc40579e11084} 
+\index{Scheduler@{Scheduler}!totalNodes@{totalNodes}}
+\index{totalNodes@{totalNodes}!Scheduler@{Scheduler}}
+\doxysubsubsection{\texorpdfstring{totalNodes}{totalNodes}}
+{\footnotesize\ttfamily uint8\+\_\+t Scheduler\+::total\+Nodes = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l01475}{1475}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

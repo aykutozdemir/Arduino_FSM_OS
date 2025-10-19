@@ -1,0 +1,23 @@
+<map id="Scheduler::begin" name="Scheduler::begin">
+<area shape="rect" id="Node000001" title="Start the scheduler." alt="" coords="5,104,124,129"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#aa541036ba6db4765a2270d39f74c8758" title=" " alt="" coords="179,5,349,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,102,119,71,171,40,189,32,191,37,173,44,122,75,82,106"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a3c9f6290c6ae7231b96c9ba6da36382b" title="Iterate through all tasks with a function." alt="" coords="183,55,345,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,101,198,81,199,86,117,107"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a1c6dd608a209d55e1925a4dbf5fb4344" title="Log a system event message." alt="" coords="172,104,356,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="124,114,158,114,158,119,124,119"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a612b33338832de0d18ebf5859b3d7037" title="Set minimum log level." alt="" coords="185,153,343,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="117,127,199,147,198,153,116,132"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a5d6a1d3c6cd5b587d2414737fab9f3ed" title="Start the task." alt="" coords="222,203,306,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="82,127,122,158,173,189,210,202,208,207,171,194,119,163,79,131"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#acaab28b4949d5a175212d134c04cf406" title="Log a message." alt="" coords="404,104,563,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="357,114,390,114,390,119,357,119"/>
+<area shape="rect" id="Node000006" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="611,104,697,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="563,114,597,114,597,119,563,119"/>
+<area shape="rect" id="Node000009" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="430,153,537,179"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="305,203,416,178,417,183,307,209"/>
+<area shape="rect" id="Node000010" href="$classTask.html#a05ad697fe4c99793e7af4dade75bad64" title="Called when task is started." alt="" coords="431,203,536,228"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="306,213,417,213,417,218,306,218"/>
+<area shape="rect" id="Node000011" href="$classTask.html#a7a79169eed523ffdafa76f3c9d07ff27" title="Set task state." alt="" coords="430,252,537,277"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="307,222,417,247,416,252,305,227"/>
+</map>

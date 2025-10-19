@@ -1,0 +1,11 @@
+<map id="Task::getPriority" name="Task::getPriority">
+<area shape="rect" id="Node000001" title="Get task priority." alt="" coords="569,31,687,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#aafdaee288f465a178ef154e1fce57cf4" title="Find next task to execute." alt="" coords="356,5,521,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="555,36,521,32,522,26,556,31"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a4a491d929e3bee5c1bb5db4ad9a13dc3" title="Get task statistics." alt="" coords="356,55,521,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="556,55,522,60,521,54,555,50"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,5,308,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="342,21,308,21,308,15,342,15"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,5,117,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="152,21,117,21,117,15,152,15"/>
+</map>

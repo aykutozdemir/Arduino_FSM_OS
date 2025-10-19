@@ -1,0 +1,127 @@
+\doxysection{Reset\+Info Struct Reference}
+\hypertarget{structResetInfo}{}\label{structResetInfo}\index{ResetInfo@{ResetInfo}}
+
+
+System reset information.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structResetInfo_a4a91d356cc432144cd170d8e26e33a44}{reset\+Reason}}
+\begin{DoxyCompactList}\small\item\em Reason for reset. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structResetInfo_ae2c739e645762e75b0137ecf4edcaea8}{reset\+Time}}
+\begin{DoxyCompactList}\small\item\em Time of reset. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{structResetInfo_a99e40fbce39ff24b43a4fc1c2d44a81c}{watchdog\+Timeout}}
+\begin{DoxyCompactList}\small\item\em Watchdog timeout value. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structResetInfo_a8969cb34a6ef24088d2e647a121cd878}{last\+Task\+Id}}
+\begin{DoxyCompactList}\small\item\em ID of last running task. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structResetInfo_ad979eaae9cfc3f1cf959811b090194b5}{optiboot\+Reset\+Flags}}
+\begin{DoxyCompactList}\small\item\em Raw reset flags from Optiboot GPIOR0. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structResetInfo_a05874fdc762c1aa26bd60d8d16e2cc7b}{optiboot\+Reset\+Cause}}
+\begin{DoxyCompactList}\small\item\em Processed reset cause (Reset\+Cause enum) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+System reset information. 
+
+Used for debugging system resets and crashes 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00147}{147}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structResetInfo_a8969cb34a6ef24088d2e647a121cd878}\label{structResetInfo_a8969cb34a6ef24088d2e647a121cd878} 
+\index{ResetInfo@{ResetInfo}!lastTaskId@{lastTaskId}}
+\index{lastTaskId@{lastTaskId}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{lastTaskId}{lastTaskId}}
+{\footnotesize\ttfamily uint8\+\_\+t Reset\+Info\+::last\+Task\+Id}
+
+
+
+ID of last running task. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00152}{152}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structResetInfo_a05874fdc762c1aa26bd60d8d16e2cc7b}\label{structResetInfo_a05874fdc762c1aa26bd60d8d16e2cc7b} 
+\index{ResetInfo@{ResetInfo}!optibootResetCause@{optibootResetCause}}
+\index{optibootResetCause@{optibootResetCause}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{optibootResetCause}{optibootResetCause}}
+{\footnotesize\ttfamily uint8\+\_\+t Reset\+Info\+::optiboot\+Reset\+Cause}
+
+
+
+Processed reset cause (Reset\+Cause enum) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00156}{156}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structResetInfo_ad979eaae9cfc3f1cf959811b090194b5}\label{structResetInfo_ad979eaae9cfc3f1cf959811b090194b5} 
+\index{ResetInfo@{ResetInfo}!optibootResetFlags@{optibootResetFlags}}
+\index{optibootResetFlags@{optibootResetFlags}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{optibootResetFlags}{optibootResetFlags}}
+{\footnotesize\ttfamily uint8\+\_\+t Reset\+Info\+::optiboot\+Reset\+Flags}
+
+
+
+Raw reset flags from Optiboot GPIOR0. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00155}{155}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structResetInfo_a4a91d356cc432144cd170d8e26e33a44}\label{structResetInfo_a4a91d356cc432144cd170d8e26e33a44} 
+\index{ResetInfo@{ResetInfo}!resetReason@{resetReason}}
+\index{resetReason@{resetReason}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{resetReason}{resetReason}}
+{\footnotesize\ttfamily uint8\+\_\+t Reset\+Info\+::reset\+Reason}
+
+
+
+Reason for reset. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00149}{149}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structResetInfo_ae2c739e645762e75b0137ecf4edcaea8}\label{structResetInfo_ae2c739e645762e75b0137ecf4edcaea8} 
+\index{ResetInfo@{ResetInfo}!resetTime@{resetTime}}
+\index{resetTime@{resetTime}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{resetTime}{resetTime}}
+{\footnotesize\ttfamily uint32\+\_\+t Reset\+Info\+::reset\+Time}
+
+
+
+Time of reset. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00150}{150}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{structResetInfo_a99e40fbce39ff24b43a4fc1c2d44a81c}\label{structResetInfo_a99e40fbce39ff24b43a4fc1c2d44a81c} 
+\index{ResetInfo@{ResetInfo}!watchdogTimeout@{watchdogTimeout}}
+\index{watchdogTimeout@{watchdogTimeout}!ResetInfo@{ResetInfo}}
+\doxysubsubsection{\texorpdfstring{watchdogTimeout}{watchdogTimeout}}
+{\footnotesize\ttfamily uint16\+\_\+t Reset\+Info\+::watchdog\+Timeout}
+
+
+
+Watchdog timeout value. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00151}{151}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\end{DoxyCompactItemize}

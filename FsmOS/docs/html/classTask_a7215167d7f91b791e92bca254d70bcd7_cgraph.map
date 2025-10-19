@@ -1,0 +1,19 @@
+<map id="Task::tell" name="Task::tell">
+<area shape="rect" id="Node000001" title="Send a direct message to a specific task." alt="" coords="5,83,80,109"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a32253185cb9c18a4a445e4b99b4adc96" title="Send a direct message to a specific task." alt="" coords="128,83,297,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,93,114,93,114,99,80,99"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#af3a8d0c2d920d894a34fed4fd9141d77" title=" " alt="" coords="345,12,528,52"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,81,352,53,354,58,259,86"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#aabf3840938cc797555cdee88f5d19dd2" title="Get task by ID." alt="" coords="369,83,504,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="298,93,356,93,356,99,298,99"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="384,145,489,170"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="261,106,377,138,376,144,259,111"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#ad767f69dc7aab8c8bd0f15720693d1c2" title=" " alt="" coords="576,5,772,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="528,27,562,26,562,31,528,32"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#ad2b77c7b7e929aad03ce0034f992d876" title="Find a task using a predicate function." alt="" coords="605,70,743,95"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="504,90,591,85,592,90,505,95"/>
+<area shape="rect" id="Node000007" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="631,119,717,145"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="505,104,618,121,617,126,504,109"/>
+<area shape="rect" id="Node000009" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="621,169,727,194"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="490,160,607,172,607,177,489,165"/>
+</map>

@@ -1,0 +1,221 @@
+.TH "SharedMsg" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+SharedMsg \- Smart pointer-like wrapper for MsgData with reference counting\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSharedMsg\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fBSharedMsg\fP (MsgData *data)"
+.br
+.RI "Constructor from MsgData pointer\&. "
+.ti -1c
+.RI "\fBSharedMsg\fP (const \fBSharedMsg\fP &other)"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBSharedMsg\fP & \fBoperator=\fP (const \fBSharedMsg\fP &other)"
+.br
+.RI "Assignment operator\&. "
+.ti -1c
+.RI "\fB~SharedMsg\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "MsgData * \fBgetData\fP () const"
+.br
+.RI "Get raw MsgData pointer\&. "
+.ti -1c
+.RI "MsgData * \fBoperator\->\fP () const"
+.br
+.RI "Arrow operator for direct access to MsgData\&. "
+.ti -1c
+.RI "bool \fBisValid\fP () const"
+.br
+.RI "Check if \fBSharedMsg\fP contains valid data\&. "
+.in -1c
+.SS "Private Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrelease\fP ()"
+.br
+.RI "Internal method to release reference\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "MsgData * \fBmsgData\fP"
+.br
+.RI "Pointer to the wrapped MsgData\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Smart pointer-like wrapper for MsgData with reference counting\&. 
+
+\fBSharedMsg\fP provides automatic memory management for messages through reference counting\&. When the last reference is destroyed, the message is automatically returned to the pool\&.
+.PP
+\fBNote\fP
+.RS 4
+This class is thread-safe for single-threaded cooperative multitasking\&. 
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+Do not use across different scheduler instances\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB313\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "SharedMsg::SharedMsg ()"
+
+.PP
+Default constructor\&. Creates an empty \fBSharedMsg\fP with no associated data 
+.PP
+Definition at line \fB103\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "SharedMsg::SharedMsg (MsgData * data)\fC [explicit]\fP"
+
+.PP
+Constructor from MsgData pointer\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP Pointer to MsgData to wrap 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Increments reference count of the message 
+.RE
+.PP
+
+.PP
+Definition at line \fB105\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "SharedMsg::SharedMsg (const \fBSharedMsg\fP & other)"
+
+.PP
+Copy constructor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP \fBSharedMsg\fP to copy from 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Increments reference count of the shared message 
+.RE
+.PP
+
+.PP
+Definition at line \fB113\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "SharedMsg::~SharedMsg ()"
+
+.PP
+Destructor\&. 
+.PP
+\fBNote\fP
+.RS 4
+Decrements reference count and frees message if count reaches 0 
+.RE
+.PP
+
+.PP
+Definition at line \fB158\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "MsgData * SharedMsg::getData () const"
+
+.PP
+Get raw MsgData pointer\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to MsgData, or nullptr if invalid 
+.RE
+.PP
+
+.PP
+Definition at line \fB176\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool SharedMsg::isValid () const"
+
+.PP
+Check if \fBSharedMsg\fP contains valid data\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if valid, false if empty or invalid 
+.RE
+.PP
+
+.PP
+Definition at line \fB180\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "MsgData * SharedMsg::operator\-> () const"
+
+.PP
+Arrow operator for direct access to MsgData\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to MsgData for member access 
+.RE
+.PP
+
+.PP
+Definition at line \fB178\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBSharedMsg\fP & SharedMsg::operator= (const \fBSharedMsg\fP & other)"
+
+.PP
+Assignment operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP \fBSharedMsg\fP to assign from 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Reference to this \fBSharedMsg\fP 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Properly manages reference counting 
+.RE
+.PP
+
+.PP
+Definition at line \fB121\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void SharedMsg::release ()\fC [private]\fP"
+
+.PP
+Internal method to release reference\&. 
+.PP
+Definition at line \fB163\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "MsgData* SharedMsg::msgData\fC [private]\fP"
+
+.PP
+Pointer to the wrapped MsgData\&. 
+.PP
+Definition at line \fB369\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

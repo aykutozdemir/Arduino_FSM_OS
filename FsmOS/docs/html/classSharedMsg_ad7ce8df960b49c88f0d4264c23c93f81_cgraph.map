@@ -1,0 +1,7 @@
+<map id="SharedMsg::operator=" name="SharedMsg::operator=">
+<area shape="rect" id="Node000001" title="Assignment operator." alt="" coords="5,13,156,38"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#a9b78a83be33a8a2a938f576eee7a98ee" title="Return a MsgData to the pool." alt="" coords="204,13,372,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,191,23,191,28,156,28"/>
+<area shape="rect" id="Node000003" href="$classMsgDataPool.html#aec9292e845c522cd14c90764b8bfc054" title="Update adaptive pool limit based on usage." alt="" coords="420,5,619,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,23,406,23,406,28,373,28"/>
+</map>

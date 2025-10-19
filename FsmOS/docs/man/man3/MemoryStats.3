@@ -1,0 +1,68 @@
+.TH "MemoryStats" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MemoryStats \- Memory tracking statistics\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fBtotal_allocated\fP"
+.br
+.RI "Total bytes allocated\&. "
+.ti -1c
+.RI "uint32_t \fBtotal_freed\fP"
+.br
+.RI "Total bytes freed\&. "
+.ti -1c
+.RI "uint32_t \fBpeak_usage\fP"
+.br
+.RI "Peak memory usage\&. "
+.ti -1c
+.RI "uint32_t \fBcurrent_usage\fP"
+.br
+.RI "Current memory usage\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Memory tracking statistics\&. 
+
+Used for memory leak detection and monitoring 
+.PP
+Definition at line \fB114\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "uint32_t MemoryStats::current_usage"
+
+.PP
+Current memory usage\&. 
+.PP
+Definition at line \fB119\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t MemoryStats::peak_usage"
+
+.PP
+Peak memory usage\&. 
+.PP
+Definition at line \fB118\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t MemoryStats::total_allocated"
+
+.PP
+Total bytes allocated\&. 
+.PP
+Definition at line \fB116\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t MemoryStats::total_freed"
+
+.PP
+Total bytes freed\&. 
+.PP
+Definition at line \fB117\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

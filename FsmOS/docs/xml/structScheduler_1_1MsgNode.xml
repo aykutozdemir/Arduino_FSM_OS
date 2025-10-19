@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structScheduler_1_1MsgNode" kind="struct" language="C++" prot="private">
+    <compoundname>Scheduler::MsgNode</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" prot="public" static="no" mutable="no">
+        <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+        <definition>MsgNode* Scheduler::MsgNode::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>Scheduler::MsgNode::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1466" column="17" bodyfile="FsmOS.h" bodystart="1466" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966" compoundref="FsmOS_8cpp" startline="1365" endline="1379">Scheduler::allocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" compoundref="FsmOS_8cpp" startline="1846" endline="1862">Scheduler::dequeueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" compoundref="FsmOS_8cpp" startline="720" endline="740">Scheduler::dequeueQueuedMessageNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">Scheduler::enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">Scheduler::processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" prot="public" static="no" mutable="no">
+        <type><ref refid="structScheduler_1_1QueuedMessage" kindref="compound">QueuedMessage</ref></type>
+        <definition>QueuedMessage Scheduler::MsgNode::payload</definition>
+        <argsstring></argsstring>
+        <name>payload</name>
+        <qualifiedname>Scheduler::MsgNode::payload</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1467" column="23" bodyfile="FsmOS.h" bodystart="1467" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" compoundref="FsmOS_8cpp" startline="1846" endline="1862">Scheduler::dequeueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">Scheduler::enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">Scheduler::processMessages</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Scheduler::MsgNode</label>
+        <link refid="structScheduler_1_1MsgNode"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>payload</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Scheduler::QueuedMessage</label>
+        <link refid="structScheduler_1_1QueuedMessage"/>
+      </node>
+    </collaborationgraph>
+    <location file="FsmOS.h" line="1464" column="5" bodyfile="FsmOS.h" bodystart="1465" bodyend="1468"/>
+    <listofallmembers>
+      <member refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" prot="public" virt="non-virtual"><scope>Scheduler::MsgNode</scope><name>next</name></member>
+      <member refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" prot="public" virt="non-virtual"><scope>Scheduler::MsgNode</scope><name>payload</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

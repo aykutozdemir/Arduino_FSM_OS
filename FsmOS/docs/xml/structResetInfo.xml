@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structResetInfo" kind="struct" language="C++" prot="public">
+    <compoundname>ResetInfo</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structResetInfo_1a4a91d356cc432144cd170d8e26e33a44" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ResetInfo::resetReason</definition>
+        <argsstring></argsstring>
+        <name>resetReason</name>
+        <qualifiedname>ResetInfo::resetReason</qualifiedname>
+        <briefdescription>
+<para>Reason for reset. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="149" column="13" bodyfile="FsmOS.h" bodystart="149" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structResetInfo_1ae2c739e645762e75b0137ecf4edcaea8" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ResetInfo::resetTime</definition>
+        <argsstring></argsstring>
+        <name>resetTime</name>
+        <qualifiedname>ResetInfo::resetTime</qualifiedname>
+        <briefdescription>
+<para>Time of reset. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="150" column="14" bodyfile="FsmOS.h" bodystart="150" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structResetInfo_1a99e40fbce39ff24b43a4fc1c2d44a81c" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t ResetInfo::watchdogTimeout</definition>
+        <argsstring></argsstring>
+        <name>watchdogTimeout</name>
+        <qualifiedname>ResetInfo::watchdogTimeout</qualifiedname>
+        <briefdescription>
+<para>Watchdog timeout value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="151" column="14" bodyfile="FsmOS.h" bodystart="151" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structResetInfo_1a8969cb34a6ef24088d2e647a121cd878" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ResetInfo::lastTaskId</definition>
+        <argsstring></argsstring>
+        <name>lastTaskId</name>
+        <qualifiedname>ResetInfo::lastTaskId</qualifiedname>
+        <briefdescription>
+<para>ID of last running task. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="152" column="13" bodyfile="FsmOS.h" bodystart="152" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structResetInfo_1ad979eaae9cfc3f1cf959811b090194b5" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ResetInfo::optibootResetFlags</definition>
+        <argsstring></argsstring>
+        <name>optibootResetFlags</name>
+        <qualifiedname>ResetInfo::optibootResetFlags</qualifiedname>
+        <briefdescription>
+<para>Raw reset flags from Optiboot GPIOR0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="155" column="13" bodyfile="FsmOS.h" bodystart="155" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structResetInfo_1a05874fdc762c1aa26bd60d8d16e2cc7b" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ResetInfo::optibootResetCause</definition>
+        <argsstring></argsstring>
+        <name>optibootResetCause</name>
+        <qualifiedname>ResetInfo::optibootResetCause</qualifiedname>
+        <briefdescription>
+<para>Processed reset cause (ResetCause enum) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="156" column="13" bodyfile="FsmOS.h" bodystart="156" bodyend="-1"/>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">Scheduler::getResetInfo</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>System reset information. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Used for debugging system resets and crashes </para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="147" column="1" bodyfile="FsmOS.h" bodystart="148" bodyend="157"/>
+    <listofallmembers>
+      <member refid="structResetInfo_1a8969cb34a6ef24088d2e647a121cd878" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>lastTaskId</name></member>
+      <member refid="structResetInfo_1a05874fdc762c1aa26bd60d8d16e2cc7b" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>optibootResetCause</name></member>
+      <member refid="structResetInfo_1ad979eaae9cfc3f1cf959811b090194b5" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>optibootResetFlags</name></member>
+      <member refid="structResetInfo_1a4a91d356cc432144cd170d8e26e33a44" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>resetReason</name></member>
+      <member refid="structResetInfo_1ae2c739e645762e75b0137ecf4edcaea8" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>resetTime</name></member>
+      <member refid="structResetInfo_1a99e40fbce39ff24b43a4fc1c2d44a81c" prot="public" virt="non-virtual"><scope>ResetInfo</scope><name>watchdogTimeout</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

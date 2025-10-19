@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structSystemMemoryInfo" kind="struct" language="C++" prot="public">
+    <compoundname>SystemMemoryInfo</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a3fead35bc0c51a87ca8cb5630eea2fe6" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::freeRam</definition>
+        <argsstring></argsstring>
+        <name>freeRam</name>
+        <qualifiedname>SystemMemoryInfo::freeRam</qualifiedname>
+        <briefdescription>
+<para>Free RAM in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="198" column="14" bodyfile="FsmOS.h" bodystart="198" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a74fd6f112cb2a361579343bc609ba3bd" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::totalRam</definition>
+        <argsstring></argsstring>
+        <name>totalRam</name>
+        <qualifiedname>SystemMemoryInfo::totalRam</qualifiedname>
+        <briefdescription>
+<para>Total RAM in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="199" column="14" bodyfile="FsmOS.h" bodystart="199" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1ab46e008190c5d4dc58a098653fc96e21" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::heapSize</definition>
+        <argsstring></argsstring>
+        <name>heapSize</name>
+        <qualifiedname>SystemMemoryInfo::heapSize</qualifiedname>
+        <briefdescription>
+<para>Heap size in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="200" column="14" bodyfile="FsmOS.h" bodystart="200" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1aafc733c82678f25b4579ac80ff3f3416" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::largestBlock</definition>
+        <argsstring></argsstring>
+        <name>largestBlock</name>
+        <qualifiedname>SystemMemoryInfo::largestBlock</qualifiedname>
+        <briefdescription>
+<para>Largest free block in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="201" column="14" bodyfile="FsmOS.h" bodystart="201" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1aa49fcb6068c10bdab13a7cfa97241c27" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t SystemMemoryInfo::heapFragments</definition>
+        <argsstring></argsstring>
+        <name>heapFragments</name>
+        <qualifiedname>SystemMemoryInfo::heapFragments</qualifiedname>
+        <briefdescription>
+<para>Number of heap fragments. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="202" column="13" bodyfile="FsmOS.h" bodystart="202" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a12ed83e6ef3ab65b2e708eb7634ae3d9" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::stackSize</definition>
+        <argsstring></argsstring>
+        <name>stackSize</name>
+        <qualifiedname>SystemMemoryInfo::stackSize</qualifiedname>
+        <briefdescription>
+<para>Stack size in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="203" column="14" bodyfile="FsmOS.h" bodystart="203" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a23c2b52b7aa05bdd6c8316280fafb35e" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::stackUsed</definition>
+        <argsstring></argsstring>
+        <name>stackUsed</name>
+        <qualifiedname>SystemMemoryInfo::stackUsed</qualifiedname>
+        <briefdescription>
+<para>Stack used in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="204" column="14" bodyfile="FsmOS.h" bodystart="204" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1aa09da446795f6a14640ac228f8775332" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::stackFree</definition>
+        <argsstring></argsstring>
+        <name>stackFree</name>
+        <qualifiedname>SystemMemoryInfo::stackFree</qualifiedname>
+        <briefdescription>
+<para>Stack free in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="205" column="14" bodyfile="FsmOS.h" bodystart="205" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1ab4646e94bacfe136033551f29c88127f" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t SystemMemoryInfo::totalTasks</definition>
+        <argsstring></argsstring>
+        <name>totalTasks</name>
+        <qualifiedname>SystemMemoryInfo::totalTasks</qualifiedname>
+        <briefdescription>
+<para>Total number of tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="206" column="13" bodyfile="FsmOS.h" bodystart="206" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1ad53218d4a3a0bd2bf27ee57618c502f9" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::taskMemory</definition>
+        <argsstring></argsstring>
+        <name>taskMemory</name>
+        <qualifiedname>SystemMemoryInfo::taskMemory</qualifiedname>
+        <briefdescription>
+<para>Memory used by tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="207" column="14" bodyfile="FsmOS.h" bodystart="207" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1af922c19a62e2db75d2d35abc96282760" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t SystemMemoryInfo::activeMessages</definition>
+        <argsstring></argsstring>
+        <name>activeMessages</name>
+        <qualifiedname>SystemMemoryInfo::activeMessages</qualifiedname>
+        <briefdescription>
+<para>Number of active messages. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="208" column="13" bodyfile="FsmOS.h" bodystart="208" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a76bfcb475e0cfe6757e0fbbc04ad371e" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::messageMemory</definition>
+        <argsstring></argsstring>
+        <name>messageMemory</name>
+        <qualifiedname>SystemMemoryInfo::messageMemory</qualifiedname>
+        <briefdescription>
+<para>Memory used by messages. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="209" column="14" bodyfile="FsmOS.h" bodystart="209" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1ae527fbdfcb22a4136b2f6f24d60c895a" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::flashUsed</definition>
+        <argsstring></argsstring>
+        <name>flashUsed</name>
+        <qualifiedname>SystemMemoryInfo::flashUsed</qualifiedname>
+        <briefdescription>
+<para>Flash memory used. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="210" column="14" bodyfile="FsmOS.h" bodystart="210" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1abdbd97bb0a5a2fece0b70320ccedffc4" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::flashFree</definition>
+        <argsstring></argsstring>
+        <name>flashFree</name>
+        <qualifiedname>SystemMemoryInfo::flashFree</qualifiedname>
+        <briefdescription>
+<para>Flash memory free. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="211" column="14" bodyfile="FsmOS.h" bodystart="211" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1a863feffbb30f9ba2b8bf031421830f31" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::eepromUsed</definition>
+        <argsstring></argsstring>
+        <name>eepromUsed</name>
+        <qualifiedname>SystemMemoryInfo::eepromUsed</qualifiedname>
+        <briefdescription>
+<para>EEPROM used in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="212" column="14" bodyfile="FsmOS.h" bodystart="212" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structSystemMemoryInfo_1afbf8d2df35ecd00576f480561255f04d" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t SystemMemoryInfo::eepromFree</definition>
+        <argsstring></argsstring>
+        <name>eepromFree</name>
+        <qualifiedname>SystemMemoryInfo::eepromFree</qualifiedname>
+        <briefdescription>
+<para>EEPROM free in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="213" column="14" bodyfile="FsmOS.h" bodystart="213" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>System memory information. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Comprehensive memory usage statistics </para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="196" column="1" bodyfile="FsmOS.h" bodystart="197" bodyend="214"/>
+    <listofallmembers>
+      <member refid="structSystemMemoryInfo_1af922c19a62e2db75d2d35abc96282760" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>activeMessages</name></member>
+      <member refid="structSystemMemoryInfo_1afbf8d2df35ecd00576f480561255f04d" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>eepromFree</name></member>
+      <member refid="structSystemMemoryInfo_1a863feffbb30f9ba2b8bf031421830f31" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>eepromUsed</name></member>
+      <member refid="structSystemMemoryInfo_1abdbd97bb0a5a2fece0b70320ccedffc4" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>flashFree</name></member>
+      <member refid="structSystemMemoryInfo_1ae527fbdfcb22a4136b2f6f24d60c895a" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>flashUsed</name></member>
+      <member refid="structSystemMemoryInfo_1a3fead35bc0c51a87ca8cb5630eea2fe6" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>freeRam</name></member>
+      <member refid="structSystemMemoryInfo_1aa49fcb6068c10bdab13a7cfa97241c27" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>heapFragments</name></member>
+      <member refid="structSystemMemoryInfo_1ab46e008190c5d4dc58a098653fc96e21" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>heapSize</name></member>
+      <member refid="structSystemMemoryInfo_1aafc733c82678f25b4579ac80ff3f3416" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>largestBlock</name></member>
+      <member refid="structSystemMemoryInfo_1a76bfcb475e0cfe6757e0fbbc04ad371e" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>messageMemory</name></member>
+      <member refid="structSystemMemoryInfo_1aa09da446795f6a14640ac228f8775332" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>stackFree</name></member>
+      <member refid="structSystemMemoryInfo_1a12ed83e6ef3ab65b2e708eb7634ae3d9" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>stackSize</name></member>
+      <member refid="structSystemMemoryInfo_1a23c2b52b7aa05bdd6c8316280fafb35e" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>stackUsed</name></member>
+      <member refid="structSystemMemoryInfo_1ad53218d4a3a0bd2bf27ee57618c502f9" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>taskMemory</name></member>
+      <member refid="structSystemMemoryInfo_1a74fd6f112cb2a361579343bc609ba3bd" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>totalRam</name></member>
+      <member refid="structSystemMemoryInfo_1ab4646e94bacfe136033551f29c88127f" prot="public" virt="non-virtual"><scope>SystemMemoryInfo</scope><name>totalTasks</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

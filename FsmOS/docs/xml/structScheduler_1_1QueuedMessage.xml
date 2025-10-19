@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structScheduler_1_1QueuedMessage" kind="struct" language="C++" prot="private">
+    <compoundname>Scheduler::QueuedMessage</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::QueuedMessage::targetTaskId</definition>
+        <argsstring></argsstring>
+        <name>targetTaskId</name>
+        <qualifiedname>Scheduler::QueuedMessage::targetTaskId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1457" column="17" bodyfile="FsmOS.h" bodystart="1457" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">Scheduler::enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">Scheduler::processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" prot="public" static="no" mutable="no">
+        <type>MsgData</type>
+        <definition>MsgData Scheduler::QueuedMessage::msg</definition>
+        <argsstring></argsstring>
+        <name>msg</name>
+        <qualifiedname>Scheduler::QueuedMessage::msg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1458" column="17" bodyfile="FsmOS.h" bodystart="1458" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">Scheduler::enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">Scheduler::processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structScheduler_1_1QueuedMessage_1aa23777039e9446ad21fb93a6ec1e7e65" prot="public" static="no" mutable="no">
+        <type>uint8_t *</type>
+        <definition>uint8_t* Scheduler::QueuedMessage::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>Scheduler::QueuedMessage::buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1459" column="17" bodyfile="FsmOS.h" bodystart="1459" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structScheduler_1_1QueuedMessage_1a79ba2cf8a493da73c1b64f9aa2549938" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::QueuedMessage::capacity</definition>
+        <argsstring></argsstring>
+        <name>capacity</name>
+        <qualifiedname>Scheduler::QueuedMessage::capacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1460" column="17" bodyfile="FsmOS.h" bodystart="1460" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">Scheduler::allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">Scheduler::deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="FsmOS.h" line="1455" column="5" bodyfile="FsmOS.h" bodystart="1456" bodyend="1461"/>
+    <listofallmembers>
+      <member refid="structScheduler_1_1QueuedMessage_1aa23777039e9446ad21fb93a6ec1e7e65" prot="public" virt="non-virtual"><scope>Scheduler::QueuedMessage</scope><name>buffer</name></member>
+      <member refid="structScheduler_1_1QueuedMessage_1a79ba2cf8a493da73c1b64f9aa2549938" prot="public" virt="non-virtual"><scope>Scheduler::QueuedMessage</scope><name>capacity</name></member>
+      <member refid="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" prot="public" virt="non-virtual"><scope>Scheduler::QueuedMessage</scope><name>msg</name></member>
+      <member refid="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" prot="public" virt="non-virtual"><scope>Scheduler::QueuedMessage</scope><name>targetTaskId</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

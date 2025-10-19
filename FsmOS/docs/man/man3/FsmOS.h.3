@@ -1,0 +1,335 @@
+.TH "FsmOS.h" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FsmOS.h \- A lightweight cooperative task scheduler for Arduino\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Arduino\&.h>\fP
+.br
+\fC#include <stdarg\&.h>\fP
+.br
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include <util/atomic\&.h>\fP
+.br
+\fC#include <new>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBTaskNode\fP"
+.br
+.RI "Node structure for \fBTask\fP linked list\&. "
+.ti -1c
+.RI "struct \fBMemoryStats\fP"
+.br
+.RI "Memory tracking statistics\&. "
+.ti -1c
+.RI "struct \fBTaskStats\fP"
+.br
+.RI "\fBTask\fP execution statistics\&. "
+.ti -1c
+.RI "struct \fBResetInfo\fP"
+.br
+.RI "System reset information\&. "
+.ti -1c
+.RI "struct \fBSystemMemoryInfo\fP"
+.br
+.RI "System memory information\&. "
+.ti -1c
+.RI "struct \fBTaskMemoryInfo\fP"
+.br
+.RI "\fBTask\fP memory information\&. "
+.ti -1c
+.RI "class \fBSharedMsg\fP"
+.br
+.RI "Smart pointer-like wrapper for MsgData with reference counting\&. "
+.ti -1c
+.RI "class \fBMsgDataPool\fP"
+.br
+.RI "Memory pool for efficient MsgData allocation\&. "
+.ti -1c
+.RI "class \fBLinkedQueue< T >\fP"
+.br
+.RI "Lightweight, interrupt-safe linked queue\&. "
+.ti -1c
+.RI "struct \fBLinkedQueue< T >::Node\fP"
+.br
+.RI "\fBNode\fP structure for linked list\&. "
+.ti -1c
+.RI "class \fBMutex\fP"
+.br
+.RI "\fBMutex\fP for cooperative task synchronization\&. "
+.ti -1c
+.RI "class \fBSemaphore\fP"
+.br
+.RI "\fBSemaphore\fP for resource counting and synchronization\&. "
+.ti -1c
+.RI "class \fBTask\fP"
+.br
+.RI "Base class for all tasks in FsmOS\&. "
+.ti -1c
+.RI "class \fBScheduler\fP"
+.br
+.RI "Core scheduler and task manager for FsmOS\&. "
+.ti -1c
+.RI "struct \fBScheduler::QueuedMessage\fP"
+.br
+.ti -1c
+.RI "struct \fBScheduler::MsgNode\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBATOMIC_BLOCK\fP(type)   for (uint8_t _ab_once = 1; _ab_once; _ab_once = 0)"
+.br
+.ti -1c
+.RI "#define \fBATOMIC_RESTORESTATE\fP"
+.br
+.ti -1c
+.RI "#define \fBFSMOS_STACK_CANARY_MARGIN\fP   32"
+.br
+.RI "Safety margin (bytes) to keep between stack canary and current stack pointer\&. "
+.ti -1c
+.RI "#define \fBTOPIC_BITFIELD_SIZE\fP   16"
+.br
+.RI "Topic bitfield configuration\&. "
+.ti -1c
+.RI "#define \fBMAX_TOPICS\fP   16"
+.br
+.ti -1c
+.RI "#define \fBMAX_MESSAGE_POOL_SIZE\fP   32"
+.br
+.RI "Forward declaration for \fBScheduler\fP class\&. "
+.ti -1c
+.RI "#define \fBRESET_CAUSE_EXTERNAL\fP   0x01"
+.br
+.RI "Reset cause flag constants from MCUSR register\&. "
+.ti -1c
+.RI "#define \fBRESET_CAUSE_BROWN_OUT\fP   0x02"
+.br
+.RI "Brown-out Reset flag (fallback) "
+.ti -1c
+.RI "#define \fBRESET_CAUSE_POWER_ON\fP   0x04"
+.br
+.RI "Power-on Reset flag (fallback) "
+.ti -1c
+.RI "#define \fBRESET_CAUSE_WATCHDOG\fP   0x08"
+.br
+.RI "Watchdog Reset flag (fallback) "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef uint16_t \fBTopicBitfield\fP"
+.br
+.ti -1c
+.RI "using \fBTimer8\fP = TimerT< uint8_t >"
+.br
+.RI "8-bit timer for short durations (0-255ms) "
+.ti -1c
+.RI "using \fBTimer16\fP = TimerT< uint16_t >"
+.br
+.RI "16-bit timer for medium durations (0-65535ms) "
+.ti -1c
+.RI "using \fBTimer32\fP = TimerT< uint32_t >"
+.br
+.RI "32-bit timer for long durations (0-4294967295ms) "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBResetCause\fP { \fBRESET_UNKNOWN\fP = 0, \fBRESET_POWER_ON\fP, \fBRESET_EXTERNAL\fP, \fBRESET_BROWN_OUT\fP, \fBRESET_WATCHDOG\fP, \fBRESET_MULTIPLE\fP }"
+.br
+.RI "Reset cause enumeration for Optiboot reset flags\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "template<typename T > struct \fB__attribute__\fP ((packed)) TimerT"
+.br
+.RI "Memory-optimized template-based timer for specific duration ranges\&. "
+.ti -1c
+.RI "struct \fB__attribute__\fP ((packed)) MsgData"
+.br
+.RI "Message data structure for inter-task communication\&. "
+.ti -1c
+.RI "void \fBlogDebugf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Default per-task message production budget\&. "
+.ti -1c
+.RI "void \fBlogInfof\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log an info message with formatting\&. "
+.ti -1c
+.RI "void \fBlogWarnf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log a warning message with formatting\&. "
+.ti -1c
+.RI "void \fBlogErrorf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log an error message with formatting\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const uint8_t \fBDEFAULT_TASK_MESSAGE_BUDGET\fP = 1"
+.br
+.RI "Base class for all tasks in FsmOS\&. "
+.ti -1c
+.RI "\fBScheduler\fP \fBOS\fP"
+.br
+.RI "Global scheduler instance\&. "
+.ti -1c
+.RI "const uint16_t \fBDEFAULT_TASK_PERIOD\fP = 100"
+.br
+.RI "Default task period in milliseconds\&. "
+.ti -1c
+.RI "const uint16_t \fBMIN_TASK_PERIOD\fP = 1"
+.br
+.RI "Minimum allowed task period in milliseconds\&. "
+.ti -1c
+.RI "const uint16_t \fBMAX_TASK_PERIOD\fP = 65535"
+.br
+.RI "Maximum allowed task period in milliseconds\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A lightweight cooperative task scheduler for Arduino\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+Aykut Özdemir aykutozdemirgyte@gmail.com 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2025-10-02
+.RE
+.PP
+FsmOS provides a simple, memory-efficient task scheduler for Arduino, supporting cooperative multitasking, message passing, and system monitoring\&.
+.PP
+Key features:
+.IP "\(bu" 2
+Cooperative task scheduling with configurable periods
+.IP "\(bu" 2
+Inter-task communication through messages and events
+.IP "\(bu" 2
+Dynamic task creation and deletion
+.IP "\(bu" 2
+Memory management and monitoring
+.IP "\(bu" 2
+System diagnostics and profiling
+.IP "\(bu" 2
+Logging system with multiple levels
+.PP
+.PP
+\fBNote\fP
+.RS 4
+This library is designed for AVR-based Arduino boards but includes partial support for other architectures\&.
+.RE
+.PP
+\fBVersion\fP
+.RS 4
+1\&.3\&.0 - Major refactoring and code organization 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+2025 Aykut Özdemir aykutozdemirgyte@gmail.com 
+.RE
+.PP
+
+.PP
+Definition in file \fBFsmOS\&.h\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define ATOMIC_BLOCK(type)   for (uint8_t _ab_once = 1; _ab_once; _ab_once = 0)"
+
+.PP
+Definition at line \fB48\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define ATOMIC_RESTORESTATE"
+
+.PP
+Definition at line \fB49\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define FSMOS_STACK_CANARY_MARGIN   32"
+
+.PP
+Safety margin (bytes) to keep between stack canary and current stack pointer\&. 
+.PP
+\fBNote\fP
+.RS 4
+Prevents corruption of active stack frames and ISR stacks 
+.RE
+.PP
+
+.PP
+Definition at line \fB58\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define MAX_MESSAGE_POOL_SIZE   32"
+
+.PP
+Forward declaration for \fBScheduler\fP class\&. 
+.PP
+Definition at line \fB92\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define MAX_TOPICS   16"
+
+.PP
+Definition at line \fB79\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define RESET_CAUSE_BROWN_OUT   0x02"
+
+.PP
+Brown-out Reset flag (fallback) 
+.PP
+Definition at line \fB186\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define RESET_CAUSE_POWER_ON   0x04"
+
+.PP
+Power-on Reset flag (fallback) 
+.PP
+Definition at line \fB187\fP of file \fBFsmOS\&.h\fP\&.
+.SS "#define RESET_CAUSE_WATCHDOG   0x08"
+
+.PP
+Watchdog Reset flag (fallback) 
+.PP
+Definition at line \fB188\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "using \fBTimer16\fP =  TimerT<uint16_t>"
+
+.PP
+16-bit timer for medium durations (0-65535ms) Uses 4 bytes total memory, ideal for most timing needs 
+.PP
+Definition at line \fB275\fP of file \fBFsmOS\&.h\fP\&.
+.SS "using \fBTimer32\fP =  TimerT<uint32_t>"
+
+.PP
+32-bit timer for long durations (0-4294967295ms) Uses 8 bytes total memory, for very long timing requirements 
+.PP
+Definition at line \fB281\fP of file \fBFsmOS\&.h\fP\&.
+.SS "using \fBTimer8\fP =  TimerT<uint8_t>"
+
+.PP
+8-bit timer for short durations (0-255ms) Uses 2 bytes total memory, ideal for debouncing and short delays 
+.PP
+Definition at line \fB269\fP of file \fBFsmOS\&.h\fP\&.
+.SS "typedef uint16_t \fBTopicBitfield\fP"
+
+.PP
+Definition at line \fB78\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

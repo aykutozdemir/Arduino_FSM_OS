@@ -1,0 +1,31 @@
+<map id="Scheduler::executeTask" name="Scheduler::executeTask">
+<area shape="rect" id="Node000001" title="Execute a task." alt="" coords="5,129,168,155"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#af423092ed6af17160b11a8fab79c2eab" title="Check if task should be terminated and remove if needed." alt="" coords="216,55,451,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,127,215,90,252,81,253,86,217,95,118,132"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#a74551b047dfdd1675e53de6d1fc53ac7" title="Execute the actual task step." alt="" coords="239,104,428,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="168,131,225,125,225,130,169,136"/>
+<area shape="rect" id="Node000009" href="$classScheduler.html#a22a32d58cf6898fff48880c5349c115f" title="Handle task timing monitoring." alt="" coords="237,153,430,179"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="168,147,223,153,223,158,168,153"/>
+<area shape="rect" id="Node000011" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="281,5,386,31"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="98,127,146,84,179,60,215,40,266,24,268,29,217,44,182,64,150,88,102,131"/>
+<area shape="rect" id="Node000012" href="$classScheduler.html#a23437fce9b79f76f4534c402e832d4f5" title="Update task execution statistics." alt="" coords="228,203,439,228"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="118,152,217,189,249,197,247,202,215,194,116,157"/>
+<area shape="rect" id="Node000013" href="$classScheduler.html#a6ee466fc5e47301d6101c246c691c131" title="Update timing monitoring variables." alt="" coords="224,252,443,277"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="102,153,150,195,182,219,217,238,235,245,233,250,215,243,179,223,147,200,99,157"/>
+<area shape="rect" id="Node000003" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="529,5,635,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="397,52,514,29,515,34,399,57"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a303a5bd8d44b55803e6da7b4108401c2" title="Remove a task from the scheduler." alt="" coords="517,55,647,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="451,65,503,65,503,70,451,70"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a419ac926b5685ea804fe7eae086066e3" title="Deallocate a TaskNode back to the pool." alt="" coords="713,55,920,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="647,65,700,65,700,70,647,70"/>
+<area shape="rect" id="Node000007" href="$classTask.html#aa096c58dddc4fb8f7f8d5f40e1815d2d" title="Get task execution period." alt="" coords="525,153,639,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="399,127,512,150,511,155,397,132"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a399ff82ffe4b94a11cd8148987e38622" title="Main task execution method." alt="" coords="541,104,623,129"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="428,114,527,114,527,119,428,119"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="430,163,511,163,511,169,430,169"/>
+<area shape="rect" id="Node000010" href="$classScheduler.html#a40371a166759f310c2223ef082526829" title="Log task delay with attribution." alt="" coords="499,203,665,228"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="399,176,504,197,503,203,397,181"/>
+<area shape="poly" id="edge12_Node000011_Node000003" title=" " alt="" coords="386,15,515,15,515,21,386,21"/>
+<area shape="rect" id="Node000014" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="539,252,625,277"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="443,262,525,262,525,267,443,267"/>
+</map>

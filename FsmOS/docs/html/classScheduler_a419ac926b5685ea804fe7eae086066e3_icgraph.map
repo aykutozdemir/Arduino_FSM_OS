@@ -1,0 +1,19 @@
+<map id="Scheduler::deallocateTaskNode" name="Scheduler::deallocateTaskNode">
+<area shape="rect" id="Node000001" title="Deallocate a TaskNode back to the pool." alt="" coords="1087,55,1293,80"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a2e5c9f7ad69391854d3a0dc2dd73f8b4" title=" " alt="" coords="849,5,1039,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1112,55,1008,33,1009,28,1113,49"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a303a5bd8d44b55803e6da7b4108401c2" title="Remove a task from the scheduler." alt="" coords="879,55,1009,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1073,70,1009,70,1009,65,1073,65"/>
+<area shape="rect" id="Node000008" href="$classScheduler.html#aaa234e0155e99b4fcbae695898663eea" title="Remove all tasks from the scheduler." alt="" coords="871,104,1017,129"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1113,85,1009,107,1008,101,1112,80"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#af423092ed6af17160b11a8fab79c2eab" title="Check if task should be terminated and remove if needed." alt="" coords="567,55,801,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="865,70,801,70,801,65,865,65"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a42e220f60192016791fa56855fcc8e46" title="Execute a task." alt="" coords="356,55,519,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="553,70,519,70,519,65,553,65"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,55,308,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="342,70,308,70,308,65,342,65"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,55,117,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="152,70,117,70,117,65,152,65"/>
+<area shape="rect" id="Node000009" href="$classScheduler.html#afc8187779b46f64039d3ffa58f0dbe51" title="Destructor." alt="" coords="607,104,761,129"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="857,119,761,119,761,114,857,114"/>
+</map>

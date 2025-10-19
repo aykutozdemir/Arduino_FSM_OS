@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structTaskMemoryInfo" kind="struct" language="C++" prot="public">
+    <compoundname>TaskMemoryInfo</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structTaskMemoryInfo_1a6ccb06721fe721014762215555523d65" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TaskMemoryInfo::task_id</definition>
+        <argsstring></argsstring>
+        <name>task_id</name>
+        <qualifiedname>TaskMemoryInfo::task_id</qualifiedname>
+        <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="223" column="13" bodyfile="FsmOS.h" bodystart="223" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">Scheduler::getTaskMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskMemoryInfo_1a455ea7f69c1a9c3b898d5c8d40e0fac7" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskMemoryInfo::task_struct_size</definition>
+        <argsstring></argsstring>
+        <name>task_struct_size</name>
+        <qualifiedname>TaskMemoryInfo::task_struct_size</qualifiedname>
+        <briefdescription>
+<para>Size of task structure. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="224" column="14" bodyfile="FsmOS.h" bodystart="224" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">Scheduler::getTaskMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskMemoryInfo_1a33936208344182c0cb2040787efaf117" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskMemoryInfo::subscription_size</definition>
+        <argsstring></argsstring>
+        <name>subscription_size</name>
+        <qualifiedname>TaskMemoryInfo::subscription_size</qualifiedname>
+        <briefdescription>
+<para>Size of subscription data. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="225" column="14" bodyfile="FsmOS.h" bodystart="225" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">Scheduler::getTaskMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskMemoryInfo_1afc06164ff4977316ba80890f78771b91" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskMemoryInfo::queue_size</definition>
+        <argsstring></argsstring>
+        <name>queue_size</name>
+        <qualifiedname>TaskMemoryInfo::queue_size</qualifiedname>
+        <briefdescription>
+<para>Size of message queue. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="226" column="14" bodyfile="FsmOS.h" bodystart="226" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">Scheduler::getTaskMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskMemoryInfo_1ae365acfa19af10f054aee062cfe3b824" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskMemoryInfo::total_allocated</definition>
+        <argsstring></argsstring>
+        <name>total_allocated</name>
+        <qualifiedname>TaskMemoryInfo::total_allocated</qualifiedname>
+        <briefdescription>
+<para>Total memory allocated for task. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="227" column="14" bodyfile="FsmOS.h" bodystart="227" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">Scheduler::getTaskMemoryInfo</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> memory information. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Memory usage statistics for individual tasks </para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="221" column="1" bodyfile="FsmOS.h" bodystart="222" bodyend="228"/>
+    <listofallmembers>
+      <member refid="structTaskMemoryInfo_1afc06164ff4977316ba80890f78771b91" prot="public" virt="non-virtual"><scope>TaskMemoryInfo</scope><name>queue_size</name></member>
+      <member refid="structTaskMemoryInfo_1a33936208344182c0cb2040787efaf117" prot="public" virt="non-virtual"><scope>TaskMemoryInfo</scope><name>subscription_size</name></member>
+      <member refid="structTaskMemoryInfo_1a6ccb06721fe721014762215555523d65" prot="public" virt="non-virtual"><scope>TaskMemoryInfo</scope><name>task_id</name></member>
+      <member refid="structTaskMemoryInfo_1a455ea7f69c1a9c3b898d5c8d40e0fac7" prot="public" virt="non-virtual"><scope>TaskMemoryInfo</scope><name>task_struct_size</name></member>
+      <member refid="structTaskMemoryInfo_1ae365acfa19af10f054aee062cfe3b824" prot="public" virt="non-virtual"><scope>TaskMemoryInfo</scope><name>total_allocated</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

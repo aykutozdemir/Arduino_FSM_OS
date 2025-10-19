@@ -1,0 +1,7 @@
+<map id="Scheduler::logSystemEvent" name="Scheduler::logSystemEvent">
+<area shape="rect" id="Node000001" title="Log a system event message." alt="" coords="172,31,356,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a278e9940ce3dd1c708c5bd55b0e4059b" title="Add a task to the scheduler." alt="" coords="10,5,119,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,33,119,28,120,22,159,27"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="5,55,124,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,59,125,63,124,58,158,53"/>
+</map>

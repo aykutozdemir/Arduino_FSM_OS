@@ -1,7 +1,7 @@
 /**
  * @file FsmOS.h
  * @brief A lightweight cooperative task scheduler for Arduino
- * @author Aykut Ozdemir
+ * @author Aykut Özdemir <aykutozdemirgyte@gmail.com>
  * @date 2025-10-02
  *
  * FsmOS provides a simple, memory-efficient task scheduler for Arduino,
@@ -19,7 +19,7 @@
  * partial support for other architectures.
  *
  * @version 1.3.0 - Major refactoring and code organization
- * @copyright 2025 Aykut Ozdemir
+ * @copyright 2025 Aykut Özdemir <aykutozdemirgyte@gmail.com>
  */
 /**
  * @defgroup fsmos FsmOS
@@ -51,11 +51,11 @@
 
 // ================== Stack Canary Configuration ==================
 /**
- * @brief Size of the stack canary region (bytes) used to estimate stack usage on AVR
- * @note Consumes RAM in .bss; increase for finer resolution, decrease to save RAM
+ * @brief Safety margin (bytes) to keep between stack canary and current stack pointer
+ * @note Prevents corruption of active stack frames and ISR stacks
  */
-#ifndef FSMOS_STACK_CANARY_SIZE
-#define FSMOS_STACK_CANARY_SIZE 128
+#ifndef FSMOS_STACK_CANARY_MARGIN
+#define FSMOS_STACK_CANARY_MARGIN 32
 #endif
 
 /**
@@ -90,9 +90,6 @@ class Scheduler;  ///< Forward declaration for Scheduler class
 // ================== Message Queue Constants (must appear before use) ==================
 #ifndef MAX_MESSAGE_POOL_SIZE
 #define MAX_MESSAGE_POOL_SIZE 32
-#endif
-#ifndef MAX_MESSAGE_DATA_SIZE
-#define MAX_MESSAGE_DATA_SIZE 64
 #endif
 
 /* ================== Task Node Structure ================== */
@@ -299,8 +296,6 @@ struct __attribute__((packed)) MsgData
     uint8_t type;       ///< Message type identifier
     uint8_t topic;      ///< Topic/channel for message routing
     uint16_t arg;       ///< Additional argument data
-    uint8_t *data;      ///< Pointer to additional data (optional)
-    uint8_t dataSize;   ///< Size of additional data in bytes
     uint8_t refCount;   ///< Reference count for memory management
 };
 
@@ -645,6 +640,14 @@ private:
  * The scheduler calls step() periodically based on the task's period.
  */
 /**
+ * @brief Default message budget for tasks
+ * @details If a task does not explicitly declare a budget via
+ *          Task::setMaxMessageBudget, the scheduler applies this
+ *          default to ensure capacity checks are enforced.
+ */
+const uint8_t DEFAULT_TASK_MESSAGE_BUDGET = 1;
+
+/**
  * @brief Base class for all tasks in FsmOS
  */
 class Task
@@ -795,13 +798,13 @@ public:
      *          free message slots before running the task.
      * @return Planned message production budget for the upcoming step
      */
-    virtual uint8_t getMaxMessageBudget() const = 0;
+    virtual uint8_t getMaxMessageBudget() const { return DEFAULT_TASK_MESSAGE_BUDGET; }
 
     /**
      * @brief Get the size in bytes of the concrete task object
      * @details Implement in each derived Task as: return sizeof(DerivedClass);
      */
-    virtual uint16_t getTaskStructSize() const = 0;
+    virtual uint16_t getTaskStructSize() const { return sizeof(*this); }
 
 protected:
     /**
@@ -938,21 +941,17 @@ protected:
      * @param topic Topic ID to publish to
      * @param type Message type
      * @param arg Additional argument data
-     * @param data Optional data pointer
-     * @param data_size Size of optional data
      * @note All subscribed tasks will receive this message
      */
-    void publish(uint8_t topic, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+    void publish(uint8_t topic, uint8_t type, uint16_t arg = 0);
 
     /**
      * @brief Send a direct message to a specific task
      * @param task_id ID of target task
      * @param type Message type
      * @param arg Additional argument data
-     * @param data Optional data pointer
-     * @param data_size Size of optional data
      */
-    void tell(uint8_t task_id, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+    void tell(uint8_t task_id, uint8_t type, uint16_t arg = 0);
 
     // Logging
     /**
@@ -1001,26 +1000,26 @@ protected:
      * @note Called automatically by scheduler, rarely needs direct use
      */
     void processMessages();
-    
+
     // Task timing monitoring methods
     /**
      * @brief Get number of times this task was delayed
      * @return Number of delay occurrences
      */
     uint16_t getDelayCount() const;
-    
+
     /**
      * @brief Get maximum delay experienced by this task
      * @return Maximum delay in milliseconds
      */
     uint16_t getMaxDelay() const;
-    
+
     /**
      * @brief Get scheduled execution time
      * @return Scheduled time in milliseconds
      */
     uint32_t getScheduledTime() const;
-    
+
     /**
      * @brief Get actual start time of last execution
      * @return Actual start time in milliseconds
@@ -1040,7 +1039,7 @@ private:
     uint16_t runCount = 0;           ///< Number of times task has run (16-bit for space)
     uint16_t maxExecTimeUs = 0;      ///< Maximum execution time in microseconds (16-bit)
     uint16_t avgExecTimeUs = 0;      ///< Average execution time in microseconds (16-bit)
-    
+
     // Task timing monitoring
     uint32_t scheduledTime = 0;      ///< When this task was scheduled to run
     uint32_t actualStartTime = 0;    ///< When this task actually started running
@@ -1158,21 +1157,17 @@ public:
      * @param topic Topic ID to publish to
      * @param type Message type
      * @param arg Additional argument data
-     * @param data Optional data pointer
-     * @param data_size Size of optional data
      * @note All tasks subscribed to the topic will receive this message
      */
-    void publishMessage(uint8_t topic, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+    void publishMessage(uint8_t topic, uint8_t type, uint16_t arg = 0);
 
     /**
      * @brief Send a direct message to a specific task
      * @param task_id ID of target task
      * @param type Message type
      * @param arg Additional argument data
-     * @param data Optional data pointer
-     * @param data_size Size of optional data
      */
-    void sendMessage(uint8_t task_id, uint8_t type, uint16_t arg = 0, uint8_t *data = nullptr, uint8_t data_size = 0);
+    void sendMessage(uint8_t task_id, uint8_t type, uint16_t arg = 0);
 
     /**
      * @brief Get number of free slots in the global message queue
@@ -1313,7 +1308,7 @@ public:
      * @note Simplified implementation - just logs the format string
      */
     void logFormatted(Task *task, LogLevel level, const __FlashStringHelper *format, ...);
-    
+
     // Task timing monitoring
     /**
      * @brief Get task that caused the most delays
@@ -1336,7 +1331,7 @@ private:
     bool running;         ///< Scheduler running state
 
     LogLevel currentLogLevel;     ///< Current minimum log level
-    
+
     // Task timing monitoring (always active)
     uint8_t lastExecutedTaskId = 0;         ///< ID of last executed task (for delay attribution)
     uint32_t lastTaskEndTime = 0;           ///< When the last task finished execution
@@ -1367,7 +1362,7 @@ private:
      * @details Updates task timing and calls task->step()
      */
     void executeTask(Task *task);
-    
+
     // Refactored helper methods for executeTask
     /**
      * @brief Handle task timing monitoring
@@ -1375,32 +1370,32 @@ private:
      * @param currentTime Current system time
      */
     void handleTaskTiming(Task *task, uint32_t currentTime);
-    
+
     /**
      * @brief Execute the actual task step
      * @param task Task to execute
      */
     void executeTaskStep(Task *task);
-    
+
     /**
      * @brief Update task execution statistics
      * @param task Task to update
      * @param execStart Execution start time in microseconds
      */
     void updateTaskStatistics(Task *task, uint32_t execStart);
-    
+
     /**
      * @brief Update timing monitoring variables
      * @param task Task that was executed
      */
     void updateTimingVariables(Task *task);
-    
+
     /**
      * @brief Check if task should be terminated and remove if needed
      * @param task Task to check
      */
     void checkForTerminatedTask(Task *task);
-    
+
     /**
      * @brief Log task delay with attribution
      * @param task Delayed task
@@ -1408,7 +1403,7 @@ private:
      * @param causingTaskId ID of task that caused the delay
      */
     void logTaskDelay(Task *task, uint16_t delayMs, uint8_t causingTaskId);
-    
+
     // Task iteration helpers
     /**
      * @brief Iterate through all tasks with a function
@@ -1417,7 +1412,7 @@ private:
      */
     template<typename Func>
     void forEachTask(Func func);
-    
+
     /**
      * @brief Find a task using a predicate function
      * @tparam Func Function type that takes Task* and returns bool
@@ -1425,34 +1420,22 @@ private:
      * @return Pointer to found task, or nullptr if not found
      */
     template<typename Func>
-    Task* findTask(Func predicate);
-    
+    Task *findTask(Func predicate);
+
     // Memory management helpers
     /**
      * @brief Allocate a TaskNode from the pool
      * @param task Task to wrap in the node
      * @return Pointer to allocated TaskNode, or nullptr if failed
      */
-    TaskNode* allocateTaskNode(Task *task);
-    
+    TaskNode *allocateTaskNode(Task *task);
+
     /**
      * @brief Deallocate a TaskNode back to the pool
      * @param node TaskNode to deallocate
      */
     void deallocateTaskNode(TaskNode *node);
-    
-    /**
-     * @brief Allocate a MsgNode from the pool
-     * @return Pointer to allocated MsgNode, or nullptr if failed
-     */
-    MsgNode* allocateMsgNode();
-    
-    /**
-     * @brief Deallocate a MsgNode back to the pool
-     * @param node MsgNode to deallocate
-     */
-    void deallocateMsgNode(MsgNode *node);
-    
+
     // Logging system helpers
     /**
      * @brief Log a system event message
@@ -1460,7 +1443,7 @@ private:
      * @param msg Message to log
      */
     void logSystemEvent(LogLevel level, const __FlashStringHelper *msg);
-    
+
     /**
      * @brief Log a task execution event
      * @param task Task that was executed
@@ -1495,7 +1478,7 @@ private:
     bool allocateMsgNodesChunk();
 
     // Enqueue a message destined for a specific task
-    bool enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize);
+    bool enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg);
 
     // Dequeue next message into out; returns false if empty
     bool dequeueQueuedMessage(QueuedMessage &out);
@@ -1509,6 +1492,10 @@ private:
     TaskNode *acquireTaskNode(Task *task);
     // Return a node to pool
     void releaseTaskNode(TaskNode *node);
+
+    // MsgNode allocation methods
+    MsgNode *allocateMsgNode();
+    void deallocateMsgNode(MsgNode *node);
 };
 
 /* ================== Global Scheduler Instance ================== */
@@ -1546,7 +1533,6 @@ const uint16_t MAX_TASK_PERIOD = 65535;
  *          Task::setMaxMessageBudget, the scheduler applies this
  *          default to ensure capacity checks are enforced.
  */
-const uint8_t DEFAULT_TASK_MESSAGE_BUDGET = 1;
 
 // Backward compatibility direct constants removed; use Scheduler::LogLevel
 

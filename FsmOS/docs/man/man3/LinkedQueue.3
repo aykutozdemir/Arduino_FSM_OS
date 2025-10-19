@@ -1,0 +1,209 @@
+.TH "LinkedQueue< T >" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+LinkedQueue< T > \- Lightweight, interrupt-safe linked queue\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBNode\fP"
+.br
+.RI "\fBNode\fP structure for linked list\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBLinkedQueue\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~LinkedQueue\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "\fBLinkedQueue\fP (\fBLinkedQueue\fP &&other) noexcept"
+.br
+.RI "Move constructor\&. "
+.ti -1c
+.RI "void \fBpush\fP (const T &item)"
+.br
+.RI "Add item to the end of the queue\&. "
+.ti -1c
+.RI "bool \fBpop\fP (T &item)"
+.br
+.RI "Remove item from the front of the queue\&. "
+.ti -1c
+.RI "bool \fBisEmpty\fP () const"
+.br
+.RI "Check if queue is empty\&. "
+.ti -1c
+.RI "uint8_t \fBgetSize\fP () const"
+.br
+.RI "Get number of items in queue\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBNode\fP * \fBhead\fP"
+.br
+.RI "Pointer to first node\&. "
+.ti -1c
+.RI "\fBNode\fP * \fBtail\fP"
+.br
+.RI "Pointer to last node\&. "
+.ti -1c
+.RI "uint8_t \fBcount\fP"
+.br
+.RI "Number of items in queue\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class LinkedQueue< T >"Lightweight, interrupt-safe linked queue\&. 
+
+\fBLinkedQueue\fP provides a simple queue implementation that is safe to use from interrupt context\&. It uses a linked list structure for efficient insertion and removal\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP Type of elements to store in the queue 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This queue is not thread-safe for concurrent access 
+.RE
+.PP
+
+.PP
+Definition at line \fB464\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "template<typename T > \fBLinkedQueue\fP< T >\fB::LinkedQueue\fP ()"
+
+.PP
+Default constructor\&. Creates an empty queue 
+.PP
+Definition at line \fB310\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > \fBLinkedQueue\fP< T >::~\fBLinkedQueue\fP ()"
+
+.PP
+Destructor\&. Frees all nodes in the queue 
+.PP
+Definition at line \fB313\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > \fBLinkedQueue\fP< T >\fB::LinkedQueue\fP (\fBLinkedQueue\fP< T > && other)\fC [noexcept]\fP"
+
+.PP
+Move constructor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP Queue to move from 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Transfers ownership of nodes from other queue 
+.RE
+.PP
+
+.PP
+Definition at line \fB324\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T > uint8_t \fBLinkedQueue\fP< T >::getSize () const"
+
+.PP
+Get number of items in queue\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of items currently in queue 
+.RE
+.PP
+
+.PP
+Definition at line \fB384\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > bool \fBLinkedQueue\fP< T >::isEmpty () const"
+
+.PP
+Check if queue is empty\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if queue is empty, false otherwise 
+.RE
+.PP
+
+.PP
+Definition at line \fB378\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > bool \fBLinkedQueue\fP< T >::pop (T & item)"
+
+.PP
+Remove item from the front of the queue\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIitem\fP Reference to store the removed item 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if item was removed, false if queue was empty 
+.RE
+.PP
+
+.PP
+Definition at line \fB356\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "template<typename T > void \fBLinkedQueue\fP< T >::push (const T & item)"
+
+.PP
+Add item to the end of the queue\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIitem\fP Item to add 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Allocates new node for the item 
+.RE
+.PP
+
+.PP
+Definition at line \fB332\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "template<typename T > uint8_t \fBLinkedQueue\fP< T >::count\fC [private]\fP"
+
+.PP
+Number of items in queue\&. 
+.PP
+Definition at line \fB524\fP of file \fBFsmOS\&.h\fP\&.
+.SS "template<typename T > \fBNode\fP* \fBLinkedQueue\fP< T >::head\fC [private]\fP"
+
+.PP
+Pointer to first node\&. 
+.PP
+Definition at line \fB522\fP of file \fBFsmOS\&.h\fP\&.
+.SS "template<typename T > \fBNode\fP* \fBLinkedQueue\fP< T >::tail\fC [private]\fP"
+
+.PP
+Pointer to last node\&. 
+.PP
+Definition at line \fB523\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structSystemMemoryInfo" xml:lang="en-US">
+<title>SystemMemoryInfo Struct Reference</title>
+<indexterm><primary>SystemMemoryInfo</primary></indexterm>
+<para>
+
+<para>System memory information. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a3fead35bc0c51a87ca8cb5630eea2fe6">freeRam</link></para>
+
+<para>Free RAM in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a74fd6f112cb2a361579343bc609ba3bd">totalRam</link></para>
+
+<para>Total RAM in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1ab46e008190c5d4dc58a098653fc96e21">heapSize</link></para>
+
+<para>Heap size in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1aafc733c82678f25b4579ac80ff3f3416">largestBlock</link></para>
+
+<para>Largest free block in bytes. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_structSystemMemoryInfo_1aa49fcb6068c10bdab13a7cfa97241c27">heapFragments</link></para>
+
+<para>Number of heap fragments. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a12ed83e6ef3ab65b2e708eb7634ae3d9">stackSize</link></para>
+
+<para>Stack size in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a23c2b52b7aa05bdd6c8316280fafb35e">stackUsed</link></para>
+
+<para>Stack used in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1aa09da446795f6a14640ac228f8775332">stackFree</link></para>
+
+<para>Stack free in bytes. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_structSystemMemoryInfo_1ab4646e94bacfe136033551f29c88127f">totalTasks</link></para>
+
+<para>Total number of tasks. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1ad53218d4a3a0bd2bf27ee57618c502f9">taskMemory</link></para>
+
+<para>Memory used by tasks. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_structSystemMemoryInfo_1af922c19a62e2db75d2d35abc96282760">activeMessages</link></para>
+
+<para>Number of active messages. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a76bfcb475e0cfe6757e0fbbc04ad371e">messageMemory</link></para>
+
+<para>Memory used by messages. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1ae527fbdfcb22a4136b2f6f24d60c895a">flashUsed</link></para>
+
+<para>Flash memory used. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1abdbd97bb0a5a2fece0b70320ccedffc4">flashFree</link></para>
+
+<para>Flash memory free. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1a863feffbb30f9ba2b8bf031421830f31">eepromUsed</link></para>
+
+<para>EEPROM used in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structSystemMemoryInfo_1afbf8d2df35ecd00576f480561255f04d">eepromFree</link></para>
+
+<para>EEPROM free in bytes. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>System memory information. </para>
+
+
+
+<para>Comprehensive memory usage statistics </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00196">196</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structSystemMemoryInfo_1af922c19a62e2db75d2d35abc96282760"/><section>
+    <title>activeMessages</title>
+<indexterm><primary>activeMessages</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>activeMessages</secondary></indexterm>
+<para><computeroutput>uint8_t SystemMemoryInfo::activeMessages</computeroutput></para><para>
+
+<para>Number of active messages. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00208">208</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1afbf8d2df35ecd00576f480561255f04d"/><section>
+    <title>eepromFree</title>
+<indexterm><primary>eepromFree</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>eepromFree</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::eepromFree</computeroutput></para><para>
+
+<para>EEPROM free in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00213">213</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a863feffbb30f9ba2b8bf031421830f31"/><section>
+    <title>eepromUsed</title>
+<indexterm><primary>eepromUsed</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>eepromUsed</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::eepromUsed</computeroutput></para><para>
+
+<para>EEPROM used in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00212">212</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1abdbd97bb0a5a2fece0b70320ccedffc4"/><section>
+    <title>flashFree</title>
+<indexterm><primary>flashFree</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>flashFree</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::flashFree</computeroutput></para><para>
+
+<para>Flash memory free. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00211">211</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1ae527fbdfcb22a4136b2f6f24d60c895a"/><section>
+    <title>flashUsed</title>
+<indexterm><primary>flashUsed</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>flashUsed</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::flashUsed</computeroutput></para><para>
+
+<para>Flash memory used. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00210">210</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a3fead35bc0c51a87ca8cb5630eea2fe6"/><section>
+    <title>freeRam</title>
+<indexterm><primary>freeRam</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>freeRam</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::freeRam</computeroutput></para><para>
+
+<para>Free RAM in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00198">198</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1aa49fcb6068c10bdab13a7cfa97241c27"/><section>
+    <title>heapFragments</title>
+<indexterm><primary>heapFragments</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>heapFragments</secondary></indexterm>
+<para><computeroutput>uint8_t SystemMemoryInfo::heapFragments</computeroutput></para><para>
+
+<para>Number of heap fragments. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00202">202</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1ab46e008190c5d4dc58a098653fc96e21"/><section>
+    <title>heapSize</title>
+<indexterm><primary>heapSize</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>heapSize</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::heapSize</computeroutput></para><para>
+
+<para>Heap size in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00200">200</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1aafc733c82678f25b4579ac80ff3f3416"/><section>
+    <title>largestBlock</title>
+<indexterm><primary>largestBlock</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>largestBlock</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::largestBlock</computeroutput></para><para>
+
+<para>Largest free block in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00201">201</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a76bfcb475e0cfe6757e0fbbc04ad371e"/><section>
+    <title>messageMemory</title>
+<indexterm><primary>messageMemory</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>messageMemory</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::messageMemory</computeroutput></para><para>
+
+<para>Memory used by messages. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00209">209</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1aa09da446795f6a14640ac228f8775332"/><section>
+    <title>stackFree</title>
+<indexterm><primary>stackFree</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>stackFree</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::stackFree</computeroutput></para><para>
+
+<para>Stack free in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00205">205</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a12ed83e6ef3ab65b2e708eb7634ae3d9"/><section>
+    <title>stackSize</title>
+<indexterm><primary>stackSize</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>stackSize</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::stackSize</computeroutput></para><para>
+
+<para>Stack size in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00203">203</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a23c2b52b7aa05bdd6c8316280fafb35e"/><section>
+    <title>stackUsed</title>
+<indexterm><primary>stackUsed</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>stackUsed</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::stackUsed</computeroutput></para><para>
+
+<para>Stack used in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00204">204</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1ad53218d4a3a0bd2bf27ee57618c502f9"/><section>
+    <title>taskMemory</title>
+<indexterm><primary>taskMemory</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>taskMemory</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::taskMemory</computeroutput></para><para>
+
+<para>Memory used by tasks. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00207">207</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1a74fd6f112cb2a361579343bc609ba3bd"/><section>
+    <title>totalRam</title>
+<indexterm><primary>totalRam</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>totalRam</secondary></indexterm>
+<para><computeroutput>uint16_t SystemMemoryInfo::totalRam</computeroutput></para><para>
+
+<para>Total RAM in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00199">199</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structSystemMemoryInfo_1ab4646e94bacfe136033551f29c88127f"/><section>
+    <title>totalTasks</title>
+<indexterm><primary>totalTasks</primary><secondary>SystemMemoryInfo</secondary></indexterm>
+<indexterm><primary>SystemMemoryInfo</primary><secondary>totalTasks</secondary></indexterm>
+<para><computeroutput>uint8_t SystemMemoryInfo::totalTasks</computeroutput></para><para>
+
+<para>Total number of tasks. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00206">206</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

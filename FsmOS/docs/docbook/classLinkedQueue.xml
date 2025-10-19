@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classLinkedQueue" xml:lang="en-US">
+<title>LinkedQueue&lt; T &gt; Class Template Reference</title>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary></indexterm>
+<para>
+
+<para>Lightweight, interrupt-safe linked queue. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+Collaboration diagram for LinkedQueue&lt; T &gt;:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classLinkedQueue__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_structLinkedQueue_1_1Node">Node</link></para>
+
+<para><link linkend="_structLinkedQueue_1_1Node">Node</link> structure for linked list. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classLinkedQueue_1a4983be0b269558e5bb0f93d2ce084345">LinkedQueue</link> ()</para>
+
+<para>Default constructor. </para>
+</listitem>
+            <listitem><para><link linkend="_classLinkedQueue_1ad84250d452864b16e000f4d1ee6295f6">~LinkedQueue</link> ()</para>
+
+<para>Destructor. </para>
+</listitem>
+            <listitem><para><link linkend="_classLinkedQueue_1a8c5a6ea35be6ffaf35f76098e8bc89f9">LinkedQueue</link> (<link linkend="_classLinkedQueue">LinkedQueue</link> &amp;&amp;other) noexcept</para>
+
+<para>Move constructor. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classLinkedQueue_1ab2bb64be832ea8f62e76dc7fcbe1e9fb">push</link> (const T &amp;item)</para>
+
+<para>Add item to the end of the queue. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classLinkedQueue_1ae54fefdc687852e0465e414bbfadd138">pop</link> (T &amp;item)</para>
+
+<para>Remove item from the front of the queue. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classLinkedQueue_1af4554d6d9ca422c9332217fbbe054c06">isEmpty</link> () const</para>
+
+<para>Check if queue is empty. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classLinkedQueue_1a81123eba59f05b7218b756740cfb3fa6">getSize</link> () const</para>
+
+<para>Get number of items in queue. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_structLinkedQueue_1_1Node">Node</link> * <link linkend="_classLinkedQueue_1ab473bd215aaee5a68ed9535a9605e8be">head</link></para>
+
+<para>Pointer to first node. </para>
+</listitem>
+            <listitem><para><link linkend="_structLinkedQueue_1_1Node">Node</link> * <link linkend="_classLinkedQueue_1ad7eec3a18abedbe1e43f275ae2e37c20">tail</link></para>
+
+<para>Pointer to last node. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classLinkedQueue_1a7f8ecf880cc644bd53a75551e96d0987">count</link></para>
+
+<para>Number of items in queue. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;typename T&gt;<?linebreak?>class LinkedQueue&lt; T &gt;</title></simplesect>
+
+<para>Lightweight, interrupt-safe linked queue. </para>
+
+
+
+<para><link linkend="_classLinkedQueue">LinkedQueue</link> provides a simple queue implementation that is safe to use from interrupt context. It uses a linked list structure for efficient insertion and removal.</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>T</entry><entry>
+<para>Type of elements to store in the queue </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>This queue is not thread-safe for concurrent access </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00464">464</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classLinkedQueue_1a4983be0b269558e5bb0f93d2ce084345"/><section>
+    <title>LinkedQueue()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>LinkedQueue</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>LinkedQueue</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;<link linkend="_classLinkedQueue">::LinkedQueue</link> ( )</computeroutput></para><para>
+
+<para>Default constructor. </para>
+</para>
+
+<para>Creates an empty queue </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00310">310</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1ad84250d452864b16e000f4d1ee6295f6"/><section>
+    <title>~LinkedQueue()</title>
+<indexterm><primary>~LinkedQueue</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>~LinkedQueue</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::~<link linkend="_classLinkedQueue">LinkedQueue</link> ( )</computeroutput></para><para>
+
+<para>Destructor. </para>
+</para>
+
+<para>Frees all nodes in the queue </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00313">313</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1a8c5a6ea35be6ffaf35f76098e8bc89f9"/><section>
+    <title>LinkedQueue()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>LinkedQueue</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>LinkedQueue</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;<link linkend="_classLinkedQueue">::LinkedQueue</link> (<link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt; &amp;&amp; other)<computeroutput>[noexcept]</computeroutput></computeroutput></para><para>
+
+<para>Move constructor. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>other</entry><entry>
+<para>Queue to move from </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Transfers ownership of nodes from other queue </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00324">324</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classLinkedQueue_1a81123eba59f05b7218b756740cfb3fa6"/><section>
+    <title>getSize()</title>
+<indexterm><primary>getSize</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>getSize</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>uint8_t <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::getSize ( ) const</computeroutput></para><para>
+
+<para>Get number of items in queue. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of items currently in queue </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00384">384</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1af4554d6d9ca422c9332217fbbe054c06"/><section>
+    <title>isEmpty()</title>
+<indexterm><primary>isEmpty</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>isEmpty</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>bool <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::isEmpty ( ) const</computeroutput></para><para>
+
+<para>Check if queue is empty. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>true if queue is empty, false otherwise </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00378">378</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1ae54fefdc687852e0465e414bbfadd138"/><section>
+    <title>pop()</title>
+<indexterm><primary>pop</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>pop</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>bool <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::pop (T &amp; item)</computeroutput></para><para>
+
+<para>Remove item from the front of the queue. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>item</entry><entry>
+<para>Reference to store the removed item </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if item was removed, false if queue was empty </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00356">356</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1ab2bb64be832ea8f62e76dc7fcbe1e9fb"/><section>
+    <title>push()</title>
+<indexterm><primary>push</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>push</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>void <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::push (const T &amp; item)</computeroutput></para><para>
+
+<para>Add item to the end of the queue. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>item</entry><entry>
+<para>Item to add </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Allocates new node for the item </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00332">332</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classLinkedQueue_1a7f8ecf880cc644bd53a75551e96d0987"/><section>
+    <title>count</title>
+<indexterm><primary>count</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>count</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>uint8_t <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::count<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Number of items in queue. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00524">524</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1ab473bd215aaee5a68ed9535a9605e8be"/><section>
+    <title>head</title>
+<indexterm><primary>head</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>head</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_structLinkedQueue_1_1Node">Node</link>* <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::head<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Pointer to first node. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00522">522</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classLinkedQueue_1ad7eec3a18abedbe1e43f275ae2e37c20"/><section>
+    <title>tail</title>
+<indexterm><primary>tail</primary><secondary>LinkedQueue&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;</primary><secondary>tail</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_structLinkedQueue_1_1Node">Node</link>* <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::tail<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Pointer to last node. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00523">523</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

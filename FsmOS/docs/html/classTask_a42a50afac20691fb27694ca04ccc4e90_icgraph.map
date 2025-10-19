@@ -1,0 +1,11 @@
+<map id="Task::getCreatedInstanceCount" name="Task::getCreatedInstanceCount">
+<area shape="rect" id="Node000001" title="Get total number of Task instances ever created." alt="" coords="693,23,865,63"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#aaa8cc86207802e4a457202396b2f7441" title=" " alt="" coords="483,23,645,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="679,46,645,46,645,41,679,41"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a38cf4a79d14bd68514a26946b19d3d53" title="Allocate a TaskNode from the pool." alt="" coords="243,31,435,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="469,46,435,46,435,41,469,41"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#afa07db3c7014412af426ee1c304ebc4b" title=" " alt="" coords="5,5,195,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="229,34,195,31,195,25,229,29"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a278e9940ce3dd1c708c5bd55b0e4059b" title="Add a task to the scheduler." alt="" coords="45,55,155,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="229,57,155,65,155,59,229,52"/>
+</map>

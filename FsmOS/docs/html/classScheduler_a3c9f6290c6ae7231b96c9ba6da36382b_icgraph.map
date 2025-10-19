@@ -1,0 +1,13 @@
+<map id="Scheduler::forEachTask" name="Scheduler::forEachTask">
+<area shape="rect" id="Node000001" title="Iterate through all tasks with a function." alt="" coords="396,55,557,80"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="197,5,316,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="405,54,314,33,315,28,407,49"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="185,55,328,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="382,70,328,70,328,65,382,65"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a6212cb4fdc7a3ed5c9e50e97729cff8d" title="Publish a message to a topic." alt="" coords="165,104,348,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="407,86,315,107,314,101,405,80"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,55,117,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="172,70,118,70,118,65,172,65"/>
+<area shape="rect" id="Node000006" href="$classTask.html#a4b2cce5377f8ddf0cc29d00a3c58c1c0" title="Publish a message to a topic." alt="" coords="12,104,111,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="152,119,111,119,111,114,152,114"/>
+</map>

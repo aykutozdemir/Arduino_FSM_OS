@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="indexpage" kind="page">
+    <compoundname>index</compoundname>
+    <title>FsmOS - Arduino Finite State Machine Operating System</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><anchor id="index_1md_README"/> A lightweight, cooperative task scheduler for Arduino that helps you organize your code into independent tasks and manage communication between them. This library is perfect for projects that need to handle multiple operations without blocking or complex interrupt management.</para>
+<para><heading level="1">Key Features</heading>
+</para>
+<para><itemizedlist>
+<listitem><para><bold>Cooperative Multitasking</bold>: Run multiple tasks without preemption</para>
+</listitem><listitem><para><bold>Message Passing</bold>: Inter-task communication with publish/subscribe (type + arg only)</para>
+</listitem><listitem><para><bold>Memory Efficient</bold>: Optimized for AVR microcontrollers with accurate memory reporting</para>
+</listitem><listitem><para><bold>Debug Support</bold>: Built-in logging and diagnostics with formatted output</para>
+</listitem><listitem><para><bold><ref refid="classTask" kindref="compound">Task</ref> Budgeting</bold>: Prevent message queue overruns with per-task message budgets</para>
+</listitem><listitem><para><bold>Memory Monitoring</bold>: Real-time RAM, stack, heap, flash, and EEPROM usage tracking</para>
+</listitem><listitem><para><bold>Stack Canary Protection</bold>: Automatic stack overflow detection</para>
+</listitem><listitem><para><bold>Memory Leak Detection</bold>: Built-in memory allocation tracking</para>
+</listitem><listitem><para><bold><ref refid="classTask" kindref="compound">Task</ref> Limit Control</bold>: Configurable maximum task count based on topic bitfield size</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">Installation</heading>
+</para>
+<para><heading level="2">Arduino IDE Library Manager (Recommended)</heading>
+</para>
+<para><orderedlist>
+<listitem><para>Open Arduino IDE</para>
+</listitem><listitem><para>Go to <computeroutput>Sketch &gt; Include Library &gt; Manage Libraries...</computeroutput></para>
+</listitem><listitem><para>Search for &quot;FsmOS&quot;</para>
+</listitem><listitem><para>Click Install</para>
+</listitem></orderedlist>
+</para>
+<para><heading level="2">Manual Installation</heading>
+</para>
+<para><orderedlist>
+<listitem><para>Download this repository</para>
+</listitem><listitem><para>Copy the <computeroutput>FsmOS</computeroutput> folder to your Arduino libraries directory</para>
+</listitem><listitem><para>Restart Arduino IDE</para>
+</listitem></orderedlist>
+</para>
+<para><heading level="1">Quick Start</heading>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="FsmOS_8h" kindref="compound">FsmOS.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Define<sp/>a<sp/>simple<sp/>blinking<sp/>task</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">BlinkTask<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classTask" kindref="compound">Task</ref></highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>BlinkTask()<sp/>:<sp/><ref refid="classTask" kindref="compound">Task</ref>(F(</highlight><highlight class="stringliteral">&quot;Blinker&quot;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set_period(500);<sp/><sp/></highlight><highlight class="comment">//<sp/>Run<sp/>every<sp/>500ms</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="group__fsmos_1gadf715a30a3759bfd0856f12cfdf29d0e" kindref="member">getMaxMessageBudget</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classTask_1aea07a4be09d08cb8b1afa1914ddc988c" kindref="member">getTaskStructSize</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(*this);<sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTask_1a05ad697fe4c99793e7af4dade75bad64" kindref="member">on_start</ref>()</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pinMode(LED_BUILTIN,<sp/>OUTPUT);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classTask_1a24f4e032e0dd55e6e2e7ef44c715e9ca" kindref="member">logInfo</ref>(F(</highlight><highlight class="stringliteral">&quot;Blink<sp/>task<sp/>started&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTask_1a399ff82ffe4b94a11cd8148987e38622" kindref="member">step</ref>()</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(LED_BUILTIN,<sp/>!digitalRead(LED_BUILTIN));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">BlinkTask<sp/>blinker;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setup()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Serial.begin(9600);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" kindref="member">OS</ref>.begin_with_logger();<sp/><sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>with<sp/>logging</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" kindref="member">OS</ref>.<ref refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" kindref="member">add</ref>(&amp;blinker);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loop()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" kindref="member">OS</ref>.loop_once();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+<para><heading level="1">Examples</heading>
+</para>
+<para>Check the <computeroutput>examples</computeroutput> folder for more demonstrations:<itemizedlist>
+<listitem><para><computeroutput>BasicBlink</computeroutput>: Simple LED blinking task</para>
+</listitem><listitem><para><computeroutput>ButtonLed</computeroutput>: Inter-task communication with publish/subscribe</para>
+</listitem><listitem><para><computeroutput>Diagnostics</computeroutput>: System monitoring and debugging</para>
+</listitem><listitem><para><computeroutput>Logger</computeroutput>: Using the built-in logging system with different levels</para>
+</listitem><listitem><para><computeroutput>MemoryMonitoring</computeroutput>: Comprehensive memory usage tracking</para>
+</listitem><listitem><para><computeroutput>MemoryOptimization</computeroutput>: Memory-efficient coding practices</para>
+</listitem><listitem><para><computeroutput>MemoryOptimizedTimers</computeroutput>: Timer usage optimization</para>
+</listitem><listitem><para><computeroutput>MessageQueueing</computeroutput>: Message handling during task suspension</para>
+</listitem><listitem><para><computeroutput>TaskLifecycle</computeroutput>: <ref refid="classTask" kindref="compound">Task</ref> state management</para>
+</listitem><listitem><para><computeroutput>DynamicTasks</computeroutput>: Runtime task creation/deletion</para>
+</listitem><listitem><para><computeroutput>TaskNames</computeroutput>: Named tasks and state tracking</para>
+</listitem><listitem><para><computeroutput>MutexExample</computeroutput>: Mutual exclusion synchronization</para>
+</listitem><listitem><para><computeroutput>SemaphoreExample</computeroutput>: Semaphore-based synchronization</para>
+</listitem><listitem><para><computeroutput>TaskTimingMonitoring</computeroutput>: <ref refid="classTask" kindref="compound">Task</ref> execution timing analysis</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">Key Concepts</heading>
+</para>
+<para><heading level="2"><ref refid="classTask" kindref="compound">Task</ref> Structure</heading>
+</para>
+<para>Every task must implement two pure virtual methods: <programlisting filename=".cpp"><codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>X;<sp/>}<sp/><sp/></highlight><highlight class="comment">//<sp/>Max<sp/>messages<sp/>per<sp/>step</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">uint16_t<sp/>getTaskStructSize()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(*this);<sp/>}<sp/><sp/></highlight><highlight class="comment">//<sp/>Memory<sp/>tracking</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Message System</heading>
+</para>
+<para>FsmOS uses a simplified message system with only type and argument data: <programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Publish<sp/>a<sp/>message</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">publish(TOPIC_LED_EVENTS,<sp/>EVT_LED_ON,<sp/>1);<sp/><sp/></highlight><highlight class="comment">//<sp/>topic,<sp/>type,<sp/>arg</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Handle<sp/>messages</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>on_msg(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MsgData<sp/>&amp;msg)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(msg.type)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>EVT_LED_ON:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(LED_PIN,<sp/>msg.arg);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Message Budgeting</heading>
+</para>
+<para>Tasks declare their maximum message production budget. The scheduler ensures sufficient queue space before execution: <programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Button<sp/>task<sp/>that<sp/>publishes<sp/>events</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;<sp/>}<sp/><sp/></highlight><highlight class="comment">//<sp/>Press<sp/>+<sp/>Release</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>LED<sp/>task<sp/>that<sp/>only<sp/>receives</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>getMaxMessageBudget()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;<sp/>}<sp/><sp/></highlight><highlight class="comment">//<sp/>Minimal</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Memory Monitoring</heading>
+</para>
+<para>Access comprehensive memory information: <programlisting filename=".cpp"><codeline><highlight class="normal"><ref refid="structSystemMemoryInfo" kindref="compound">SystemMemoryInfo</ref><sp/>info;</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e" kindref="member">OS</ref>.<ref refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" kindref="member">getSystemMemoryInfo</ref>(info);</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>info.freeRam,<sp/>info.stackUsed,<sp/>info.flashUsed,<sp/>info.eepromUsed,<sp/>etc.</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Formatted Logging</heading>
+</para>
+<para>Use memory-efficient formatted logging: <programlisting filename=".cpp"><codeline><highlight class="normal"><ref refid="group__fsmos_1gac6c8dbf1f133ab906d0f3490e0de5d74" kindref="member">logDebugf</ref>(F(</highlight><highlight class="stringliteral">&quot;Value:<sp/>%d,<sp/>Status:<sp/>%s&quot;</highlight><highlight class="normal">),<sp/>value,<sp/>status);</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="group__fsmos_1ga0fd80592a7d1d2fd9b1b52081a8d69cb" kindref="member">logInfof</ref>(F(</highlight><highlight class="stringliteral">&quot;Operation<sp/>%d<sp/>complete&quot;</highlight><highlight class="normal">),<sp/>operation_id);</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="group__fsmos_1ga58264bc1f779d2cd6cb6a8c733a17a21" kindref="member">logWarnf</ref>(F(</highlight><highlight class="stringliteral">&quot;Low<sp/>memory:<sp/>%d<sp/>bytes&quot;</highlight><highlight class="normal">),<sp/>free_memory);</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="group__fsmos_1gade3c130d653bf887af5b2f6120f388ad" kindref="member">logErrorf</ref>(F(</highlight><highlight class="stringliteral">&quot;Failed<sp/>after<sp/>%d<sp/>attempts&quot;</highlight><highlight class="normal">),<sp/>attempts);</highlight></codeline>
+</programlisting></para>
+<para><heading level="1">Configuration Parameters</heading>
+</para>
+<para><heading level="2">Stack Canary Protection</heading>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#ifndef<sp/>FSMOS_STACK_CANARY_MARGIN</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>FSMOS_STACK_CANARY_MARGIN<sp/>32<sp/><sp/></highlight><highlight class="comment">//<sp/>Safety<sp/>margin<sp/>in<sp/>bytes</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Topic Bitfield Size</heading>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#ifndef<sp/>TOPIC_BITFIELD_SIZE</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TOPIC_BITFIELD_SIZE<sp/>16<sp/><sp/></highlight><highlight class="comment">//<sp/>8,<sp/>16,<sp/>or<sp/>32<sp/>topics<sp/>max</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Message Pool Size</heading>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#ifndef<sp/>MAX_MESSAGE_POOL_SIZE</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_MESSAGE_POOL_SIZE<sp/>32<sp/><sp/></highlight><highlight class="comment">//<sp/>Maximum<sp/>messages<sp/>in<sp/>pool</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+</programlisting></para>
+<para><heading level="2">Default Values</heading>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="group__fsmos_1ga5c3f1eb0aa79f56d91fdbf8fd9f1b911" kindref="member">DEFAULT_TASK_MESSAGE_BUDGET</ref><sp/>=<sp/>1;<sp/><sp/></highlight><highlight class="comment">//<sp/>Messages<sp/>per<sp/>step</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="group__fsmos_1gac154c550db4c5b7fed1b1fd1e31a63ee" kindref="member">DEFAULT_TASK_PERIOD</ref><sp/>=<sp/>100;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Default<sp/>period<sp/>in<sp/>ms</highlight></codeline>
+</programlisting></para>
+<para><heading level="1">Memory Optimization Features</heading>
+</para>
+<para><heading level="2">Stack Canary</heading>
+</para>
+<para><itemizedlist>
+<listitem><para>Automatic stack overflow detection</para>
+</listitem><listitem><para>Configurable safety margin</para>
+</listitem><listitem><para>Marks entire free RAM region between heap and stack</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="2">Memory Leak Detection</heading>
+</para>
+<para><itemizedlist>
+<listitem><para>Tracks all memory allocations and deallocations</para>
+</listitem><listitem><para>Provides peak usage and current usage statistics</para>
+</listitem><listitem><para>Always active (no conditional compilation)</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="2"><ref refid="classTask" kindref="compound">Task</ref> Limit Control</heading>
+</para>
+<para><itemizedlist>
+<listitem><para>Prevents adding more tasks than <computeroutput>MAX_TOPICS</computeroutput> allows</para>
+</listitem><listitem><para>Runtime logging and rejection of excess tasks</para>
+</listitem><listitem><para>Based on <computeroutput>TOPIC_BITFIELD_SIZE</computeroutput> configuration</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="2">Message Data Optimization</heading>
+</para>
+<para><itemizedlist>
+<listitem><para>Simplified message structure (type + arg only)</para>
+</listitem><listitem><para>No dynamic data allocation for messages</para>
+</listitem><listitem><para>Reduced memory footprint per message</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">Platformio Configuration</heading>
+</para>
+<para>For optimal performance with Arduino Nano, use these build flags: <programlisting filename=".ini"><codeline><highlight class="normal">build_flags<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-Os<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Size<sp/>optimization</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-ffunction-sections<sp/><sp/><sp/><sp/>#<sp/>Function<sp/>sectioning</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fdata-sections<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Data<sp/>sectioning</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-exceptions<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Remove<sp/>exception<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DTOPIC_BITFIELD_SIZE=16<sp/><sp/>#<sp/>Topic<sp/>bitfield<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-Wl,--gc-sections<sp/><sp/><sp/><sp/><sp/>#<sp/>Dead<sp/>code<sp/>elimination</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-lto<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Disable<sp/>LTO</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DNDEBUG<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Remove<sp/>debug<sp/>symbols</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-mmcu=atmega328p<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>AVR<sp/>architecture</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fno-stack-protector<sp/><sp/>#<sp/>Reduce<sp/>stack<sp/>usage</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-fpack-struct=1<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Memory<sp/>alignment</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DFSMOS_FLASH_SIZE=30720<sp/><sp/>#<sp/>Flash<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-DFSMOS_EEPROM_SIZE=1024<sp/><sp/>#<sp/>EEPROM<sp/>size</highlight></codeline>
+</programlisting></para>
+<para><heading level="1">Memory Usage</heading>
+</para>
+<para>Typical memory usage on Arduino Nano (ATmega328P):<itemizedlist>
+<listitem><para><bold>RAM</bold>: ~1.3KB (64% of 2KB)</para>
+</listitem><listitem><para><bold>Flash</bold>: ~29KB (95% of 30KB)</para>
+</listitem><listitem><para><bold>Message Pool</bold>: 32 messages × 5 bytes = 160 bytes</para>
+</listitem><listitem><para><bold>Stack Canary</bold>: 32 bytes safety margin</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">API Reference</heading>
+</para>
+<para><heading level="2">Core Functions</heading>
+</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>OS.begin()</computeroutput> - Initialize scheduler</para>
+</listitem><listitem><para><computeroutput>OS.begin_with_logger()</computeroutput> - Initialize with logging</para>
+</listitem><listitem><para><computeroutput>OS.add(task)</computeroutput> - Add task to scheduler</para>
+</listitem><listitem><para><computeroutput>OS.loop_once()</computeroutput> - Run one scheduler cycle</para>
+</listitem><listitem><para><computeroutput>OS.getTaskCount()</computeroutput> - Get current task count</para>
+</listitem><listitem><para><computeroutput>OS.getFreeMemory()</computeroutput> - Get free RAM</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="2"><ref refid="classTask" kindref="compound">Task</ref> Methods</heading>
+</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>set_period(ms)</computeroutput> - Set task period</para>
+</listitem><listitem><para><computeroutput>set_priority(level)</computeroutput> - Set task priority</para>
+</listitem><listitem><para><computeroutput>publish(topic, type, arg)</computeroutput> - Publish message</para>
+</listitem><listitem><para><computeroutput>subscribe(topic)</computeroutput> - Subscribe to topic</para>
+</listitem><listitem><para><computeroutput>logInfo(msg)</computeroutput> - Log info message</para>
+</listitem><listitem><para><computeroutput>logDebug(msg)</computeroutput> - Log debug message</para>
+</listitem><listitem><para><computeroutput>logWarn(msg)</computeroutput> - Log warning message</para>
+</listitem><listitem><para><computeroutput>logError(msg)</computeroutput> - Log error message</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="2">Memory Functions</heading>
+</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>OS.getSystemMemoryInfo(info)</computeroutput> - Get comprehensive memory info</para>
+</listitem><listitem><para><computeroutput>OS.getMemoryStats()</computeroutput> - Get memory allocation statistics</para>
+</listitem><listitem><para><computeroutput>OS.getTaskStats()</computeroutput> - Get task execution statistics</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">Troubleshooting</heading>
+</para>
+<para><heading level="2">Common Issues</heading>
+</para>
+<para><orderedlist>
+<listitem><para><bold><ref refid="classTask" kindref="compound">Task</ref> limit reached</bold>: Reduce <computeroutput>TOPIC_BITFIELD_SIZE</computeroutput> or optimize task count</para>
+</listitem><listitem><para><bold>Memory overflow</bold>: Check stack canary warnings and reduce memory usage</para>
+</listitem><listitem><para><bold>Message queue full</bold>: Increase <computeroutput>MAX_MESSAGE_POOL_SIZE</computeroutput> or optimize message budgets</para>
+</listitem><listitem><para><bold>Compilation errors</bold>: Ensure all required methods are implemented</para>
+</listitem></orderedlist>
+</para>
+<para><heading level="2">Debug Commands</heading>
+</para>
+<para>Use serial commands for debugging:<itemizedlist>
+<listitem><para><computeroutput>s</computeroutput> - System statistics</para>
+</listitem><listitem><para><computeroutput>mem</computeroutput> - Memory information</para>
+</listitem><listitem><para><computeroutput>tl</computeroutput> - <ref refid="classTask" kindref="compound">Task</ref> limit check</para>
+</listitem><listitem><para><computeroutput>st</computeroutput> - <ref refid="classTask" kindref="compound">Task</ref> status</para>
+</listitem></itemizedlist>
+</para>
+<para><heading level="1">Contributing</heading>
+</para>
+<para><orderedlist>
+<listitem><para>Fork the repository</para>
+</listitem><listitem><para>Create your feature branch</para>
+</listitem><listitem><para>Commit your changes</para>
+</listitem><listitem><para>Push to the branch</para>
+</listitem><listitem><para>Create a Pull Request</para>
+</listitem></orderedlist>
+</para>
+<para><heading level="1">License</heading>
+</para>
+<para>This project is licensed under the MIT License. See the LICENSE file for details.</para>
+<para><heading level="1">Changelog</heading>
+</para>
+<para><heading level="2">Version 1.3.0</heading>
+</para>
+<para><itemizedlist>
+<listitem><para>Removed message data system for memory optimization</para>
+</listitem><listitem><para>Enhanced stack canary protection</para>
+</listitem><listitem><para>Added task limit control</para>
+</listitem><listitem><para>Improved memory leak detection</para>
+</listitem><listitem><para>Optimized message structure (type + arg only)</para>
+</listitem><listitem><para>Reduced memory footprint per message by 7 bytes </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <location file="README.md"/>
+  </compounddef>
+</doxygen>

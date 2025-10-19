@@ -1,0 +1,240 @@
+.TH "MsgDataPool" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MsgDataPool \- Memory pool for efficient MsgData allocation\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMsgDataPool\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fB~MsgDataPool\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "\fBMsgData\fP * \fBallocate\fP ()"
+.br
+.RI "Allocate a new MsgData from the pool\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBdeallocate\fP (\fBMsgData\fP *msg)"
+.br
+.RI "Return a MsgData to the pool\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBupdateAdaptiveLimit\fP ()"
+.br
+.RI "Update adaptive pool limit based on usage\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBgetPoolSize\fP () \fBconst\fP"
+.br
+.RI "Get current pool size\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBgetPoolLimit\fP () \fBconst\fP"
+.br
+.RI "Get maximum pool limit\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBgetCurrentInUse\fP () \fBconst\fP"
+.br
+.RI "Get number of currently allocated messages\&. "
+.ti -1c
+.RI "\fBbool\fP \fBinitialize\fP ()"
+.br
+.RI "Initialize the message pool if not already initialized\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBMsgData\fP * \fBpool\fP"
+.br
+.RI "Array of MsgData objects\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBpoolSize\fP"
+.br
+.RI "Current pool size\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBpoolLimit\fP"
+.br
+.RI "Maximum pool size\&. "
+.ti -1c
+.RI "uint8_t \fBcurrentInUse\fP"
+.br
+.RI "Number of messages currently in use\&. "
+.ti -1c
+.RI "\fBuint8_t\fP \fBnextFree\fP"
+.br
+.RI "Index of next free message\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Memory pool for efficient MsgData allocation\&. 
+
+\fBMsgDataPool\fP manages a pool of MsgData objects to avoid frequent memory allocation/deallocation\&. It uses an adaptive limit system to balance memory usage and performance\&.
+.PP
+\fBNote\fP
+.RS 4
+The pool automatically adjusts its size based on usage patterns\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB383\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "MsgDataPool::MsgDataPool ()"
+
+.PP
+Constructor\&. Initializes the message pool with default settings 
+.PP
+Definition at line \fB183\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "MsgDataPool::~MsgDataPool ()"
+
+.PP
+Destructor\&. Frees all allocated memory 
+.PP
+Definition at line \fB190\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBMsgData\fP * MsgDataPool::allocate ()"
+
+.PP
+Allocate a new MsgData from the pool\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to allocated MsgData, or nullptr if pool is full 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Returns nullptr if no memory available 
+.RE
+.PP
+
+.PP
+Definition at line \fB199\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBvoid\fP MsgDataPool::deallocate (\fBMsgData\fP * msg)"
+
+.PP
+Return a MsgData to the pool\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Pointer to MsgData to deallocate 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Frees any associated data and returns MsgData to pool 
+.RE
+.PP
+
+.PP
+Definition at line \fB236\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::getCurrentInUse () const"
+
+.PP
+Get number of currently allocated messages\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of messages currently in use 
+.RE
+.PP
+
+.PP
+Definition at line \fB276\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::getPoolLimit () const"
+
+.PP
+Get maximum pool limit\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Maximum number of MsgData objects allowed 
+.RE
+.PP
+
+.PP
+Definition at line \fB274\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::getPoolSize () const"
+
+.PP
+Get current pool size\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Current number of MsgData objects in pool 
+.RE
+.PP
+
+.PP
+Definition at line \fB272\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBbool\fP MsgDataPool::initialize ()"
+
+.PP
+Initialize the message pool if not already initialized\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if pool was initialized successfully, false if already initialized or failed 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This method performs lazy initialization to avoid static allocation issues 
+.RE
+.PP
+
+.PP
+Definition at line \fB278\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "\fBvoid\fP MsgDataPool::updateAdaptiveLimit ()"
+
+.PP
+Update adaptive pool limit based on usage\&. Automatically adjusts pool size for optimal performance 
+.PP
+Definition at line \fB258\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "uint8_t MsgDataPool::currentInUse\fC [private]\fP"
+
+.PP
+Number of messages currently in use\&. 
+.PP
+Definition at line \fB447\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::nextFree\fC [private]\fP"
+
+.PP
+Index of next free message\&. 
+.PP
+Definition at line \fB448\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBMsgData\fP* MsgDataPool::pool\fC [private]\fP"
+
+.PP
+Array of MsgData objects\&. 
+.PP
+Definition at line \fB444\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::poolLimit\fC [private]\fP"
+
+.PP
+Maximum pool size\&. 
+.PP
+Definition at line \fB446\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBuint8_t\fP MsgDataPool::poolSize\fC [private]\fP"
+
+.PP
+Current pool size\&. 
+.PP
+Definition at line \fB445\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

@@ -1,7 +1,7 @@
 /**
  * @file FsmOS.cpp
  * @brief Implementation of the FsmOS cooperative task scheduler
- * @author Aykut Ozdemir
+ * @author Aykut Özdemir <aykutozdemirgyte@gmail.com>
  * @date 2025-10-02
  *
  * This file contains the implementation of the FsmOS scheduler and task
@@ -47,9 +47,7 @@ static void init_stdio_to_serial()
 /* ================== Global Variables ================== */
 Scheduler OS;
 
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
 MemoryStats fsmos_memory_stats = {0, 0, 0, 0};
-#endif
 
 /* ================== TimerT Implementation ================== */
 template <typename T>
@@ -69,16 +67,30 @@ bool TimerT<T>::isExpired() const
 
     T current_time = static_cast<T>(OS.now());
 
-    // Handle timer overflow correctly
+    // Handle timer overflow correctly using safer arithmetic
     if (current_time >= startMs)
     {
+        // No overflow case - simple subtraction
         return (current_time - startMs) >= durationMs;
     }
     else
     {
-        // Timer overflow occurred - calculate remaining time correctly
-        T elapsed = static_cast<T>(static_cast<T>(~static_cast<T>(0)) - startMs + current_time + 1);
-        return elapsed >= durationMs;
+        // Timer overflow occurred - calculate elapsed time correctly
+        T max_value = static_cast<T>(~static_cast<T>(0));
+
+        // Calculate elapsed time: time before overflow + time after overflow
+        T elapsed_before_overflow = max_value - startMs + 1;
+        T elapsed_after_overflow = current_time;
+        T total_elapsed = elapsed_before_overflow + elapsed_after_overflow;
+
+        // Check for overflow in the addition
+        if (total_elapsed < elapsed_before_overflow)
+        {
+            // Addition overflowed, timer definitely expired
+            return true;
+        }
+
+        return total_elapsed >= durationMs;
     }
 }
 
@@ -110,14 +122,34 @@ SharedMsg &SharedMsg::operator=(const SharedMsg &other)
 {
     if (this != &other)
     {
+        // Avoid nested atomic blocks by doing the work outside atomic block
+        MsgData *oldData = msgData;
+        MsgData *newData = other.msgData;
+        MsgData *toDeallocate = nullptr;
+
+        // Single atomic block for the entire operation
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
         {
-            release();
-            msgData = other.msgData;
-            if (msgData)
+            if (newData)
             {
-                msgData->refCount++;
+                newData->refCount++;
             }
+            msgData = newData;
+
+            if (oldData)
+            {
+                oldData->refCount--;
+                if (oldData->refCount == 0)
+                {
+                    toDeallocate = oldData;
+                }
+            }
+        }
+
+        // Deallocate outside atomic block if needed
+        if (toDeallocate)
+        {
+            OS.msgPool.deallocate(toDeallocate);
         }
     }
     return *this;
@@ -159,15 +191,6 @@ MsgDataPool::~MsgDataPool()
 {
     if (pool)
     {
-        // Free any remaining message data
-        for (uint8_t i = 0; i < poolSize; i++)
-        {
-            if (pool[i].data)
-            {
-                delete[] pool[i].data;
-                pool[i].data = nullptr;
-            }
-        }
         delete[] pool;
         pool = nullptr;
     }
@@ -178,9 +201,7 @@ MsgData *MsgDataPool::allocate()
     // Lazy initialization - allocate pool if not already done
     if (!pool && !initialize())
     {
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
         fsmos_memory_stats.total_allocated += sizeof(MsgData) * poolLimit;
-#endif
         return nullptr;
     }
 
@@ -196,19 +217,15 @@ MsgData *MsgDataPool::allocate()
     msg->type = 0;
     msg->topic = 0;
     msg->arg = 0;
-    msg->data = nullptr;
-    msg->dataSize = 0;
 
     currentInUse++;
     nextFree = (nextFree + 1) % poolSize;
 
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
     fsmos_memory_stats.current_usage += sizeof(MsgData);
     if (fsmos_memory_stats.current_usage > fsmos_memory_stats.peak_usage)
     {
         fsmos_memory_stats.peak_usage = fsmos_memory_stats.current_usage;
     }
-#endif
 
     // Update adaptive limit based on usage
     updateAdaptiveLimit();
@@ -223,29 +240,16 @@ void MsgDataPool::deallocate(MsgData *msg)
         return;
     }
 
-    // Free any associated data
-    if (msg->data)
-    {
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
-        fsmos_memory_stats.total_freed += msg->dataSize;
-#endif
-        delete[] msg->data;
-        msg->data = nullptr;
-    }
-
     // Reset message to initial state
     msg->refCount = 0;
     msg->type = 0;
     msg->topic = 0;
     msg->arg = 0;
-    msg->dataSize = 0;
 
     currentInUse--;
 
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
     fsmos_memory_stats.current_usage -= sizeof(MsgData);
     fsmos_memory_stats.total_freed += sizeof(MsgData);
-#endif
 
     // Update adaptive limit based on usage
     updateAdaptiveLimit();
@@ -291,17 +295,13 @@ bool MsgDataPool::initialize()
             pool[i].type = 0;
             pool[i].topic = 0;
             pool[i].arg = 0;
-            pool[i].data = nullptr;
-            pool[i].dataSize = 0;
         }
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
         fsmos_memory_stats.total_allocated += sizeof(MsgData) * poolLimit;
-#endif
         return true;
     }
 
     // Log error if memory allocation fails
-    OS.logMessage(nullptr, Scheduler::LOG_ERROR, F("Failed to allocate message pool"));
+    OS.logMessage(nullptr, Scheduler::LOG_ERROR, F("Msg pool alloc failed"));
     return false;
 }
 
@@ -532,7 +532,6 @@ void Task::setMaxMessageBudget(uint8_t budget)
     maxMessageBudget = budget;
 }
 
-uint8_t Task::getMaxMessageBudget() const { return maxMessageBudget; }
 
 Task::State Task::getState() const { return static_cast<State>(stateAndPriority & 0x0F); }
 
@@ -552,14 +551,14 @@ void Task::setName(const __FlashStringHelper *task_name) { name = task_name; }
 
 // Subscribe/unsubscribe methods are now inline in header file
 
-void Task::publish(uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+void Task::publish(uint8_t topic, uint8_t type, uint16_t arg)
 {
-    OS.publishMessage(topic, type, arg, data, dataSize);
+    OS.publishMessage(topic, type, arg);
 }
 
-void Task::tell(uint8_t target_task_id, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+void Task::tell(uint8_t target_task_id, uint8_t type, uint16_t arg)
 {
-    OS.sendMessage(target_task_id, type, arg, data, dataSize);
+    OS.sendMessage(target_task_id, type, arg);
 }
 
 void Task::log(const __FlashStringHelper *msg) { OS.logMessage(this, Scheduler::LOG_INFO, msg); }
@@ -633,40 +632,112 @@ Scheduler::Scheduler()
 #if defined(__AVR__)
 // Canary byte used to mark free RAM for stack usage measurement
 static const uint8_t STACK_CANARY_BYTE = 0xCD;
+
+// Pointers delimiting the canary region. We avoid touching the current stack.
+static uint8_t *g_canary_start = nullptr;
+static uint8_t *g_canary_end   = nullptr;
+
+/**
+ * Initialize the stack canary region.
+ * We fill from heap_top up to (SP - FSMOS_STACK_CANARY_MARGIN).
+ * This covers the entire free RAM area between heap and stack.
+ */
 static void init_stack_canary()
 {
-    // Fill entire free RAM from end of .bss (or current heap break) up to RAMEND
     extern char __bss_end;
     extern char *__brkval;
-    uint8_t *start = (uint8_t *)(__brkval ? __brkval : &__bss_end);
-    uint8_t *end = (uint8_t *)RAMEND;
-    for (uint8_t *p = start; p <= end; ++p)
+    // Current stack pointer approximation via address of a local
+    uint8_t sp_probe;
+    uint8_t *sp = (uint8_t *)&sp_probe;
+
+    // Compute heap top
+    uint8_t *heap_top = (uint8_t *)(__brkval ? __brkval : &__bss_end);
+
+    // Safety margin to keep above the canary (below SP)
+#ifndef FSMOS_STACK_CANARY_MARGIN
+#define FSMOS_STACK_CANARY_MARGIN 32
+#endif
+
+    // Region end just below current SP
+    uint8_t *region_end = sp - FSMOS_STACK_CANARY_MARGIN;
+
+    // Start from heap top - cover entire free RAM area
+    uint8_t *region_start = heap_top;
+
+    if (region_start >= region_end)
+    {
+        // Nothing to initialize; leave pointers null
+        g_canary_start = g_canary_end = nullptr;
+        return;
+    }
+
+    g_canary_start = region_start;
+    g_canary_end   = region_end;
+
+    // Disable interrupts around the fill to keep ISR stacks from interfering
+    uint8_t sreg = SREG;
+    cli();
+    for (uint8_t *p = g_canary_start; p <= g_canary_end; ++p)
     {
         *p = STACK_CANARY_BYTE;
     }
+    SREG = sreg; // restore interrupt state
 }
 
 static uint16_t measure_stack_used()
 {
-    // Scan canary region from free-RAM start to find first non-canary byte
-    extern char __bss_end;
-    extern char *__brkval;
-    uint8_t *start = (uint8_t *)(__brkval ? __brkval : &__bss_end);
-    uint8_t *end = (uint8_t *)RAMEND;
-    uint8_t *p = start;
-    while (p <= end && *p == STACK_CANARY_BYTE)
-    {
-        ++p;
-    }
-    if (p > end)
+    if (!g_canary_start || !g_canary_end || g_canary_start > g_canary_end)
     {
         return 0;
     }
-    return (uint16_t)(end - p + 1);
+    uint8_t *p = g_canary_start;
+    while (p <= g_canary_end && *p == STACK_CANARY_BYTE)
+    {
+        ++p;
+    }
+    if (p > g_canary_end)
+    {
+        return 0;
+    }
+    // Bytes from first non-canary up to end are considered used
+    return (uint16_t)(g_canary_end - p + 1);
 }
 #endif
 
 Scheduler::~Scheduler() { removeAll(); }
+
+// Missing method implementations
+TaskNode *Scheduler::acquireTaskNode(Task *task)
+{
+    return allocateTaskNode(task);
+}
+
+void Scheduler::releaseTaskNode(TaskNode *node)
+{
+    deallocateTaskNode(node);
+}
+
+bool Scheduler::dequeueQueuedMessageNode(MsgNode *&outNode)
+{
+    // This method should work with the main message queue, not a separate queued message queue
+    if (!msgHead)
+    {
+        outNode = nullptr;
+        return false;
+    }
+
+    outNode = msgHead;
+    msgHead = msgHead->next;
+
+    if (!msgHead)
+    {
+        msgTail = nullptr;
+    }
+
+    outNode->next = nullptr;
+    msgCount--;
+    return true;
+}
 
 bool Scheduler::initializeTaskNodePool()
 {
@@ -687,7 +758,14 @@ bool Scheduler::initializeTaskNodePool()
         TaskNode *node = (TaskNode *)malloc(sizeof(TaskNode));
         if (!node)
         {
-            // Allocation failure; roll back what we can (not strictly necessary on AVR)
+            // Allocation failure; cleanup any already allocated nodes
+            while (prev)
+            {
+                TaskNode *temp = prev;
+                prev = prev->next;
+                free(temp);
+            }
+            taskNodePoolCapacity = 0;
             return false;
         }
         // Initialize fields manually; building free-list in reverse
@@ -706,6 +784,14 @@ bool Scheduler::add(Task *task)
 {
     if (!task)
     {
+        return false;
+    }
+
+    // Check task limit based on TOPIC_BITFIELD_SIZE
+    if (taskCount >= MAX_TOPICS)
+    {
+        logSystemEvent(LOG_ERROR, F("Task limit reached"));
+        logInfof(F("Max tasks: %u, Current: %u"), MAX_TOPICS, taskCount);
         return false;
     }
 
@@ -798,7 +884,7 @@ void Scheduler::removeAll()
 
 Task *Scheduler::getTask(uint8_t task_id)
 {
-    return findTask([task_id](Task* task) { return task->getId() == task_id; });
+    return findTask([task_id](Task * task) { return task->getId() == task_id; });
 }
 
 // getTaskCount is now inline in header file
@@ -815,7 +901,7 @@ void Scheduler::begin()
     setLogLevel(LOG_INFO);
 
     // Log startup message
-    logSystemEvent(LOG_INFO, F("FsmOS Scheduler starting"));
+    logSystemEvent(LOG_INFO, F("FsmOS starting"));
 
     running = true;
     systemTime = millis();
@@ -825,13 +911,14 @@ void Scheduler::begin()
 #endif
 
     // Start all tasks
-    forEachTask([](Task* task) {
+    forEachTask([this](Task * task)
+    {
         task->start();
         feedWatchdog();
     });
 
     // Log task count
-    logSystemEvent(LOG_INFO, F("Scheduler started successfully"));
+    logSystemEvent(LOG_INFO, F("Scheduler ready"));
 }
 
 void Scheduler::loopOnce()
@@ -841,10 +928,11 @@ void Scheduler::loopOnce()
         return;
     }
 
-        updateSystemTime();
+    updateSystemTime();
 
     // Decrease remaining time for all active tasks
-    forEachTask([](Task* task) {
+    forEachTask([](Task * task)
+    {
         if (task->isActive() && task->remainingTime > 0)
         {
             task->remainingTime--;
@@ -874,18 +962,19 @@ void Scheduler::loop()
 
 void Scheduler::stop() { running = false; }
 
-void Scheduler::publishMessage(uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
+void Scheduler::publishMessage(uint8_t topic, uint8_t type, uint16_t arg)
 {
     // Enqueue for all subscribed tasks
-    forEachTask([topic, type, arg, data, data_size](Task* task) {
+    forEachTask([this, topic, type, arg](Task * task)
+    {
         if (task->isActive() && task->isSubscribedToTopic(topic))
         {
-            enqueueQueuedMessage(task->getId(), topic, type, arg, data, data_size);
+            enqueueQueuedMessage(task->getId(), topic, type, arg);
         }
     });
 }
 
-void Scheduler::sendMessage(uint8_t task_id, uint8_t type, uint16_t arg, uint8_t *data, uint8_t data_size)
+void Scheduler::sendMessage(uint8_t task_id, uint8_t type, uint16_t arg)
 {
     Task *target_task = getTask(task_id);
     if (!target_task || !target_task->isActive())
@@ -893,7 +982,7 @@ void Scheduler::sendMessage(uint8_t task_id, uint8_t type, uint16_t arg, uint8_t
         return;
     }
 
-    enqueueQueuedMessage(task_id, 0, type, arg, data, data_size);
+    enqueueQueuedMessage(task_id, 0, type, arg);
 }
 
 uint32_t Scheduler::now() const { return systemTime; }
@@ -938,11 +1027,9 @@ void Scheduler::logMessage(Task *task, LogLevel level, const char *msg)
 
     if (task)
     {
-        Serial.print(F("Task "));
+        Serial.print(F("T"));
         Serial.print(task->getId());
-        Serial.print(F(" ("));
-        Serial.print(task->getName());
-        Serial.print(F("): "));
+        Serial.print(F(": "));
     }
 
     Serial.println(msg);
@@ -977,11 +1064,9 @@ void Scheduler::logMessage(Task *task, LogLevel level, const __FlashStringHelper
 
     if (task)
     {
-        Serial.print(F("Task "));
+        Serial.print(F("T"));
         Serial.print(task->getId());
-        Serial.print(F(" ("));
-        Serial.print(task->getName());
-        Serial.print(F("): "));
+        Serial.print(F(": "));
     }
 
     Serial.println(msg);
@@ -1033,10 +1118,14 @@ Task *Scheduler::findNextTask()
         {
             // If task declares a message production budget, ensure enough free queue slots
             uint8_t budget = current->task->getMaxMessageBudget();
-            if (budget == 0)
+            // Only use default if task hasn't explicitly set a budget (inherited default)
+            if (budget == DEFAULT_TASK_MESSAGE_BUDGET)
             {
-                budget = DEFAULT_TASK_MESSAGE_BUDGET;
+                // Task is using the default, which is fine
             }
+            // If budget is 0, task explicitly wants no message production
+            // If budget > 0, task has explicit budget
+            // In both cases, respect the task's decision
             if (getFreeQueueSlots() < budget)
             {
                 // Skip this task for now; not enough capacity to accept its messages
@@ -1044,16 +1133,16 @@ Task *Scheduler::findNextTask()
             else if (nextTask == nullptr)
             {
                 nextTask = current->task;
-                        }
-                        else if (current->task->getPriority() > nextTask->getPriority())
-                        {
-                // Higher priority wins
+            }
+            else if (current->task->getPriority() > nextTask->getPriority())
+            {
+                // Higher enum value wins (PRIORITY_SYSTEM=7 > PRIORITY_LOWEST=0)
                 nextTask = current->task;
-                        }
-                        else if (current->task->getPriority() == nextTask->getPriority())
-                        {
+            }
+            else if (current->task->getPriority() == nextTask->getPriority())
+            {
                 // Same priority, smaller task ID wins
-                            if (current->task->getId() < nextTask->getId())
+                if (current->task->getId() < nextTask->getId())
                 {
                     nextTask = current->task;
                 }
@@ -1078,19 +1167,19 @@ void Scheduler::executeTask(Task *task)
 
     uint32_t execStart = micros();
     uint32_t currentTime = systemTime;
-    
+
     // Handle task timing monitoring
     handleTaskTiming(task, currentTime);
-    
+
     // Execute the actual task step
     executeTaskStep(task);
-    
+
     // Update task execution statistics
     updateTaskStatistics(task, execStart);
-    
+
     // Update timing monitoring variables
     updateTimingVariables(task);
-    
+
     // Check for terminated tasks
     checkForTerminatedTask(task);
 }
@@ -1101,20 +1190,20 @@ void Scheduler::handleTaskTiming(Task *task, uint32_t currentTime)
     // Set scheduled time (when task should have started)
     task->scheduledTime = currentTime - task->getPeriod();
     task->actualStartTime = currentTime;
-    
+
     // Check for delay
     if (task->actualStartTime > task->scheduledTime)
     {
         uint32_t delay = task->actualStartTime - task->scheduledTime;
         uint16_t delayMs = (delay > 65535) ? 65535 : static_cast<uint16_t>(delay);
-        
+
         // Update delay statistics
         task->delayCount++;
         if (delayMs > task->maxDelayMs)
         {
             task->maxDelayMs = delayMs;
         }
-        
+
         // Log delay with attribution
         logTaskDelay(task, delayMs, lastExecutedTaskId);
     }
@@ -1124,7 +1213,7 @@ void Scheduler::executeTaskStep(Task *task)
 {
     // Reset remaining time for next execution
     task->remainingTime = task->getPeriod();
-    
+
     // Execute task step
     task->step();
 }
@@ -1160,9 +1249,15 @@ void Scheduler::updateTaskStatistics(Task *task, uint32_t execStart)
         int32_t newAvg = task->avgExecTimeUs + adjustment;
 
         // Clamp to valid range
-        if (newAvg < 0) newAvg = 0;
-        if (newAvg > 65535) newAvg = 65535;
-        
+        if (newAvg < 0)
+        {
+            newAvg = 0;
+        }
+        if (newAvg > 65535)
+        {
+            newAvg = 65535;
+        }
+
         task->avgExecTimeUs = static_cast<uint16_t>(newAvg);
     }
     else
@@ -1189,34 +1284,10 @@ void Scheduler::checkForTerminatedTask(Task *task)
 
 void Scheduler::logTaskDelay(Task *task, uint16_t delayMs, uint8_t causingTaskId)
 {
-    if (causingTaskId != 0 && causingTaskId != task->getId())
-    {
-        Task *delayingTask = getTask(causingTaskId);
-        if (delayingTask)
-        {
-            Serial.print(F("[WARN] Task "));
-            Serial.print(task->getId());
-            Serial.print(F(" ("));
-            Serial.print(task->getName());
-            Serial.print(F(") delayed by "));
-            Serial.print(delayMs);
-            Serial.print(F("ms - caused by Task "));
-            Serial.print(causingTaskId);
-            Serial.print(F(" ("));
-            Serial.print(delayingTask->getName());
-            Serial.println(F(")"));
-        }
-    }
-    else
-    {
-        Serial.print(F("[WARN] Task "));
-        Serial.print(task->getId());
-        Serial.print(F(" ("));
-        Serial.print(task->getName());
-        Serial.print(F(") delayed by "));
-        Serial.print(delayMs);
-        Serial.println(F("ms"));
-    }
+    // Task delay logging disabled to save ROM
+    (void)task;
+    (void)delayMs;
+    (void)causingTaskId;
 }
 
 // Task iteration template methods
@@ -1235,7 +1306,7 @@ void Scheduler::forEachTask(Func func)
 }
 
 template<typename Func>
-Task* Scheduler::findTask(Func predicate)
+Task *Scheduler::findTask(Func predicate)
 {
     TaskNode *current = taskHead;
     while (current != nullptr)
@@ -1250,11 +1321,11 @@ Task* Scheduler::findTask(Func predicate)
 }
 
 // Explicit template instantiations for common use cases
-template void Scheduler::forEachTask<void(*)(Task*)>(void(*)(Task*));
-template Task* Scheduler::findTask<bool(*)(Task*)>(bool(*)(Task*));
+template void Scheduler::forEachTask<void(*)(Task *)>(void(*)(Task *));
+template Task *Scheduler::findTask<bool(*)(Task *)>(bool(*)(Task *));
 
 // Memory management helpers
-TaskNode* Scheduler::allocateTaskNode(Task *task)
+TaskNode *Scheduler::allocateTaskNode(Task *task)
 {
     if (!taskNodePoolInitialized && !initializeTaskNodePool())
     {
@@ -1291,7 +1362,7 @@ void Scheduler::deallocateTaskNode(TaskNode *node)
     freeTaskNodeHead = node;
 }
 
-MsgNode* Scheduler::allocateMsgNode()
+Scheduler::MsgNode *Scheduler::allocateMsgNode()
 {
     if (!freeHead)
     {
@@ -1300,29 +1371,35 @@ MsgNode* Scheduler::allocateMsgNode()
             return nullptr;
         }
     }
-    
+
     MsgNode *node = freeHead;
     freeHead = freeHead->next;
     node->next = nullptr;
     return node;
 }
 
-void Scheduler::deallocateMsgNode(MsgNode *node)
+void Scheduler::deallocateMsgNode(Scheduler::MsgNode *node)
 {
     if (!node)
     {
         return;
     }
-    
+
+    // Free the buffer if it exists
+    if (node->payload.buffer)
+    {
+        free(node->payload.buffer);
+        node->payload.buffer = nullptr;
+        node->payload.capacity = 0;
+    }
+
     // Reset message data
     node->payload.targetTaskId = 0;
     node->payload.msg.type = 0;
     node->payload.msg.topic = 0;
     node->payload.msg.arg = 0;
-    node->payload.msg.data = nullptr;
-    node->payload.msg.dataSize = 0;
     node->payload.msg.refCount = 0;
-    
+
     // Return to free list
     node->next = freeHead;
     freeHead = node;
@@ -1336,17 +1413,9 @@ void Scheduler::logSystemEvent(LogLevel level, const __FlashStringHelper *msg)
 
 void Scheduler::logTaskExecution(Task *task, uint32_t execTime)
 {
-    // Only log if execution time is unusually long (>10ms)
-    if (execTime > 10000)
-    {
-        Serial.print(F("[INFO] Task "));
-        Serial.print(task->getId());
-        Serial.print(F(" ("));
-        Serial.print(task->getName());
-        Serial.print(F(") execution time: "));
-        Serial.print(execTime);
-        Serial.println(F("us"));
-    }
+    // Execution time logging disabled to save ROM
+    (void)task;
+    (void)execTime;
 }
 
 /* ================== Additional Scheduler Methods ================== */
@@ -1445,7 +1514,7 @@ bool Scheduler::getTaskStats(uint8_t task_id, TaskStats &stats)
     stats.priority = task->getPriority();
     stats.runCount = task->runCount;
     stats.maxExecTimeUs = task->maxExecTimeUs;      // 16-bit max execution time
-    stats.totalExecTimeUs = task->avgExecTimeUs;    // Use avg as total for compatibility
+    stats.totalExecTimeUs = task->runCount * task->avgExecTimeUs;    // Calculate total from avg * count
     stats.stackUsage = 0;         // Still placeholder - requires stack monitoring
     stats.delayCount = task->delayCount;           // Task delay count
     stats.maxDelayMs = task->maxDelayMs;           // Maximum delay experienced
@@ -1480,9 +1549,19 @@ bool Scheduler::getSystemMemoryInfo(SystemMemoryInfo &info)
     uint16_t lower = (uint16_t)(__brkval ? __brkval : &__bss_end);
     uint16_t upper = (uint16_t)RAMEND;
     uint16_t approxUsed = measure_stack_used();
-    info.stackSize = (upper >= lower) ? (upper - lower + 1) : 0;
-    info.stackUsed = approxUsed;
-    info.stackFree = (approxUsed >= info.stackSize) ? 0 : (info.stackSize - approxUsed);
+    extern uint8_t *g_canary_start; extern uint8_t *g_canary_end;
+    uint16_t windowSize = 0;
+    if (g_canary_start && g_canary_end && g_canary_end >= g_canary_start)
+    {
+        windowSize = (uint16_t)(g_canary_end - g_canary_start + 1);
+    }
+    else
+    {
+        windowSize = (upper >= lower) ? (upper - lower + 1) : 0;
+    }
+    info.stackSize = windowSize;
+    info.stackUsed = (approxUsed > windowSize) ? windowSize : approxUsed;
+    info.stackFree = (info.stackUsed >= info.stackSize) ? 0 : (info.stackSize - info.stackUsed);
 #else
     info.stackSize = 0;
     info.stackUsed = 0;
@@ -1569,17 +1648,8 @@ uint8_t Scheduler::getHeapFragmentation()
 
 bool Scheduler::getMemoryLeakStats(MemoryStats &stats)
 {
-#if !defined(FSMOS_DISABLE_LEAK_DETECTION)
     stats = fsmos_memory_stats;
     return true;
-#else
-    // Return zero stats if leak detection is disabled
-    stats.total_allocated = 0;
-    stats.total_freed = 0;
-    stats.peak_usage = 0;
-    stats.current_usage = 0;
-    return true;
-#endif
 }
 
 /* ================== Additional Logging Functions ================== */
@@ -1685,7 +1755,7 @@ uint8_t Scheduler::getMostDelayingTask() const
 {
     uint8_t mostDelayingTaskId = 0;
     uint16_t maxDelayCount = 0;
-    
+
     TaskNode *current = taskHead;
     while (current != nullptr)
     {
@@ -1696,7 +1766,7 @@ uint8_t Scheduler::getMostDelayingTask() const
         }
         current = current->next;
     }
-    
+
     return mostDelayingTaskId;
 }
 
@@ -1724,8 +1794,6 @@ bool Scheduler::allocateMsgNodesChunk()
         n->payload.msg.type = 0;
         n->payload.msg.topic = 0;
         n->payload.msg.arg = 0;
-        n->payload.msg.data = nullptr;
-        n->payload.msg.dataSize = 0;
         n->payload.msg.refCount = 0;
         n->payload.buffer = nullptr;
         n->payload.capacity = 0;
@@ -1735,7 +1803,7 @@ bool Scheduler::allocateMsgNodesChunk()
     return true;
 }
 
-bool Scheduler::enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg, uint8_t *data, uint8_t dataSize)
+bool Scheduler::enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)
 {
     if (msgCount >= MAX_MESSAGE_POOL_SIZE)
     {
@@ -1760,35 +1828,6 @@ bool Scheduler::enqueueQueuedMessage(uint8_t targetTaskId, uint8_t topic, uint8_
     slot.msg.topic = topic;
     slot.msg.arg = arg;
     slot.msg.refCount = 0;
-
-    // Decide payload handling: allocate only if needed
-    if (data && dataSize > 0)
-    {
-        // If existing buffer is too small, try to reuse a slightly larger free node is not applicable here;
-        // we keep buffer per node; grow if needed.
-        if (!slot.buffer || slot.capacity < dataSize)
-        {
-            uint8_t newCap = dataSize;
-            uint8_t *newBuf = (uint8_t *)realloc(slot.buffer, newCap);
-            if (!newBuf)
-            {
-                // Put node back to free list and fail
-                node->next = freeHead;
-                freeHead = node;
-                return false;
-            }
-            slot.buffer = newBuf;
-            slot.capacity = newCap;
-        }
-        memcpy(slot.buffer, data, dataSize);
-        slot.msg.data = slot.buffer;
-        slot.msg.dataSize = dataSize;
-    }
-    else
-    {
-        slot.msg.data = nullptr;
-        slot.msg.dataSize = 0;
-    }
 
     node->next = nullptr;
     if (msgTail)

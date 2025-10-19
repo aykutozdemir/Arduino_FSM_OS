@@ -1,0 +1,281 @@
+\doxysection{Shared\+Msg Class Reference}
+\hypertarget{classSharedMsg}{}\label{classSharedMsg}\index{SharedMsg@{SharedMsg}}
+
+
+Smart pointer-\/like wrapper for Msg\+Data with reference counting.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2}{Shared\+Msg}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classSharedMsg_a432ceb0eefbe4e0affadab97f3fd2c36}{Shared\+Msg}} (Msg\+Data \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Constructor from Msg\+Data pointer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classSharedMsg_a46d80a6afd7326ea7e692e14d2cbc6b8}{Shared\+Msg}} (const \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \&other)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \& \mbox{\hyperlink{classSharedMsg_ad7ce8df960b49c88f0d4264c23c93f81}{operator=}} (const \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \&other)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classSharedMsg_a1819d3340c3fa3d00950eb087cd97131}{\texorpdfstring{$\sim$}{\string~}\+Shared\+Msg}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+Msg\+Data \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classSharedMsg_aa20f39d8440882aa6260e5802833e67e}{get\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Get raw Msg\+Data pointer. \end{DoxyCompactList}\item 
+Msg\+Data \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classSharedMsg_ae7a947149acda480996050de99ee1b88}{operator-\/$>$}} () const
+\begin{DoxyCompactList}\small\item\em Arrow operator for direct access to Msg\+Data. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classSharedMsg_aaba8448183f8a5204bd8bc887c7b4ec3}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Check if \doxylink{classSharedMsg}{Shared\+Msg} contains valid data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9}{release}} ()
+\begin{DoxyCompactList}\small\item\em Internal method to release reference. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Msg\+Data \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classSharedMsg_a53039c707f1dc8a52c05f33af2cb24ea}{msg\+Data}}
+\begin{DoxyCompactList}\small\item\em Pointer to the wrapped Msg\+Data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Smart pointer-\/like wrapper for Msg\+Data with reference counting. 
+
+\doxylink{classSharedMsg}{Shared\+Msg} provides automatic memory management for messages through reference counting. When the last reference is destroyed, the message is automatically returned to the pool.
+
+\begin{DoxyNote}{Note}
+This class is thread-\/safe for single-\/threaded cooperative multitasking. 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+Do not use across different scheduler instances. 
+\end{DoxyWarning}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00313}{313}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2}\label{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2} 
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{SharedMsg()}{SharedMsg()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Shared\+Msg\+::\+Shared\+Msg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates an empty \doxylink{classSharedMsg}{Shared\+Msg} with no associated data 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00103}{103}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_a432ceb0eefbe4e0affadab97f3fd2c36}\label{classSharedMsg_a432ceb0eefbe4e0affadab97f3fd2c36} 
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{SharedMsg()}{SharedMsg()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Shared\+Msg\+::\+Shared\+Msg (\begin{DoxyParamCaption}\item[{Msg\+Data \texorpdfstring{$\ast$}{*}}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor from Msg\+Data pointer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to Msg\+Data to wrap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Increments reference count of the message 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00105}{105}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_a46d80a6afd7326ea7e692e14d2cbc6b8}\label{classSharedMsg_a46d80a6afd7326ea7e692e14d2cbc6b8} 
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\index{SharedMsg@{SharedMsg}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{SharedMsg()}{SharedMsg()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Shared\+Msg\+::\+Shared\+Msg (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \doxylink{classSharedMsg}{Shared\+Msg} to copy from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Increments reference count of the shared message 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00113}{113}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_a1819d3340c3fa3d00950eb087cd97131}\label{classSharedMsg_a1819d3340c3fa3d00950eb087cd97131} 
+\index{SharedMsg@{SharedMsg}!````~SharedMsg@{\texorpdfstring{$\sim$}{\string~}SharedMsg}}
+\index{````~SharedMsg@{\texorpdfstring{$\sim$}{\string~}SharedMsg}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}SharedMsg()}{\string~SharedMsg()}}
+{\footnotesize\ttfamily Shared\+Msg\+::\texorpdfstring{$\sim$}{\string~}\+Shared\+Msg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+\begin{DoxyNote}{Note}
+Decrements reference count and frees message if count reaches 0 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00158}{158}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSharedMsg_a1819d3340c3fa3d00950eb087cd97131_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSharedMsg_aa20f39d8440882aa6260e5802833e67e}\label{classSharedMsg_aa20f39d8440882aa6260e5802833e67e} 
+\index{SharedMsg@{SharedMsg}!getData@{getData}}
+\index{getData@{getData}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}}
+{\footnotesize\ttfamily Msg\+Data \texorpdfstring{$\ast$}{*} Shared\+Msg\+::get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get raw Msg\+Data pointer. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to Msg\+Data, or nullptr if invalid 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00176}{176}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_aaba8448183f8a5204bd8bc887c7b4ec3}\label{classSharedMsg_aaba8448183f8a5204bd8bc887c7b4ec3} 
+\index{SharedMsg@{SharedMsg}!isValid@{isValid}}
+\index{isValid@{isValid}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily bool Shared\+Msg\+::is\+Valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Check if \doxylink{classSharedMsg}{Shared\+Msg} contains valid data. 
+
+\begin{DoxyReturn}{Returns}
+true if valid, false if empty or invalid 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00180}{180}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_ae7a947149acda480996050de99ee1b88}\label{classSharedMsg_ae7a947149acda480996050de99ee1b88} 
+\index{SharedMsg@{SharedMsg}!operator-\/$>$@{operator-\/$>$}}
+\index{operator-\/$>$@{operator-\/$>$}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{operator-\/$>$()}{operator->()}}
+{\footnotesize\ttfamily Msg\+Data \texorpdfstring{$\ast$}{*} Shared\+Msg\+::operator-\/$>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Arrow operator for direct access to Msg\+Data. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to Msg\+Data for member access 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00178}{178}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSharedMsg_ad7ce8df960b49c88f0d4264c23c93f81}\label{classSharedMsg_ad7ce8df960b49c88f0d4264c23c93f81} 
+\index{SharedMsg@{SharedMsg}!operator=@{operator=}}
+\index{operator=@{operator=}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \& Shared\+Msg\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Assignment operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \doxylink{classSharedMsg}{Shared\+Msg} to assign from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this \doxylink{classSharedMsg}{Shared\+Msg} 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Properly manages reference counting 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00121}{121}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSharedMsg_ad7ce8df960b49c88f0d4264c23c93f81_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9}\label{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9} 
+\index{SharedMsg@{SharedMsg}!release@{release}}
+\index{release@{release}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{release()}{release()}}
+{\footnotesize\ttfamily void Shared\+Msg\+::release (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Internal method to release reference. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00163}{163}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classSharedMsg_a53039c707f1dc8a52c05f33af2cb24ea}\label{classSharedMsg_a53039c707f1dc8a52c05f33af2cb24ea} 
+\index{SharedMsg@{SharedMsg}!msgData@{msgData}}
+\index{msgData@{msgData}!SharedMsg@{SharedMsg}}
+\doxysubsubsection{\texorpdfstring{msgData}{msgData}}
+{\footnotesize\ttfamily Msg\+Data\texorpdfstring{$\ast$}{*} Shared\+Msg\+::msg\+Data\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pointer to the wrapped Msg\+Data. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00369}{369}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

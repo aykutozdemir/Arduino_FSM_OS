@@ -1,0 +1,22 @@
+<map id="Scheduler::add" name="Scheduler::add">
+<area shape="rect" id="Node000001" title="Add a task to the scheduler." alt="" coords="5,69,115,94"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a38cf4a79d14bd68514a26946b19d3d53" title="Allocate a TaskNode from the pool." alt="" coords="163,17,355,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,66,196,43,197,48,110,71"/>
+<area shape="rect" id="Node000005" href="$group__fsmos.html#ga0fd80592a7d1d2fd9b1b52081a8d69cb" title="Log an info message with formatting." alt="" coords="226,69,291,94"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="115,79,212,79,212,84,115,84"/>
+<area shape="rect" id="Node000010" href="$classScheduler.html#a1c6dd608a209d55e1925a4dbf5fb4344" title="Log a system event message." alt="" coords="403,119,587,145"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="106,91,163,104,280,118,389,126,389,131,279,124,162,109,105,97"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#aaa8cc86207802e4a457202396b2f7441" title=" " alt="" coords="413,5,576,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="355,25,400,24,400,30,355,30"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a42a50afac20691fb27694ca04ccc4e90" title="Get total number of Task instances ever created." alt="" coords="635,5,807,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="577,23,621,23,621,28,577,28"/>
+<area shape="rect" id="Node000006" href="$FsmOS_8cpp.html#a239a4328ae320786411ee555c3a20250" title=" " alt="" coords="441,70,548,95"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="291,79,428,80,428,85,291,84"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#acaab28b4949d5a175212d134c04cf406" title="Log a message." alt="" coords="641,119,800,145"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="549,92,649,114,648,119,548,97"/>
+<area shape="rect" id="Node000009" href="$FsmOS_8cpp.html#ade20b4a6bf510c7319a727cdf86ebe37" title=" " alt="" coords="665,70,776,95"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="548,80,651,80,651,85,548,85"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="855,119,941,145"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="800,129,841,129,841,135,800,135"/>
+<area shape="poly" id="edge10_Node000010_Node000007" title=" " alt="" coords="587,129,628,129,628,135,587,135"/>
+</map>

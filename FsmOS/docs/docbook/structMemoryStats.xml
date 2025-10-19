@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structMemoryStats" xml:lang="en-US">
+<title>MemoryStats Struct Reference</title>
+<indexterm><primary>MemoryStats</primary></indexterm>
+<para>
+
+<para>Memory tracking statistics. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>uint32_t <link linkend="_structMemoryStats_1ad400667b2264e48d954b2feee8833f4a">total_allocated</link></para>
+
+<para>Total bytes allocated. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structMemoryStats_1aaefab979deb1c98218e9267d198de4fe">total_freed</link></para>
+
+<para>Total bytes freed. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structMemoryStats_1ab27f5b00f150919cd24828e4f3136357">peak_usage</link></para>
+
+<para>Peak memory usage. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structMemoryStats_1a66c3d8d757e4fcd55403c904fa4cb0d5">current_usage</link></para>
+
+<para>Current memory usage. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Memory tracking statistics. </para>
+
+
+
+<para>Used for memory leak detection and monitoring </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00114">114</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structMemoryStats_1a66c3d8d757e4fcd55403c904fa4cb0d5"/><section>
+    <title>current_usage</title>
+<indexterm><primary>current_usage</primary><secondary>MemoryStats</secondary></indexterm>
+<indexterm><primary>MemoryStats</primary><secondary>current_usage</secondary></indexterm>
+<para><computeroutput>uint32_t MemoryStats::current_usage</computeroutput></para><para>
+
+<para>Current memory usage. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00119">119</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structMemoryStats_1ab27f5b00f150919cd24828e4f3136357"/><section>
+    <title>peak_usage</title>
+<indexterm><primary>peak_usage</primary><secondary>MemoryStats</secondary></indexterm>
+<indexterm><primary>MemoryStats</primary><secondary>peak_usage</secondary></indexterm>
+<para><computeroutput>uint32_t MemoryStats::peak_usage</computeroutput></para><para>
+
+<para>Peak memory usage. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00118">118</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structMemoryStats_1ad400667b2264e48d954b2feee8833f4a"/><section>
+    <title>total_allocated</title>
+<indexterm><primary>total_allocated</primary><secondary>MemoryStats</secondary></indexterm>
+<indexterm><primary>MemoryStats</primary><secondary>total_allocated</secondary></indexterm>
+<para><computeroutput>uint32_t MemoryStats::total_allocated</computeroutput></para><para>
+
+<para>Total bytes allocated. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00116">116</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structMemoryStats_1aaefab979deb1c98218e9267d198de4fe"/><section>
+    <title>total_freed</title>
+<indexterm><primary>total_freed</primary><secondary>MemoryStats</secondary></indexterm>
+<indexterm><primary>MemoryStats</primary><secondary>total_freed</secondary></indexterm>
+<para><computeroutput>uint32_t MemoryStats::total_freed</computeroutput></para><para>
+
+<para>Total bytes freed. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00117">117</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

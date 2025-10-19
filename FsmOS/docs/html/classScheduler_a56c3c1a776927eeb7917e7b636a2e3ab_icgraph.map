@@ -1,0 +1,5 @@
+<map id="Scheduler::getFreeMemory" name="Scheduler::getFreeMemory">
+<area shape="rect" id="Node000001" title="Get amount of free memory." alt="" coords="273,5,452,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a7c61b8b908a19416283e66c0fb076a40" title="Get system memory information." alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,21,225,21,225,15,259,15"/>
+</map>

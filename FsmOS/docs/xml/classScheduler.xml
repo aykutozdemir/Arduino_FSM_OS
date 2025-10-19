@@ -1,0 +1,2526 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classScheduler" kind="class" language="C++" prot="public">
+    <compoundname>Scheduler</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <innerclass refid="structScheduler_1_1MsgNode" prot="private">Scheduler::MsgNode</innerclass>
+    <innerclass refid="structScheduler_1_1QueuedMessage" prot="private">Scheduler::QueuedMessage</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" prot="public" static="no" strong="no">
+        <type></type>
+        <name>LogLevel</name>
+        <qualifiedname>Scheduler::LogLevel</qualifiedname>
+        <enumvalue id="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7" prot="public">
+          <name>LOG_DEBUG</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>Debug level messages. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327" prot="public">
+          <name>LOG_INFO</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>Info level messages. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286" prot="public">
+          <name>LOG_WARN</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>Warning level messages. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805" prot="public">
+          <name>LOG_ERROR</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+<para>Error level messages. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Log level enumeration. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1195" column="5" bodyfile="FsmOS.h" bodystart="1196" bodyend="1201"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" prot="private" static="no" mutable="no">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode* Scheduler::taskHead</definition>
+        <argsstring></argsstring>
+        <name>taskHead</name>
+        <qualifiedname>Scheduler::taskHead</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+<para>Head of task linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1320" column="14" bodyfile="FsmOS.h" bodystart="1320" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+        <referencedby refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" compoundref="FsmOS_8cpp" startline="1109" endline="1159">findNextTask</referencedby>
+        <referencedby refid="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" compoundref="FsmOS_8cpp" startline="1309" endline="1321">findTask</referencedby>
+        <referencedby refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">forEachTask</referencedby>
+        <referencedby refid="classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9" compoundref="FsmOS_8cpp" startline="1754" endline="1771">getMostDelayingTask</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">removeAll</referencedby>
+        <referencedby refid="classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6" compoundref="FsmOS_8cpp" startline="620" endline="630">Scheduler</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" prot="private" static="no" mutable="no">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode* Scheduler::taskTail</definition>
+        <argsstring></argsstring>
+        <name>taskTail</name>
+        <qualifiedname>Scheduler::taskTail</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+<para>Tail of task linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1321" column="14" bodyfile="FsmOS.h" bodystart="1321" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">removeAll</referencedby>
+        <referencedby refid="classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6" compoundref="FsmOS_8cpp" startline="620" endline="630">Scheduler</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a" prot="private" static="no" mutable="no">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode* Scheduler::freeTaskNodeHead</definition>
+        <argsstring></argsstring>
+        <name>freeTaskNodeHead</name>
+        <qualifiedname>Scheduler::freeTaskNodeHead</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+<para>Head of free-list for <ref refid="structTaskNode" kindref="compound">TaskNode</ref> pool. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1323" column="14" bodyfile="FsmOS.h" bodystart="1323" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">deallocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">initializeTaskNodePool</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scheduler::taskNodePoolInitialized</definition>
+        <argsstring></argsstring>
+        <name>taskNodePoolInitialized</name>
+        <qualifiedname>Scheduler::taskNodePoolInitialized</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Whether pool has been initialized. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1324" column="10" bodyfile="FsmOS.h" bodystart="1324" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">initializeTaskNodePool</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t Scheduler::taskNodePoolCapacity</definition>
+        <argsstring></argsstring>
+        <name>taskNodePoolCapacity</name>
+        <qualifiedname>Scheduler::taskNodePoolCapacity</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Total nodes currently allocated to pool/list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1325" column="14" bodyfile="FsmOS.h" bodystart="1325" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1acb0612339205f7e921b0034768dba4c5" compoundref="FsmOS_8cpp" startline="892" endline="892">getMaxTasks</referencedby>
+        <referencedby refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">initializeTaskNodePool</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::taskCount</definition>
+        <argsstring></argsstring>
+        <name>taskCount</name>
+        <qualifiedname>Scheduler::taskCount</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Current number of tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1326" column="13" bodyfile="FsmOS.h" bodystart="1326" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1a7a84b715133d1f8dd473e1511b2498a2" compoundref="FsmOS_8h" startline="1121" endline="1121">getTaskCount</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">removeAll</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a89473e616865792db671bdb2551aa338" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::nextTaskId</definition>
+        <argsstring></argsstring>
+        <name>nextTaskId</name>
+        <qualifiedname>Scheduler::nextTaskId</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>Next available task ID. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1327" column="13" bodyfile="FsmOS.h" bodystart="1327" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a4025d35f57b05649764c44f3583fc2b6" prot="private" static="no" mutable="no">
+        <type><ref refid="classMsgDataPool" kindref="compound">MsgDataPool</ref></type>
+        <definition>MsgDataPool Scheduler::msgPool</definition>
+        <argsstring></argsstring>
+        <name>msgPool</name>
+        <qualifiedname>Scheduler::msgPool</qualifiedname>
+        <briefdescription>
+<para>Message pool for efficient allocation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1329" column="17" bodyfile="FsmOS.h" bodystart="1329" bodyend="-1"/>
+        <referencedby refid="classSharedMsg_1ad7ce8df960b49c88f0d4264c23c93f81" compoundref="FsmOS_8cpp" startline="121" endline="156">SharedMsg::operator=</referencedby>
+        <referencedby refid="classSharedMsg_1a458f5ccc07be87e716ef117e2eb0bce9" compoundref="FsmOS_8cpp" startline="163" endline="174">SharedMsg::release</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Scheduler::systemTime</definition>
+        <argsstring></argsstring>
+        <name>systemTime</name>
+        <qualifiedname>Scheduler::systemTime</qualifiedname>
+        <briefdescription>
+<para>Current system time. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1330" column="14" bodyfile="FsmOS.h" bodystart="1330" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">getResetInfo</referencedby>
+        <referencedby refid="classScheduler_1afe202befb3d6eac9dbb6acd1a4b09401" compoundref="FsmOS_8cpp" startline="988" endline="988">now</referencedby>
+        <referencedby refid="classScheduler_1aab0e31c53df15af0ffbcd97d0510c9a2" compoundref="FsmOS_8cpp" startline="1075" endline="1075">onTick</referencedby>
+        <referencedby refid="classScheduler_1a0a80134fcc4380c2577a5281352847eb" compoundref="FsmOS_8cpp" startline="1107" endline="1107">updateSystemTime</referencedby>
+        <referencedby refid="classScheduler_1a6ee466fc5e47301d6101c246c691c131" compoundref="FsmOS_8cpp" startline="1271" endline="1275">updateTimingVariables</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scheduler::running</definition>
+        <argsstring></argsstring>
+        <name>running</name>
+        <qualifiedname>Scheduler::running</qualifiedname>
+        <briefdescription>
+<para><ref refid="classScheduler" kindref="compound">Scheduler</ref> running state. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1331" column="10" bodyfile="FsmOS.h" bodystart="1331" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+        <referencedby refid="classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f" compoundref="FsmOS_8cpp" startline="955" endline="961">loop</referencedby>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+        <referencedby refid="classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1" compoundref="FsmOS_8cpp" startline="963" endline="963">stop</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a720b2ff4a9e770649fe7b63d3098613d" prot="private" static="no" mutable="no">
+        <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+        <definition>LogLevel Scheduler::currentLogLevel</definition>
+        <argsstring></argsstring>
+        <name>currentLogLevel</name>
+        <qualifiedname>Scheduler::currentLogLevel</qualifiedname>
+        <briefdescription>
+<para>Current minimum log level. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1333" column="14" bodyfile="FsmOS.h" bodystart="1333" bodyend="-1"/>
+        <referencedby refid="classScheduler_1af5334fe39dbfc2286e91ee358087d3b5" compoundref="FsmOS_8cpp" startline="1038" endline="1073">logMessage</referencedby>
+        <referencedby refid="classScheduler_1acaab28b4949d5a175212d134c04cf406" compoundref="FsmOS_8cpp" startline="1001" endline="1036">logMessage</referencedby>
+        <referencedby refid="classScheduler_1a612b33338832de0d18ebf5859b3d7037" compoundref="FsmOS_8cpp" startline="999" endline="999">setLogLevel</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1ac44741f6b01d7d8f914851b72f538617" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::lastExecutedTaskId</definition>
+        <argsstring></argsstring>
+        <name>lastExecutedTaskId</name>
+        <qualifiedname>Scheduler::lastExecutedTaskId</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>ID of last executed task (for delay attribution) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1336" column="13" bodyfile="FsmOS.h" bodystart="1336" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a22a32d58cf6898fff48880c5349c115f" compoundref="FsmOS_8cpp" startline="1188" endline="1210">handleTaskTiming</referencedby>
+        <referencedby refid="classScheduler_1a6ee466fc5e47301d6101c246c691c131" compoundref="FsmOS_8cpp" startline="1271" endline="1275">updateTimingVariables</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a4e2da8da4d0ca8ce7da09e92fcc04ffc" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Scheduler::lastTaskEndTime</definition>
+        <argsstring></argsstring>
+        <name>lastTaskEndTime</name>
+        <qualifiedname>Scheduler::lastTaskEndTime</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>When the last task finished execution. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1337" column="14" bodyfile="FsmOS.h" bodystart="1337" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a6ee466fc5e47301d6101c246c691c131" compoundref="FsmOS_8cpp" startline="1271" endline="1275">updateTimingVariables</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" prot="private" static="no" mutable="no">
+        <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+        <definition>MsgNode* Scheduler::msgHead</definition>
+        <argsstring></argsstring>
+        <name>msgHead</name>
+        <qualifiedname>Scheduler::msgHead</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1471" column="13" bodyfile="FsmOS.h" bodystart="1471" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" compoundref="FsmOS_8cpp" startline="1846" endline="1862">dequeueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" compoundref="FsmOS_8cpp" startline="720" endline="740">dequeueQueuedMessageNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" prot="private" static="no" mutable="no">
+        <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+        <definition>MsgNode* Scheduler::msgTail</definition>
+        <argsstring></argsstring>
+        <name>msgTail</name>
+        <qualifiedname>Scheduler::msgTail</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1472" column="13" bodyfile="FsmOS.h" bodystart="1472" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" compoundref="FsmOS_8cpp" startline="1846" endline="1862">dequeueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" compoundref="FsmOS_8cpp" startline="720" endline="740">dequeueQueuedMessageNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" prot="private" static="no" mutable="no">
+        <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+        <definition>MsgNode* Scheduler::freeHead</definition>
+        <argsstring></argsstring>
+        <name>freeHead</name>
+        <qualifiedname>Scheduler::freeHead</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1473" column="13" bodyfile="FsmOS.h" bodystart="1473" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966" compoundref="FsmOS_8cpp" startline="1365" endline="1379">allocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">allocateMsgNodesChunk</referencedby>
+        <referencedby refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" compoundref="FsmOS_8cpp" startline="1381" endline="1406">deallocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::msgCount</definition>
+        <argsstring></argsstring>
+        <name>msgCount</name>
+        <qualifiedname>Scheduler::msgCount</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1474" column="13" bodyfile="FsmOS.h" bodystart="1474" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" compoundref="FsmOS_8cpp" startline="1846" endline="1862">dequeueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" compoundref="FsmOS_8cpp" startline="720" endline="740">dequeueQueuedMessageNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</referencedby>
+        <referencedby refid="classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b" compoundref="FsmOS_8cpp" startline="1749" endline="1752">getFreeQueueSlots</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classScheduler_1a15bd5f3410a22f750d9cc40579e11084" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::totalNodes</definition>
+        <argsstring></argsstring>
+        <name>totalNodes</name>
+        <qualifiedname>Scheduler::totalNodes</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1475" column="13" bodyfile="FsmOS.h" bodystart="1475" bodyend="-1"/>
+        <referencedby refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">allocateMsgNodesChunk</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="classScheduler_1adad5641aac7a2fe0b15a675a053fd4fb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class SharedMsg</definition>
+        <argsstring></argsstring>
+        <name>SharedMsg</name>
+        <qualifiedname>Scheduler::SharedMsg</qualifiedname>
+        <param>
+          <type><ref refid="classSharedMsg" kindref="compound">SharedMsg</ref></type>
+        </param>
+        <briefdescription>
+<para>Allow <ref refid="classSharedMsg" kindref="compound">SharedMsg</ref> to access msgPool. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1339" column="18" bodyfile="FsmOS.h" bodystart="1339" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scheduler::Scheduler</definition>
+        <argsstring>()</argsstring>
+        <name>Scheduler</name>
+        <qualifiedname>Scheduler::Scheduler</qualifiedname>
+        <briefdescription>
+<para>Constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes scheduler with default settings </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1080" column="5" bodyfile="FsmOS.cpp" bodystart="620" bodyend="630"/>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <references refid="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" compoundref="FsmOS_8h" startline="1321">taskTail</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1afc8187779b46f64039d3ffa58f0dbe51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scheduler::~Scheduler</definition>
+        <argsstring>()</argsstring>
+        <name>~Scheduler</name>
+        <qualifiedname>Scheduler::~Scheduler</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all tasks and cleans up resources </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1086" column="5" bodyfile="FsmOS.cpp" bodystart="707" bodyend="707"/>
+        <references refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">removeAll</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::add</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>add</name>
+        <qualifiedname>Scheduler::add</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Add a task to the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to task to add </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if task was added successfully, false if scheduler is full </para>
+</simplesect>
+<simplesect kind="note"><para><ref refid="classTask" kindref="compound">Task</ref> starts in INACTIVE state </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1095" column="10" bodyfile="FsmOS.cpp" bodystart="783" bodyend="827"/>
+        <references refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805" compoundref="FsmOS_8h" startline="1200">LOG_ERROR</references>
+        <references refid="group__fsmos_1ga0fd80592a7d1d2fd9b1b52081a8d69cb" compoundref="FsmOS_8cpp" startline="1703" endline="1709">logInfof</references>
+        <references refid="classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344" compoundref="FsmOS_8cpp" startline="1409" endline="1412">logSystemEvent</references>
+        <references refid="FsmOS_8h_1a91bc2cac3c4615c062e7524ba2ea2278" compoundref="FsmOS_8h" startline="79">MAX_TOPICS</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="classScheduler_1a89473e616865792db671bdb2551aa338" compoundref="FsmOS_8h" startline="1327">nextTaskId</references>
+        <references refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" compoundref="FsmOS_8h" startline="1326">taskCount</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <references refid="classTask_1a4dc17810637f6e3ea836f1068393a1c8" compoundref="FsmOS_8h" startline="1034">Task::taskId</references>
+        <references refid="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" compoundref="FsmOS_8h" startline="1321">taskTail</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::remove</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>remove</name>
+        <qualifiedname>Scheduler::remove</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Remove a task from the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to task to remove </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if task was removed, false if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1102" column="10" bodyfile="FsmOS.cpp" bodystart="829" bodyend="869"/>
+        <references refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">deallocateTaskNode</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" compoundref="FsmOS_8h" startline="1326">taskCount</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <references refid="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" compoundref="FsmOS_8h" startline="1321">taskTail</references>
+        <referencedby refid="classScheduler_1af423092ed6af17160b11a8fab79c2eab" compoundref="FsmOS_8cpp" startline="1277" endline="1283">checkForTerminatedTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aaa234e0155e99b4fcbae695898663eea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::removeAll</definition>
+        <argsstring>()</argsstring>
+        <name>removeAll</name>
+        <qualifiedname>Scheduler::removeAll</qualifiedname>
+        <briefdescription>
+<para>Remove all tasks from the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops and removes all tasks </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1108" column="10" bodyfile="FsmOS.cpp" bodystart="871" bodyend="883"/>
+        <references refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">deallocateTaskNode</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="classTask_1aba5eb3d6c2a034aa0e319383fbec68c4" compoundref="FsmOS_8cpp" startline="489" endline="496">Task::stop</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" compoundref="FsmOS_8h" startline="1326">taskCount</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <references refid="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" compoundref="FsmOS_8h" startline="1321">taskTail</references>
+        <referencedby refid="classScheduler_1afc8187779b46f64039d3ffa58f0dbe51" compoundref="FsmOS_8cpp" startline="707" endline="707">~Scheduler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+        <definition>Task * Scheduler::getTask</definition>
+        <argsstring>(uint8_t task_id)</argsstring>
+        <name>getTask</name>
+        <qualifiedname>Scheduler::getTask</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <briefdescription>
+<para>Get task by ID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of task to find </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to task, or nullptr if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1115" column="10" bodyfile="FsmOS.cpp" bodystart="885" bodyend="888"/>
+        <references refid="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" compoundref="FsmOS_8cpp" startline="1309" endline="1321">findTask</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <referencedby refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" compoundref="FsmOS_8cpp" startline="1627" endline="1642">getTaskMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">getTaskStats</referencedby>
+        <referencedby refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</referencedby>
+        <referencedby refid="classScheduler_1a4f3960871e36fdf7234b151f81f04120" compoundref="FsmOS_8cpp" startline="977" endline="986">sendMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a7a84b715133d1f8dd473e1511b2498a2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::getTaskCount</definition>
+        <argsstring>() const</argsstring>
+        <name>getTaskCount</name>
+        <qualifiedname>Scheduler::getTaskCount</qualifiedname>
+        <briefdescription>
+<para>Get number of active tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of tasks currently in scheduler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1121" column="13" bodyfile="FsmOS.h" bodystart="1121" bodyend="1121"/>
+        <references refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" compoundref="FsmOS_8h" startline="1326">taskCount</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1acb0612339205f7e921b0034768dba4c5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t Scheduler::getMaxTasks</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaxTasks</name>
+        <qualifiedname>Scheduler::getMaxTasks</qualifiedname>
+        <briefdescription>
+<para>Get maximum number of tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Maximum number of tasks supported </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1127" column="14" bodyfile="FsmOS.cpp" bodystart="892" bodyend="892"/>
+        <references refid="classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0" compoundref="FsmOS_8h" startline="1325">taskNodePoolCapacity</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>Scheduler::begin</qualifiedname>
+        <briefdescription>
+<para>Start the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts all tasks and begins scheduling </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1134" column="10" bodyfile="FsmOS.cpp" bodystart="894" bodyend="922"/>
+        <references refid="classScheduler_1aa541036ba6db4765a2270d39f74c8758" compoundref="FsmOS_8cpp" startline="1736" endline="1741">feedWatchdog</references>
+        <references refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">forEachTask</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327" compoundref="FsmOS_8h" startline="1198">LOG_INFO</references>
+        <references refid="classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344" compoundref="FsmOS_8cpp" startline="1409" endline="1412">logSystemEvent</references>
+        <references refid="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" compoundref="FsmOS_8h" startline="1331">running</references>
+        <references refid="classScheduler_1a612b33338832de0d18ebf5859b3d7037" compoundref="FsmOS_8cpp" startline="999" endline="999">setLogLevel</references>
+        <references refid="classTask_1a5d6a1d3c6cd5b587d2414737fab9f3ed" compoundref="FsmOS_8cpp" startline="479" endline="487">Task::start</references>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::loopOnce</definition>
+        <argsstring>()</argsstring>
+        <name>loopOnce</name>
+        <qualifiedname>Scheduler::loopOnce</qualifiedname>
+        <briefdescription>
+<para>Execute one scheduling step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes messages and executes one ready task </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1140" column="10" bodyfile="FsmOS.cpp" bodystart="924" bodyend="953"/>
+        <references refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</references>
+        <references refid="classScheduler_1aa541036ba6db4765a2270d39f74c8758" compoundref="FsmOS_8cpp" startline="1736" endline="1741">feedWatchdog</references>
+        <references refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" compoundref="FsmOS_8cpp" startline="1109" endline="1159">findNextTask</references>
+        <references refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">forEachTask</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <references refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" compoundref="FsmOS_8cpp" startline="1077" endline="1105">processMessages</references>
+        <references refid="classTask_1a69b0d2b2a7231d2e2a2880b7cca136e1" compoundref="FsmOS_8h" startline="1032">Task::remainingTime</references>
+        <references refid="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" compoundref="FsmOS_8h" startline="1331">running</references>
+        <references refid="classScheduler_1a0a80134fcc4380c2577a5281352847eb" compoundref="FsmOS_8cpp" startline="1107" endline="1107">updateSystemTime</references>
+        <referencedby refid="classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f" compoundref="FsmOS_8cpp" startline="955" endline="961">loop</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::loop</definition>
+        <argsstring>()</argsstring>
+        <name>loop</name>
+        <qualifiedname>Scheduler::loop</qualifiedname>
+        <briefdescription>
+<para>Run scheduler continuously. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Runs scheduler until <ref refid="classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1" kindref="member">stop()</ref> is called </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1146" column="10" bodyfile="FsmOS.cpp" bodystart="955" bodyend="961"/>
+        <references refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</references>
+        <references refid="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" compoundref="FsmOS_8h" startline="1331">running</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::stop</definition>
+        <argsstring>()</argsstring>
+        <name>stop</name>
+        <qualifiedname>Scheduler::stop</qualifiedname>
+        <briefdescription>
+<para>Stop the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops all tasks and halts scheduling </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1152" column="10" bodyfile="FsmOS.cpp" bodystart="963" bodyend="963"/>
+        <references refid="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" compoundref="FsmOS_8h" startline="1331">running</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a6212cb4fdc7a3ed5c9e50e97729cff8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::publishMessage</definition>
+        <argsstring>(uint8_t topic, uint8_t type, uint16_t arg=0)</argsstring>
+        <name>publishMessage</name>
+        <qualifiedname>Scheduler::publishMessage</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>topic</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>arg</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Publish a message to a topic. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>topic</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Topic ID to publish to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Message type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Additional argument data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>All tasks subscribed to the topic will receive this message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1162" column="10" bodyfile="FsmOS.cpp" bodystart="965" bodyend="975"/>
+        <references refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">forEachTask</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <references refid="classTask_1a1f356af32a2d49b158ead810225d00be" compoundref="FsmOS_8h" startline="915" endline="922">Task::isSubscribedToTopic</references>
+        <referencedby refid="classTask_1a4b2cce5377f8ddf0cc29d00a3c58c1c0" compoundref="FsmOS_8cpp" startline="554" endline="557">Task::publish</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a4f3960871e36fdf7234b151f81f04120" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::sendMessage</definition>
+        <argsstring>(uint8_t task_id, uint8_t type, uint16_t arg=0)</argsstring>
+        <name>sendMessage</name>
+        <qualifiedname>Scheduler::sendMessage</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>arg</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Send a direct message to a specific task. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of target task </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Message type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Additional argument data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1170" column="10" bodyfile="FsmOS.cpp" bodystart="977" bodyend="986"/>
+        <references refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</references>
+        <references refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" compoundref="FsmOS_8cpp" startline="885" endline="888">getTask</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <referencedby refid="classTask_1adbd4d278e42780bd4b6c1d918d0f85c9" compoundref="FsmOS_8cpp" startline="559" endline="562">Task::tell</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::getFreeQueueSlots</definition>
+        <argsstring>() const</argsstring>
+        <name>getFreeQueueSlots</name>
+        <qualifiedname>Scheduler::getFreeQueueSlots</qualifiedname>
+        <briefdescription>
+<para>Get number of free slots in the global message queue. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1175" column="13" bodyfile="FsmOS.cpp" bodystart="1749" bodyend="1752"/>
+        <references refid="FsmOS_8h_1addd900ed12192f9ff21848d61476d5f2" compoundref="FsmOS_8h" startline="92">MAX_MESSAGE_POOL_SIZE</references>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <referencedby refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" compoundref="FsmOS_8cpp" startline="1109" endline="1159">findNextTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1afe202befb3d6eac9dbb6acd1a4b09401" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t Scheduler::now</definition>
+        <argsstring>() const</argsstring>
+        <name>now</name>
+        <qualifiedname>Scheduler::now</qualifiedname>
+        <briefdescription>
+<para>Get current system time. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Current time in milliseconds </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1182" column="14" bodyfile="FsmOS.cpp" bodystart="988" bodyend="988"/>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a56c3c1a776927eeb7917e7b636a2e3ab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t Scheduler::getFreeMemory</definition>
+        <argsstring>() const</argsstring>
+        <name>getFreeMemory</name>
+        <qualifiedname>Scheduler::getFreeMemory</qualifiedname>
+        <briefdescription>
+<para>Get amount of free memory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Free memory in bytes </para>
+</simplesect>
+<simplesect kind="note"><para>AVR-specific implementation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1189" column="14" bodyfile="FsmOS.cpp" bodystart="990" bodyend="997"/>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">getSystemMemoryInfo</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a612b33338832de0d18ebf5859b3d7037" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::setLogLevel</definition>
+        <argsstring>(LogLevel level)</argsstring>
+        <name>setLogLevel</name>
+        <qualifiedname>Scheduler::setLogLevel</qualifiedname>
+        <param>
+          <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+<para>Set minimum log level. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum level to display </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Messages below this level will be filtered out </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1208" column="10" bodyfile="FsmOS.cpp" bodystart="999" bodyend="999"/>
+        <references refid="classScheduler_1a720b2ff4a9e770649fe7b63d3098613d" compoundref="FsmOS_8h" startline="1333">currentLogLevel</references>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1acaab28b4949d5a175212d134c04cf406" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logMessage</definition>
+        <argsstring>(Task *task, LogLevel level, const char *msg)</argsstring>
+        <name>logMessage</name>
+        <qualifiedname>Scheduler::logMessage</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+<para>Log a message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> that generated the message (can be nullptr) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Log level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Message to log </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1216" column="10" bodyfile="FsmOS.cpp" bodystart="1001" bodyend="1036"/>
+        <references refid="classScheduler_1a720b2ff4a9e770649fe7b63d3098613d" compoundref="FsmOS_8h" startline="1333">currentLogLevel</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805" compoundref="FsmOS_8h" startline="1200">LOG_ERROR</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327" compoundref="FsmOS_8h" startline="1198">LOG_INFO</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286" compoundref="FsmOS_8h" startline="1199">LOG_WARN</references>
+        <referencedby refid="classMsgDataPool_1aed7f37c999de507b0441f863a4942f2a" compoundref="FsmOS_8cpp" startline="278" endline="306">MsgDataPool::initialize</referencedby>
+        <referencedby refid="classTask_1a8bc9456ebb7dfbb657f040320af1a6ef" compoundref="FsmOS_8cpp" startline="564" endline="564">Task::log</referencedby>
+        <referencedby refid="classTask_1aa961a934509f354a023b8f32d3656e95" compoundref="FsmOS_8cpp" startline="566" endline="566">Task::logDebug</referencedby>
+        <referencedby refid="classTask_1aa4c091b4c65870bd83c6111d23ecee21" compoundref="FsmOS_8cpp" startline="572" endline="572">Task::logError</referencedby>
+        <referencedby refid="classScheduler_1a1ded1b3c0e167dde6574bc8b4a0aca63" compoundref="FsmOS_8cpp" startline="1743" endline="1747">logFormatted</referencedby>
+        <referencedby refid="FsmOS_8cpp_1a239a4328ae320786411ee555c3a20250" compoundref="FsmOS_8cpp" startline="1683" endline="1694">logFormattedV</referencedby>
+        <referencedby refid="classTask_1a24f4e032e0dd55e6e2e7ef44c715e9ca" compoundref="FsmOS_8cpp" startline="568" endline="568">Task::logInfo</referencedby>
+        <referencedby refid="classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344" compoundref="FsmOS_8cpp" startline="1409" endline="1412">logSystemEvent</referencedby>
+        <referencedby refid="classTask_1a36592cc85ff1d08bf6cb2442055188f6" compoundref="FsmOS_8cpp" startline="570" endline="570">Task::logWarn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1af5334fe39dbfc2286e91ee358087d3b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logMessage</definition>
+        <argsstring>(Task *task, LogLevel level, const __FlashStringHelper *msg)</argsstring>
+        <name>logMessage</name>
+        <qualifiedname>Scheduler::logMessage</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>const __FlashStringHelper *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1217" column="10" bodyfile="FsmOS.cpp" bodystart="1038" bodyend="1073"/>
+        <references refid="classScheduler_1a720b2ff4a9e770649fe7b63d3098613d" compoundref="FsmOS_8h" startline="1333">currentLogLevel</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805" compoundref="FsmOS_8h" startline="1200">LOG_ERROR</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327" compoundref="FsmOS_8h" startline="1198">LOG_INFO</references>
+        <references refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286" compoundref="FsmOS_8h" startline="1199">LOG_WARN</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aab0e31c53df15af0ffbcd97d0510c9a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::onTick</definition>
+        <argsstring>()</argsstring>
+        <name>onTick</name>
+        <qualifiedname>Scheduler::onTick</qualifiedname>
+        <briefdescription>
+<para>Handle system tick. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by system timer interrupt <simplesect kind="note"><para>Updates internal system time </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1225" column="10" bodyfile="FsmOS.cpp" bodystart="1075" bodyend="1075"/>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::getResetInfo</definition>
+        <argsstring>(ResetInfo &amp;info)</argsstring>
+        <name>getResetInfo</name>
+        <qualifiedname>Scheduler::getResetInfo</qualifiedname>
+        <param>
+          <type><ref refid="structResetInfo" kindref="compound">ResetInfo</ref> &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Get system reset information. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to store reset information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if reset info was retrieved successfully </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1233" column="10" bodyfile="FsmOS.cpp" bodystart="1422" bodyend="1435"/>
+        <references refid="classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea" compoundref="FsmOS_8cpp" startline="1437" endline="1489">getResetCause</references>
+        <references refid="classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e" compoundref="FsmOS_8cpp" startline="1491" endline="1498">getResetCauseFlags</references>
+        <references refid="structResetInfo_1a8969cb34a6ef24088d2e647a121cd878" compoundref="FsmOS_8h" startline="152">ResetInfo::lastTaskId</references>
+        <references refid="structResetInfo_1a05874fdc762c1aa26bd60d8d16e2cc7b" compoundref="FsmOS_8h" startline="156">ResetInfo::optibootResetCause</references>
+        <references refid="structResetInfo_1ad979eaae9cfc3f1cf959811b090194b5" compoundref="FsmOS_8h" startline="155">ResetInfo::optibootResetFlags</references>
+        <references refid="structResetInfo_1a4a91d356cc432144cd170d8e26e33a44" compoundref="FsmOS_8h" startline="149">ResetInfo::resetReason</references>
+        <references refid="structResetInfo_1ae2c739e645762e75b0137ecf4edcaea8" compoundref="FsmOS_8h" startline="150">ResetInfo::resetTime</references>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+        <references refid="structResetInfo_1a99e40fbce39ff24b43a4fc1c2d44a81c" compoundref="FsmOS_8h" startline="151">ResetInfo::watchdogTimeout</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d" kindref="member">ResetCause</ref></type>
+        <definition>ResetCause Scheduler::getResetCause</definition>
+        <argsstring>()</argsstring>
+        <name>getResetCause</name>
+        <qualifiedname>Scheduler::getResetCause</qualifiedname>
+        <briefdescription>
+<para>Get reset cause from system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>ResetCause enumeration value </para>
+</simplesect>
+<simplesect kind="note"><para>Combines Optiboot and other reset sources </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1240" column="16" bodyfile="FsmOS.cpp" bodystart="1437" bodyend="1489"/>
+        <references refid="classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e" compoundref="FsmOS_8cpp" startline="1491" endline="1498">getResetCauseFlags</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1" compoundref="FsmOS_8h" startline="169">RESET_BROWN_OUT</references>
+        <references refid="FsmOS_8h_1a1725fe610295be64608f3418032d83cf" compoundref="FsmOS_8h" startline="186">RESET_CAUSE_BROWN_OUT</references>
+        <references refid="group__fsmos_1gad69a300f3356c3ac65410bbafd9a0dfb" compoundref="FsmOS_8h" startline="185">RESET_CAUSE_EXTERNAL</references>
+        <references refid="FsmOS_8h_1a0fe30f99377de57d909e461a560dee78" compoundref="FsmOS_8h" startline="187">RESET_CAUSE_POWER_ON</references>
+        <references refid="FsmOS_8h_1a8ddfa282a94d5f071d6b99b875d220b7" compoundref="FsmOS_8h" startline="188">RESET_CAUSE_WATCHDOG</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323" compoundref="FsmOS_8h" startline="168">RESET_EXTERNAL</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b" compoundref="FsmOS_8h" startline="171">RESET_MULTIPLE</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e" compoundref="FsmOS_8h" startline="167">RESET_POWER_ON</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883" compoundref="FsmOS_8h" startline="166">RESET_UNKNOWN</references>
+        <references refid="group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d" compoundref="FsmOS_8h" startline="170">RESET_WATCHDOG</references>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">getResetInfo</referencedby>
+        <referencedby refid="classScheduler_1a1ad7c1772cfa11033b280e9b5de86d35" compoundref="FsmOS_8cpp" startline="1500" endline="1500">wasResetCause</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::getResetCauseFlags</definition>
+        <argsstring>()</argsstring>
+        <name>getResetCauseFlags</name>
+        <qualifiedname>Scheduler::getResetCauseFlags</qualifiedname>
+        <briefdescription>
+<para>Get raw reset flags from system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Raw reset flags byte </para>
+</simplesect>
+<simplesect kind="note"><para>Internal method for reset cause processing </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1247" column="13" bodyfile="FsmOS.cpp" bodystart="1491" bodyend="1498"/>
+        <referencedby refid="classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea" compoundref="FsmOS_8cpp" startline="1437" endline="1489">getResetCause</referencedby>
+        <referencedby refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" compoundref="FsmOS_8cpp" startline="1422" endline="1435">getResetInfo</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a1ad7c1772cfa11033b280e9b5de86d35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::wasResetCause</definition>
+        <argsstring>(ResetCause cause)</argsstring>
+        <name>wasResetCause</name>
+        <qualifiedname>Scheduler::wasResetCause</qualifiedname>
+        <param>
+          <type><ref refid="group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d" kindref="member">ResetCause</ref></type>
+          <declname>cause</declname>
+        </param>
+        <briefdescription>
+<para>Check if a specific reset cause occurred. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cause</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reset cause to check for </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the specified cause occurred </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1254" column="10" bodyfile="FsmOS.cpp" bodystart="1500" bodyend="1500"/>
+        <references refid="classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea" compoundref="FsmOS_8cpp" startline="1437" endline="1489">getResetCause</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::getTaskStats</definition>
+        <argsstring>(uint8_t task_id, TaskStats &amp;stats)</argsstring>
+        <name>getTaskStats</name>
+        <qualifiedname>Scheduler::getTaskStats</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <param>
+          <type><ref refid="structTaskStats" kindref="compound">TaskStats</ref> &amp;</type>
+          <declname>stats</declname>
+        </param>
+        <briefdescription>
+<para>Get task statistics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of task to get stats for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stats</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to store task statistics </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if stats were retrieved successfully </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1262" column="10" bodyfile="FsmOS.cpp" bodystart="1502" bodyend="1522"/>
+        <references refid="classTask_1a54935dc05e1ff8ba284d18b84a057ac6" compoundref="FsmOS_8h" startline="1041">Task::avgExecTimeUs</references>
+        <references refid="structTaskStats_1abbf27ee4cb7f8272b150152df12c3da0" compoundref="FsmOS_8h" startline="138">TaskStats::delayCount</references>
+        <references refid="classTask_1aaf791abc71bca2ca62d29d2e155dc82c" compoundref="FsmOS_8h" startline="1046">Task::delayCount</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="classTask_1aae9b70f6c6542469cd8c3c122536964c" compoundref="FsmOS_8cpp" startline="548" endline="548">Task::getName</references>
+        <references refid="classTask_1aa096c58dddc4fb8f7f8d5f40e1815d2d" compoundref="FsmOS_8cpp" startline="522" endline="522">Task::getPeriod</references>
+        <references refid="classTask_1aef8cf69a9b677977003d8b72d66d36d8" compoundref="FsmOS_8cpp" startline="528" endline="528">Task::getPriority</references>
+        <references refid="classTask_1acccd11864edfa1abbb15ff43008a17ec" compoundref="FsmOS_8cpp" startline="536" endline="536">Task::getState</references>
+        <references refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" compoundref="FsmOS_8cpp" startline="885" endline="888">getTask</references>
+        <references refid="structTaskStats_1ac2ef063a104bca4c81457a8db057a51a" compoundref="FsmOS_8h" startline="139">TaskStats::maxDelayMs</references>
+        <references refid="classTask_1a82389ea58680f2ce8a0ffada921c3b6c" compoundref="FsmOS_8h" startline="1047">Task::maxDelayMs</references>
+        <references refid="structTaskStats_1a922dffb9309c234de882457919f7cb66" compoundref="FsmOS_8h" startline="135">TaskStats::maxExecTimeUs</references>
+        <references refid="classTask_1ad464cac8faf232328c59600a70bfa11c" compoundref="FsmOS_8h" startline="1040">Task::maxExecTimeUs</references>
+        <references refid="structTaskStats_1acee85734ca75baa7fe01cad1c24fc34b" compoundref="FsmOS_8h" startline="130">TaskStats::name</references>
+        <references refid="structTaskStats_1a28271d6c20d6bfccfea9f21fcdb7dd63" compoundref="FsmOS_8h" startline="132">TaskStats::periodMs</references>
+        <references refid="structTaskStats_1a434524846cef9e3a82b15d7f7b5d439d" compoundref="FsmOS_8h" startline="133">TaskStats::priority</references>
+        <references refid="structTaskStats_1afb9812d3db56b4a74e3534a0b1046b8c" compoundref="FsmOS_8h" startline="134">TaskStats::runCount</references>
+        <references refid="classTask_1a48485325ce407372474c73982690a0cc" compoundref="FsmOS_8h" startline="1039">Task::runCount</references>
+        <references refid="structTaskStats_1ab319b8455c244af5111b6c2e395ffad9" compoundref="FsmOS_8h" startline="137">TaskStats::stackUsage</references>
+        <references refid="structTaskStats_1ad14bdd478708018fae0f1bbceb19d2d0" compoundref="FsmOS_8h" startline="131">TaskStats::state</references>
+        <references refid="structTaskStats_1a1fc9ad09023166819ea34a6c9e00a956" compoundref="FsmOS_8h" startline="129">TaskStats::taskId</references>
+        <references refid="structTaskStats_1a68e1e0b13b6fc7e48ac77f22bc338492" compoundref="FsmOS_8h" startline="136">TaskStats::totalExecTimeUs</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::getSystemMemoryInfo</definition>
+        <argsstring>(SystemMemoryInfo &amp;info)</argsstring>
+        <name>getSystemMemoryInfo</name>
+        <qualifiedname>Scheduler::getSystemMemoryInfo</qualifiedname>
+        <param>
+          <type><ref refid="structSystemMemoryInfo" kindref="compound">SystemMemoryInfo</ref> &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Get system memory information. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to store memory information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if memory info was retrieved successfully </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1269" column="10" bodyfile="FsmOS.cpp" bodystart="1524" bodyend="1625"/>
+        <references refid="structSystemMemoryInfo_1af922c19a62e2db75d2d35abc96282760" compoundref="FsmOS_8h" startline="208">SystemMemoryInfo::activeMessages</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a79ba2cf8a493da73c1b64f9aa2549938" compoundref="FsmOS_8h" startline="1460">Scheduler::QueuedMessage::capacity</references>
+        <references refid="structSystemMemoryInfo_1afbf8d2df35ecd00576f480561255f04d" compoundref="FsmOS_8h" startline="213">SystemMemoryInfo::eepromFree</references>
+        <references refid="structSystemMemoryInfo_1a863feffbb30f9ba2b8bf031421830f31" compoundref="FsmOS_8h" startline="212">SystemMemoryInfo::eepromUsed</references>
+        <references refid="structSystemMemoryInfo_1abdbd97bb0a5a2fece0b70320ccedffc4" compoundref="FsmOS_8h" startline="211">SystemMemoryInfo::flashFree</references>
+        <references refid="structSystemMemoryInfo_1ae527fbdfcb22a4136b2f6f24d60c895a" compoundref="FsmOS_8h" startline="210">SystemMemoryInfo::flashUsed</references>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="structSystemMemoryInfo_1a3fead35bc0c51a87ca8cb5630eea2fe6" compoundref="FsmOS_8h" startline="198">SystemMemoryInfo::freeRam</references>
+        <references refid="classScheduler_1a56c3c1a776927eeb7917e7b636a2e3ab" compoundref="FsmOS_8cpp" startline="990" endline="997">getFreeMemory</references>
+        <references refid="classTask_1aea07a4be09d08cb8b1afa1914ddc988c" compoundref="FsmOS_8h" startline="807" endline="807">Task::getTaskStructSize</references>
+        <references refid="structSystemMemoryInfo_1aa49fcb6068c10bdab13a7cfa97241c27" compoundref="FsmOS_8h" startline="202">SystemMemoryInfo::heapFragments</references>
+        <references refid="structSystemMemoryInfo_1ab46e008190c5d4dc58a098653fc96e21" compoundref="FsmOS_8h" startline="200">SystemMemoryInfo::heapSize</references>
+        <references refid="structSystemMemoryInfo_1aafc733c82678f25b4579ac80ff3f3416" compoundref="FsmOS_8h" startline="201">SystemMemoryInfo::largestBlock</references>
+        <references refid="structSystemMemoryInfo_1a76bfcb475e0cfe6757e0fbbc04ad371e" compoundref="FsmOS_8h" startline="209">SystemMemoryInfo::messageMemory</references>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <references refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" compoundref="FsmOS_8h" startline="1471">msgHead</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+        <references refid="structSystemMemoryInfo_1aa09da446795f6a14640ac228f8775332" compoundref="FsmOS_8h" startline="205">SystemMemoryInfo::stackFree</references>
+        <references refid="structSystemMemoryInfo_1a12ed83e6ef3ab65b2e708eb7634ae3d9" compoundref="FsmOS_8h" startline="203">SystemMemoryInfo::stackSize</references>
+        <references refid="structSystemMemoryInfo_1a23c2b52b7aa05bdd6c8316280fafb35e" compoundref="FsmOS_8h" startline="204">SystemMemoryInfo::stackUsed</references>
+        <references refid="classTask_1acae0e3e69ae99fa0f3ca9298e74c7236" compoundref="FsmOS_8h" startline="1049">Task::subscribedTopics</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" compoundref="FsmOS_8h" startline="1326">taskCount</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <references refid="structSystemMemoryInfo_1ad53218d4a3a0bd2bf27ee57618c502f9" compoundref="FsmOS_8h" startline="207">SystemMemoryInfo::taskMemory</references>
+        <references refid="structSystemMemoryInfo_1a74fd6f112cb2a361579343bc609ba3bd" compoundref="FsmOS_8h" startline="199">SystemMemoryInfo::totalRam</references>
+        <references refid="structSystemMemoryInfo_1ab4646e94bacfe136033551f29c88127f" compoundref="FsmOS_8h" startline="206">SystemMemoryInfo::totalTasks</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::getTaskMemoryInfo</definition>
+        <argsstring>(uint8_t task_id, TaskMemoryInfo &amp;info)</argsstring>
+        <name>getTaskMemoryInfo</name>
+        <qualifiedname>Scheduler::getTaskMemoryInfo</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>task_id</declname>
+        </param>
+        <param>
+          <type><ref refid="structTaskMemoryInfo" kindref="compound">TaskMemoryInfo</ref> &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Get task memory information. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of task to get memory info for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to store task memory information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if memory info was retrieved successfully </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1277" column="10" bodyfile="FsmOS.cpp" bodystart="1627" bodyend="1642"/>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" compoundref="FsmOS_8cpp" startline="885" endline="888">getTask</references>
+        <references refid="classTask_1aea07a4be09d08cb8b1afa1914ddc988c" compoundref="FsmOS_8h" startline="807" endline="807">Task::getTaskStructSize</references>
+        <references refid="structTaskMemoryInfo_1afc06164ff4977316ba80890f78771b91" compoundref="FsmOS_8h" startline="226">TaskMemoryInfo::queue_size</references>
+        <references refid="classTask_1acae0e3e69ae99fa0f3ca9298e74c7236" compoundref="FsmOS_8h" startline="1049">Task::subscribedTopics</references>
+        <references refid="structTaskMemoryInfo_1a33936208344182c0cb2040787efaf117" compoundref="FsmOS_8h" startline="225">TaskMemoryInfo::subscription_size</references>
+        <references refid="structTaskMemoryInfo_1a6ccb06721fe721014762215555523d65" compoundref="FsmOS_8h" startline="223">TaskMemoryInfo::task_id</references>
+        <references refid="structTaskMemoryInfo_1a455ea7f69c1a9c3b898d5c8d40e0fac7" compoundref="FsmOS_8h" startline="224">TaskMemoryInfo::task_struct_size</references>
+        <references refid="structTaskMemoryInfo_1ae365acfa19af10f054aee062cfe3b824" compoundref="FsmOS_8h" startline="227">TaskMemoryInfo::total_allocated</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a69444823d403c8c84670eda2c0d594a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::getHeapFragmentation</definition>
+        <argsstring>()</argsstring>
+        <name>getHeapFragmentation</name>
+        <qualifiedname>Scheduler::getHeapFragmentation</qualifiedname>
+        <briefdescription>
+<para>Get heap fragmentation percentage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Heap fragmentation as percentage (0-100) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1283" column="13" bodyfile="FsmOS.cpp" bodystart="1644" bodyend="1647"/>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a26f332614d3126f5efdc42092138b0e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::getMemoryLeakStats</definition>
+        <argsstring>(MemoryStats &amp;stats)</argsstring>
+        <name>getMemoryLeakStats</name>
+        <qualifiedname>Scheduler::getMemoryLeakStats</qualifiedname>
+        <param>
+          <type><ref refid="structMemoryStats" kindref="compound">MemoryStats</ref> &amp;</type>
+          <declname>stats</declname>
+        </param>
+        <briefdescription>
+<para>Get memory leak detection statistics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stats</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to store memory leak statistics </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if stats were retrieved successfully </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1290" column="10" bodyfile="FsmOS.cpp" bodystart="1649" bodyend="1653"/>
+        <references refid="FsmOS_8cpp_1a4b161d5fdd35540a17153452e7c6af01" compoundref="FsmOS_8cpp" startline="50" endline="50">fsmos_memory_stats</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aaba5575657eb6345d1da5442be50f29c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::enableWatchdog</definition>
+        <argsstring>(uint8_t timeout)</argsstring>
+        <name>enableWatchdog</name>
+        <qualifiedname>Scheduler::enableWatchdog</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Enable hardware watchdog timer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>timeout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Watchdog timeout value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>AVR-specific feature </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1299" column="10" bodyfile="FsmOS.cpp" bodystart="1729" bodyend="1734"/>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aa541036ba6db4765a2270d39f74c8758" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::feedWatchdog</definition>
+        <argsstring>()</argsstring>
+        <name>feedWatchdog</name>
+        <qualifiedname>Scheduler::feedWatchdog</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1300" column="10" bodyfile="FsmOS.cpp" bodystart="1736" bodyend="1741"/>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a1ded1b3c0e167dde6574bc8b4a0aca63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logFormatted</definition>
+        <argsstring>(Task *task, LogLevel level, const __FlashStringHelper *format,...)</argsstring>
+        <name>logFormatted</name>
+        <qualifiedname>Scheduler::logFormatted</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>const __FlashStringHelper *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> that generated the message (can be nullptr) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Log level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Format string (FlashStringHelper) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Variable arguments for formatting </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Simplified implementation - just logs the format string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1310" column="10" bodyfile="FsmOS.cpp" bodystart="1743" bodyend="1747"/>
+        <references refid="classScheduler_1acaab28b4949d5a175212d134c04cf406" compoundref="FsmOS_8cpp" startline="1001" endline="1036">logMessage</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Scheduler::getMostDelayingTask</definition>
+        <argsstring>() const</argsstring>
+        <name>getMostDelayingTask</name>
+        <qualifiedname>Scheduler::getMostDelayingTask</qualifiedname>
+        <briefdescription>
+<para>Get task that caused the most delays. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="classTask" kindref="compound">Task</ref> ID of the task causing most delays, or 0 if none </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1317" column="13" bodyfile="FsmOS.cpp" bodystart="1754" bodyend="1771"/>
+        <references refid="classTask_1ac5ab04209706d6b3a0fdd5266dc0d97f" compoundref="FsmOS_8cpp" startline="599" endline="602">Task::getDelayCount</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::processMessages</definition>
+        <argsstring>()</argsstring>
+        <name>processMessages</name>
+        <qualifiedname>Scheduler::processMessages</qualifiedname>
+        <briefdescription>
+<para>Process pending messages for all tasks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Internal method called by step() </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1345" column="10" bodyfile="FsmOS.cpp" bodystart="1077" bodyend="1105"/>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" compoundref="FsmOS_8cpp" startline="885" endline="888">getTask</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" compoundref="FsmOS_8h" startline="1458">Scheduler::QueuedMessage::msg</references>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <references refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" compoundref="FsmOS_8h" startline="1471">msgHead</references>
+        <references refid="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" compoundref="FsmOS_8h" startline="1472">msgTail</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="classTask_1a25e697fa851318504170fc4f3edf8308" compoundref="FsmOS_8h" startline="702" endline="702">Task::on_msg</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+        <references refid="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" compoundref="FsmOS_8h" startline="1457">Scheduler::QueuedMessage::targetTaskId</references>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a0a80134fcc4380c2577a5281352847eb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::updateSystemTime</definition>
+        <argsstring>()</argsstring>
+        <name>updateSystemTime</name>
+        <qualifiedname>Scheduler::updateSystemTime</qualifiedname>
+        <briefdescription>
+<para>Update system time. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Internal method to update system time from millis() </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1351" column="10" bodyfile="FsmOS.cpp" bodystart="1107" bodyend="1107"/>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+        <definition>Task * Scheduler::findNextTask</definition>
+        <argsstring>()</argsstring>
+        <name>findNextTask</name>
+        <qualifiedname>Scheduler::findNextTask</qualifiedname>
+        <briefdescription>
+<para>Find next task to execute. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to next task to execute, or nullptr if none ready </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1357" column="10" bodyfile="FsmOS.cpp" bodystart="1109" bodyend="1159"/>
+        <references refid="group__fsmos_1ga5c3f1eb0aa79f56d91fdbf8fd9f1b911" compoundref="FsmOS_8h" startline="648">DEFAULT_TASK_MESSAGE_BUDGET</references>
+        <references refid="classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b" compoundref="FsmOS_8cpp" startline="1749" endline="1752">getFreeQueueSlots</references>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="group__fsmos_1gadf715a30a3759bfd0856f12cfdf29d0e" compoundref="FsmOS_8h" startline="801" endline="801">Task::getMaxMessageBudget</references>
+        <references refid="classTask_1aef8cf69a9b677977003d8b72d66d36d8" compoundref="FsmOS_8cpp" startline="528" endline="528">Task::getPriority</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="classTask_1a69b0d2b2a7231d2e2a2880b7cca136e1" compoundref="FsmOS_8h" startline="1032">Task::remainingTime</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a42e220f60192016791fa56855fcc8e46" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::executeTask</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>executeTask</name>
+        <qualifiedname>Scheduler::executeTask</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Execute a task. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to execute</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Updates task timing and calls task-&gt;step() </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1364" column="10" bodyfile="FsmOS.cpp" bodystart="1161" bodyend="1185"/>
+        <references refid="classScheduler_1af423092ed6af17160b11a8fab79c2eab" compoundref="FsmOS_8cpp" startline="1277" endline="1283">checkForTerminatedTask</references>
+        <references refid="classScheduler_1a74551b047dfdd1675e53de6d1fc53ac7" compoundref="FsmOS_8cpp" startline="1212" endline="1219">executeTaskStep</references>
+        <references refid="classScheduler_1a22a32d58cf6898fff48880c5349c115f" compoundref="FsmOS_8cpp" startline="1188" endline="1210">handleTaskTiming</references>
+        <references refid="classTask_1a14f40317936f729e291a81fcf4426466" compoundref="FsmOS_8cpp" startline="542" endline="542">Task::isActive</references>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+        <references refid="classScheduler_1a23437fce9b79f76f4534c402e832d4f5" compoundref="FsmOS_8cpp" startline="1221" endline="1269">updateTaskStatistics</references>
+        <references refid="classScheduler_1a6ee466fc5e47301d6101c246c691c131" compoundref="FsmOS_8cpp" startline="1271" endline="1275">updateTimingVariables</references>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a22a32d58cf6898fff48880c5349c115f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::handleTaskTiming</definition>
+        <argsstring>(Task *task, uint32_t currentTime)</argsstring>
+        <name>handleTaskTiming</name>
+        <qualifiedname>Scheduler::handleTaskTiming</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>currentTime</declname>
+        </param>
+        <briefdescription>
+<para>Handle task timing monitoring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to monitor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>currentTime</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current system time </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1372" column="10" bodyfile="FsmOS.cpp" bodystart="1188" bodyend="1210"/>
+        <references refid="classTask_1aba00d925c610ebb6ffce38ce7d550b33" compoundref="FsmOS_8h" startline="1045">Task::actualStartTime</references>
+        <references refid="classTask_1aaf791abc71bca2ca62d29d2e155dc82c" compoundref="FsmOS_8h" startline="1046">Task::delayCount</references>
+        <references refid="classTask_1aa096c58dddc4fb8f7f8d5f40e1815d2d" compoundref="FsmOS_8cpp" startline="522" endline="522">Task::getPeriod</references>
+        <references refid="classScheduler_1ac44741f6b01d7d8f914851b72f538617" compoundref="FsmOS_8h" startline="1336">lastExecutedTaskId</references>
+        <references refid="classScheduler_1a40371a166759f310c2223ef082526829" compoundref="FsmOS_8cpp" startline="1285" endline="1291">logTaskDelay</references>
+        <references refid="classTask_1a82389ea58680f2ce8a0ffada921c3b6c" compoundref="FsmOS_8h" startline="1047">Task::maxDelayMs</references>
+        <references refid="classTask_1ac78a2eb92ac06324535259def5fe2d43" compoundref="FsmOS_8h" startline="1044">Task::scheduledTime</references>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a74551b047dfdd1675e53de6d1fc53ac7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::executeTaskStep</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>executeTaskStep</name>
+        <qualifiedname>Scheduler::executeTaskStep</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Execute the actual task step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to execute </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1378" column="10" bodyfile="FsmOS.cpp" bodystart="1212" bodyend="1219"/>
+        <references refid="classTask_1aa096c58dddc4fb8f7f8d5f40e1815d2d" compoundref="FsmOS_8cpp" startline="522" endline="522">Task::getPeriod</references>
+        <references refid="classTask_1a69b0d2b2a7231d2e2a2880b7cca136e1" compoundref="FsmOS_8h" startline="1032">Task::remainingTime</references>
+        <references refid="classTask_1a399ff82ffe4b94a11cd8148987e38622">Task::step</references>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a23437fce9b79f76f4534c402e832d4f5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::updateTaskStatistics</definition>
+        <argsstring>(Task *task, uint32_t execStart)</argsstring>
+        <name>updateTaskStatistics</name>
+        <qualifiedname>Scheduler::updateTaskStatistics</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>execStart</declname>
+        </param>
+        <briefdescription>
+<para>Update task execution statistics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to update </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>execStart</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Execution start time in microseconds </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1385" column="10" bodyfile="FsmOS.cpp" bodystart="1221" bodyend="1269"/>
+        <references refid="classTask_1a54935dc05e1ff8ba284d18b84a057ac6" compoundref="FsmOS_8h" startline="1041">Task::avgExecTimeUs</references>
+        <references refid="classTask_1ad464cac8faf232328c59600a70bfa11c" compoundref="FsmOS_8h" startline="1040">Task::maxExecTimeUs</references>
+        <references refid="classTask_1a48485325ce407372474c73982690a0cc" compoundref="FsmOS_8h" startline="1039">Task::runCount</references>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a6ee466fc5e47301d6101c246c691c131" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::updateTimingVariables</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>updateTimingVariables</name>
+        <qualifiedname>Scheduler::updateTimingVariables</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Update timing monitoring variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> that was executed </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1391" column="10" bodyfile="FsmOS.cpp" bodystart="1271" bodyend="1275"/>
+        <references refid="classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb" compoundref="FsmOS_8cpp" startline="546" endline="546">Task::getId</references>
+        <references refid="classScheduler_1ac44741f6b01d7d8f914851b72f538617" compoundref="FsmOS_8h" startline="1336">lastExecutedTaskId</references>
+        <references refid="classScheduler_1a4e2da8da4d0ca8ce7da09e92fcc04ffc" compoundref="FsmOS_8h" startline="1337">lastTaskEndTime</references>
+        <references refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" compoundref="FsmOS_8h" startline="1330">systemTime</references>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1af423092ed6af17160b11a8fab79c2eab" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::checkForTerminatedTask</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>checkForTerminatedTask</name>
+        <qualifiedname>Scheduler::checkForTerminatedTask</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Check if task should be terminated and remove if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1397" column="10" bodyfile="FsmOS.cpp" bodystart="1277" bodyend="1283"/>
+        <references refid="classTask_1acccd11864edfa1abbb15ff43008a17ec" compoundref="FsmOS_8cpp" startline="536" endline="536">Task::getState</references>
+        <references refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">remove</references>
+        <references refid="classTask_1afa88d99eb2a58c8f078a53f1195c53a8a7a6d8686d5e5ecffdf01fdd137d7713e" compoundref="FsmOS_8h" startline="825">Task::TERMINATED</references>
+        <referencedby refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" compoundref="FsmOS_8cpp" startline="1161" endline="1185">executeTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a40371a166759f310c2223ef082526829" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logTaskDelay</definition>
+        <argsstring>(Task *task, uint16_t delayMs, uint8_t causingTaskId)</argsstring>
+        <name>logTaskDelay</name>
+        <qualifiedname>Scheduler::logTaskDelay</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>delayMs</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>causingTaskId</declname>
+        </param>
+        <briefdescription>
+<para>Log task delay with attribution. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Delayed task </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>delayMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Delay amount in milliseconds </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>causingTaskId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of task that caused the delay </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1405" column="10" bodyfile="FsmOS.cpp" bodystart="1285" bodyend="1291"/>
+        <referencedby refid="classScheduler_1a22a32d58cf6898fff48880c5349c115f" compoundref="FsmOS_8cpp" startline="1188" endline="1210">handleTaskTiming</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Func</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>template void Scheduler::forEachTask&lt; void(*)(Task *)&gt;</definition>
+        <argsstring>(Func func)</argsstring>
+        <name>forEachTask</name>
+        <qualifiedname>Scheduler::forEachTask</qualifiedname>
+        <param>
+          <type>Func</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+<para>Iterate through all tasks with a function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function type that takes Task* parameter </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function to call for each task </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1414" column="10" bodyfile="FsmOS.cpp" bodystart="1295" bodyend="1306"/>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+        <referencedby refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" compoundref="FsmOS_8cpp" startline="924" endline="953">loopOnce</referencedby>
+        <referencedby refid="classScheduler_1a6212cb4fdc7a3ed5c9e50e97729cff8d" compoundref="FsmOS_8cpp" startline="965" endline="975">publishMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Func</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+        <definition>template Task * Scheduler::findTask&lt; bool(*)(Task *)&gt;</definition>
+        <argsstring>(Func predicate)</argsstring>
+        <name>findTask</name>
+        <qualifiedname>Scheduler::findTask</qualifiedname>
+        <param>
+          <type>Func</type>
+          <declname>predicate</declname>
+        </param>
+        <briefdescription>
+<para>Find a task using a predicate function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function type that takes Task* and returns bool </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function that returns true for the desired task </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to found task, or nullptr if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1423" column="10" bodyfile="FsmOS.cpp" bodystart="1309" bodyend="1321"/>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" compoundref="FsmOS_8h" startline="1320">taskHead</references>
+        <referencedby refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" compoundref="FsmOS_8cpp" startline="885" endline="888">getTask</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode * Scheduler::allocateTaskNode</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>allocateTaskNode</name>
+        <qualifiedname>Scheduler::allocateTaskNode</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+<para>Allocate a <ref refid="structTaskNode" kindref="compound">TaskNode</ref> from the pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> to wrap in the node </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to allocated <ref refid="structTaskNode" kindref="compound">TaskNode</ref>, or nullptr if failed </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1431" column="14" bodyfile="FsmOS.cpp" bodystart="1328" bodyend="1352"/>
+        <references refid="classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a" compoundref="FsmOS_8h" startline="1323">freeTaskNodeHead</references>
+        <references refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">initializeTaskNodePool</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0" compoundref="FsmOS_8h" startline="1325">taskNodePoolCapacity</references>
+        <references refid="classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7" compoundref="FsmOS_8h" startline="1324">taskNodePoolInitialized</references>
+        <referencedby refid="classScheduler_1afa07db3c7014412af426ee1c304ebc4b" compoundref="FsmOS_8cpp" startline="710" endline="713">acquireTaskNode</referencedby>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a419ac926b5685ea804fe7eae086066e3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::deallocateTaskNode</definition>
+        <argsstring>(TaskNode *node)</argsstring>
+        <name>deallocateTaskNode</name>
+        <qualifiedname>Scheduler::deallocateTaskNode</qualifiedname>
+        <param>
+          <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+<para>Deallocate a <ref refid="structTaskNode" kindref="compound">TaskNode</ref> back to the pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="structTaskNode" kindref="compound">TaskNode</ref> to deallocate </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1437" column="10" bodyfile="FsmOS.cpp" bodystart="1354" bodyend="1363"/>
+        <references refid="classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a" compoundref="FsmOS_8h" startline="1323">freeTaskNodeHead</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <referencedby refid="classScheduler_1a2e5c9f7ad69391854d3a0dc2dd73f8b4" compoundref="FsmOS_8cpp" startline="715" endline="718">releaseTaskNode</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">removeAll</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logSystemEvent</definition>
+        <argsstring>(LogLevel level, const __FlashStringHelper *msg)</argsstring>
+        <name>logSystemEvent</name>
+        <qualifiedname>Scheduler::logSystemEvent</qualifiedname>
+        <param>
+          <type><ref refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" kindref="member">LogLevel</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>const __FlashStringHelper *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+<para>Log a system event message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Log level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Message to log </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1445" column="10" bodyfile="FsmOS.cpp" bodystart="1409" bodyend="1412"/>
+        <references refid="classScheduler_1acaab28b4949d5a175212d134c04cf406" compoundref="FsmOS_8cpp" startline="1001" endline="1036">logMessage</references>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">add</referencedby>
+        <referencedby refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" compoundref="FsmOS_8cpp" startline="894" endline="922">begin</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a46f4a6ce080b281fd2941aa35450c3c0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::logTaskExecution</definition>
+        <argsstring>(Task *task, uint32_t execTime)</argsstring>
+        <name>logTaskExecution</name>
+        <qualifiedname>Scheduler::logTaskExecution</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>execTime</declname>
+        </param>
+        <briefdescription>
+<para>Log a task execution event. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>task</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> that was executed </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>execTime</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Execution time in microseconds </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1452" column="10" bodyfile="FsmOS.cpp" bodystart="1414" bodyend="1419"/>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::allocateMsgNodesChunk</definition>
+        <argsstring>()</argsstring>
+        <name>allocateMsgNodesChunk</name>
+        <qualifiedname>Scheduler::allocateMsgNodesChunk</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1478" column="10" bodyfile="FsmOS.cpp" bodystart="1773" bodyend="1804"/>
+        <references refid="structScheduler_1_1QueuedMessage_1aa23777039e9446ad21fb93a6ec1e7e65" compoundref="FsmOS_8h" startline="1459">Scheduler::QueuedMessage::buffer</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a79ba2cf8a493da73c1b64f9aa2549938" compoundref="FsmOS_8h" startline="1460">Scheduler::QueuedMessage::capacity</references>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="FsmOS_8h_1addd900ed12192f9ff21848d61476d5f2" compoundref="FsmOS_8h" startline="92">MAX_MESSAGE_POOL_SIZE</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" compoundref="FsmOS_8h" startline="1458">Scheduler::QueuedMessage::msg</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+        <references refid="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" compoundref="FsmOS_8h" startline="1457">Scheduler::QueuedMessage::targetTaskId</references>
+        <references refid="classScheduler_1a15bd5f3410a22f750d9cc40579e11084" compoundref="FsmOS_8h" startline="1475">totalNodes</references>
+        <referencedby refid="classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966" compoundref="FsmOS_8cpp" startline="1365" endline="1379">allocateMsgNode</referencedby>
+        <referencedby refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" compoundref="FsmOS_8cpp" startline="1806" endline="1844">enqueueQueuedMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::enqueueQueuedMessage</definition>
+        <argsstring>(uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)</argsstring>
+        <name>enqueueQueuedMessage</name>
+        <qualifiedname>Scheduler::enqueueQueuedMessage</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>targetTaskId</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>topic</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1481" column="10" bodyfile="FsmOS.cpp" bodystart="1806" bodyend="1844"/>
+        <references refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">allocateMsgNodesChunk</references>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="FsmOS_8h_1addd900ed12192f9ff21848d61476d5f2" compoundref="FsmOS_8h" startline="92">MAX_MESSAGE_POOL_SIZE</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" compoundref="FsmOS_8h" startline="1458">Scheduler::QueuedMessage::msg</references>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <references refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" compoundref="FsmOS_8h" startline="1471">msgHead</references>
+        <references refid="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" compoundref="FsmOS_8h" startline="1472">msgTail</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+        <references refid="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" compoundref="FsmOS_8h" startline="1457">Scheduler::QueuedMessage::targetTaskId</references>
+        <referencedby refid="classScheduler_1a4f3960871e36fdf7234b151f81f04120" compoundref="FsmOS_8cpp" startline="977" endline="986">sendMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::dequeueQueuedMessage</definition>
+        <argsstring>(QueuedMessage &amp;out)</argsstring>
+        <name>dequeueQueuedMessage</name>
+        <qualifiedname>Scheduler::dequeueQueuedMessage</qualifiedname>
+        <param>
+          <type><ref refid="structScheduler_1_1QueuedMessage" kindref="compound">QueuedMessage</ref> &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1484" column="10" bodyfile="FsmOS.cpp" bodystart="1846" bodyend="1862"/>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <references refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" compoundref="FsmOS_8h" startline="1471">msgHead</references>
+        <references refid="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" compoundref="FsmOS_8h" startline="1472">msgTail</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::dequeueQueuedMessageNode</definition>
+        <argsstring>(MsgNode *&amp;outNode)</argsstring>
+        <name>dequeueQueuedMessageNode</name>
+        <qualifiedname>Scheduler::dequeueQueuedMessageNode</qualifiedname>
+        <param>
+          <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *&amp;</type>
+          <declname>outNode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1487" column="10" bodyfile="FsmOS.cpp" bodystart="720" bodyend="740"/>
+        <references refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" compoundref="FsmOS_8h" startline="1474">msgCount</references>
+        <references refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" compoundref="FsmOS_8h" startline="1471">msgHead</references>
+        <references refid="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" compoundref="FsmOS_8h" startline="1472">msgTail</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1aaa8cc86207802e4a457202396b2f7441" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scheduler::initializeTaskNodePool</definition>
+        <argsstring>()</argsstring>
+        <name>initializeTaskNodePool</name>
+        <qualifiedname>Scheduler::initializeTaskNodePool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1490" column="10" bodyfile="FsmOS.cpp" bodystart="742" bodyend="780"/>
+        <references refid="classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a" compoundref="FsmOS_8h" startline="1323">freeTaskNodeHead</references>
+        <references refid="classTask_1a42a50afac20691fb27694ca04ccc4e90" compoundref="FsmOS_8h" startline="672" endline="672">Task::getCreatedInstanceCount</references>
+        <references refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" compoundref="FsmOS_8h" startline="103">TaskNode::next</references>
+        <references refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" compoundref="FsmOS_8h" startline="102">TaskNode::task</references>
+        <references refid="classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0" compoundref="FsmOS_8h" startline="1325">taskNodePoolCapacity</references>
+        <references refid="classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7" compoundref="FsmOS_8h" startline="1324">taskNodePoolInitialized</references>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1afa07db3c7014412af426ee1c304ebc4b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode * Scheduler::acquireTaskNode</definition>
+        <argsstring>(Task *task)</argsstring>
+        <name>acquireTaskNode</name>
+        <qualifiedname>Scheduler::acquireTaskNode</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>task</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1492" column="14" bodyfile="FsmOS.cpp" bodystart="710" bodyend="713"/>
+        <references refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">allocateTaskNode</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a2e5c9f7ad69391854d3a0dc2dd73f8b4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::releaseTaskNode</definition>
+        <argsstring>(TaskNode *node)</argsstring>
+        <name>releaseTaskNode</name>
+        <qualifiedname>Scheduler::releaseTaskNode</qualifiedname>
+        <param>
+          <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1494" column="10" bodyfile="FsmOS.cpp" bodystart="715" bodyend="718"/>
+        <references refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">deallocateTaskNode</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+        <definition>Scheduler::MsgNode * Scheduler::allocateMsgNode</definition>
+        <argsstring>()</argsstring>
+        <name>allocateMsgNode</name>
+        <qualifiedname>Scheduler::allocateMsgNode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1497" column="13" bodyfile="FsmOS.cpp" bodystart="1365" bodyend="1379"/>
+        <references refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" compoundref="FsmOS_8cpp" startline="1773" endline="1804">allocateMsgNodesChunk</references>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+      </memberdef>
+      <memberdef kind="function" id="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scheduler::deallocateMsgNode</definition>
+        <argsstring>(MsgNode *node)</argsstring>
+        <name>deallocateMsgNode</name>
+        <qualifiedname>Scheduler::deallocateMsgNode</qualifiedname>
+        <param>
+          <type><ref refid="structScheduler_1_1MsgNode" kindref="compound">MsgNode</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="1498" column="10" bodyfile="FsmOS.cpp" bodystart="1381" bodyend="1406"/>
+        <references refid="structScheduler_1_1QueuedMessage_1aa23777039e9446ad21fb93a6ec1e7e65" compoundref="FsmOS_8h" startline="1459">Scheduler::QueuedMessage::buffer</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a79ba2cf8a493da73c1b64f9aa2549938" compoundref="FsmOS_8h" startline="1460">Scheduler::QueuedMessage::capacity</references>
+        <references refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" compoundref="FsmOS_8h" startline="1473">freeHead</references>
+        <references refid="structScheduler_1_1QueuedMessage_1a4920af5804a48c59719261484553f169" compoundref="FsmOS_8h" startline="1458">Scheduler::QueuedMessage::msg</references>
+        <references refid="structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee" compoundref="FsmOS_8h" startline="1466">Scheduler::MsgNode::next</references>
+        <references refid="structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c" compoundref="FsmOS_8h" startline="1467">Scheduler::MsgNode::payload</references>
+        <references refid="structScheduler_1_1QueuedMessage_1ab2d20d6197328866badf5e94f048255c" compoundref="FsmOS_8h" startline="1457">Scheduler::QueuedMessage::targetTaskId</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Core scheduler and task manager for FsmOS. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="classScheduler" kindref="compound">Scheduler</ref> manages the execution of tasks, message routing, and system resources. It provides the main interface for task management and system control.</para>
+<para><simplesect kind="note"><para>Only one scheduler instance should exist per application. The global OS instance is provided for convenience.</para>
+</simplesect>
+Core scheduler and task manager for FsmOS </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>MsgDataPool</label>
+        <link refid="classMsgDataPool"/>
+      </node>
+      <node id="1">
+        <label>Scheduler</label>
+        <link refid="classScheduler"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>freeTaskNodeHead</edgelabel>
+          <edgelabel>taskHead</edgelabel>
+          <edgelabel>taskTail</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>msgPool</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>freeHead</edgelabel>
+          <edgelabel>msgHead</edgelabel>
+          <edgelabel>msgTail</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Scheduler::MsgNode</label>
+        <link refid="structScheduler_1_1MsgNode"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>payload</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Scheduler::QueuedMessage</label>
+        <link refid="structScheduler_1_1QueuedMessage"/>
+      </node>
+      <node id="3">
+        <label>Task</label>
+        <link refid="classTask"/>
+      </node>
+      <node id="2">
+        <label>TaskNode</label>
+        <link refid="structTaskNode"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>task</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="FsmOS.h" line="1073" column="1" bodyfile="FsmOS.h" bodystart="1074" bodyend="1499"/>
+    <listofallmembers>
+      <member refid="classScheduler_1afa07db3c7014412af426ee1c304ebc4b" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>acquireTaskNode</name></member>
+      <member refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>add</name></member>
+      <member refid="classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>allocateMsgNode</name></member>
+      <member refid="classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>allocateMsgNodesChunk</name></member>
+      <member refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>allocateTaskNode</name></member>
+      <member refid="classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>begin</name></member>
+      <member refid="classScheduler_1af423092ed6af17160b11a8fab79c2eab" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>checkForTerminatedTask</name></member>
+      <member refid="classScheduler_1a720b2ff4a9e770649fe7b63d3098613d" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>currentLogLevel</name></member>
+      <member refid="classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>deallocateMsgNode</name></member>
+      <member refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>deallocateTaskNode</name></member>
+      <member refid="classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>dequeueQueuedMessage</name></member>
+      <member refid="classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>dequeueQueuedMessageNode</name></member>
+      <member refid="classScheduler_1aaba5575657eb6345d1da5442be50f29c" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>enableWatchdog</name></member>
+      <member refid="classScheduler_1acb1eb89034fcb709b8769ff9060063e5" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>enqueueQueuedMessage</name></member>
+      <member refid="classScheduler_1a42e220f60192016791fa56855fcc8e46" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>executeTask</name></member>
+      <member refid="classScheduler_1a74551b047dfdd1675e53de6d1fc53ac7" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>executeTaskStep</name></member>
+      <member refid="classScheduler_1aa541036ba6db4765a2270d39f74c8758" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>feedWatchdog</name></member>
+      <member refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>findNextTask</name></member>
+      <member refid="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>findTask</name></member>
+      <member refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>forEachTask</name></member>
+      <member refid="classScheduler_1a59fa5a068cd9a36672b39362982c2e97" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>freeHead</name></member>
+      <member refid="classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>freeTaskNodeHead</name></member>
+      <member refid="classScheduler_1a56c3c1a776927eeb7917e7b636a2e3ab" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getFreeMemory</name></member>
+      <member refid="classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getFreeQueueSlots</name></member>
+      <member refid="classScheduler_1a69444823d403c8c84670eda2c0d594a4" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getHeapFragmentation</name></member>
+      <member refid="classScheduler_1acb0612339205f7e921b0034768dba4c5" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getMaxTasks</name></member>
+      <member refid="classScheduler_1a26f332614d3126f5efdc42092138b0e6" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getMemoryLeakStats</name></member>
+      <member refid="classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getMostDelayingTask</name></member>
+      <member refid="classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getResetCause</name></member>
+      <member refid="classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getResetCauseFlags</name></member>
+      <member refid="classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getResetInfo</name></member>
+      <member refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getSystemMemoryInfo</name></member>
+      <member refid="classScheduler_1aabf3840938cc797555cdee88f5d19dd2" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getTask</name></member>
+      <member refid="classScheduler_1a7a84b715133d1f8dd473e1511b2498a2" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getTaskCount</name></member>
+      <member refid="classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getTaskMemoryInfo</name></member>
+      <member refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>getTaskStats</name></member>
+      <member refid="classScheduler_1a22a32d58cf6898fff48880c5349c115f" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>handleTaskTiming</name></member>
+      <member refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>initializeTaskNodePool</name></member>
+      <member refid="classScheduler_1ac44741f6b01d7d8f914851b72f538617" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>lastExecutedTaskId</name></member>
+      <member refid="classScheduler_1a4e2da8da4d0ca8ce7da09e92fcc04ffc" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>lastTaskEndTime</name></member>
+      <member refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>LOG_DEBUG</name></member>
+      <member refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>LOG_ERROR</name></member>
+      <member refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>LOG_INFO</name></member>
+      <member refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>LOG_WARN</name></member>
+      <member refid="classScheduler_1a1ded1b3c0e167dde6574bc8b4a0aca63" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>logFormatted</name></member>
+      <member refid="classScheduler_1ab2bd6aa333e3f108343fedb022eaca79" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>LogLevel</name></member>
+      <member refid="classScheduler_1acaab28b4949d5a175212d134c04cf406" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>logMessage</name></member>
+      <member refid="classScheduler_1af5334fe39dbfc2286e91ee358087d3b5" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>logMessage</name></member>
+      <member refid="classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>logSystemEvent</name></member>
+      <member refid="classScheduler_1a40371a166759f310c2223ef082526829" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>logTaskDelay</name></member>
+      <member refid="classScheduler_1a46f4a6ce080b281fd2941aa35450c3c0" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>logTaskExecution</name></member>
+      <member refid="classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>loop</name></member>
+      <member refid="classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>loopOnce</name></member>
+      <member refid="classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>msgCount</name></member>
+      <member refid="classScheduler_1afc800a55be0f3da82ef2e79dad96496d" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>msgHead</name></member>
+      <member refid="classScheduler_1a4025d35f57b05649764c44f3583fc2b6" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>msgPool</name></member>
+      <member refid="classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>msgTail</name></member>
+      <member refid="classScheduler_1a89473e616865792db671bdb2551aa338" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>nextTaskId</name></member>
+      <member refid="classScheduler_1afe202befb3d6eac9dbb6acd1a4b09401" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>now</name></member>
+      <member refid="classScheduler_1aab0e31c53df15af0ffbcd97d0510c9a2" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>onTick</name></member>
+      <member refid="classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>processMessages</name></member>
+      <member refid="classScheduler_1a6212cb4fdc7a3ed5c9e50e97729cff8d" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>publishMessage</name></member>
+      <member refid="classScheduler_1a2e5c9f7ad69391854d3a0dc2dd73f8b4" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>releaseTaskNode</name></member>
+      <member refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>remove</name></member>
+      <member refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>removeAll</name></member>
+      <member refid="classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>running</name></member>
+      <member refid="classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>Scheduler</name></member>
+      <member refid="classScheduler_1a4f3960871e36fdf7234b151f81f04120" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>sendMessage</name></member>
+      <member refid="classScheduler_1a612b33338832de0d18ebf5859b3d7037" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>setLogLevel</name></member>
+      <member refid="classScheduler_1adad5641aac7a2fe0b15a675a053fd4fb" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>SharedMsg</name></member>
+      <member refid="classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>stop</name></member>
+      <member refid="classScheduler_1ac66364f021223ea49e76680b6dbcb56a" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>systemTime</name></member>
+      <member refid="classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>taskCount</name></member>
+      <member refid="classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>taskHead</name></member>
+      <member refid="classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>taskNodePoolCapacity</name></member>
+      <member refid="classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>taskNodePoolInitialized</name></member>
+      <member refid="classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>taskTail</name></member>
+      <member refid="classScheduler_1a15bd5f3410a22f750d9cc40579e11084" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>totalNodes</name></member>
+      <member refid="classScheduler_1a0a80134fcc4380c2577a5281352847eb" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>updateSystemTime</name></member>
+      <member refid="classScheduler_1a23437fce9b79f76f4534c402e832d4f5" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>updateTaskStatistics</name></member>
+      <member refid="classScheduler_1a6ee466fc5e47301d6101c246c691c131" prot="private" virt="non-virtual"><scope>Scheduler</scope><name>updateTimingVariables</name></member>
+      <member refid="classScheduler_1a1ad7c1772cfa11033b280e9b5de86d35" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>wasResetCause</name></member>
+      <member refid="classScheduler_1afc8187779b46f64039d3ffa58f0dbe51" prot="public" virt="non-virtual"><scope>Scheduler</scope><name>~Scheduler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

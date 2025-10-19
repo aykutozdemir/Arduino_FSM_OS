@@ -1,0 +1,59 @@
+.TH "TaskNode" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TaskNode \- Node structure for \fBTask\fP linked list\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTaskNode\fP (\fBTask\fP *t)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBTask\fP * \fBtask\fP"
+.br
+.RI "Pointer to the task\&. "
+.ti -1c
+.RI "\fBTaskNode\fP * \fBnext\fP"
+.br
+.RI "Pointer to next node\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Node structure for \fBTask\fP linked list\&. 
+.PP
+Definition at line \fB100\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "TaskNode::TaskNode (\fBTask\fP * t)\fC [inline]\fP"
+
+.PP
+Definition at line \fB105\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBTaskNode\fP* TaskNode::next"
+
+.PP
+Pointer to next node\&. 
+.PP
+Definition at line \fB103\fP of file \fBFsmOS\&.h\fP\&.
+.SS "\fBTask\fP* TaskNode::task"
+
+.PP
+Pointer to the task\&. 
+.PP
+Definition at line \fB102\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

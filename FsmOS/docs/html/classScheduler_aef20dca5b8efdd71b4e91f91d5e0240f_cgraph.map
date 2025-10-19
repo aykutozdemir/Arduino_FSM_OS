@@ -1,0 +1,15 @@
+<map id="Scheduler::processMessages" name="Scheduler::processMessages">
+<area shape="rect" id="Node000001" title="Process pending messages for all tasks." alt="" coords="5,104,200,129"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#aabf3840938cc797555cdee88f5d19dd2" title="Get task by ID." alt="" coords="248,55,383,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,101,246,81,247,86,159,107"/>
+<area shape="rect" id="Node000005" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="263,104,368,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="200,114,249,114,249,119,200,119"/>
+<area shape="rect" id="Node000007" href="$classTask.html#a25e697fa851318504170fc4f3edf8308" title="Handle incoming messages." alt="" coords="263,153,367,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="159,127,251,148,249,154,157,132"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ad2b77c7b7e929aad03ce0034f992d876" title="Find a task using a predicate function." alt="" coords="431,5,568,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,52,437,32,438,37,364,57"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="456,55,543,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="383,65,442,65,442,70,383,70"/>
+<area shape="rect" id="Node000006" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="446,104,553,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="368,114,432,114,432,119,368,119"/>
+</map>

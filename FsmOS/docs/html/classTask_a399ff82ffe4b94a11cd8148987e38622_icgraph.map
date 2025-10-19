@@ -1,0 +1,11 @@
+<map id="Task::step" name="Task::step">
+<area shape="rect" id="Node000001" title="Main task execution method." alt="" coords="804,5,887,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a74551b047dfdd1675e53de6d1fc53ac7" title="Execute the actual task step." alt="" coords="567,5,756,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="790,21,756,21,756,15,790,15"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a42e220f60192016791fa56855fcc8e46" title="Execute a task." alt="" coords="356,5,519,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="553,21,519,21,519,15,553,15"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,5,308,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="342,21,308,21,308,15,342,15"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,5,117,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="152,21,117,21,117,15,152,15"/>
+</map>
