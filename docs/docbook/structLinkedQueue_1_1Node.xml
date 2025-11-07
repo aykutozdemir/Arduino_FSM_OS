@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structLinkedQueue_1_1Node" xml:lang="en-US">
+<title>LinkedQueue&lt; T &gt;::Node Struct Reference</title>
+<indexterm><primary>LinkedQueue&lt; T &gt;::Node</primary></indexterm>
+<para>
+
+<para><link linkend="_structLinkedQueue_1_1Node">Node</link> structure for linked list. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+Collaboration diagram for LinkedQueue&lt; T &gt;::Node:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="structLinkedQueue_1_1Node__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>T <link linkend="_structLinkedQueue_1_1Node_1abfc1309426317b5ec46b96ad93fa3615">data</link></para>
+
+<para>Data stored in the node. </para>
+</listitem>
+            <listitem><para><link linkend="_structLinkedQueue_1_1Node">Node</link> * <link linkend="_structLinkedQueue_1_1Node_1a105896e21861dcb1bb7bcb5af3e5c9b2">next</link></para>
+
+<para>Pointer to next node. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;typename T&gt;<?linebreak?>struct LinkedQueue&lt; T &gt;::Node</title></simplesect>
+
+<para><link linkend="_structLinkedQueue_1_1Node">Node</link> structure for linked list. </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00470">470</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structLinkedQueue_1_1Node_1abfc1309426317b5ec46b96ad93fa3615"/><section>
+    <title>data</title>
+<indexterm><primary>data</primary><secondary>LinkedQueue&lt; T &gt;::Node</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;::Node</primary><secondary>data</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>T <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::Node::data</computeroutput></para><para>
+
+<para>Data stored in the node. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00472">472</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structLinkedQueue_1_1Node_1a105896e21861dcb1bb7bcb5af3e5c9b2"/><section>
+    <title>next</title>
+<indexterm><primary>next</primary><secondary>LinkedQueue&lt; T &gt;::Node</secondary></indexterm>
+<indexterm><primary>LinkedQueue&lt; T &gt;::Node</primary><secondary>next</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput><link linkend="_structLinkedQueue_1_1Node">Node</link>* <link linkend="_classLinkedQueue">LinkedQueue</link>&lt; T &gt;::Node::next</computeroutput></para><para>
+
+<para>Pointer to next node. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00473">473</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

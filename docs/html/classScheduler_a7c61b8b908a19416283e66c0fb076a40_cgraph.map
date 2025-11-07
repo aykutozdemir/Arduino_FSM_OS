@@ -1,0 +1,7 @@
+<map id="Scheduler::getSystemMemoryInfo" name="Scheduler::getSystemMemoryInfo">
+<area shape="rect" id="Node000001" title="Get system memory information." alt="" coords="5,31,225,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a56c3c1a776927eeb7917e7b636a2e3ab" title="Get amount of free memory." alt="" coords="273,5,452,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,29,259,26,260,31,226,35"/>
+<area shape="rect" id="Node000003" href="$classTask.html#aea07a4be09d08cb8b1afa1914ddc988c" title="Get the size in bytes of the concrete task object." alt="" coords="280,55,445,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="226,51,266,55,266,61,225,57"/>
+</map>

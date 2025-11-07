@@ -1,0 +1,380 @@
+\chapter{Fsm\+OS -\/ Arduino Finite State Machine Operating System}
+\hypertarget{index}{}\label{index}\index{FsmOS -\/ Arduino Finite State Machine Operating System@{FsmOS -\/ Arduino Finite State Machine Operating System}}
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+ A lightweight, cooperative task scheduler for Arduino that helps you organize your code into independent tasks and manage communication between them. This library is perfect for projects that need to handle multiple operations without blocking or complex interrupt management.
+
+\doxysection*{Key Features}
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Cooperative Multitasking}}\+: Run multiple tasks without preemption
+\item {\bfseries{Message Passing}}\+: Inter-\/task communication with publish/subscribe (type + arg only)
+\item {\bfseries{Memory Efficient}}\+: Optimized for AVR microcontrollers with accurate memory reporting
+\item {\bfseries{Debug Support}}\+: Built-\/in logging and diagnostics with formatted output
+\item {\bfseries{\doxylink{classTask}{Task} Budgeting}}\+: Prevent message queue overruns with per-\/task message budgets
+\item {\bfseries{Memory Monitoring}}\+: Real-\/time RAM, stack, heap, flash, and EEPROM usage tracking
+\item {\bfseries{Stack Canary Protection}}\+: Automatic stack overflow detection
+\item {\bfseries{Memory Leak Detection}}\+: Built-\/in memory allocation tracking
+\item {\bfseries{\doxylink{classTask}{Task} Limit Control}}\+: Configurable maximum task count based on topic bitfield size
+\end{DoxyItemize}
+
+\doxysection*{Installation}
+
+\doxysubsection*{Arduino IDE Library Manager (Recommended)}
+
+
+\begin{DoxyEnumerate}
+\item Open Arduino IDE
+\item Go to {\ttfamily Sketch \texorpdfstring{$>$}{>} Include Library \texorpdfstring{$>$}{>} Manage Libraries...}
+\item Search for "{}\+Fsm\+OS"{}
+\item Click Install
+\end{DoxyEnumerate}
+
+\doxysubsection*{Manual Installation}
+
+
+\begin{DoxyEnumerate}
+\item Download this repository
+\item Copy the {\ttfamily Fsm\+OS} folder to your Arduino libraries directory
+\item Restart Arduino IDE
+\end{DoxyEnumerate}
+
+\doxysection*{Quick Start}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{FsmOS_8h}{FsmOS.h}}>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Define\ a\ simple\ blinking\ task}}
+\DoxyCodeLine{\textcolor{keyword}{class\ }BlinkTask\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTask}{Task}}}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
+\DoxyCodeLine{\ \ \ \ BlinkTask()\ :\ \mbox{\hyperlink{classTask}{Task}}(F(\textcolor{stringliteral}{"{}Blinker"{}}))}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ set\_period(500);\ \ \textcolor{comment}{//\ Run\ every\ 500ms}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ uint8\_t\ \mbox{\hyperlink{group__fsmos_gadf715a30a3759bfd0856f12cfdf29d0e}{getMaxMessageBudget}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{\ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_aea07a4be09d08cb8b1afa1914ddc988c}{getTaskStructSize}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{sizeof}(*this);\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a05ad697fe4c99793e7af4dade75bad64}{on\_start}}()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{\textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ pinMode(LED\_BUILTIN,\ OUTPUT);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a24f4e032e0dd55e6e2e7ef44c715e9ca}{logInfo}}(F(\textcolor{stringliteral}{"{}Blink\ task\ started"{}}));}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a399ff82ffe4b94a11cd8148987e38622}{step}}()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{\textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ digitalWrite(LED\_BUILTIN,\ !digitalRead(LED\_BUILTIN));}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{BlinkTask\ blinker;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ Serial.begin(9600);}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}.begin\_with\_logger();\ \ \textcolor{comment}{//\ Initialize\ with\ logging}}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}.\mbox{\hyperlink{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b}{add}}(\&blinker);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}.loop\_once();}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+\doxysection*{Examples}
+
+Check the {\ttfamily examples} folder for more demonstrations\+:
+\begin{DoxyItemize}
+\item {\ttfamily Basic\+Blink}\+: Simple LED blinking task
+\item {\ttfamily Button\+Led}\+: Inter-\/task communication with publish/subscribe
+\item {\ttfamily Diagnostics}\+: System monitoring and debugging
+\item {\ttfamily Logger}\+: Using the built-\/in logging system with different levels
+\item {\ttfamily Memory\+Monitoring}\+: Comprehensive memory usage tracking
+\item {\ttfamily Memory\+Optimization}\+: Memory-\/efficient coding practices
+\item {\ttfamily Memory\+Optimized\+Timers}\+: Timer usage optimization
+\item {\ttfamily Message\+Queueing}\+: Message handling during task suspension
+\item {\ttfamily Task\+Lifecycle}\+: \doxylink{classTask}{Task} state management
+\item {\ttfamily Dynamic\+Tasks}\+: Runtime task creation/deletion
+\item {\ttfamily Task\+Names}\+: Named tasks and state tracking
+\item {\ttfamily Mutex\+Example}\+: Mutual exclusion synchronization
+\item {\ttfamily Semaphore\+Example}\+: Semaphore-\/based synchronization
+\item {\ttfamily Task\+Timing\+Monitoring}\+: \doxylink{classTask}{Task} execution timing analysis
+\end{DoxyItemize}
+
+\doxysection*{Key Concepts}
+
+\doxysubsection*{\doxylink{classTask}{Task} Structure}
+
+Every task must implement two pure virtual methods\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{uint8\_t\ getMaxMessageBudget()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ X;\ \}\ \ \textcolor{comment}{//\ Max\ messages\ per\ step}}
+\DoxyCodeLine{uint16\_t\ getTaskStructSize()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{sizeof}(*this);\ \}\ \ \textcolor{comment}{//\ Memory\ tracking}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Message System}
+
+Fsm\+OS uses a simplified message system with only type and argument data\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Publish\ a\ message}}
+\DoxyCodeLine{publish(TOPIC\_LED\_EVENTS,\ EVT\_LED\_ON,\ 1);\ \ \textcolor{comment}{//\ topic,\ type,\ arg}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Handle\ messages}}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ on\_msg(\textcolor{keyword}{const}\ MsgData\ \&msg)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{\textcolor{keyword}{}\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{switch}\ (msg.type)}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ EVT\_LED\_ON:}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ digitalWrite(LED\_PIN,\ msg.arg);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Message Budgeting}
+
+Tasks declare their maximum message production budget. The scheduler ensures sufficient queue space before execution\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Button\ task\ that\ publishes\ events}}
+\DoxyCodeLine{uint8\_t\ getMaxMessageBudget()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ 2;\ \}\ \ \textcolor{comment}{//\ Press\ +\ Release}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ LED\ task\ that\ only\ receives}}
+\DoxyCodeLine{uint8\_t\ getMaxMessageBudget()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}\ \ \textcolor{comment}{//\ Minimal}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Memory Monitoring}
+
+Access comprehensive memory information\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{structSystemMemoryInfo}{SystemMemoryInfo}}\ info;}
+\DoxyCodeLine{\mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}.\mbox{\hyperlink{classScheduler_a7c61b8b908a19416283e66c0fb076a40}{getSystemMemoryInfo}}(info);}
+\DoxyCodeLine{\textcolor{comment}{//\ info.freeRam,\ info.stackUsed,\ info.flashUsed,\ info.eepromUsed,\ etc.}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Formatted Logging}
+
+Use memory-\/efficient formatted logging\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{group__fsmos_gac6c8dbf1f133ab906d0f3490e0de5d74}{logDebugf}}(F(\textcolor{stringliteral}{"{}Value:\ \%d,\ Status:\ \%s"{}}),\ value,\ status);}
+\DoxyCodeLine{\mbox{\hyperlink{group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb}{logInfof}}(F(\textcolor{stringliteral}{"{}Operation\ \%d\ complete"{}}),\ operation\_id);}
+\DoxyCodeLine{\mbox{\hyperlink{group__fsmos_ga58264bc1f779d2cd6cb6a8c733a17a21}{logWarnf}}(F(\textcolor{stringliteral}{"{}Low\ memory:\ \%d\ bytes"{}}),\ free\_memory);}
+\DoxyCodeLine{\mbox{\hyperlink{group__fsmos_gade3c130d653bf887af5b2f6120f388ad}{logErrorf}}(F(\textcolor{stringliteral}{"{}Failed\ after\ \%d\ attempts"{}}),\ attempts);}
+
+\end{DoxyCode}
+
+
+\doxysection*{Configuration Parameters}
+
+\doxysubsection*{Stack Canary Protection}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef\ FSMOS\_STACK\_CANARY\_MARGIN}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ FSMOS\_STACK\_CANARY\_MARGIN\ 32\ \ }\textcolor{comment}{//\ Safety\ margin\ in\ bytes}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Topic Bitfield Size}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef\ TOPIC\_BITFIELD\_SIZE}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ TOPIC\_BITFIELD\_SIZE\ 16\ \ }\textcolor{comment}{//\ 8,\ 16,\ or\ 32\ topics\ max}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Message Pool Size}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef\ MAX\_MESSAGE\_POOL\_SIZE}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ MAX\_MESSAGE\_POOL\_SIZE\ 32\ \ }\textcolor{comment}{//\ Maximum\ messages\ in\ pool}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{Default Values}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{const}\ uint8\_t\ \mbox{\hyperlink{group__fsmos_ga5c3f1eb0aa79f56d91fdbf8fd9f1b911}{DEFAULT\_TASK\_MESSAGE\_BUDGET}}\ =\ 1;\ \ \textcolor{comment}{//\ Messages\ per\ step}}
+\DoxyCodeLine{\textcolor{keyword}{const}\ uint16\_t\ \mbox{\hyperlink{group__fsmos_gac154c550db4c5b7fed1b1fd1e31a63ee}{DEFAULT\_TASK\_PERIOD}}\ =\ 100;\ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ period\ in\ ms}}
+
+\end{DoxyCode}
+
+
+\doxysection*{Memory Optimization Features}
+
+\doxysubsection*{Stack Canary}
+
+
+\begin{DoxyItemize}
+\item Automatic stack overflow detection
+\item Configurable safety margin
+\item Marks entire free RAM region between heap and stack
+\end{DoxyItemize}
+
+\doxysubsection*{Memory Leak Detection}
+
+
+\begin{DoxyItemize}
+\item Tracks all memory allocations and deallocations
+\item Provides peak usage and current usage statistics
+\item Always active (no conditional compilation)
+\end{DoxyItemize}
+
+\doxysubsection*{\doxylink{classTask}{Task} Limit Control}
+
+
+\begin{DoxyItemize}
+\item Prevents adding more tasks than {\ttfamily MAX\+\_\+\+TOPICS} allows
+\item Runtime logging and rejection of excess tasks
+\item Based on {\ttfamily TOPIC\+\_\+\+BITFIELD\+\_\+\+SIZE} configuration
+\end{DoxyItemize}
+
+\doxysubsection*{Message Data Optimization}
+
+
+\begin{DoxyItemize}
+\item Simplified message structure (type + arg only)
+\item No dynamic data allocation for messages
+\item Reduced memory footprint per message
+\end{DoxyItemize}
+
+\doxysection*{Platformio Configuration}
+
+For optimal performance with Arduino Nano, use these build flags\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{build\_flags\ =}
+\DoxyCodeLine{\ \ -\/Os\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Size\ optimization}
+\DoxyCodeLine{\ \ -\/ffunction-\/sections\ \ \ \ \#\ Function\ sectioning}
+\DoxyCodeLine{\ \ -\/fdata-\/sections\ \ \ \ \ \ \ \#\ Data\ sectioning}
+\DoxyCodeLine{\ \ -\/fno-\/exceptions\ \ \ \ \ \ \ \#\ Remove\ exception\ handling}
+\DoxyCodeLine{\ \ -\/DTOPIC\_BITFIELD\_SIZE=16\ \ \#\ Topic\ bitfield\ size}
+\DoxyCodeLine{\ \ -\/Wl,-\/-\/gc-\/sections\ \ \ \ \ \#\ Dead\ code\ elimination}
+\DoxyCodeLine{\ \ -\/fno-\/lto\ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Disable\ LTO}
+\DoxyCodeLine{\ \ -\/DNDEBUG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Remove\ debug\ symbols}
+\DoxyCodeLine{\ \ -\/mmcu=atmega328p\ \ \ \ \ \ \#\ AVR\ architecture}
+\DoxyCodeLine{\ \ -\/fno-\/stack-\/protector\ \ \#\ Reduce\ stack\ usage}
+\DoxyCodeLine{\ \ -\/fpack-\/struct=1\ \ \ \ \ \ \ \#\ Memory\ alignment}
+\DoxyCodeLine{\ \ -\/DFSMOS\_FLASH\_SIZE=30720\ \ \#\ Flash\ size}
+\DoxyCodeLine{\ \ -\/DFSMOS\_EEPROM\_SIZE=1024\ \ \#\ EEPROM\ size}
+
+\end{DoxyCode}
+
+
+\doxysection*{Memory Usage}
+
+Typical memory usage on Arduino Nano (ATmega328P)\+:
+\begin{DoxyItemize}
+\item {\bfseries{RAM}}\+: \texorpdfstring{$\sim$}{\string~}1.3KB (64\% of 2KB)
+\item {\bfseries{Flash}}\+: \texorpdfstring{$\sim$}{\string~}29\+KB (95\% of 30KB)
+\item {\bfseries{Message Pool}}\+: 32 messages × 5 bytes = 160 bytes
+\item {\bfseries{Stack Canary}}\+: 32 bytes safety margin
+\end{DoxyItemize}
+
+\doxysection*{API Reference}
+
+\doxysubsection*{Core Functions}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily OS.\+begin()} -\/ Initialize scheduler
+\item {\ttfamily OS.\+begin\+\_\+with\+\_\+logger()} -\/ Initialize with logging
+\item {\ttfamily OS.\+add(task)} -\/ Add task to scheduler
+\item {\ttfamily OS.\+loop\+\_\+once()} -\/ Run one scheduler cycle
+\item {\ttfamily OS.\+get\+Task\+Count()} -\/ Get current task count
+\item {\ttfamily OS.\+get\+Free\+Memory()} -\/ Get free RAM
+\end{DoxyItemize}
+
+\doxysubsection*{\doxylink{classTask}{Task} Methods}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily set\+\_\+period(ms)} -\/ Set task period
+\item {\ttfamily set\+\_\+priority(level)} -\/ Set task priority
+\item {\ttfamily publish(topic, type, arg)} -\/ Publish message
+\item {\ttfamily subscribe(topic)} -\/ Subscribe to topic
+\item {\ttfamily log\+Info(msg)} -\/ Log info message
+\item {\ttfamily log\+Debug(msg)} -\/ Log debug message
+\item {\ttfamily log\+Warn(msg)} -\/ Log warning message
+\item {\ttfamily log\+Error(msg)} -\/ Log error message
+\end{DoxyItemize}
+
+\doxysubsection*{Memory Functions}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily OS.\+get\+System\+Memory\+Info(info)} -\/ Get comprehensive memory info
+\item {\ttfamily OS.\+get\+Memory\+Stats()} -\/ Get memory allocation statistics
+\item {\ttfamily OS.\+get\+Task\+Stats()} -\/ Get task execution statistics
+\end{DoxyItemize}
+
+\doxysection*{Troubleshooting}
+
+\doxysubsection*{Common Issues}
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{\doxylink{classTask}{Task} limit reached}}\+: Reduce {\ttfamily TOPIC\+\_\+\+BITFIELD\+\_\+\+SIZE} or optimize task count
+\item {\bfseries{Memory overflow}}\+: Check stack canary warnings and reduce memory usage
+\item {\bfseries{Message queue full}}\+: Increase {\ttfamily MAX\+\_\+\+MESSAGE\+\_\+\+POOL\+\_\+\+SIZE} or optimize message budgets
+\item {\bfseries{Compilation errors}}\+: Ensure all required methods are implemented
+\end{DoxyEnumerate}
+
+\doxysubsection*{Debug Commands}
+
+Use serial commands for debugging\+:
+\begin{DoxyItemize}
+\item {\ttfamily s} -\/ System statistics
+\item {\ttfamily mem} -\/ Memory information
+\item {\ttfamily tl} -\/ \doxylink{classTask}{Task} limit check
+\item {\ttfamily st} -\/ \doxylink{classTask}{Task} status
+\end{DoxyItemize}
+
+\doxysection*{Contributing}
+
+
+\begin{DoxyEnumerate}
+\item Fork the repository
+\item Create your feature branch
+\item Commit your changes
+\item Push to the branch
+\item Create a Pull Request
+\end{DoxyEnumerate}
+
+\doxysection*{License}
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+\doxysection*{Changelog}
+
+\doxysubsection*{Version 1.\+3.\+0}
+
+
+\begin{DoxyItemize}
+\item Removed message data system for memory optimization
+\item Enhanced stack canary protection
+\item Added task limit control
+\item Improved memory leak detection
+\item Optimized message structure (type + arg only)
+\item Reduced memory footprint per message by 7 bytes 
+\end{DoxyItemize}

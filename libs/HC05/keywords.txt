@@ -1,0 +1,45 @@
+#######################################
+# Syntax Coloring Map For HC05
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+HC05	KEYWORD1
+Command	KEYWORD1
+State	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+sendCommand	KEYWORD2
+clearCommandQueue	KEYWORD2
+sendData	KEYWORD2
+onDataReceived	KEYWORD2
+reset	KEYWORD2
+isResettingPermanently	KEYWORD2
+forceDataMode	KEYWORD2
+isConnected	KEYWORD2
+isDataMode	KEYWORD2
+loop	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+IDLE	LITERAL1
+WAITING_FOR_RESPONSE	LITERAL1
+WAITING_FOR_COMMAND_DELAY	LITERAL1
+DATA_MODE	LITERAL1
+RESETTING	LITERAL1
+RESETTING_PERMANENTLY	LITERAL1
+INITIALIZING	LITERAL1
+INITIALIZING_WAIT	LITERAL1
+CHECKING_AT_MODE	LITERAL1
+WAITING_FOR_AT_RESPONSE	LITERAL1
+WAITING_FOR_COMMAND_MODE	LITERAL1
+WAITING_FOR_DATA_MODE	LITERAL1
+

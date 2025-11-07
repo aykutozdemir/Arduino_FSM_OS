@@ -1,0 +1,9 @@
+<map id="logFormattedV" name="logFormattedV">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,112,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#acaab28b4949d5a175212d134c04cf406" title="Log a message." alt="" coords="160,5,319,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,33,146,28,146,34,113,39"/>
+<area shape="rect" id="Node000004" href="$FsmOS_8cpp.html#ade20b4a6bf510c7319a727cdf86ebe37" title=" " alt="" coords="184,55,295,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="113,48,170,56,170,61,112,53"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="367,5,453,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,15,353,15,353,21,319,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="MsgDataPool::initialize" name="MsgDataPool::initialize">
+<area shape="rect" id="Node000001" title="Initialize the message pool if not already initialized." alt="" coords="208,5,364,31"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#a5249e1c96225998fac71ba67c691740d" title="Allocate a new MsgData from the pool." alt="" coords="5,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,21,160,21,160,15,194,15"/>
+</map>

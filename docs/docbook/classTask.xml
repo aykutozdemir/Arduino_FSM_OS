@@ -1,0 +1,2014 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classTask" xml:lang="en-US">
+<title>Task Class Reference</title>
+<indexterm><primary>Task</primary></indexterm>
+<para>
+
+<para>Base class for all tasks in FsmOS. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Types    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592a">Priority</link> { <?linebreak?><link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aaa84058a0059d6f1f6d52d5e1a3ad5d0e">PRIORITY_LOWEST</link> = 0
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa341b0650b5a4ad3c4b67c2610983f5a9">PRIORITY_LOW</link> = 1
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aad68a5695d26142c2e09e4e2dc7104609">PRIORITY_NORMAL</link> = 2
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa9366f3aad1454df01800061338e20de3">PRIORITY_HIGH</link> = 3
+, <?linebreak?><link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa1d85ce89b4f0af54b760b451fdcba98b">PRIORITY_HIGHEST</link> = 4
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa12f44ca59e3209d2f8412d3cece7040f">PRIORITY_CRITICAL</link> = 5
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa368bfd726b1ad3bc484b8964a8406cbc">PRIORITY_REALTIME</link> = 6
+, <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aa6df39fb55e727d8cb7efd26d8ab55dcf">PRIORITY_SYSTEM</link> = 7
+, <?linebreak?><link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592aad89ed562a84f46152688421db9eeb156">PRIORITY_MAX</link> = 15
+ }</para>
+
+<para><link linkend="_classTask">Task</link> priority levels. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classTask_1ac801f055a69f1bbbca495cfcaa93940a">Task</link> (const __FlashStringHelper *<link linkend="_classTask_1a7727703d676510926710ba56268959f0">name</link>=nullptr)</para>
+
+<para>Constructor. </para>
+</listitem>
+            <listitem><para>virtual <link linkend="_classTask_1a3ecf499ea35fb4a96853969a1e1cbbce">~Task</link> ()</para>
+
+<para>Virtual destructor. </para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_classTask_1a05ad697fe4c99793e7af4dade75bad64">on_start</link> ()</para>
+
+<para>Called when task is started. </para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step</link> ()=0</para>
+
+<para>Main task execution method. </para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_classTask_1a7eccc77f654e53524d3a07b1ef73c83c">on_stop</link> ()</para>
+
+<para>Called when task is stopped. </para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_classTask_1a25e697fa851318504170fc4f3edf8308">on_msg</link> (const MsgData &amp;msg)</para>
+
+<para>Handle incoming messages. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a5d6a1d3c6cd5b587d2414737fab9f3ed">start</link> ()</para>
+
+<para>Start the task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1aba5eb3d6c2a034aa0e319383fbec68c4">stop</link> ()</para>
+
+<para>Stop the task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1ae95f8af6f74b4c956b82698b98454cd2">suspend</link> ()</para>
+
+<para>Suspend the task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a8fc7f3a2f5ebd910f22d1134d0dfcb2f">resume</link> ()</para>
+
+<para>Resume the task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a4401622acef8826077250b6b9e24e477">terminate</link> ()</para>
+
+<para>Terminate the task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a77d95e30aaab4ef098b94724c278ecd1">setPeriod</link> (uint16_t period_ms)</para>
+
+<para>Set task execution period. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1aa096c58dddc4fb8f7f8d5f40e1815d2d">getPeriod</link> () const</para>
+
+<para>Get task execution period. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1ae7a47875b478833d9dae1b5117661ed4">setPriority</link> (<link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592a">Priority</link> priority)</para>
+
+<para>Set task priority. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1aaa220be4e5007ede0bd3e5349d36eae9">setPriority</link> (uint8_t priority)</para>
+
+<para>Set task priority (legacy) </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1aef8cf69a9b677977003d8b72d66d36d8">getPriority</link> () const</para>
+
+<para>Get task priority. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4">setMaxMessageBudget</link> (uint8_t budget)</para>
+
+<para>Declare the maximum number of messages this task may produce in one <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step()</link> </para>
+</listitem>
+            <listitem><para>virtual uint8_t <link linkend="_group__fsmos_1gadf715a30a3759bfd0856f12cfdf29d0e">getMaxMessageBudget</link> () const</para>
+
+<para>Get the maximum number of messages this task may produce in one <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step()</link> </para>
+</listitem>
+            <listitem><para>virtual uint16_t <link linkend="_classTask_1aea07a4be09d08cb8b1afa1914ddc988c">getTaskStructSize</link> () const</para>
+
+<para>Get the size in bytes of the concrete task object. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>static uint16_t <link linkend="_classTask_1a42a50afac20691fb27694ca04ccc4e90">getCreatedInstanceCount</link> ()</para>
+
+<para>Get total number of <link linkend="_classTask">Task</link> instances ever created. </para>
+</listitem>
+            <listitem><para>static const __FlashStringHelper * <link linkend="_classTask_1a5a90bf718dcc0fad7285e1ae580d47df">readTaskName</link> (const <link linkend="_classTask">Task</link> *t)</para>
+
+<para>Public helper to read another task&apos;s name safely from diagnostics. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Types    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> { <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a3ca0a562f7e0ec849ab64f47164b552e">INACTIVE</link>
+, <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a5c1b2aafd7b0d425608d0481620e0827">ACTIVE</link>
+, <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a695d6ccd154b43d39b21ff6c6848db53">SUSPENDED</link>
+, <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a7a6d8686d5e5ecffdf01fdd137d7713e">TERMINATED</link>
+ }</para>
+
+<para><link linkend="_classTask">Task</link> state enumeration. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>uint8_t <link linkend="_classTask_1a23a424ff9d99ba56a2470d527552dc41">getConfiguredMessageBudget</link> () const</para>
+
+<para>Access the configured budget set via <link linkend="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4">setMaxMessageBudget()</link> </para>
+</listitem>
+            <listitem><para><link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> <link linkend="_classTask_1acccd11864edfa1abbb15ff43008a17ec">getState</link> () const</para>
+
+<para>Get current task state. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a7a79169eed523ffdafa76f3c9d07ff27">setState</link> (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> newState)</para>
+
+<para>Set task state. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classTask_1af770c80b9b06c6f314441144dcb6b117">checkState</link> (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> expected) const</para>
+
+<para>Check if task is in expected state. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classTask_1a14f40317936f729e291a81fcf4426466">isActive</link> () const</para>
+
+<para>Check if task is active. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classTask_1abee024294d3599db8917a96cab0a55f2">isInactive</link> () const</para>
+
+<para>Check if task is inactive. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb">getId</link> () const</para>
+
+<para>Get unique task ID. </para>
+</listitem>
+            <listitem><para>const __FlashStringHelper * <link linkend="_classTask_1aae9b70f6c6542469cd8c3c122536964c">getName</link> () const</para>
+
+<para>Get task name. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a955e48a4143b0e140a552fa25f4500c9">setName</link> (const __FlashStringHelper *<link linkend="_classTask_1a7727703d676510926710ba56268959f0">name</link>)</para>
+
+<para>Set task name. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a9de158865a233e9bad155106a43a0eda">subscribe</link> (uint8_t topic)</para>
+
+<para>Subscribe to a message topic. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a01ab07b5bae2d59020bf4a4b613e03f7">unsubscribe</link> (uint8_t topic)</para>
+
+<para>Unsubscribe from a message topic. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classTask_1a1f356af32a2d49b158ead810225d00be">isSubscribedToTopic</link> (uint8_t topic) const</para>
+
+<para>Check if task is subscribed to a topic. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1a19466fe8b3653fd07f81dc45ae0a7a5d">getTopicCount</link> () const</para>
+
+<para>Get the number of subscribed topics. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a4b2cce5377f8ddf0cc29d00a3c58c1c0">publish</link> (uint8_t topic, uint8_t type, uint16_t arg=0)</para>
+
+<para>Publish a message to a topic. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1adbd4d278e42780bd4b6c1d918d0f85c9">tell</link> (uint8_t task_id, uint8_t type, uint16_t arg=0)</para>
+
+<para>Send a direct message to a specific task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a8bc9456ebb7dfbb657f040320af1a6ef">log</link> (const __FlashStringHelper *msg)</para>
+
+<para>Log an info message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1aa961a934509f354a023b8f32d3656e95">logDebug</link> (const __FlashStringHelper *msg)</para>
+
+<para>Log a debug message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a24f4e032e0dd55e6e2e7ef44c715e9ca">logInfo</link> (const __FlashStringHelper *msg)</para>
+
+<para>Log an info message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a36592cc85ff1d08bf6cb2442055188f6">logWarn</link> (const __FlashStringHelper *msg)</para>
+
+<para>Log a warning message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1aa4c091b4c65870bd83c6111d23ecee21">logError</link> (const __FlashStringHelper *msg)</para>
+
+<para>Log an error message. </para>
+</listitem>
+            <listitem><para>template&lt;typename T &gt; </para><para>T <link linkend="_classTask_1a9fb78213d87aed4408f9c792fc1ade97">createTimerTyped</link> (uint32_t duration_ms) const</para>
+
+<para>Create a memory-optimized timer. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classTask_1a8c07bf11aa75929d4028b1035e71dac7">processMessages</link> ()</para>
+
+<para>Process pending messages for this task. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1ac5ab04209706d6b3a0fdd5266dc0d97f">getDelayCount</link> () const</para>
+
+<para>Get number of times this task was delayed. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1a7806ae077325d4970155cb65cace02c5">getMaxDelay</link> () const</para>
+
+<para>Get maximum delay experienced by this task. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classTask_1aed0ad6765c8ca38f4104df0ad075be60">getScheduledTime</link> () const</para>
+
+<para>Get scheduled execution time. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classTask_1ad17b132958585c85ceb73b077b52c099">getActualStartTime</link> () const</para>
+
+<para>Get actual start time of last execution. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para>uint16_t <link linkend="_classTask_1a69b0d2b2a7231d2e2a2880b7cca136e1">remainingTime</link> = 0</para>
+
+<para>Remaining time until next execution (in ms) </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1ab3ed971b7edebf924e2f1e06c4ce20d2">periodMs</link> = 1</para>
+
+<para><link linkend="_classTask">Task</link> execution period in milliseconds. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1a4dc17810637f6e3ea836f1068393a1c8">taskId</link> = 0</para>
+
+<para>Unique task identifier. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1a57497b2437a803730f0e5adc8656fe97">stateAndPriority</link> = 0</para>
+
+<para>Combined state and priority (4 bits each) </para>
+</listitem>
+            <listitem><para>const __FlashStringHelper * <link linkend="_classTask_1a7727703d676510926710ba56268959f0">name</link></para>
+
+<para><link linkend="_classTask">Task</link> name for debugging. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1a48485325ce407372474c73982690a0cc">runCount</link> = 0</para>
+
+<para>Number of times task has run (16-bit for space) </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1ad464cac8faf232328c59600a70bfa11c">maxExecTimeUs</link> = 0</para>
+
+<para>Maximum execution time in microseconds (16-bit) </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1a54935dc05e1ff8ba284d18b84a057ac6">avgExecTimeUs</link> = 0</para>
+
+<para>Average execution time in microseconds (16-bit) </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classTask_1ac78a2eb92ac06324535259def5fe2d43">scheduledTime</link> = 0</para>
+
+<para>When this task was scheduled to run. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classTask_1aba00d925c610ebb6ffce38ce7d550b33">actualStartTime</link> = 0</para>
+
+<para>When this task actually started running. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1aaf791abc71bca2ca62d29d2e155dc82c">delayCount</link> = 0</para>
+
+<para>Number of times this task was delayed. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classTask_1a82389ea58680f2ce8a0ffada921c3b6c">maxDelayMs</link> = 0</para>
+
+<para>Maximum delay experienced in milliseconds. </para>
+</listitem>
+            <listitem><para><link linkend="_FsmOS_8h_1a21f8c866143c5f1a7f2f75113f2652cb">TopicBitfield</link> <link linkend="_classTask_1acae0e3e69ae99fa0f3ca9298e74c7236">subscribedTopics</link> = 0</para>
+
+<para>Bitfield for subscribed topics. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classTask_1aceb872daf3ecd86b362df7bf2b19130f">maxMessageBudget</link> = 0</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para>static uint16_t <link linkend="_classTask_1abf8be7ba74ec27e72e25d2f2cd531d14">createdInstanceCount</link> = 0</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Friends    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_classTask_1afb88c77ea5daaefa6c8fa6bc5b9aa5c1">Scheduler</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Base class for all tasks in FsmOS. </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00653">653</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Enumeration Documentation</title>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592a"/><section>
+    <title>Priority</title>
+<indexterm><primary>Priority</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>Priority</secondary></indexterm>
+<para><computeroutput>enum <link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592a">Task::Priority</link></computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> priority levels. </para>
+</para>
+
+<para>Priority levels for task scheduling </para>
+<informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>PRIORITY_LOWEST</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_LOWEST</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aaa84058a0059d6f1f6d52d5e1a3ad5d0e"/>PRIORITY_LOWEST</entry><entry>
+<para>Lowest priority (0) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_LOW</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_LOW</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa341b0650b5a4ad3c4b67c2610983f5a9"/>PRIORITY_LOW</entry><entry>
+<para>Low priority (1) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_NORMAL</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_NORMAL</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aad68a5695d26142c2e09e4e2dc7104609"/>PRIORITY_NORMAL</entry><entry>
+<para>Normal priority (2) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_HIGH</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_HIGH</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa9366f3aad1454df01800061338e20de3"/>PRIORITY_HIGH</entry><entry>
+<para>High priority (3) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_HIGHEST</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_HIGHEST</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa1d85ce89b4f0af54b760b451fdcba98b"/>PRIORITY_HIGHEST</entry><entry>
+<para>Highest priority (4) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_CRITICAL</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_CRITICAL</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa12f44ca59e3209d2f8412d3cece7040f"/>PRIORITY_CRITICAL</entry><entry>
+<para>Critical priority (5) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_REALTIME</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_REALTIME</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa368bfd726b1ad3bc484b8964a8406cbc"/>PRIORITY_REALTIME</entry><entry>
+<para>Real-time priority (6) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_SYSTEM</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_SYSTEM</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aa6df39fb55e727d8cb7efd26d8ab55dcf"/>PRIORITY_SYSTEM</entry><entry>
+<para>System priority (7) </para>
+</entry></row><row><entry><indexterm><primary>PRIORITY_MAX</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>PRIORITY_MAX</secondary></indexterm>
+<anchor xml:id="_classTask_1a698d2efb6569ff0ae099fff3e661592aad89ed562a84f46152688421db9eeb156"/>PRIORITY_MAX</entry><entry>
+<para>Maximum priority (15) </para>
+</entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00754">754</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8"/><section>
+    <title>State</title>
+<indexterm><primary>State</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>State</secondary></indexterm>
+<para><computeroutput>enum <link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">Task::State</link><computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> state enumeration. </para>
+</para>
+<informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>INACTIVE</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>INACTIVE</secondary></indexterm>
+<anchor xml:id="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a3ca0a562f7e0ec849ab64f47164b552e"/>INACTIVE</entry><entry>
+<para><link linkend="_classTask">Task</link> is not running. </para>
+</entry></row><row><entry><indexterm><primary>ACTIVE</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>ACTIVE</secondary></indexterm>
+<anchor xml:id="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a5c1b2aafd7b0d425608d0481620e0827"/>ACTIVE</entry><entry>
+<para><link linkend="_classTask">Task</link> is running and scheduled. </para>
+</entry></row><row><entry><indexterm><primary>SUSPENDED</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>SUSPENDED</secondary></indexterm>
+<anchor xml:id="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a695d6ccd154b43d39b21ff6c6848db53"/>SUSPENDED</entry><entry>
+<para><link linkend="_classTask">Task</link> is paused. </para>
+</entry></row><row><entry><indexterm><primary>TERMINATED</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>TERMINATED</secondary></indexterm>
+<anchor xml:id="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8a7a6d8686d5e5ecffdf01fdd137d7713e"/>TERMINATED</entry><entry>
+<para><link linkend="_classTask">Task</link> is marked for removal. </para>
+</entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00820">820</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classTask_1ac801f055a69f1bbbca495cfcaa93940a"/><section>
+    <title>Task()</title>
+<indexterm><primary>Task</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>Task</secondary></indexterm>
+<para><computeroutput>Task::Task (const __FlashStringHelper * name = <computeroutput>nullptr</computeroutput>
+)<computeroutput>[explicit]</computeroutput></computeroutput></para><para>
+
+<para>Constructor. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>name</entry><entry>
+<para>Optional name for the task (for debugging)</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                Creates a new task in INACTIVE state </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00460">460</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a3ecf499ea35fb4a96853969a1e1cbbce"/><section>
+    <title>~Task()</title>
+<indexterm><primary>~Task</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>~Task</secondary></indexterm>
+<para><computeroutput>Task::~Task ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Virtual destructor. </para>
+</para>
+
+<para>Ensures proper cleanup of derived classes </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00471">471</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classTask_1af770c80b9b06c6f314441144dcb6b117"/><section>
+    <title>checkState()</title>
+<indexterm><primary>checkState</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>checkState</secondary></indexterm>
+<para><computeroutput>bool Task::checkState (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> expected) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Check if task is in expected state. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>expected</entry><entry>
+<para>Expected state to check against </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if task is in expected state </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00540">540</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_af770c80b9b06c6f314441144dcb6b117_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a9fb78213d87aed4408f9c792fc1ade97"/><section>
+    <title>createTimerTyped()</title>
+<indexterm><primary>createTimerTyped</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>createTimerTyped</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>template <link linkend="_FsmOS_8h_1acce064b0f024fed7c7008c84a000538f">Timer32</link> Task::createTimerTyped&lt; <link linkend="_FsmOS_8h_1acce064b0f024fed7c7008c84a000538f">Timer32</link> &gt; (uint32_t duration_ms) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Create a memory-optimized timer. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>T</entry><entry>
+<para>Timer type (Timer8, Timer16, Timer32) </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>duration_ms</entry><entry>
+<para>Duration in milliseconds </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>Timer object ready to use </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>Choose timer type based on expected duration for memory optimization </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00575">575</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ad17b132958585c85ceb73b077b52c099"/><section>
+    <title>getActualStartTime()</title>
+<indexterm><primary>getActualStartTime</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getActualStartTime</secondary></indexterm>
+<para><computeroutput>uint32_t Task::getActualStartTime ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get actual start time of last execution. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Actual start time in milliseconds </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00614">614</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a23a424ff9d99ba56a2470d527552dc41"/><section>
+    <title>getConfiguredMessageBudget()</title>
+<indexterm><primary>getConfiguredMessageBudget</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getConfiguredMessageBudget</secondary></indexterm>
+<para><computeroutput>uint8_t Task::getConfiguredMessageBudget ( ) const<computeroutput>[inline]</computeroutput>, <computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Access the configured budget set via <link linkend="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4">setMaxMessageBudget()</link> </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>The configured budget value </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00814">814</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a42a50afac20691fb27694ca04ccc4e90"/><section>
+    <title>getCreatedInstanceCount()</title>
+<indexterm><primary>getCreatedInstanceCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getCreatedInstanceCount</secondary></indexterm>
+<para><computeroutput>static uint16_t Task::getCreatedInstanceCount ( )<computeroutput>[inline]</computeroutput>, <computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Get total number of <link linkend="_classTask">Task</link> instances ever created. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00672">672</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a42a50afac20691fb27694ca04ccc4e90_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1ac5ab04209706d6b3a0fdd5266dc0d97f"/><section>
+    <title>getDelayCount()</title>
+<indexterm><primary>getDelayCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getDelayCount</secondary></indexterm>
+<para><computeroutput>uint16_t Task::getDelayCount ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get number of times this task was delayed. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of delay occurrences </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00599">599</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_ac5ab04209706d6b3a0fdd5266dc0d97f_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a548d620b8f5d7490b8cdc235dbfdf6eb"/><section>
+    <title>getId()</title>
+<indexterm><primary>getId</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getId</secondary></indexterm>
+<para><computeroutput>uint8_t Task::getId ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get unique task ID. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para><link linkend="_classTask">Task</link> ID assigned by scheduler </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00546">546</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a548d620b8f5d7490b8cdc235dbfdf6eb_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a7806ae077325d4970155cb65cace02c5"/><section>
+    <title>getMaxDelay()</title>
+<indexterm><primary>getMaxDelay</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getMaxDelay</secondary></indexterm>
+<para><computeroutput>uint16_t Task::getMaxDelay ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get maximum delay experienced by this task. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Maximum delay in milliseconds </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00604">604</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1aae9b70f6c6542469cd8c3c122536964c"/><section>
+    <title>getName()</title>
+<indexterm><primary>getName</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getName</secondary></indexterm>
+<para><computeroutput>const __FlashStringHelper * Task::getName ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get task name. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para><link linkend="_classTask">Task</link> name string </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00548">548</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aae9b70f6c6542469cd8c3c122536964c_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aa096c58dddc4fb8f7f8d5f40e1815d2d"/><section>
+    <title>getPeriod()</title>
+<indexterm><primary>getPeriod</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getPeriod</secondary></indexterm>
+<para><computeroutput>uint16_t Task::getPeriod ( ) const</computeroutput></para><para>
+
+<para>Get task execution period. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Period in milliseconds </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00522">522</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aa096c58dddc4fb8f7f8d5f40e1815d2d_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aef8cf69a9b677977003d8b72d66d36d8"/><section>
+    <title>getPriority()</title>
+<indexterm><primary>getPriority</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getPriority</secondary></indexterm>
+<para><computeroutput>uint8_t Task::getPriority ( ) const</computeroutput></para><para>
+
+<para>Get task priority. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Priority level </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00528">528</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aef8cf69a9b677977003d8b72d66d36d8_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aed0ad6765c8ca38f4104df0ad075be60"/><section>
+    <title>getScheduledTime()</title>
+<indexterm><primary>getScheduledTime</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getScheduledTime</secondary></indexterm>
+<para><computeroutput>uint32_t Task::getScheduledTime ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get scheduled execution time. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Scheduled time in milliseconds </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00609">609</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1acccd11864edfa1abbb15ff43008a17ec"/><section>
+    <title>getState()</title>
+<indexterm><primary>getState</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getState</secondary></indexterm>
+<para><computeroutput><link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">Task::State</link> Task::getState ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get current task state. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Current state of the task </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00536">536</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_acccd11864edfa1abbb15ff43008a17ec_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aea07a4be09d08cb8b1afa1914ddc988c"/><section>
+    <title>getTaskStructSize()</title>
+<indexterm><primary>getTaskStructSize</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getTaskStructSize</secondary></indexterm>
+<para><computeroutput>virtual uint16_t Task::getTaskStructSize ( ) const<computeroutput>[inline]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Get the size in bytes of the concrete task object. </para>
+</para>
+
+<para>Implement in each derived <link linkend="_classTask">Task</link> as: return sizeof(DerivedClass); </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00807">807</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aea07a4be09d08cb8b1afa1914ddc988c_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a19466fe8b3653fd07f81dc45ae0a7a5d"/><section>
+    <title>getTopicCount()</title>
+<indexterm><primary>getTopicCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>getTopicCount</secondary></indexterm>
+<para><computeroutput>uint8_t Task::getTopicCount ( ) const<computeroutput>[inline]</computeroutput>, <computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Get the number of subscribed topics. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of subscribed topics </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00928">928</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a14f40317936f729e291a81fcf4426466"/><section>
+    <title>isActive()</title>
+<indexterm><primary>isActive</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>isActive</secondary></indexterm>
+<para><computeroutput>bool Task::isActive ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Check if task is active. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>true if task is in ACTIVE state </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00542">542</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a14f40317936f729e291a81fcf4426466_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a14f40317936f729e291a81fcf4426466_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1abee024294d3599db8917a96cab0a55f2"/><section>
+    <title>isInactive()</title>
+<indexterm><primary>isInactive</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>isInactive</secondary></indexterm>
+<para><computeroutput>bool Task::isInactive ( ) const<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Check if task is inactive. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>true if task is in INACTIVE state </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00544">544</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_abee024294d3599db8917a96cab0a55f2_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a1f356af32a2d49b158ead810225d00be"/><section>
+    <title>isSubscribedToTopic()</title>
+<indexterm><primary>isSubscribedToTopic</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>isSubscribedToTopic</secondary></indexterm>
+<para><computeroutput>bool Task::isSubscribedToTopic (uint8_t topic) const<computeroutput>[inline]</computeroutput>, <computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Check if task is subscribed to a topic. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>topic</entry><entry>
+<para>Topic ID to check </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if subscribed, false otherwise </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00915">915</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a1f356af32a2d49b158ead810225d00be_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a8bc9456ebb7dfbb657f040320af1a6ef"/><section>
+    <title>log()</title>
+<indexterm><primary>log</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>log</secondary></indexterm>
+<para><computeroutput>void Task::log (const __FlashStringHelper * msg)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Log an info message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00564">564</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a8bc9456ebb7dfbb657f040320af1a6ef_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aa961a934509f354a023b8f32d3656e95"/><section>
+    <title>logDebug()</title>
+<indexterm><primary>logDebug</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>logDebug</secondary></indexterm>
+<para><computeroutput>void Task::logDebug (const __FlashStringHelper * msg)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Log a debug message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00566">566</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aa961a934509f354a023b8f32d3656e95_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aa4c091b4c65870bd83c6111d23ecee21"/><section>
+    <title>logError()</title>
+<indexterm><primary>logError</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>logError</secondary></indexterm>
+<para><computeroutput>void Task::logError (const __FlashStringHelper * msg)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Log an error message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00572">572</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aa4c091b4c65870bd83c6111d23ecee21_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a24f4e032e0dd55e6e2e7ef44c715e9ca"/><section>
+    <title>logInfo()</title>
+<indexterm><primary>logInfo</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>logInfo</secondary></indexterm>
+<para><computeroutput>void Task::logInfo (const __FlashStringHelper * msg)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Log an info message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00568">568</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a24f4e032e0dd55e6e2e7ef44c715e9ca_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a36592cc85ff1d08bf6cb2442055188f6"/><section>
+    <title>logWarn()</title>
+<indexterm><primary>logWarn</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>logWarn</secondary></indexterm>
+<para><computeroutput>void Task::logWarn (const __FlashStringHelper * msg)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Log a warning message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00570">570</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a36592cc85ff1d08bf6cb2442055188f6_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a25e697fa851318504170fc4f3edf8308"/><section>
+    <title>on_msg()</title>
+<indexterm><primary>on_msg</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>on_msg</secondary></indexterm>
+<para><computeroutput>virtual void Task::on_msg (const MsgData &amp; msg)<computeroutput>[inline]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Handle incoming messages. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>The received message</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                Override this method to handle specific message types <note><title>Note</title>
+
+<para>Called automatically when messages are received </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00702">702</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a25e697fa851318504170fc4f3edf8308_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a05ad697fe4c99793e7af4dade75bad64"/><section>
+    <title>on_start()</title>
+<indexterm><primary>on_start</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>on_start</secondary></indexterm>
+<para><computeroutput>virtual void Task::on_start ( )<computeroutput>[inline]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Called when task is started. </para>
+</para>
+
+<para>Override this method to perform initialization <note><title>Note</title>
+
+<para>Called once when task transitions to ACTIVE state </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00680">680</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a05ad697fe4c99793e7af4dade75bad64_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a7eccc77f654e53524d3a07b1ef73c83c"/><section>
+    <title>on_stop()</title>
+<indexterm><primary>on_stop</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>on_stop</secondary></indexterm>
+<para><computeroutput>virtual void Task::on_stop ( )<computeroutput>[inline]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Called when task is stopped. </para>
+</para>
+
+<para>Override this method to perform cleanup <note><title>Note</title>
+
+<para>Called when task transitions to INACTIVE state </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00694">694</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a7eccc77f654e53524d3a07b1ef73c83c_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a8c07bf11aa75929d4028b1035e71dac7"/><section>
+    <title>processMessages()</title>
+<indexterm><primary>processMessages</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>processMessages</secondary></indexterm>
+<para><computeroutput>void Task::processMessages ( )<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Process pending messages for this task. </para>
+</para>
+
+<para><note><title>Note</title>
+
+<para>Called automatically by scheduler, rarely needs direct use </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00592">592</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a4b2cce5377f8ddf0cc29d00a3c58c1c0"/><section>
+    <title>publish()</title>
+<indexterm><primary>publish</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>publish</secondary></indexterm>
+<para><computeroutput>void Task::publish (uint8_t topic, uint8_t type, uint16_t arg = <computeroutput>0</computeroutput>
+)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Publish a message to a topic. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>topic</entry><entry>
+<para>Topic ID to publish to </para>
+</entry>
+                            </row>
+                            <row>
+<entry>type</entry><entry>
+<para>Message type </para>
+</entry>
+                            </row>
+                            <row>
+<entry>arg</entry><entry>
+<para>Additional argument data </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>All subscribed tasks will receive this message </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00554">554</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a4b2cce5377f8ddf0cc29d00a3c58c1c0_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a5a90bf718dcc0fad7285e1ae580d47df"/><section>
+    <title>readTaskName()</title>
+<indexterm><primary>readTaskName</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>readTaskName</secondary></indexterm>
+<para><computeroutput>static const __FlashStringHelper * Task::readTaskName (const <link linkend="_classTask">Task</link> * t)<computeroutput>[inline]</computeroutput>, <computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Public helper to read another task&apos;s name safely from diagnostics. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00875">875</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a5a90bf718dcc0fad7285e1ae580d47df_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a8fc7f3a2f5ebd910f22d1134d0dfcb2f"/><section>
+    <title>resume()</title>
+<indexterm><primary>resume</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>resume</secondary></indexterm>
+<para><computeroutput>void Task::resume ( )</computeroutput></para><para>
+
+<para>Resume the task. </para>
+</para>
+
+<para><link linkend="_classTask">Task</link> returns to scheduling queue </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00506">506</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a8fc7f3a2f5ebd910f22d1134d0dfcb2f_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4"/><section>
+    <title>setMaxMessageBudget()</title>
+<indexterm><primary>setMaxMessageBudget</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setMaxMessageBudget</secondary></indexterm>
+<para><computeroutput>void Task::setMaxMessageBudget (uint8_t budget)</computeroutput></para><para>
+
+<para>Declare the maximum number of messages this task may produce in one <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step()</link> </para>
+</para>
+
+<para>Used by the scheduler to avoid running producers when the global message queue has fewer free slots than the declared budget. 0 disables gating. </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00530">530</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a955e48a4143b0e140a552fa25f4500c9"/><section>
+    <title>setName()</title>
+<indexterm><primary>setName</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setName</secondary></indexterm>
+<para><computeroutput>void Task::setName (const __FlashStringHelper * name)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Set task name. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>name</entry><entry>
+<para>New name for the task </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00550">550</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a77d95e30aaab4ef098b94724c278ecd1"/><section>
+    <title>setPeriod()</title>
+<indexterm><primary>setPeriod</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setPeriod</secondary></indexterm>
+<para><computeroutput>void Task::setPeriod (uint16_t period_ms)</computeroutput></para><para>
+
+<para>Set task execution period. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>period_ms</entry><entry>
+<para>Period in milliseconds </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Minimum period is 1ms, maximum is 65535ms </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00517">517</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ae7a47875b478833d9dae1b5117661ed4"/><section>
+    <title>setPriority()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>setPriority</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setPriority</secondary></indexterm>
+<para><computeroutput>void Task::setPriority (<link linkend="_classTask_1a698d2efb6569ff0ae099fff3e661592a">Priority</link> priority)</computeroutput></para><para>
+
+<para>Set task priority. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>priority</entry><entry>
+<para>Priority level</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                Sets the task priority for scheduling </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00524">524</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1aaa220be4e5007ede0bd3e5349d36eae9"/><section>
+    <title>setPriority()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>setPriority</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setPriority</secondary></indexterm>
+<para><computeroutput>void Task::setPriority (uint8_t priority)</computeroutput></para><para>
+
+<para>Set task priority (legacy) </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>priority</entry><entry>
+<para>Priority level (0-15)</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                Sets the task priority for scheduling </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00526">526</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a7a79169eed523ffdafa76f3c9d07ff27"/><section>
+    <title>setState()</title>
+<indexterm><primary>setState</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>setState</secondary></indexterm>
+<para><computeroutput>void Task::setState (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">State</link> newState)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Set task state. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>newState</entry><entry>
+<para>New state to set </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00538">538</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a7a79169eed523ffdafa76f3c9d07ff27_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a5d6a1d3c6cd5b587d2414737fab9f3ed"/><section>
+    <title>start()</title>
+<indexterm><primary>start</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>start</secondary></indexterm>
+<para><computeroutput>void Task::start ( )</computeroutput></para><para>
+
+<para>Start the task. </para>
+</para>
+
+<para>Transitions task to ACTIVE state and calls <link linkend="_classTask_1a05ad697fe4c99793e7af4dade75bad64">on_start()</link> </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00479">479</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a5d6a1d3c6cd5b587d2414737fab9f3ed_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a5d6a1d3c6cd5b587d2414737fab9f3ed_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a399ff82ffe4b94a11cd8148987e38622"/><section>
+    <title>step()</title>
+<indexterm><primary>step</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>step</secondary></indexterm>
+<para><computeroutput>virtual void Task::step ( )<computeroutput>[pure virtual]</computeroutput></computeroutput></para><para>
+
+<para>Main task execution method. </para>
+</para>
+
+<para>This method is called periodically by the scheduler <note><title>Note</title>
+
+<para>Must be implemented by derived classes </para>
+</note>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a399ff82ffe4b94a11cd8148987e38622_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1aba5eb3d6c2a034aa0e319383fbec68c4"/><section>
+    <title>stop()</title>
+<indexterm><primary>stop</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>stop</secondary></indexterm>
+<para><computeroutput>void Task::stop ( )</computeroutput></para><para>
+
+<para>Stop the task. </para>
+</para>
+
+<para>Transitions task to INACTIVE state and calls <link linkend="_classTask_1a7eccc77f654e53524d3a07b1ef73c83c">on_stop()</link> </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00489">489</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aba5eb3d6c2a034aa0e319383fbec68c4_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_aba5eb3d6c2a034aa0e319383fbec68c4_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a9de158865a233e9bad155106a43a0eda"/><section>
+    <title>subscribe()</title>
+<indexterm><primary>subscribe</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>subscribe</secondary></indexterm>
+<para><computeroutput>void Task::subscribe (uint8_t topic)<computeroutput>[inline]</computeroutput>, <computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Subscribe to a message topic. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>topic</entry><entry>
+<para>Topic ID to subscribe to </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para><link linkend="_classTask">Task</link> will receive messages published to this topic </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00890">890</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ae95f8af6f74b4c956b82698b98454cd2"/><section>
+    <title>suspend()</title>
+<indexterm><primary>suspend</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>suspend</secondary></indexterm>
+<para><computeroutput>void Task::suspend ( )</computeroutput></para><para>
+
+<para>Suspend the task. </para>
+</para>
+
+<para><link linkend="_classTask">Task</link> remains in memory but is not scheduled </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00498">498</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_ae95f8af6f74b4c956b82698b98454cd2_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1adbd4d278e42780bd4b6c1d918d0f85c9"/><section>
+    <title>tell()</title>
+<indexterm><primary>tell</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>tell</secondary></indexterm>
+<para><computeroutput>void Task::tell (uint8_t task_id, uint8_t type, uint16_t arg = <computeroutput>0</computeroutput>
+)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Send a direct message to a specific task. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of target task </para>
+</entry>
+                            </row>
+                            <row>
+<entry>type</entry><entry>
+<para>Message type </para>
+</entry>
+                            </row>
+                            <row>
+<entry>arg</entry><entry>
+<para>Additional argument data </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00559">559</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_adbd4d278e42780bd4b6c1d918d0f85c9_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a4401622acef8826077250b6b9e24e477"/><section>
+    <title>terminate()</title>
+<indexterm><primary>terminate</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>terminate</secondary></indexterm>
+<para><computeroutput>void Task::terminate ( )</computeroutput></para><para>
+
+<para>Terminate the task. </para>
+</para>
+
+<para>Marks task for removal from scheduler </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00515">515</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classTask_a4401622acef8826077250b6b9e24e477_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classTask_1a01ab07b5bae2d59020bf4a4b613e03f7"/><section>
+    <title>unsubscribe()</title>
+<indexterm><primary>unsubscribe</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>unsubscribe</secondary></indexterm>
+<para><computeroutput>void Task::unsubscribe (uint8_t topic)<computeroutput>[inline]</computeroutput>, <computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Unsubscribe from a message topic. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>topic</entry><entry>
+<para>Topic ID to unsubscribe from </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00902">902</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Friends And Related Symbol Documentation</title>
+<anchor xml:id="_classTask_1afb88c77ea5daaefa6c8fa6bc5b9aa5c1"/><section>
+    <title>Scheduler</title>
+<indexterm><primary>Scheduler</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>Scheduler</secondary></indexterm>
+<para><computeroutput>friend class <link linkend="_classScheduler">Scheduler</link><computeroutput>[friend]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01030">1030</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classTask_1aba00d925c610ebb6ffce38ce7d550b33"/><section>
+    <title>actualStartTime</title>
+<indexterm><primary>actualStartTime</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>actualStartTime</secondary></indexterm>
+<para><computeroutput>uint32_t Task::actualStartTime = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>When this task actually started running. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01045">1045</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a54935dc05e1ff8ba284d18b84a057ac6"/><section>
+    <title>avgExecTimeUs</title>
+<indexterm><primary>avgExecTimeUs</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>avgExecTimeUs</secondary></indexterm>
+<para><computeroutput>uint16_t Task::avgExecTimeUs = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Average execution time in microseconds (16-bit) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01041">1041</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1abf8be7ba74ec27e72e25d2f2cd531d14"/><section>
+    <title>createdInstanceCount</title>
+<indexterm><primary>createdInstanceCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>createdInstanceCount</secondary></indexterm>
+<para><computeroutput>uint16_t Task::createdInstanceCount = 0<computeroutput>[static]</computeroutput>, <computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01055">1055</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1aaf791abc71bca2ca62d29d2e155dc82c"/><section>
+    <title>delayCount</title>
+<indexterm><primary>delayCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>delayCount</secondary></indexterm>
+<para><computeroutput>uint16_t Task::delayCount = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Number of times this task was delayed. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01046">1046</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a82389ea58680f2ce8a0ffada921c3b6c"/><section>
+    <title>maxDelayMs</title>
+<indexterm><primary>maxDelayMs</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>maxDelayMs</secondary></indexterm>
+<para><computeroutput>uint16_t Task::maxDelayMs = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Maximum delay experienced in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01047">1047</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ad464cac8faf232328c59600a70bfa11c"/><section>
+    <title>maxExecTimeUs</title>
+<indexterm><primary>maxExecTimeUs</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>maxExecTimeUs</secondary></indexterm>
+<para><computeroutput>uint16_t Task::maxExecTimeUs = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Maximum execution time in microseconds (16-bit) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01040">1040</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1aceb872daf3ecd86b362df7bf2b19130f"/><section>
+    <title>maxMessageBudget</title>
+<indexterm><primary>maxMessageBudget</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>maxMessageBudget</secondary></indexterm>
+<para><computeroutput>uint8_t Task::maxMessageBudget = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01052">1052</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a7727703d676510926710ba56268959f0"/><section>
+    <title>name</title>
+<indexterm><primary>name</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>name</secondary></indexterm>
+<para><computeroutput>const __FlashStringHelper* Task::name<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> name for debugging. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01036">1036</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ab3ed971b7edebf924e2f1e06c4ce20d2"/><section>
+    <title>periodMs</title>
+<indexterm><primary>periodMs</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>periodMs</secondary></indexterm>
+<para><computeroutput>uint16_t Task::periodMs = 1<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> execution period in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01033">1033</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a69b0d2b2a7231d2e2a2880b7cca136e1"/><section>
+    <title>remainingTime</title>
+<indexterm><primary>remainingTime</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>remainingTime</secondary></indexterm>
+<para><computeroutput>uint16_t Task::remainingTime = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Remaining time until next execution (in ms) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01032">1032</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a48485325ce407372474c73982690a0cc"/><section>
+    <title>runCount</title>
+<indexterm><primary>runCount</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>runCount</secondary></indexterm>
+<para><computeroutput>uint16_t Task::runCount = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Number of times task has run (16-bit for space) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01039">1039</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1ac78a2eb92ac06324535259def5fe2d43"/><section>
+    <title>scheduledTime</title>
+<indexterm><primary>scheduledTime</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>scheduledTime</secondary></indexterm>
+<para><computeroutput>uint32_t Task::scheduledTime = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>When this task was scheduled to run. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01044">1044</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a57497b2437a803730f0e5adc8656fe97"/><section>
+    <title>stateAndPriority</title>
+<indexterm><primary>stateAndPriority</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>stateAndPriority</secondary></indexterm>
+<para><computeroutput>uint8_t Task::stateAndPriority = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Combined state and priority (4 bits each) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01035">1035</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1acae0e3e69ae99fa0f3ca9298e74c7236"/><section>
+    <title>subscribedTopics</title>
+<indexterm><primary>subscribedTopics</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>subscribedTopics</secondary></indexterm>
+<para><computeroutput><link linkend="_FsmOS_8h_1a21f8c866143c5f1a7f2f75113f2652cb">TopicBitfield</link> Task::subscribedTopics = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Bitfield for subscribed topics. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01049">1049</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classTask_1a4dc17810637f6e3ea836f1068393a1c8"/><section>
+    <title>taskId</title>
+<indexterm><primary>taskId</primary><secondary>Task</secondary></indexterm>
+<indexterm><primary>Task</primary><secondary>taskId</secondary></indexterm>
+<para><computeroutput>uint8_t Task::taskId = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Unique task identifier. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01034">1034</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

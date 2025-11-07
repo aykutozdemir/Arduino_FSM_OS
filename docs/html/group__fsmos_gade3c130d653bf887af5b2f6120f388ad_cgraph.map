@@ -1,0 +1,11 @@
+<map id="logErrorf" name="logErrorf">
+<area shape="rect" id="Node000001" title="Log an error message with formatting." alt="" coords="5,31,76,56"/>
+<area shape="rect" id="Node000002" href="$FsmOS_8cpp.html#a239a4328ae320786411ee555c3a20250" title=" " alt="" coords="124,31,231,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,41,110,41,110,46,76,46"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#acaab28b4949d5a175212d134c04cf406" title="Log a message." alt="" coords="279,5,437,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="231,33,264,28,265,34,231,39"/>
+<area shape="rect" id="Node000005" href="$FsmOS_8cpp.html#ade20b4a6bf510c7319a727cdf86ebe37" title=" " alt="" coords="303,55,413,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="231,48,289,56,288,61,231,53"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="485,5,572,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="437,15,472,15,472,21,437,21"/>
+</map>

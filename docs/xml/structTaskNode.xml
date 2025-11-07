@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structTaskNode" kind="struct" language="C++" prot="public">
+    <compoundname>TaskNode</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" prot="public" static="no" mutable="no">
+        <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+        <definition>Task* TaskNode::task</definition>
+        <argsstring></argsstring>
+        <name>task</name>
+        <qualifiedname>TaskNode::task</qualifiedname>
+        <briefdescription>
+<para>Pointer to the task. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="102" column="10" bodyfile="FsmOS.h" bodystart="102" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">Scheduler::allocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">Scheduler::deallocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" compoundref="FsmOS_8cpp" startline="1109" endline="1159">Scheduler::findNextTask</referencedby>
+        <referencedby refid="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" compoundref="FsmOS_8cpp" startline="1309" endline="1321">Scheduler::findTask</referencedby>
+        <referencedby refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">Scheduler::forEachTask</referencedby>
+        <referencedby refid="classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9" compoundref="FsmOS_8cpp" startline="1754" endline="1771">Scheduler::getMostDelayingTask</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">Scheduler::initializeTaskNodePool</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">Scheduler::remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">Scheduler::removeAll</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" prot="public" static="no" mutable="no">
+        <type><ref refid="structTaskNode" kindref="compound">TaskNode</ref> *</type>
+        <definition>TaskNode* TaskNode::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>TaskNode::next</qualifiedname>
+        <briefdescription>
+<para>Pointer to next node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="103" column="14" bodyfile="FsmOS.h" bodystart="103" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b" compoundref="FsmOS_8cpp" startline="783" endline="827">Scheduler::add</referencedby>
+        <referencedby refid="classScheduler_1a38cf4a79d14bd68514a26946b19d3d53" compoundref="FsmOS_8cpp" startline="1328" endline="1352">Scheduler::allocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1a419ac926b5685ea804fe7eae086066e3" compoundref="FsmOS_8cpp" startline="1354" endline="1363">Scheduler::deallocateTaskNode</referencedby>
+        <referencedby refid="classScheduler_1aafdaee288f465a178ef154e1fce57cf4" compoundref="FsmOS_8cpp" startline="1109" endline="1159">Scheduler::findNextTask</referencedby>
+        <referencedby refid="classScheduler_1ad2b77c7b7e929aad03ce0034f992d876" compoundref="FsmOS_8cpp" startline="1309" endline="1321">Scheduler::findTask</referencedby>
+        <referencedby refid="classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b" compoundref="FsmOS_8cpp" startline="1295" endline="1306">Scheduler::forEachTask</referencedby>
+        <referencedby refid="classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9" compoundref="FsmOS_8cpp" startline="1754" endline="1771">Scheduler::getMostDelayingTask</referencedby>
+        <referencedby refid="classScheduler_1a7c61b8b908a19416283e66c0fb076a40" compoundref="FsmOS_8cpp" startline="1524" endline="1625">Scheduler::getSystemMemoryInfo</referencedby>
+        <referencedby refid="classScheduler_1aaa8cc86207802e4a457202396b2f7441" compoundref="FsmOS_8cpp" startline="742" endline="780">Scheduler::initializeTaskNodePool</referencedby>
+        <referencedby refid="classScheduler_1a303a5bd8d44b55803e6da7b4108401c2" compoundref="FsmOS_8cpp" startline="829" endline="869">Scheduler::remove</referencedby>
+        <referencedby refid="classScheduler_1aaa234e0155e99b4fcbae695898663eea" compoundref="FsmOS_8cpp" startline="871" endline="883">Scheduler::removeAll</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structTaskNode_1a0d859f161eaee61a367a76f70687f89a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>TaskNode::TaskNode</definition>
+        <argsstring>(Task *t)</argsstring>
+        <name>TaskNode</name>
+        <qualifiedname>TaskNode::TaskNode</qualifiedname>
+        <param>
+          <type><ref refid="classTask" kindref="compound">Task</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="105" column="5" bodyfile="FsmOS.h" bodystart="105" bodyend="105"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Node structure for <ref refid="classTask" kindref="compound">Task</ref> linked list. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Task</label>
+        <link refid="classTask"/>
+      </node>
+      <node id="1">
+        <label>TaskNode</label>
+        <link refid="structTaskNode"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>task</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="FsmOS.h" line="100" column="1" bodyfile="FsmOS.h" bodystart="101" bodyend="106"/>
+    <listofallmembers>
+      <member refid="structTaskNode_1af6f74dbb5d2baa80d10dabc43b593ffd" prot="public" virt="non-virtual"><scope>TaskNode</scope><name>next</name></member>
+      <member refid="structTaskNode_1a04f109a440464fd95c18d0f3758ee0af" prot="public" virt="non-virtual"><scope>TaskNode</scope><name>task</name></member>
+      <member refid="structTaskNode_1a0d859f161eaee61a367a76f70687f89a" prot="public" virt="non-virtual"><scope>TaskNode</scope><name>TaskNode</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

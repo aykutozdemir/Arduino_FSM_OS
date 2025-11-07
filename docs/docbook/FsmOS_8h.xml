@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_FsmOS_8h" xml:lang="en-US">
+<title>FsmOS.h File Reference</title>
+<indexterm><primary>FsmOS.h</primary></indexterm>
+<para>
+
+<para>A lightweight cooperative task scheduler for Arduino. </para>
+ 
+</para>
+<programlisting linenumbering="unnumbered">#include &lt;Arduino.h&gt;<?linebreak?>#include &lt;stdarg.h&gt;<?linebreak?>#include &lt;stdint.h&gt;<?linebreak?>#include &lt;util/atomic.h&gt;<?linebreak?>#include &lt;new&gt;<?linebreak?></programlisting>Include dependency graph for FsmOS.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="FsmOS_8h__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="FsmOS_8h__dep__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_structTaskNode">TaskNode</link></para>
+
+<para>Node structure for <link linkend="_classTask">Task</link> linked list. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structMemoryStats">MemoryStats</link></para>
+
+<para>Memory tracking statistics. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structTaskStats">TaskStats</link></para>
+
+<para><link linkend="_classTask">Task</link> execution statistics. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structResetInfo">ResetInfo</link></para>
+
+<para>System reset information. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structSystemMemoryInfo">SystemMemoryInfo</link></para>
+
+<para>System memory information. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structTaskMemoryInfo">TaskMemoryInfo</link></para>
+
+<para><link linkend="_classTask">Task</link> memory information. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classSharedMsg">SharedMsg</link></para>
+
+<para>Smart pointer-like wrapper for MsgData with reference counting. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classMsgDataPool">MsgDataPool</link></para>
+
+<para>Memory pool for efficient MsgData allocation. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classLinkedQueue">LinkedQueue&lt; T &gt;</link></para>
+
+<para>Lightweight, interrupt-safe linked queue. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structLinkedQueue_1_1Node">LinkedQueue&lt; T &gt;::Node</link></para>
+
+<para><link linkend="_structLinkedQueue_1_1Node">Node</link> structure for linked list. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classMutex">Mutex</link></para>
+
+<para><link linkend="_classMutex">Mutex</link> for cooperative task synchronization. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classSemaphore">Semaphore</link></para>
+
+<para><link linkend="_classSemaphore">Semaphore</link> for resource counting and synchronization. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classTask">Task</link></para>
+
+<para>Base class for all tasks in FsmOS. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classScheduler">Scheduler</link></para>
+
+<para>Core scheduler and task manager for FsmOS. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structScheduler_1_1QueuedMessage">Scheduler::QueuedMessage</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_structScheduler_1_1MsgNode">Scheduler::MsgNode</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4">ATOMIC_BLOCK</link>(type)&#160;&#160;&#160;for (uint8_t _ab_once = 1; _ab_once; _ab_once = 0)</para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef">ATOMIC_RESTORESTATE</link></para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a9f8057007e58750af1de560ba396f6bc">FSMOS_STACK_CANARY_MARGIN</link>&#160;&#160;&#160;32</para>
+
+<para>Safety margin (bytes) to keep between stack canary and current stack pointer. </para>
+</listitem>
+            <listitem><para>#define <link linkend="_group__fsmos_1gac11585cd9be0cb4a8fca05cf0c19adb1">TOPIC_BITFIELD_SIZE</link>&#160;&#160;&#160;16</para>
+
+<para>Topic bitfield configuration. </para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a91bc2cac3c4615c062e7524ba2ea2278">MAX_TOPICS</link>&#160;&#160;&#160;16</para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1addd900ed12192f9ff21848d61476d5f2">MAX_MESSAGE_POOL_SIZE</link>&#160;&#160;&#160;32</para>
+
+<para>Forward declaration for <link linkend="_classScheduler">Scheduler</link> class. </para>
+</listitem>
+            <listitem><para>#define <link linkend="_group__fsmos_1gad69a300f3356c3ac65410bbafd9a0dfb">RESET_CAUSE_EXTERNAL</link>&#160;&#160;&#160;0x01</para>
+
+<para>Reset cause flag constants from MCUSR register. </para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a1725fe610295be64608f3418032d83cf">RESET_CAUSE_BROWN_OUT</link>&#160;&#160;&#160;0x02</para>
+
+<para>Brown-out Reset flag (fallback) </para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a0fe30f99377de57d909e461a560dee78">RESET_CAUSE_POWER_ON</link>&#160;&#160;&#160;0x04</para>
+
+<para>Power-on Reset flag (fallback) </para>
+</listitem>
+            <listitem><para>#define <link linkend="_FsmOS_8h_1a8ddfa282a94d5f071d6b99b875d220b7">RESET_CAUSE_WATCHDOG</link>&#160;&#160;&#160;0x08</para>
+
+<para>Watchdog Reset flag (fallback) </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Typedefs    </title>
+        <itemizedlist>
+            <listitem><para>typedef uint16_t <link linkend="_FsmOS_8h_1a21f8c866143c5f1a7f2f75113f2652cb">TopicBitfield</link></para>
+</listitem>
+            <listitem><para>using <link linkend="_FsmOS_8h_1a9f53b37c6d575f1b498359cc429740b0">Timer8</link> = TimerT&lt; uint8_t &gt;</para>
+
+<para>8-bit timer for short durations (0-255ms) </para>
+</listitem>
+            <listitem><para>using <link linkend="_FsmOS_8h_1acc8d5d8e761e9ae66c17be7f7d8ff843">Timer16</link> = TimerT&lt; uint16_t &gt;</para>
+
+<para>16-bit timer for medium durations (0-65535ms) </para>
+</listitem>
+            <listitem><para>using <link linkend="_FsmOS_8h_1acce064b0f024fed7c7008c84a000538f">Timer32</link> = TimerT&lt; uint32_t &gt;</para>
+
+<para>32-bit timer for long durations (0-4294967295ms) </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> { <?linebreak?><link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883">RESET_UNKNOWN</link> = 0
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e">RESET_POWER_ON</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323">RESET_EXTERNAL</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1">RESET_BROWN_OUT</link>
+, <?linebreak?><link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d">RESET_WATCHDOG</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b">RESET_MULTIPLE</link>
+ }</para>
+
+<para>Reset cause enumeration for Optiboot reset flags. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>template&lt;typename T &gt; </para><para>struct <link linkend="_group__fsmos_1gaa273e9811fbe7bee8c5bc7ec1f5d0ec5">__attribute__</link> ((packed)) TimerT</para>
+
+<para>Memory-optimized template-based timer for specific duration ranges. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_group__fsmos_1ga1e4e0284f7996d8015ca2b268608904a">__attribute__</link> ((packed)) MsgData</para>
+
+<para>Message data structure for inter-task communication. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1gac6c8dbf1f133ab906d0f3490e0de5d74">logDebugf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Default per-task message production budget. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1ga0fd80592a7d1d2fd9b1b52081a8d69cb">logInfof</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log an info message with formatting. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1ga58264bc1f779d2cd6cb6a8c733a17a21">logWarnf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log a warning message with formatting. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1gade3c130d653bf887af5b2f6120f388ad">logErrorf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log an error message with formatting. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Variables    </title>
+        <itemizedlist>
+            <listitem><para>const uint8_t <link linkend="_group__fsmos_1ga5c3f1eb0aa79f56d91fdbf8fd9f1b911">DEFAULT_TASK_MESSAGE_BUDGET</link> = 1</para>
+
+<para>Base class for all tasks in FsmOS. </para>
+</listitem>
+            <listitem><para><link linkend="_classScheduler">Scheduler</link> <link linkend="_group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e">OS</link></para>
+
+<para>Global scheduler instance. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1gac154c550db4c5b7fed1b1fd1e31a63ee">DEFAULT_TASK_PERIOD</link> = 100</para>
+
+<para>Default task period in milliseconds. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1ga13157fca65016a2c6c913eff0119cf5c">MIN_TASK_PERIOD</link> = 1</para>
+
+<para>Minimum allowed task period in milliseconds. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1gab0cd97b1506816b7e089447cd3430e65">MAX_TASK_PERIOD</link> = 65535</para>
+
+<para>Maximum allowed task period in milliseconds. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>A lightweight cooperative task scheduler for Arduino. </para>
+
+<para><formalpara><title>Author</title>
+
+<para>Aykut Özdemir <link xlink:href="mailto:aykutozdemirgyte@gmail.com">aykutozdemirgyte@gmail.com</link> </para>
+</formalpara>
+<formalpara><title>Date</title>
+
+<para>2025-10-02</para>
+</formalpara>
+FsmOS provides a simple, memory-efficient task scheduler for Arduino, supporting cooperative multitasking, message passing, and system monitoring.</para>
+
+<para>Key features:<itemizedlist>
+<listitem>
+<para>Cooperative task scheduling with configurable periods</para>
+</listitem><listitem>
+<para>Inter-task communication through messages and events</para>
+</listitem><listitem>
+<para>Dynamic task creation and deletion</para>
+</listitem><listitem>
+<para>Memory management and monitoring</para>
+</listitem><listitem>
+<para>System diagnostics and profiling</para>
+</listitem><listitem>
+<para>Logging system with multiple levels</para>
+</listitem></itemizedlist>
+</para>
+
+<para><note><title>Note</title>
+
+<para>This library is designed for AVR-based Arduino boards but includes partial support for other architectures.</para>
+</note>
+<formalpara><title>Version</title>
+
+<para>1.3.0 - Major refactoring and code organization </para>
+</formalpara>
+<formalpara><title>Copyright</title>
+
+<para>2025 Aykut Özdemir <link xlink:href="mailto:aykutozdemirgyte@gmail.com">aykutozdemirgyte@gmail.com</link> </para>
+</formalpara>
+</para>
+<para>
+Definition in file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_FsmOS_8h_1aaaea265b31dabcfb3098bec7685c39e4"/><section>
+    <title>ATOMIC_BLOCK</title>
+<indexterm><primary>ATOMIC_BLOCK</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>ATOMIC_BLOCK</secondary></indexterm>
+<para><computeroutput>#define ATOMIC_BLOCK( type)&#160;&#160;&#160;for (uint8_t _ab_once = 1; _ab_once; _ab_once = 0)</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00048">48</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a362c18b15a09703e42e1c246c47420ef"/><section>
+    <title>ATOMIC_RESTORESTATE</title>
+<indexterm><primary>ATOMIC_RESTORESTATE</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>ATOMIC_RESTORESTATE</secondary></indexterm>
+<para><computeroutput>#define ATOMIC_RESTORESTATE</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00049">49</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a9f8057007e58750af1de560ba396f6bc"/><section>
+    <title>FSMOS_STACK_CANARY_MARGIN</title>
+<indexterm><primary>FSMOS_STACK_CANARY_MARGIN</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>FSMOS_STACK_CANARY_MARGIN</secondary></indexterm>
+<para><computeroutput>#define FSMOS_STACK_CANARY_MARGIN&#160;&#160;&#160;32</computeroutput></para><para>
+
+<para>Safety margin (bytes) to keep between stack canary and current stack pointer. </para>
+</para>
+
+<para><note><title>Note</title>
+
+<para>Prevents corruption of active stack frames and ISR stacks </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00058">58</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1addd900ed12192f9ff21848d61476d5f2"/><section>
+    <title>MAX_MESSAGE_POOL_SIZE</title>
+<indexterm><primary>MAX_MESSAGE_POOL_SIZE</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>MAX_MESSAGE_POOL_SIZE</secondary></indexterm>
+<para><computeroutput>#define MAX_MESSAGE_POOL_SIZE&#160;&#160;&#160;32</computeroutput></para><para>
+
+<para>Forward declaration for <link linkend="_classScheduler">Scheduler</link> class. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00092">92</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a91bc2cac3c4615c062e7524ba2ea2278"/><section>
+    <title>MAX_TOPICS</title>
+<indexterm><primary>MAX_TOPICS</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>MAX_TOPICS</secondary></indexterm>
+<para><computeroutput>#define MAX_TOPICS&#160;&#160;&#160;16</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00079">79</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a1725fe610295be64608f3418032d83cf"/><section>
+    <title>RESET_CAUSE_BROWN_OUT</title>
+<indexterm><primary>RESET_CAUSE_BROWN_OUT</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>RESET_CAUSE_BROWN_OUT</secondary></indexterm>
+<para><computeroutput>#define RESET_CAUSE_BROWN_OUT&#160;&#160;&#160;0x02</computeroutput></para><para>
+
+<para>Brown-out Reset flag (fallback) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00186">186</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a0fe30f99377de57d909e461a560dee78"/><section>
+    <title>RESET_CAUSE_POWER_ON</title>
+<indexterm><primary>RESET_CAUSE_POWER_ON</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>RESET_CAUSE_POWER_ON</secondary></indexterm>
+<para><computeroutput>#define RESET_CAUSE_POWER_ON&#160;&#160;&#160;0x04</computeroutput></para><para>
+
+<para>Power-on Reset flag (fallback) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00187">187</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a8ddfa282a94d5f071d6b99b875d220b7"/><section>
+    <title>RESET_CAUSE_WATCHDOG</title>
+<indexterm><primary>RESET_CAUSE_WATCHDOG</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>RESET_CAUSE_WATCHDOG</secondary></indexterm>
+<para><computeroutput>#define RESET_CAUSE_WATCHDOG&#160;&#160;&#160;0x08</computeroutput></para><para>
+
+<para>Watchdog Reset flag (fallback) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00188">188</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Typedef Documentation</title>
+<anchor xml:id="_FsmOS_8h_1acc8d5d8e761e9ae66c17be7f7d8ff843"/><section>
+    <title>Timer16</title>
+<indexterm><primary>Timer16</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>Timer16</secondary></indexterm>
+<para><computeroutput>using <link linkend="_FsmOS_8h_1acc8d5d8e761e9ae66c17be7f7d8ff843">Timer16</link> =  TimerT&lt;uint16_t&gt;</computeroutput></para><para>
+
+<para>16-bit timer for medium durations (0-65535ms) </para>
+</para>
+
+<para>Uses 4 bytes total memory, ideal for most timing needs </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00275">275</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1acce064b0f024fed7c7008c84a000538f"/><section>
+    <title>Timer32</title>
+<indexterm><primary>Timer32</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>Timer32</secondary></indexterm>
+<para><computeroutput>using <link linkend="_FsmOS_8h_1acce064b0f024fed7c7008c84a000538f">Timer32</link> =  TimerT&lt;uint32_t&gt;</computeroutput></para><para>
+
+<para>32-bit timer for long durations (0-4294967295ms) </para>
+</para>
+
+<para>Uses 8 bytes total memory, for very long timing requirements </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00281">281</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a9f53b37c6d575f1b498359cc429740b0"/><section>
+    <title>Timer8</title>
+<indexterm><primary>Timer8</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>Timer8</secondary></indexterm>
+<para><computeroutput>using <link linkend="_FsmOS_8h_1a9f53b37c6d575f1b498359cc429740b0">Timer8</link> =  TimerT&lt;uint8_t&gt;</computeroutput></para><para>
+
+<para>8-bit timer for short durations (0-255ms) </para>
+</para>
+
+<para>Uses 2 bytes total memory, ideal for debouncing and short delays </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00269">269</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_FsmOS_8h_1a21f8c866143c5f1a7f2f75113f2652cb"/><section>
+    <title>TopicBitfield</title>
+<indexterm><primary>TopicBitfield</primary><secondary>FsmOS.h</secondary></indexterm>
+<indexterm><primary>FsmOS.h</primary><secondary>TopicBitfield</secondary></indexterm>
+<para><computeroutput>typedef uint16_t <link linkend="_FsmOS_8h_1a21f8c866143c5f1a7f2f75113f2652cb">TopicBitfield</link></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00078">78</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+</section>

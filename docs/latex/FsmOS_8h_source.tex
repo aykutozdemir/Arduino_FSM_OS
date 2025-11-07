@@ -1,0 +1,709 @@
+\doxysection{Fsm\+OS.\+h}
+\hypertarget{FsmOS_8h_source}{}\label{FsmOS_8h_source}\mbox{\hyperlink{FsmOS_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00032}00032\ \textcolor{preprocessor}{\#ifndef\ FSMOS\_H}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ FSMOS\_H}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00035}00035\ \textcolor{comment}{/*\ ==================\ Core\ Dependencies\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00036}00036\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00037}00037\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00038}00038\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00039}00039\ \textcolor{preprocessor}{\#include\ <util/atomic.h>}\ \ \textcolor{comment}{//\ For\ ATOMIC\_BLOCK}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00041}00041\ \textcolor{preprocessor}{\#include\ <new>}\ \ \textcolor{comment}{//\ For\ placement\ new\ operator}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00043}00043\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00044}00044\ \textcolor{preprocessor}{\#include\ <avr/io.h>}\ \ \ \textcolor{comment}{//\ For\ GPIOR0\ and\ MCUSR}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00045}00045\ \textcolor{preprocessor}{\#include\ <avr/wdt.h>}\ \ \textcolor{comment}{//\ For\ watchdog\ timer}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00046}00046\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00047}00047\ \textcolor{comment}{//\ Fallback\ for\ non-\/AVR\ platforms}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00048}\mbox{\hyperlink{FsmOS_8h_aaaea265b31dabcfb3098bec7685c39e4}{00048}}\ \textcolor{preprocessor}{\#define\ ATOMIC\_BLOCK(type)\ for\ (uint8\_t\ \_ab\_once\ =\ 1;\ \_ab\_once;\ \_ab\_once\ =\ 0)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00049}\mbox{\hyperlink{FsmOS_8h_a362c18b15a09703e42e1c246c47420ef}{00049}}\ \textcolor{preprocessor}{\#define\ ATOMIC\_RESTORESTATE}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00050}00050\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00052}00052\ \textcolor{comment}{//\ ==================\ Stack\ Canary\ Configuration\ ==================}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00057}00057\ \textcolor{preprocessor}{\#ifndef\ FSMOS\_STACK\_CANARY\_MARGIN}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00058}\mbox{\hyperlink{FsmOS_8h_a9f8057007e58750af1de560ba396f6bc}{00058}}\ \textcolor{preprocessor}{\#define\ FSMOS\_STACK\_CANARY\_MARGIN\ 32}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00059}00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00069}00069\ \textcolor{preprocessor}{\#ifndef\ TOPIC\_BITFIELD\_SIZE}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00070}\mbox{\hyperlink{group__fsmos_gac11585cd9be0cb4a8fca05cf0c19adb1}{00070}}\ \textcolor{preprocessor}{\#define\ TOPIC\_BITFIELD\_SIZE\ 16\ \ }\textcolor{comment}{//\ Default:\ 16-\/bit\ bitfield}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00071}00071\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00073}00073\ \textcolor{comment}{//\ Bitfield\ type\ selection\ based\ on\ define}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00074}00074\ \textcolor{preprocessor}{\#if\ TOPIC\_BITFIELD\_SIZE\ <=\ 8}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00075}00075\ \textcolor{keyword}{typedef}\ uint8\_t\ \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00076}00076\ \textcolor{preprocessor}{\#define\ MAX\_TOPICS\ 8}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00077}00077\ \textcolor{preprocessor}{\#elif\ TOPIC\_BITFIELD\_SIZE\ <=\ 16}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00078}\mbox{\hyperlink{group__fsmos_gaa273e9811fbe7bee8c5bc7ec1f5d0ec5}{00078}}\ \textcolor{keyword}{typedef}\ uint16\_t\ \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00079}\mbox{\hyperlink{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}{00079}}\ \textcolor{preprocessor}{\#define\ MAX\_TOPICS\ 16}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00080}00080\ \textcolor{preprocessor}{\#elif\ TOPIC\_BITFIELD\_SIZE\ <=\ 32}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00081}00081\ \textcolor{keyword}{typedef}\ uint32\_t\ \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00082}00082\ \textcolor{preprocessor}{\#define\ MAX\_TOPICS\ 32}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00083}00083\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00084}00084\ \textcolor{preprocessor}{\#error\ "{}TOPIC\_BITFIELD\_SIZE\ must\ be\ 8,\ 16,\ or\ 32"{}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00085}00085\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00087}00087\ \textcolor{comment}{/*\ ==================\ Forward\ Declarations\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00088}00088\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTask}{Task}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00089}00089\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classScheduler}{Scheduler}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00090}00090\ \textcolor{comment}{//\ ==================\ Message\ Queue\ Constants\ (must\ appear\ before\ use)\ ==================}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00091}00091\ \textcolor{preprocessor}{\#ifndef\ MAX\_MESSAGE\_POOL\_SIZE}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00092}\mbox{\hyperlink{FsmOS_8h_addd900ed12192f9ff21848d61476d5f2}{00092}}\ \textcolor{preprocessor}{\#define\ MAX\_MESSAGE\_POOL\_SIZE\ 32}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00093}00093\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00095}00095\ \textcolor{comment}{/*\ ==================\ Task\ Node\ Structure\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00100}\mbox{\hyperlink{structTaskNode}{00100}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTaskNode}{TaskNode}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00101}00101\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00102}\mbox{\hyperlink{structTaskNode_a04f109a440464fd95c18d0f3758ee0af}{00102}}\ \ \ \ \ \mbox{\hyperlink{classTask}{Task}}\ *\mbox{\hyperlink{structTaskNode_a04f109a440464fd95c18d0f3758ee0af}{task}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00103}\mbox{\hyperlink{structTaskNode_af6f74dbb5d2baa80d10dabc43b593ffd}{00103}}\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{structTaskNode_af6f74dbb5d2baa80d10dabc43b593ffd}{next}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00105}\mbox{\hyperlink{structTaskNode_a0d859f161eaee61a367a76f70687f89a}{00105}}\ \ \ \ \ \mbox{\hyperlink{structTaskNode_a0d859f161eaee61a367a76f70687f89a}{TaskNode}}(\mbox{\hyperlink{classTask}{Task}}\ *t)\ :\ \mbox{\hyperlink{structTaskNode_a04f109a440464fd95c18d0f3758ee0af}{task}}(t),\ \mbox{\hyperlink{structTaskNode_af6f74dbb5d2baa80d10dabc43b593ffd}{next}}(nullptr)\ \{\}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00106}00106\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00108}00108\ \textcolor{comment}{/*\ ==================\ Additional\ Types\ and\ Structures\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00114}\mbox{\hyperlink{structMemoryStats}{00114}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structMemoryStats}{MemoryStats}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00115}00115\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00116}\mbox{\hyperlink{structMemoryStats_ad400667b2264e48d954b2feee8833f4a}{00116}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structMemoryStats_ad400667b2264e48d954b2feee8833f4a}{total\_allocated}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00117}\mbox{\hyperlink{structMemoryStats_aaefab979deb1c98218e9267d198de4fe}{00117}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structMemoryStats_aaefab979deb1c98218e9267d198de4fe}{total\_freed}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00118}\mbox{\hyperlink{structMemoryStats_ab27f5b00f150919cd24828e4f3136357}{00118}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structMemoryStats_ab27f5b00f150919cd24828e4f3136357}{peak\_usage}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00119}\mbox{\hyperlink{structMemoryStats_a66c3d8d757e4fcd55403c904fa4cb0d5}{00119}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structMemoryStats_a66c3d8d757e4fcd55403c904fa4cb0d5}{current\_usage}};\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00120}00120\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00127}\mbox{\hyperlink{structTaskStats}{00127}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTaskStats}{TaskStats}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00128}00128\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00129}\mbox{\hyperlink{structTaskStats_a1fc9ad09023166819ea34a6c9e00a956}{00129}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTaskStats_a1fc9ad09023166819ea34a6c9e00a956}{taskId}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00130}\mbox{\hyperlink{structTaskStats_acee85734ca75baa7fe01cad1c24fc34b}{00130}}\ \ \ \ \ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{structTaskStats_acee85734ca75baa7fe01cad1c24fc34b}{name}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00131}\mbox{\hyperlink{structTaskStats_ad14bdd478708018fae0f1bbceb19d2d0}{00131}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTaskStats_ad14bdd478708018fae0f1bbceb19d2d0}{state}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00132}\mbox{\hyperlink{structTaskStats_a28271d6c20d6bfccfea9f21fcdb7dd63}{00132}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskStats_a28271d6c20d6bfccfea9f21fcdb7dd63}{periodMs}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00133}\mbox{\hyperlink{structTaskStats_a434524846cef9e3a82b15d7f7b5d439d}{00133}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTaskStats_a434524846cef9e3a82b15d7f7b5d439d}{priority}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00134}\mbox{\hyperlink{structTaskStats_afb9812d3db56b4a74e3534a0b1046b8c}{00134}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structTaskStats_afb9812d3db56b4a74e3534a0b1046b8c}{runCount}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00135}\mbox{\hyperlink{structTaskStats_a922dffb9309c234de882457919f7cb66}{00135}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structTaskStats_a922dffb9309c234de882457919f7cb66}{maxExecTimeUs}};\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00136}\mbox{\hyperlink{structTaskStats_a68e1e0b13b6fc7e48ac77f22bc338492}{00136}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structTaskStats_a68e1e0b13b6fc7e48ac77f22bc338492}{totalExecTimeUs}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00137}\mbox{\hyperlink{structTaskStats_ab319b8455c244af5111b6c2e395ffad9}{00137}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskStats_ab319b8455c244af5111b6c2e395ffad9}{stackUsage}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00138}\mbox{\hyperlink{structTaskStats_abbf27ee4cb7f8272b150152df12c3da0}{00138}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskStats_abbf27ee4cb7f8272b150152df12c3da0}{delayCount}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00139}\mbox{\hyperlink{structTaskStats_ac2ef063a104bca4c81457a8db057a51a}{00139}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskStats_ac2ef063a104bca4c81457a8db057a51a}{maxDelayMs}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00140}00140\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00147}\mbox{\hyperlink{structResetInfo}{00147}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structResetInfo}{ResetInfo}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00148}00148\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00149}\mbox{\hyperlink{structResetInfo_a4a91d356cc432144cd170d8e26e33a44}{00149}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structResetInfo_a4a91d356cc432144cd170d8e26e33a44}{resetReason}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00150}\mbox{\hyperlink{structResetInfo_ae2c739e645762e75b0137ecf4edcaea8}{00150}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structResetInfo_ae2c739e645762e75b0137ecf4edcaea8}{resetTime}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00151}\mbox{\hyperlink{structResetInfo_a99e40fbce39ff24b43a4fc1c2d44a81c}{00151}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structResetInfo_a99e40fbce39ff24b43a4fc1c2d44a81c}{watchdogTimeout}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00152}\mbox{\hyperlink{structResetInfo_a8969cb34a6ef24088d2e647a121cd878}{00152}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structResetInfo_a8969cb34a6ef24088d2e647a121cd878}{lastTaskId}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00154}00154\ \ \ \ \ \textcolor{comment}{//\ Optiboot\ reset\ flag\ information}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00155}\mbox{\hyperlink{structResetInfo_ad979eaae9cfc3f1cf959811b090194b5}{00155}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structResetInfo_ad979eaae9cfc3f1cf959811b090194b5}{optibootResetFlags}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00156}\mbox{\hyperlink{structResetInfo_a05874fdc762c1aa26bd60d8d16e2cc7b}{00156}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structResetInfo_a05874fdc762c1aa26bd60d8d16e2cc7b}{optibootResetCause}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00157}00157\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00164}\mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{00164}}\ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{ResetCause}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00165}00165\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00166}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883}{00166}}\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883}{RESET\_UNKNOWN}}\ =\ 0,\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00167}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e}{00167}}\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e}{RESET\_POWER\_ON}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00168}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323}{00168}}\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323}{RESET\_EXTERNAL}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00169}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1}{00169}}\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1}{RESET\_BROWN\_OUT}},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00170}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d}{00170}}\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d}{RESET\_WATCHDOG}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00171}00171\ \ \ \ \ \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b}{RESET\_MULTIPLE}}\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00172}\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b}{00172}}\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00179}00179\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00180}00180\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_EXTERNAL\ (1\ <<\ EXTRF)\ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00181}00181\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_BROWN\_OUT\ (1\ <<\ BORF)\ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00182}00182\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_POWER\_ON\ (1\ <<\ PORF)\ \ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00183}00183\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_WATCHDOG\ (1\ <<\ WDRF)\ \ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00184}00184\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00185}\mbox{\hyperlink{group__fsmos_gad69a300f3356c3ac65410bbafd9a0dfb}{00185}}\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_EXTERNAL\ 0x01\ \ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00186}\mbox{\hyperlink{FsmOS_8h_a1725fe610295be64608f3418032d83cf}{00186}}\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_BROWN\_OUT\ 0x02\ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00187}\mbox{\hyperlink{FsmOS_8h_a0fe30f99377de57d909e461a560dee78}{00187}}\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_POWER\_ON\ 0x04\ \ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00188}\mbox{\hyperlink{FsmOS_8h_a8ddfa282a94d5f071d6b99b875d220b7}{00188}}\ \textcolor{preprocessor}{\#define\ RESET\_CAUSE\_WATCHDOG\ 0x08\ \ \ }}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00189}00189\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00196}\mbox{\hyperlink{structSystemMemoryInfo}{00196}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSystemMemoryInfo}{SystemMemoryInfo}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00197}00197\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00198}\mbox{\hyperlink{structSystemMemoryInfo_a3fead35bc0c51a87ca8cb5630eea2fe6}{00198}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a3fead35bc0c51a87ca8cb5630eea2fe6}{freeRam}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00199}\mbox{\hyperlink{structSystemMemoryInfo_a74fd6f112cb2a361579343bc609ba3bd}{00199}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a74fd6f112cb2a361579343bc609ba3bd}{totalRam}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00200}\mbox{\hyperlink{structSystemMemoryInfo_ab46e008190c5d4dc58a098653fc96e21}{00200}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_ab46e008190c5d4dc58a098653fc96e21}{heapSize}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00201}\mbox{\hyperlink{structSystemMemoryInfo_aafc733c82678f25b4579ac80ff3f3416}{00201}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_aafc733c82678f25b4579ac80ff3f3416}{largestBlock}};\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00202}\mbox{\hyperlink{structSystemMemoryInfo_aa49fcb6068c10bdab13a7cfa97241c27}{00202}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structSystemMemoryInfo_aa49fcb6068c10bdab13a7cfa97241c27}{heapFragments}};\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00203}\mbox{\hyperlink{structSystemMemoryInfo_a12ed83e6ef3ab65b2e708eb7634ae3d9}{00203}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a12ed83e6ef3ab65b2e708eb7634ae3d9}{stackSize}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00204}\mbox{\hyperlink{structSystemMemoryInfo_a23c2b52b7aa05bdd6c8316280fafb35e}{00204}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a23c2b52b7aa05bdd6c8316280fafb35e}{stackUsed}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00205}\mbox{\hyperlink{structSystemMemoryInfo_aa09da446795f6a14640ac228f8775332}{00205}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_aa09da446795f6a14640ac228f8775332}{stackFree}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00206}\mbox{\hyperlink{structSystemMemoryInfo_ab4646e94bacfe136033551f29c88127f}{00206}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structSystemMemoryInfo_ab4646e94bacfe136033551f29c88127f}{totalTasks}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00207}\mbox{\hyperlink{structSystemMemoryInfo_ad53218d4a3a0bd2bf27ee57618c502f9}{00207}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_ad53218d4a3a0bd2bf27ee57618c502f9}{taskMemory}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00208}\mbox{\hyperlink{structSystemMemoryInfo_af922c19a62e2db75d2d35abc96282760}{00208}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structSystemMemoryInfo_af922c19a62e2db75d2d35abc96282760}{activeMessages}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00209}\mbox{\hyperlink{structSystemMemoryInfo_a76bfcb475e0cfe6757e0fbbc04ad371e}{00209}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a76bfcb475e0cfe6757e0fbbc04ad371e}{messageMemory}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00210}\mbox{\hyperlink{structSystemMemoryInfo_ae527fbdfcb22a4136b2f6f24d60c895a}{00210}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_ae527fbdfcb22a4136b2f6f24d60c895a}{flashUsed}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00211}\mbox{\hyperlink{structSystemMemoryInfo_abdbd97bb0a5a2fece0b70320ccedffc4}{00211}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_abdbd97bb0a5a2fece0b70320ccedffc4}{flashFree}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00212}\mbox{\hyperlink{structSystemMemoryInfo_a863feffbb30f9ba2b8bf031421830f31}{00212}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_a863feffbb30f9ba2b8bf031421830f31}{eepromUsed}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00213}\mbox{\hyperlink{structSystemMemoryInfo_afbf8d2df35ecd00576f480561255f04d}{00213}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structSystemMemoryInfo_afbf8d2df35ecd00576f480561255f04d}{eepromFree}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00214}00214\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00221}\mbox{\hyperlink{structTaskMemoryInfo}{00221}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTaskMemoryInfo}{TaskMemoryInfo}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00222}00222\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00223}\mbox{\hyperlink{structTaskMemoryInfo_a6ccb06721fe721014762215555523d65}{00223}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTaskMemoryInfo_a6ccb06721fe721014762215555523d65}{task\_id}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00224}\mbox{\hyperlink{structTaskMemoryInfo_a455ea7f69c1a9c3b898d5c8d40e0fac7}{00224}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskMemoryInfo_a455ea7f69c1a9c3b898d5c8d40e0fac7}{task\_struct\_size}};\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00225}\mbox{\hyperlink{structTaskMemoryInfo_a33936208344182c0cb2040787efaf117}{00225}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskMemoryInfo_a33936208344182c0cb2040787efaf117}{subscription\_size}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00226}\mbox{\hyperlink{structTaskMemoryInfo_afc06164ff4977316ba80890f78771b91}{00226}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskMemoryInfo_afc06164ff4977316ba80890f78771b91}{queue\_size}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00227}\mbox{\hyperlink{structTaskMemoryInfo_ae365acfa19af10f054aee062cfe3b824}{00227}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTaskMemoryInfo_ae365acfa19af10f054aee062cfe3b824}{total\_allocated}};\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00228}00228\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00230}00230\ \textcolor{comment}{/*\ ==================\ Timer\ System\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00244}00244\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00245}00245\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{group__fsmos_gaa273e9811fbe7bee8c5bc7ec1f5d0ec5}{\_\_attribute\_\_}}((packed))\ TimerT}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00246}00246\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00247}00247\ \ \ \ \ T\ startMs\ =\ 0;\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00248}00248\ \ \ \ \ T\ durationMs\ =\ 0;\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00249}00249\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00255}00255\ \ \ \ \ \textcolor{keywordtype}{void}\ startTimer(T\ d);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00256}00256\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00262}00262\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ isExpired()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00263}00263\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00269}\mbox{\hyperlink{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0}{00269}}\ \textcolor{keyword}{using\ }\mbox{\hyperlink{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0}{Timer8}}\ =\ TimerT<uint8\_t>;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00270}00270\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00275}\mbox{\hyperlink{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843}{00275}}\ \textcolor{keyword}{using\ }\mbox{\hyperlink{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843}{Timer16}}\ =\ TimerT<uint16\_t>;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00281}\mbox{\hyperlink{FsmOS_8h_acce064b0f024fed7c7008c84a000538f}{00281}}\ \textcolor{keyword}{using\ }\mbox{\hyperlink{FsmOS_8h_acce064b0f024fed7c7008c84a000538f}{Timer32}}\ =\ TimerT<uint32\_t>;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00282}00282\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00283}00283\ \textcolor{comment}{/*\ ==================\ Message\ System\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00294}00294\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{group__fsmos_gaa273e9811fbe7bee8c5bc7ec1f5d0ec5}{\_\_attribute\_\_}}((packed))\ MsgData}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00295}00295\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00296}00296\ \ \ \ \ uint8\_t\ type;\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00297}00297\ \ \ \ \ uint8\_t\ topic;\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00298}00298\ \ \ \ \ uint16\_t\ arg;\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00299}00299\ \ \ \ \ uint8\_t\ refCount;\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00300}00300\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00301}00301\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00313}\mbox{\hyperlink{classSharedMsg}{00313}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSharedMsg}{SharedMsg}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00314}00314\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00315}00315\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00320}00320\ \ \ \ \ \mbox{\hyperlink{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2}{SharedMsg}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00321}00321\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00327}00327\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2}{SharedMsg}}(MsgData\ *data);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00328}00328\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00334}00334\ \ \ \ \ \mbox{\hyperlink{classSharedMsg_a71c37ab34ce77dcdf80c756635b68ff2}{SharedMsg}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedMsg}{SharedMsg}}\ \&other);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00335}00335\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00342}00342\ \ \ \ \ \mbox{\hyperlink{classSharedMsg}{SharedMsg}}\ \&\mbox{\hyperlink{classSharedMsg_ad7ce8df960b49c88f0d4264c23c93f81}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedMsg}{SharedMsg}}\ \&other);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00348}00348\ \ \ \ \ \mbox{\hyperlink{classSharedMsg_a1819d3340c3fa3d00950eb087cd97131}{\string~SharedMsg}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00349}00349\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00354}00354\ \ \ \ \ MsgData\ *\mbox{\hyperlink{classSharedMsg_aa20f39d8440882aa6260e5802833e67e}{getData}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00355}00355\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00360}00360\ \ \ \ \ MsgData\ *\mbox{\hyperlink{classSharedMsg_ae7a947149acda480996050de99ee1b88}{operator-\/>}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00361}00361\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00366}00366\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classSharedMsg_aaba8448183f8a5204bd8bc887c7b4ec3}{isValid}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00367}00367\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00368}00368\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00369}\mbox{\hyperlink{classSharedMsg_a53039c707f1dc8a52c05f33af2cb24ea}{00369}}\ \ \ \ \ MsgData\ *\mbox{\hyperlink{classSharedMsg_a53039c707f1dc8a52c05f33af2cb24ea}{msgData}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00370}00370\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSharedMsg_a458f5ccc07be87e716ef117e2eb0bce9}{release}}();\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00371}00371\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00372}00372\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00383}\mbox{\hyperlink{classMsgDataPool}{00383}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMsgDataPool}{MsgDataPool}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00384}00384\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00385}00385\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00390}00390\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a72b29d6cb8320d81b5b0d7304cf5dce2}{MsgDataPool}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00391}00391\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00396}00396\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_af2acf581af3a23b651a8985191415f4b}{\string~MsgDataPool}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00397}00397\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00403}00403\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{MsgData}}\ *\mbox{\hyperlink{classMsgDataPool_a5249e1c96225998fac71ba67c691740d}{allocate}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00404}00404\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00410}00410\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee}{deallocate}}(\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{MsgData}}\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00411}00411\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00416}00416\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMsgDataPool_aec9292e845c522cd14c90764b8bfc054}{updateAdaptiveLimit}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00417}00417\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00422}00422\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_a8d57ebaaeb9f6907fd2a6844d8611a68}{getPoolSize}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00423}00423\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00428}00428\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_a78472476fea071173c12900e76bb5525}{getPoolLimit}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00429}00429\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00434}00434\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_ab68fab96e5ad24d2879c0c852391d25e}{getCurrentInUse}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00435}00435\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00441}00441\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a}{initialize}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00442}00442\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00443}00443\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00444}\mbox{\hyperlink{classMsgDataPool_af8a8bed0618d0d7acccaf8f6c5256851}{00444}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{MsgData}}\ *\mbox{\hyperlink{classMsgDataPool_af8a8bed0618d0d7acccaf8f6c5256851}{pool}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00445}\mbox{\hyperlink{classMsgDataPool_aca5724c9ea65b870035798e3cca1149d}{00445}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_aca5724c9ea65b870035798e3cca1149d}{poolSize}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00446}\mbox{\hyperlink{classMsgDataPool_a25c6c977b1a8a1682d63b4d5e0281ee2}{00446}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_a25c6c977b1a8a1682d63b4d5e0281ee2}{poolLimit}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00447}\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{00447}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{currentInUse}};\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00448}\mbox{\hyperlink{classMsgDataPool_a371ad52b35bd9e2e397abf1dabacc24e}{00448}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\_t}}\ \mbox{\hyperlink{classMsgDataPool_a371ad52b35bd9e2e397abf1dabacc24e}{nextFree}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00449}00449\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00450}00450\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00451}00451\ \textcolor{comment}{/*\ ==================\ Data\ Structures\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00463}00463\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00464}\mbox{\hyperlink{classLinkedQueue}{00464}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classLinkedQueue}{LinkedQueue}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00465}00465\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00466}00466\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00470}\mbox{\hyperlink{structLinkedQueue_1_1Node}{00470}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00471}00471\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00472}\mbox{\hyperlink{structLinkedQueue_1_1Node_abfc1309426317b5ec46b96ad93fa3615}{00472}}\ \ \ \ \ \ \ \ \ T\ \mbox{\hyperlink{structLinkedQueue_1_1Node_abfc1309426317b5ec46b96ad93fa3615}{data}};\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00473}\mbox{\hyperlink{structLinkedQueue_1_1Node_a105896e21861dcb1bb7bcb5af3e5c9b2}{00473}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}\ *\mbox{\hyperlink{structLinkedQueue_1_1Node_a105896e21861dcb1bb7bcb5af3e5c9b2}{next}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00474}00474\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00475}00475\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00480}00480\ \ \ \ \ \mbox{\hyperlink{classLinkedQueue_a4983be0b269558e5bb0f93d2ce084345}{LinkedQueue}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00481}00481\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00486}00486\ \ \ \ \ \mbox{\hyperlink{classLinkedQueue_ad84250d452864b16e000f4d1ee6295f6}{\string~LinkedQueue}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00487}00487\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00493}00493\ \ \ \ \ \mbox{\hyperlink{classLinkedQueue_a4983be0b269558e5bb0f93d2ce084345}{LinkedQueue}}(\mbox{\hyperlink{classLinkedQueue}{LinkedQueue}}\ \&\&other)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00494}00494\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00500}00500\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classLinkedQueue_ab2bb64be832ea8f62e76dc7fcbe1e9fb}{push}}(\textcolor{keyword}{const}\ T\ \&item);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00501}00501\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00507}00507\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classLinkedQueue_ae54fefdc687852e0465e414bbfadd138}{pop}}(T\ \&item);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00508}00508\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00513}00513\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classLinkedQueue_af4554d6d9ca422c9332217fbbe054c06}{isEmpty}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00514}00514\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00519}00519\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classLinkedQueue_a81123eba59f05b7218b756740cfb3fa6}{getSize}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00520}00520\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00521}00521\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00522}\mbox{\hyperlink{classLinkedQueue_ab473bd215aaee5a68ed9535a9605e8be}{00522}}\ \ \ \ \ \mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}\ *\mbox{\hyperlink{classLinkedQueue_ab473bd215aaee5a68ed9535a9605e8be}{head}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00523}\mbox{\hyperlink{classLinkedQueue_ad7eec3a18abedbe1e43f275ae2e37c20}{00523}}\ \ \ \ \ \mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}\ *\mbox{\hyperlink{classLinkedQueue_ad7eec3a18abedbe1e43f275ae2e37c20}{tail}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00524}\mbox{\hyperlink{classLinkedQueue_a7f8ecf880cc644bd53a75551e96d0987}{00524}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classLinkedQueue_a7f8ecf880cc644bd53a75551e96d0987}{count}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00525}00525\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00526}00526\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00527}00527\ \textcolor{comment}{/*\ ==================\ Synchronization\ Primitives\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00540}\mbox{\hyperlink{classMutex}{00540}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMutex}{Mutex}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00541}00541\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00542}00542\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00547}00547\ \ \ \ \ \mbox{\hyperlink{classMutex_a593423d868daf926c7b0d63a833ae29a}{Mutex}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00548}00548\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00554}00554\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMutex_a25133a881d7392b966786263d41bde79}{tryLock}}(uint8\_t\ task\_id);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00555}00555\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00561}00561\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMutex_ac72a20fa83ef3beb121bb11bb452e9cd}{unlock}}(uint8\_t\ task\_id);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00562}00562\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00567}00567\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMutex_ac54a451ca9a856271f5f434f1aaee3d5}{isLocked}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00568}00568\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00573}00573\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classMutex_ae155c790be1a23e17700cd8b8c2636b4}{getOwner}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00574}00574\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00575}00575\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00576}\mbox{\hyperlink{classMutex_a833a30ffb34001c68aa2a37570dbf56e}{00576}}\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMutex_a833a30ffb34001c68aa2a37570dbf56e}{locked}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00577}\mbox{\hyperlink{classMutex_ae818e65daf468eed3d03a3aad59e1281}{00577}}\ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ \mbox{\hyperlink{classMutex_ae818e65daf468eed3d03a3aad59e1281}{owner\_id}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00578}00578\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00579}00579\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00590}\mbox{\hyperlink{classSemaphore}{00590}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSemaphore}{Semaphore}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00591}00591\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00592}00592\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00598}00598\ \ \ \ \ \mbox{\hyperlink{classSemaphore}{Semaphore}}(uint8\_t\ initial\_count,\ uint8\_t\ \mbox{\hyperlink{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}{max\_count}});}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00599}00599\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00605}00605\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classSemaphore_ab733c9bf26e7dd7e007c68ca27b8c06e}{wait}}(uint8\_t\ task\_id);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00606}00606\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00611}00611\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSemaphore_a1d7c51da55f9ac913a6a711cb6d6e52a}{signal}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00612}00612\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00617}00617\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classSemaphore_a0c65b57daf4e089e6e6241f4669d6f1f}{getCount}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00618}00618\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00623}00623\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classSemaphore_a5dc46274b490015edf89edf3048512a8}{getMaxCount}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00624}00624\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00625}00625\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00626}\mbox{\hyperlink{classSemaphore_a3a416166d840dc83b6283b20bccd072a}{00626}}\ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ \mbox{\hyperlink{classSemaphore_a3a416166d840dc83b6283b20bccd072a}{count}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00627}\mbox{\hyperlink{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}{00627}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}{max\_count}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00628}00628\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00629}00629\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00630}00630\ \textcolor{comment}{/*\ ==================\ Task\ System\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00648}\mbox{\hyperlink{group__fsmos_ga5c3f1eb0aa79f56d91fdbf8fd9f1b911}{00648}}\ \textcolor{keyword}{const}\ uint8\_t\ \mbox{\hyperlink{group__fsmos_ga5c3f1eb0aa79f56d91fdbf8fd9f1b911}{DEFAULT\_TASK\_MESSAGE\_BUDGET}}\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00649}00649\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00653}\mbox{\hyperlink{classTask}{00653}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTask}{Task}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00654}00654\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00655}00655\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00661}00661\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classTask}{Task}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{classTask_a7727703d676510926710ba56268959f0}{name}}\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00662}00662\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00667}00667\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTask_a3ecf499ea35fb4a96853969a1e1cbbce}{\string~Task}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00668}00668\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00672}\mbox{\hyperlink{classTask_a42a50afac20691fb27694ca04ccc4e90}{00672}}\ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ \mbox{\hyperlink{classTask_a42a50afac20691fb27694ca04ccc4e90}{getCreatedInstanceCount}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTask_abf8be7ba74ec27e72e25d2f2cd531d14}{createdInstanceCount}};\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00673}00673\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00674}00674\ \ \ \ \ \textcolor{comment}{//\ Task\ lifecycle}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00680}\mbox{\hyperlink{classTask_a05ad697fe4c99793e7af4dade75bad64}{00680}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a05ad697fe4c99793e7af4dade75bad64}{on\_start}}()\ \{\}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00681}00681\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00687}\mbox{\hyperlink{classTask_a399ff82ffe4b94a11cd8148987e38622}{00687}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a399ff82ffe4b94a11cd8148987e38622}{step}}()\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00688}00688\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00694}\mbox{\hyperlink{classTask_a7eccc77f654e53524d3a07b1ef73c83c}{00694}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a7eccc77f654e53524d3a07b1ef73c83c}{on\_stop}}()\ \{\}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00695}00695\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00702}\mbox{\hyperlink{classTask_a25e697fa851318504170fc4f3edf8308}{00702}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a25e697fa851318504170fc4f3edf8308}{on\_msg}}(\textcolor{keyword}{const}\ MsgData\ \&msg)\ \{\}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00703}00703\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00704}00704\ \ \ \ \ \textcolor{comment}{//\ Task\ control}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00709}00709\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a5d6a1d3c6cd5b587d2414737fab9f3ed}{start}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00710}00710\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00715}00715\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_aba5eb3d6c2a034aa0e319383fbec68c4}{stop}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00716}00716\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00721}00721\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_ae95f8af6f74b4c956b82698b98454cd2}{suspend}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00722}00722\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00727}00727\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a8fc7f3a2f5ebd910f22d1134d0dfcb2f}{resume}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00728}00728\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00733}00733\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a4401622acef8826077250b6b9e24e477}{terminate}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00734}00734\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00735}00735\ \ \ \ \ \textcolor{comment}{//\ Task\ configuration}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00741}00741\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a77d95e30aaab4ef098b94724c278ecd1}{setPeriod}}(uint16\_t\ period\_ms);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00742}00742\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00747}00747\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_aa096c58dddc4fb8f7f8d5f40e1815d2d}{getPeriod}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00748}00748\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00749}00749\ \ \ \ \ \textcolor{comment}{//\ Task\ priority}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00754}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592a}{00754}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592a}{Priority}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00755}00755\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00756}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aaa84058a0059d6f1f6d52d5e1a3ad5d0e}{00756}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aaa84058a0059d6f1f6d52d5e1a3ad5d0e}{PRIORITY\_LOWEST}}\ =\ 0,\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00757}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa341b0650b5a4ad3c4b67c2610983f5a9}{00757}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa341b0650b5a4ad3c4b67c2610983f5a9}{PRIORITY\_LOW}}\ =\ 1,\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00758}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aad68a5695d26142c2e09e4e2dc7104609}{00758}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aad68a5695d26142c2e09e4e2dc7104609}{PRIORITY\_NORMAL}}\ =\ 2,\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00759}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa9366f3aad1454df01800061338e20de3}{00759}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa9366f3aad1454df01800061338e20de3}{PRIORITY\_HIGH}}\ =\ 3,\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00760}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa1d85ce89b4f0af54b760b451fdcba98b}{00760}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa1d85ce89b4f0af54b760b451fdcba98b}{PRIORITY\_HIGHEST}}\ =\ 4,\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00761}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa12f44ca59e3209d2f8412d3cece7040f}{00761}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa12f44ca59e3209d2f8412d3cece7040f}{PRIORITY\_CRITICAL}}\ =\ 5,\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00762}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa368bfd726b1ad3bc484b8964a8406cbc}{00762}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa368bfd726b1ad3bc484b8964a8406cbc}{PRIORITY\_REALTIME}}\ =\ 6,\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00763}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa6df39fb55e727d8cb7efd26d8ab55dcf}{00763}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aa6df39fb55e727d8cb7efd26d8ab55dcf}{PRIORITY\_SYSTEM}}\ =\ 7,\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00764}00764\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aad89ed562a84f46152688421db9eeb156}{PRIORITY\_MAX}}\ =\ 15\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00765}\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592aad89ed562a84f46152688421db9eeb156}{00765}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00766}00766\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00772}00772\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_ae7a47875b478833d9dae1b5117661ed4}{setPriority}}(\mbox{\hyperlink{classTask_a698d2efb6569ff0ae099fff3e661592a}{Priority}}\ priority);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00773}00773\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00779}00779\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_ae7a47875b478833d9dae1b5117661ed4}{setPriority}}(uint8\_t\ priority);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00780}00780\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00785}00785\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_aef8cf69a9b677977003d8b72d66d36d8}{getPriority}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00786}00786\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00792}00792\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a871f04aee2f5a2a024c96b9b54aa5ba4}{setMaxMessageBudget}}(uint8\_t\ budget);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00793}00793\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00801}\mbox{\hyperlink{group__fsmos_gadf715a30a3759bfd0856f12cfdf29d0e}{00801}}\ \ \ \ \ \textcolor{keyword}{virtual}\ uint8\_t\ \mbox{\hyperlink{group__fsmos_gadf715a30a3759bfd0856f12cfdf29d0e}{getMaxMessageBudget}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__fsmos_ga5c3f1eb0aa79f56d91fdbf8fd9f1b911}{DEFAULT\_TASK\_MESSAGE\_BUDGET}};\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00802}00802\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00807}\mbox{\hyperlink{classTask_aea07a4be09d08cb8b1afa1914ddc988c}{00807}}\ \ \ \ \ \textcolor{keyword}{virtual}\ uint16\_t\ \mbox{\hyperlink{classTask_aea07a4be09d08cb8b1afa1914ddc988c}{getTaskStructSize}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{sizeof}(*this);\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00808}00808\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00809}00809\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00814}\mbox{\hyperlink{classTask_a23a424ff9d99ba56a2470d527552dc41}{00814}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_a23a424ff9d99ba56a2470d527552dc41}{getConfiguredMessageBudget}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTask_aceb872daf3ecd86b362df7bf2b19130f}{maxMessageBudget}};\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00815}00815\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00816}00816\ \ \ \ \ \textcolor{comment}{//\ Task\ state}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00820}\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{00820}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{State}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00821}00821\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00822}\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a3ca0a562f7e0ec849ab64f47164b552e}{00822}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a3ca0a562f7e0ec849ab64f47164b552e}{INACTIVE}},\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00823}\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a5c1b2aafd7b0d425608d0481620e0827}{00823}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a5c1b2aafd7b0d425608d0481620e0827}{ACTIVE}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00824}\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a695d6ccd154b43d39b21ff6c6848db53}{00824}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a695d6ccd154b43d39b21ff6c6848db53}{SUSPENDED}},\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00825}00825\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a7a6d8686d5e5ecffdf01fdd137d7713e}{TERMINATED}}\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00826}\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8a7a6d8686d5e5ecffdf01fdd137d7713e}{00826}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00827}00827\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00832}00832\ \ \ \ \ \mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{State}}\ \mbox{\hyperlink{classTask_acccd11864edfa1abbb15ff43008a17ec}{getState}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00833}00833\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00838}00838\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a7a79169eed523ffdafa76f3c9d07ff27}{setState}}(\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{State}}\ newState);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00839}00839\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00845}00845\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTask_af770c80b9b06c6f314441144dcb6b117}{checkState}}(\mbox{\hyperlink{classTask_afa88d99eb2a58c8f078a53f1195c53a8}{State}}\ expected)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00846}00846\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00851}00851\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTask_a14f40317936f729e291a81fcf4426466}{isActive}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00852}00852\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00857}00857\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTask_abee024294d3599db8917a96cab0a55f2}{isInactive}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00858}00858\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00859}00859\ \ \ \ \ \textcolor{comment}{//\ Task\ identification}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00864}00864\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_a548d620b8f5d7490b8cdc235dbfdf6eb}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00865}00865\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00870}00870\ \ \ \ \ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{classTask_aae9b70f6c6542469cd8c3c122536964c}{getName}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00871}00871\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00875}\mbox{\hyperlink{classTask_a5a90bf718dcc0fad7285e1ae580d47df}{00875}}\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{classTask_a5a90bf718dcc0fad7285e1ae580d47df}{readTaskName}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTask}{Task}}\ *t)\ \{\ \textcolor{keywordflow}{return}\ t\ ?\ t-\/>\mbox{\hyperlink{classTask_aae9b70f6c6542469cd8c3c122536964c}{getName}}()\ :\ \textcolor{keyword}{nullptr};\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00876}00876\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00877}00877\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00882}00882\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a955e48a4143b0e140a552fa25f4500c9}{setName}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{classTask_a7727703d676510926710ba56268959f0}{name}});}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00883}00883\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00884}00884\ \ \ \ \ \textcolor{comment}{//\ Message\ handling}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00890}\mbox{\hyperlink{classTask_a9de158865a233e9bad155106a43a0eda}{00890}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a9de158865a233e9bad155106a43a0eda}{subscribe}}(uint8\_t\ topic)}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00891}00891\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00892}00892\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (topic\ <\ \mbox{\hyperlink{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}{MAX\_TOPICS}})}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00893}00893\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00894}00894\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}\ |=\ (\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}}\textcolor{keyword}{>}(1)\ <<\ topic);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00895}00895\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00896}00896\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00897}00897\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00902}\mbox{\hyperlink{classTask_a01ab07b5bae2d59020bf4a4b613e03f7}{00902}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a01ab07b5bae2d59020bf4a4b613e03f7}{unsubscribe}}(uint8\_t\ topic)}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00903}00903\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00904}00904\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (topic\ <\ \mbox{\hyperlink{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}{MAX\_TOPICS}})}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00905}00905\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00906}00906\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}\ \&=\ \string~(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}}\textcolor{keyword}{>}(1)\ <<\ topic);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00907}00907\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00908}00908\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00909}00909\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00915}\mbox{\hyperlink{classTask_a1f356af32a2d49b158ead810225d00be}{00915}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTask_a1f356af32a2d49b158ead810225d00be}{isSubscribedToTopic}}(uint8\_t\ topic)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00916}00916\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00917}00917\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (topic\ >=\ \mbox{\hyperlink{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}{MAX\_TOPICS}})}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00918}00918\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00919}00919\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00920}00920\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00921}00921\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}\ \&\ (\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}}\textcolor{keyword}{>}(1)\ <<\ topic))\ !=\ 0;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00922}00922\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00923}00923\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00928}\mbox{\hyperlink{classTask_a19466fe8b3653fd07f81dc45ae0a7a5d}{00928}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_a19466fe8b3653fd07f81dc45ae0a7a5d}{getTopicCount}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00929}00929\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00930}00930\ \textcolor{preprocessor}{\#if\ TOPIC\_BITFIELD\_SIZE\ <=\ 8}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00931}00931\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_builtin\_popcount(\textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(\mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}));}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00932}00932\ \textcolor{preprocessor}{\#elif\ TOPIC\_BITFIELD\_SIZE\ <=\ 16}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00933}00933\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_builtin\_popcount(\textcolor{keyword}{static\_cast<}uint16\_t\textcolor{keyword}{>}(\mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}));}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00934}00934\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00935}00935\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_builtin\_popcountl(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\textcolor{keyword}{>}(\mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}));}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00936}00936\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00937}00937\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00938}00938\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00946}00946\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a4b2cce5377f8ddf0cc29d00a3c58c1c0}{publish}}(uint8\_t\ topic,\ uint8\_t\ type,\ uint16\_t\ arg\ =\ 0);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00947}00947\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00954}00954\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_adbd4d278e42780bd4b6c1d918d0f85c9}{tell}}(uint8\_t\ task\_id,\ uint8\_t\ type,\ uint16\_t\ arg\ =\ 0);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00955}00955\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00956}00956\ \ \ \ \ \textcolor{comment}{//\ Logging}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00961}00961\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a8bc9456ebb7dfbb657f040320af1a6ef}{log}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00962}00962\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00967}00967\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_aa961a934509f354a023b8f32d3656e95}{logDebug}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00968}00968\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00973}00973\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a24f4e032e0dd55e6e2e7ef44c715e9ca}{logInfo}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00974}00974\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00979}00979\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a36592cc85ff1d08bf6cb2442055188f6}{logWarn}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00980}00980\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00985}00985\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_aa4c091b4c65870bd83c6111d23ecee21}{logError}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00986}00986\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00987}00987\ \ \ \ \ \textcolor{comment}{//\ Timer\ utility\ methods}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00995}00995\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00996}00996\ \ \ \ \ T\ \mbox{\hyperlink{classTask_a9fb78213d87aed4408f9c792fc1ade97}{createTimerTyped}}(uint32\_t\ duration\_ms)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l00997}00997\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01002}01002\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a8c07bf11aa75929d4028b1035e71dac7}{processMessages}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01003}01003\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01004}01004\ \ \ \ \ \textcolor{comment}{//\ Task\ timing\ monitoring\ methods}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01009}01009\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_ac5ab04209706d6b3a0fdd5266dc0d97f}{getDelayCount}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01010}01010\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01015}01015\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_a7806ae077325d4970155cb65cace02c5}{getMaxDelay}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01016}01016\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01021}01021\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classTask_aed0ad6765c8ca38f4104df0ad075be60}{getScheduledTime}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01022}01022\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01027}01027\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classTask_ad17b132958585c85ceb73b077b52c099}{getActualStartTime}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01028}01028\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01029}01029\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01030}\mbox{\hyperlink{classTask_afb88c77ea5daaefa6c8fa6bc5b9aa5c1}{01030}}\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classScheduler}{Scheduler}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01031}01031\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01032}\mbox{\hyperlink{classTask_a69b0d2b2a7231d2e2a2880b7cca136e1}{01032}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_a69b0d2b2a7231d2e2a2880b7cca136e1}{remainingTime}}\ =\ 0;\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01033}\mbox{\hyperlink{classTask_ab3ed971b7edebf924e2f1e06c4ce20d2}{01033}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_ab3ed971b7edebf924e2f1e06c4ce20d2}{periodMs}}\ =\ 1;\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01034}\mbox{\hyperlink{classTask_a4dc17810637f6e3ea836f1068393a1c8}{01034}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_a4dc17810637f6e3ea836f1068393a1c8}{taskId}}\ =\ 0;\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01035}\mbox{\hyperlink{classTask_a57497b2437a803730f0e5adc8656fe97}{01035}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_a57497b2437a803730f0e5adc8656fe97}{stateAndPriority}}\ =\ 0;\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01036}\mbox{\hyperlink{classTask_a7727703d676510926710ba56268959f0}{01036}}\ \ \ \ \ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *\mbox{\hyperlink{classTask_a7727703d676510926710ba56268959f0}{name}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01037}01037\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01038}01038\ \ \ \ \ \textcolor{comment}{//\ Minimalist\ task\ statistics\ (RAM\ optimized)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01039}\mbox{\hyperlink{classTask_a48485325ce407372474c73982690a0cc}{01039}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_a48485325ce407372474c73982690a0cc}{runCount}}\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01040}\mbox{\hyperlink{classTask_ad464cac8faf232328c59600a70bfa11c}{01040}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_ad464cac8faf232328c59600a70bfa11c}{maxExecTimeUs}}\ =\ 0;\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01041}\mbox{\hyperlink{classTask_a54935dc05e1ff8ba284d18b84a057ac6}{01041}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_a54935dc05e1ff8ba284d18b84a057ac6}{avgExecTimeUs}}\ =\ 0;\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01042}01042\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01043}01043\ \ \ \ \ \textcolor{comment}{//\ Task\ timing\ monitoring}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01044}\mbox{\hyperlink{classTask_ac78a2eb92ac06324535259def5fe2d43}{01044}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classTask_ac78a2eb92ac06324535259def5fe2d43}{scheduledTime}}\ =\ 0;\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01045}\mbox{\hyperlink{classTask_aba00d925c610ebb6ffce38ce7d550b33}{01045}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classTask_aba00d925c610ebb6ffce38ce7d550b33}{actualStartTime}}\ =\ 0;\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01046}\mbox{\hyperlink{classTask_aaf791abc71bca2ca62d29d2e155dc82c}{01046}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_aaf791abc71bca2ca62d29d2e155dc82c}{delayCount}}\ =\ 0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01047}\mbox{\hyperlink{classTask_a82389ea58680f2ce8a0ffada921c3b6c}{01047}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classTask_a82389ea58680f2ce8a0ffada921c3b6c}{maxDelayMs}}\ =\ 0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01048}01048\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01049}\mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{01049}}\ \ \ \ \ \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{TopicBitfield}}\ \mbox{\hyperlink{classTask_acae0e3e69ae99fa0f3ca9298e74c7236}{subscribedTopics}}\ =\ 0;\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01050}01050\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01051}01051\ \ \ \ \ \textcolor{comment}{//\ Scheduler\ gating:\ maximum\ messages\ this\ task\ may\ produce\ in\ a\ single\ step()}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01052}\mbox{\hyperlink{classTask_aceb872daf3ecd86b362df7bf2b19130f}{01052}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classTask_aceb872daf3ecd86b362df7bf2b19130f}{maxMessageBudget}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01053}01053\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01054}01054\ \ \ \ \ \textcolor{comment}{//\ Global\ count\ of\ created\ Task\ instances\ (for\ diagnostics/pool\ sizing\ hints)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01055}\mbox{\hyperlink{classTask_abf8be7ba74ec27e72e25d2f2cd531d14}{01055}}\ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ \mbox{\hyperlink{classTask_abf8be7ba74ec27e72e25d2f2cd531d14}{createdInstanceCount}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01056}01056\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01057}01057\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01058}01058\ \textcolor{comment}{/*\ ==================\ Scheduler\ System\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01073}\mbox{\hyperlink{classScheduler}{01073}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classScheduler}{Scheduler}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01074}01074\ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01075}01075\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01080}01080\ \ \ \ \ \mbox{\hyperlink{classScheduler_a3b61aac11466cd45ae42ab8c2b0013f6}{Scheduler}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01081}01081\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01086}01086\ \ \ \ \ \mbox{\hyperlink{classScheduler_afc8187779b46f64039d3ffa58f0dbe51}{\string~Scheduler}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01087}01087\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01088}01088\ \ \ \ \ \textcolor{comment}{//\ Task\ management}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01095}01095\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b}{add}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01096}01096\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01102}01102\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a303a5bd8d44b55803e6da7b4108401c2}{remove}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01103}01103\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01108}01108\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_aaa234e0155e99b4fcbae695898663eea}{removeAll}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01109}01109\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01115}01115\ \ \ \ \ \mbox{\hyperlink{classTask}{Task}}\ *\mbox{\hyperlink{classScheduler_aabf3840938cc797555cdee88f5d19dd2}{getTask}}(uint8\_t\ task\_id);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01116}01116\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01121}\mbox{\hyperlink{classScheduler_a7a84b715133d1f8dd473e1511b2498a2}{01121}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a7a84b715133d1f8dd473e1511b2498a2}{getTaskCount}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6}{taskCount}};\ \}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01122}01122\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01127}01127\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classScheduler_acb0612339205f7e921b0034768dba4c5}{getMaxTasks}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01128}01128\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01129}01129\ \ \ \ \ \textcolor{comment}{//\ System\ control}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01134}01134\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b}{begin}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01135}01135\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01140}01140\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_ae3fa321ea81e2c07e361147f4f0d606e}{loopOnce}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01141}01141\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01146}01146\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a81607abe2905dee2e7cf9222a9e35b8f}{loop}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01147}01147\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01152}01152\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a7ac470a1b0421f2db78e5b478a6b28b1}{stop}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01153}01153\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01154}01154\ \ \ \ \ \textcolor{comment}{//\ Message\ system}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01162}01162\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d}{publishMessage}}(uint8\_t\ topic,\ uint8\_t\ type,\ uint16\_t\ arg\ =\ 0);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01163}01163\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01170}01170\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a4f3960871e36fdf7234b151f81f04120}{sendMessage}}(uint8\_t\ task\_id,\ uint8\_t\ type,\ uint16\_t\ arg\ =\ 0);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01171}01171\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01175}01175\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b}{getFreeQueueSlots}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01176}01176\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01177}01177\ \ \ \ \ \textcolor{comment}{//\ System\ monitoring}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01182}01182\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classScheduler_afe202befb3d6eac9dbb6acd1a4b09401}{now}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01183}01183\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01189}01189\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab}{getFreeMemory}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01190}01190\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01191}01191\ \ \ \ \ \textcolor{comment}{//\ Logging\ system}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01195}\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{01195}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01196}01196\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01197}\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7}{01197}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7}{LOG\_DEBUG}}\ =\ 0,\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01198}\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327}{01198}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327}{LOG\_INFO}}\ =\ 1,\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01199}\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286}{01199}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286}{LOG\_WARN}}\ =\ 2,\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01200}01200\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805}{LOG\_ERROR}}\ =\ 3\ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01201}\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805}{01201}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01202}01202\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01208}01208\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a612b33338832de0d18ebf5859b3d7037}{setLogLevel}}(\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ level);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01209}01209\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01216}01216\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_acaab28b4949d5a175212d134c04cf406}{logMessage}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ level,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01217}01217\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_acaab28b4949d5a175212d134c04cf406}{logMessage}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ level,\ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01218}01218\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01219}01219\ \ \ \ \ \textcolor{comment}{//\ System\ callbacks}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01225}01225\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_aab0e31c53df15af0ffbcd97d0510c9a2}{onTick}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01226}01226\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01227}01227\ \ \ \ \ \textcolor{comment}{//\ Additional\ diagnostic\ methods}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01233}01233\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4}{getResetInfo}}(\mbox{\hyperlink{structResetInfo}{ResetInfo}}\ \&info);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01234}01234\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01240}01240\ \ \ \ \ \mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{ResetCause}}\ \mbox{\hyperlink{classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea}{getResetCause}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01241}01241\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01247}01247\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e}{getResetCauseFlags}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01248}01248\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01254}01254\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a1ad7c1772cfa11033b280e9b5de86d35}{wasResetCause}}(\mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{ResetCause}}\ cause);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01255}01255\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01262}01262\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3}{getTaskStats}}(uint8\_t\ task\_id,\ \mbox{\hyperlink{structTaskStats}{TaskStats}}\ \&stats);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01263}01263\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01269}01269\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a7c61b8b908a19416283e66c0fb076a40}{getSystemMemoryInfo}}(\mbox{\hyperlink{structSystemMemoryInfo}{SystemMemoryInfo}}\ \&info);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01270}01270\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01277}01277\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f}{getTaskMemoryInfo}}(uint8\_t\ task\_id,\ \mbox{\hyperlink{structTaskMemoryInfo}{TaskMemoryInfo}}\ \&info);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01278}01278\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01283}01283\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a69444823d403c8c84670eda2c0d594a4}{getHeapFragmentation}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01284}01284\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01290}01290\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a26f332614d3126f5efdc42092138b0e6}{getMemoryLeakStats}}(\mbox{\hyperlink{structMemoryStats}{MemoryStats}}\ \&stats);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01291}01291\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01292}01292\ \ \ \ \ \textcolor{comment}{//\ Additional\ system\ methods}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01293}01293\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01299}01299\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_aaba5575657eb6345d1da5442be50f29c}{enableWatchdog}}(uint8\_t\ timeout);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01300}01300\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_aa541036ba6db4765a2270d39f74c8758}{feedWatchdog}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01301}01301\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01310}01310\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63}{logFormatted}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ level,\ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01311}01311\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01312}01312\ \ \ \ \ \textcolor{comment}{//\ Task\ timing\ monitoring}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01317}01317\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9}{getMostDelayingTask}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01318}01318\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01319}01319\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01320}\mbox{\hyperlink{classScheduler_a9eb682b2716a34e7c3eb742782aa42e2}{01320}}\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{classScheduler_a9eb682b2716a34e7c3eb742782aa42e2}{taskHead}}\ =\ \textcolor{keyword}{nullptr};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01321}\mbox{\hyperlink{classScheduler_a7dbc17482550f15704cdc4e5bbdde2d9}{01321}}\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{classScheduler_a7dbc17482550f15704cdc4e5bbdde2d9}{taskTail}}\ =\ \textcolor{keyword}{nullptr};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01322}01322\ \ \ \ \ \textcolor{comment}{//\ Preallocated\ node\ pool\ (initialized\ on\ first\ add)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01323}\mbox{\hyperlink{classScheduler_ae4384c1ec8e5ef486776d6dc255a501a}{01323}}\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{classScheduler_ae4384c1ec8e5ef486776d6dc255a501a}{freeTaskNodeHead}}\ =\ \textcolor{keyword}{nullptr};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01324}\mbox{\hyperlink{classScheduler_a6f21f46d36e9c56a43fadfa6cc32aad7}{01324}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a6f21f46d36e9c56a43fadfa6cc32aad7}{taskNodePoolInitialized}}\ =\ \textcolor{keyword}{false};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01325}\mbox{\hyperlink{classScheduler_a72d0e1044f04173955e8783b8c1c9bb0}{01325}}\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{classScheduler_a72d0e1044f04173955e8783b8c1c9bb0}{taskNodePoolCapacity}}\ =\ 0;\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01326}\mbox{\hyperlink{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6}{01326}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a3e1f741da7d85ea80bb2f226d6457ab6}{taskCount}}\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01327}\mbox{\hyperlink{classScheduler_a89473e616865792db671bdb2551aa338}{01327}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a89473e616865792db671bdb2551aa338}{nextTaskId}}\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01328}01328\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01329}\mbox{\hyperlink{classScheduler_a4025d35f57b05649764c44f3583fc2b6}{01329}}\ \ \ \ \ \mbox{\hyperlink{classMsgDataPool}{MsgDataPool}}\ \mbox{\hyperlink{classScheduler_a4025d35f57b05649764c44f3583fc2b6}{msgPool}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01330}\mbox{\hyperlink{classScheduler_ac66364f021223ea49e76680b6dbcb56a}{01330}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classScheduler_ac66364f021223ea49e76680b6dbcb56a}{systemTime}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01331}\mbox{\hyperlink{classScheduler_a8a0b0619fdfbda3338fc4964999b3ffd}{01331}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a8a0b0619fdfbda3338fc4964999b3ffd}{running}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01332}01332\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01333}\mbox{\hyperlink{classScheduler_a720b2ff4a9e770649fe7b63d3098613d}{01333}}\ \ \ \ \ \mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ \mbox{\hyperlink{classScheduler_a720b2ff4a9e770649fe7b63d3098613d}{currentLogLevel}};\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01334}01334\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01335}01335\ \ \ \ \ \textcolor{comment}{//\ Task\ timing\ monitoring\ (always\ active)}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01336}\mbox{\hyperlink{classScheduler_ac44741f6b01d7d8f914851b72f538617}{01336}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_ac44741f6b01d7d8f914851b72f538617}{lastExecutedTaskId}}\ =\ 0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01337}\mbox{\hyperlink{classScheduler_a4e2da8da4d0ca8ce7da09e92fcc04ffc}{01337}}\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classScheduler_a4e2da8da4d0ca8ce7da09e92fcc04ffc}{lastTaskEndTime}}\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01338}01338\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01339}\mbox{\hyperlink{classScheduler_adad5641aac7a2fe0b15a675a053fd4fb}{01339}}\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSharedMsg}{SharedMsg}};\ \ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01340}01340\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01345}01345\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f}{processMessages}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01346}01346\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01351}01351\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a0a80134fcc4380c2577a5281352847eb}{updateSystemTime}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01352}01352\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01357}01357\ \ \ \ \ \mbox{\hyperlink{classTask}{Task}}\ *\mbox{\hyperlink{classScheduler_aafdaee288f465a178ef154e1fce57cf4}{findNextTask}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01358}01358\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01364}01364\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a42e220f60192016791fa56855fcc8e46}{executeTask}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01365}01365\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01366}01366\ \ \ \ \ \textcolor{comment}{//\ Refactored\ helper\ methods\ for\ executeTask}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01372}01372\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a22a32d58cf6898fff48880c5349c115f}{handleTaskTiming}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ uint32\_t\ currentTime);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01373}01373\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01378}01378\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a74551b047dfdd1675e53de6d1fc53ac7}{executeTaskStep}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01379}01379\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01385}01385\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a23437fce9b79f76f4534c402e832d4f5}{updateTaskStatistics}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ uint32\_t\ execStart);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01386}01386\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01391}01391\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a6ee466fc5e47301d6101c246c691c131}{updateTimingVariables}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01392}01392\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01397}01397\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_af423092ed6af17160b11a8fab79c2eab}{checkForTerminatedTask}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01398}01398\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01405}01405\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a40371a166759f310c2223ef082526829}{logTaskDelay}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ uint16\_t\ delayMs,\ uint8\_t\ causingTaskId);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01406}01406\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01407}01407\ \ \ \ \ \textcolor{comment}{//\ Task\ iteration\ helpers}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01413}01413\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01414}01414\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b}{forEachTask}}(Func\ func);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01415}01415\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01422}01422\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01423}01423\ \ \ \ \ \mbox{\hyperlink{classTask}{Task}}\ *\mbox{\hyperlink{classScheduler_ad2b77c7b7e929aad03ce0034f992d876}{findTask}}(Func\ predicate);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01424}01424\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01425}01425\ \ \ \ \ \textcolor{comment}{//\ Memory\ management\ helpers}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01431}01431\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{classScheduler_a38cf4a79d14bd68514a26946b19d3d53}{allocateTaskNode}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01432}01432\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01437}01437\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a419ac926b5685ea804fe7eae086066e3}{deallocateTaskNode}}(\mbox{\hyperlink{structTaskNode}{TaskNode}}\ *node);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01438}01438\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01439}01439\ \ \ \ \ \textcolor{comment}{//\ Logging\ system\ helpers}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01445}01445\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344}{logSystemEvent}}(\mbox{\hyperlink{classScheduler_ab2bd6aa333e3f108343fedb022eaca79}{LogLevel}}\ level,\ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *msg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01446}01446\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01452}01452\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a46f4a6ce080b281fd2941aa35450c3c0}{logTaskExecution}}(\mbox{\hyperlink{classTask}{Task}}\ *task,\ uint32\_t\ execTime);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01453}01453\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01454}01454\ \ \ \ \ \textcolor{comment}{//\ ==================\ Message\ Queue\ (bounded,\ no\ dynamic\ allocation)\ ==================}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01455}\mbox{\hyperlink{structScheduler_1_1QueuedMessage}{01455}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structScheduler_1_1QueuedMessage}{QueuedMessage}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01456}01456\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01457}\mbox{\hyperlink{structScheduler_1_1QueuedMessage_ab2d20d6197328866badf5e94f048255c}{01457}}\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structScheduler_1_1QueuedMessage_ab2d20d6197328866badf5e94f048255c}{targetTaskId}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01458}\mbox{\hyperlink{structScheduler_1_1QueuedMessage_a4920af5804a48c59719261484553f169}{01458}}\ \ \ \ \ \ \ \ \ MsgData\ \mbox{\hyperlink{structScheduler_1_1QueuedMessage_a4920af5804a48c59719261484553f169}{msg}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ msg.data\ points\ to\ buffer\ when\ dataSize\ >\ 0}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01459}\mbox{\hyperlink{structScheduler_1_1QueuedMessage_aa23777039e9446ad21fb93a6ec1e7e65}{01459}}\ \ \ \ \ \ \ \ \ uint8\_t\ *\mbox{\hyperlink{structScheduler_1_1QueuedMessage_aa23777039e9446ad21fb93a6ec1e7e65}{buffer}};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ retained\ across\ free-\/list\ reuse}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01460}\mbox{\hyperlink{structScheduler_1_1QueuedMessage_a79ba2cf8a493da73c1b64f9aa2549938}{01460}}\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structScheduler_1_1QueuedMessage_a79ba2cf8a493da73c1b64f9aa2549938}{capacity}};\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ allocated\ size\ of\ buffer}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01461}01461\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01462}01462\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01463}01463\ \ \ \ \ \textcolor{comment}{//\ Linked-\/list\ node\ for\ queued\ messages}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01464}\mbox{\hyperlink{structScheduler_1_1MsgNode}{01464}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01465}01465\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01466}\mbox{\hyperlink{structScheduler_1_1MsgNode_a91702c9faa02b67ac24d3924be9fdaee}{01466}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\mbox{\hyperlink{structScheduler_1_1MsgNode_a91702c9faa02b67ac24d3924be9fdaee}{next}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01467}\mbox{\hyperlink{structScheduler_1_1MsgNode_ab2623f2b15be317f6b54848af08ce97c}{01467}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1QueuedMessage}{QueuedMessage}}\ \mbox{\hyperlink{structScheduler_1_1MsgNode_ab2623f2b15be317f6b54848af08ce97c}{payload}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01468}01468\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01469}01469\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01470}01470\ \ \ \ \ \textcolor{comment}{//\ Queue\ (linked\ list)\ and\ free-\/node\ pool}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01471}\mbox{\hyperlink{classScheduler_afc800a55be0f3da82ef2e79dad96496d}{01471}}\ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\mbox{\hyperlink{classScheduler_afc800a55be0f3da82ef2e79dad96496d}{msgHead}}\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01472}\mbox{\hyperlink{classScheduler_a2503ab5f7acb13a3bd46f35036af3c02}{01472}}\ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\mbox{\hyperlink{classScheduler_a2503ab5f7acb13a3bd46f35036af3c02}{msgTail}}\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01473}\mbox{\hyperlink{classScheduler_a59fa5a068cd9a36672b39362982c2e97}{01473}}\ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\mbox{\hyperlink{classScheduler_a59fa5a068cd9a36672b39362982c2e97}{freeHead}}\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01474}\mbox{\hyperlink{classScheduler_a13367b7d53dc7bf804d9158e57bff5f7}{01474}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a13367b7d53dc7bf804d9158e57bff5f7}{msgCount}}\ =\ 0;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ number\ of\ enqueued\ messages}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01475}\mbox{\hyperlink{classScheduler_a15bd5f3410a22f750d9cc40579e11084}{01475}}\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classScheduler_a15bd5f3410a22f750d9cc40579e11084}{totalNodes}}\ =\ 0;\ \ \ \ \ \ \textcolor{comment}{//\ total\ nodes\ allocated\ into\ pool}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01476}01476\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01477}01477\ \ \ \ \ \textcolor{comment}{//\ Grow\ the\ pool\ by\ a\ chunk\ (4\ nodes)\ up\ to\ MAX\_MESSAGE\_POOL\_SIZE}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01478}01478\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2}{allocateMsgNodesChunk}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01479}01479\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01480}01480\ \ \ \ \ \textcolor{comment}{//\ Enqueue\ a\ message\ destined\ for\ a\ specific\ task}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01481}01481\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_acb1eb89034fcb709b8769ff9060063e5}{enqueueQueuedMessage}}(uint8\_t\ targetTaskId,\ uint8\_t\ topic,\ uint8\_t\ type,\ uint16\_t\ arg);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01482}01482\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01483}01483\ \ \ \ \ \textcolor{comment}{//\ Dequeue\ next\ message\ into\ out;\ returns\ false\ if\ empty}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01484}01484\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_a13c5cff92aab0d7516c469cb7196c1ba}{dequeueQueuedMessage}}(\mbox{\hyperlink{structScheduler_1_1QueuedMessage}{QueuedMessage}}\ \&out);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01485}01485\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01486}01486\ \ \ \ \ \textcolor{comment}{//\ Dequeue\ and\ return\ node\ itself;\ caller\ is\ responsible\ for\ recycling\ node}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01487}01487\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_ac6614605ec1477ed4e44d93e613e3ed4}{dequeueQueuedMessageNode}}(\mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\&outNode);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01488}01488\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01489}01489\ \ \ \ \ \textcolor{comment}{//\ Allocate\ TaskNode\ pool\ on\ first\ use}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01490}01490\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classScheduler_aaa8cc86207802e4a457202396b2f7441}{initializeTaskNodePool}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01491}01491\ \ \ \ \ \textcolor{comment}{//\ Acquire\ a\ node\ from\ pool}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01492}01492\ \ \ \ \ \mbox{\hyperlink{structTaskNode}{TaskNode}}\ *\mbox{\hyperlink{classScheduler_afa07db3c7014412af426ee1c304ebc4b}{acquireTaskNode}}(\mbox{\hyperlink{classTask}{Task}}\ *task);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01493}01493\ \ \ \ \ \textcolor{comment}{//\ Return\ a\ node\ to\ pool}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01494}01494\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4}{releaseTaskNode}}(\mbox{\hyperlink{structTaskNode}{TaskNode}}\ *node);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01495}01495\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01496}01496\ \ \ \ \ \textcolor{comment}{//\ MsgNode\ allocation\ methods}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01497}01497\ \ \ \ \ \mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *\mbox{\hyperlink{classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966}{allocateMsgNode}}();}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01498}01498\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classScheduler_a4d40d84c82a4b3f5366d1a7fe5fd9307}{deallocateMsgNode}}(\mbox{\hyperlink{structScheduler_1_1MsgNode}{MsgNode}}\ *node);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01499}01499\ \};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01500}01500\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01501}01501\ \textcolor{comment}{/*\ ==================\ Global\ Scheduler\ Instance\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01508}01508\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classScheduler}{Scheduler}}\ \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}};}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01509}01509\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01510}01510\ \textcolor{comment}{/*\ ==================\ System\ Constants\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01515}\mbox{\hyperlink{group__fsmos_gac154c550db4c5b7fed1b1fd1e31a63ee}{01515}}\ \textcolor{keyword}{const}\ uint16\_t\ \mbox{\hyperlink{group__fsmos_gac154c550db4c5b7fed1b1fd1e31a63ee}{DEFAULT\_TASK\_PERIOD}}\ =\ 100;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01516}01516\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01521}\mbox{\hyperlink{group__fsmos_ga13157fca65016a2c6c913eff0119cf5c}{01521}}\ \textcolor{keyword}{const}\ uint16\_t\ \mbox{\hyperlink{group__fsmos_ga13157fca65016a2c6c913eff0119cf5c}{MIN\_TASK\_PERIOD}}\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01522}01522\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01527}\mbox{\hyperlink{group__fsmos_gab0cd97b1506816b7e089447cd3430e65}{01527}}\ \textcolor{keyword}{const}\ uint16\_t\ \mbox{\hyperlink{group__fsmos_gab0cd97b1506816b7e089447cd3430e65}{MAX\_TASK\_PERIOD}}\ =\ 65535;}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01528}01528\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01537}01537\ \textcolor{comment}{//\ Backward\ compatibility\ direct\ constants\ removed;\ use\ Scheduler::LogLevel}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01538}01538\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01539}01539\ \textcolor{comment}{/*\ ==================\ Additional\ Scheduler\ Methods\ ==================\ */}}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01546}01546\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__fsmos_gac6c8dbf1f133ab906d0f3490e0de5d74}{logDebugf}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01547}01547\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01554}01554\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb}{logInfof}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01555}01555\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01562}01562\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__fsmos_ga58264bc1f779d2cd6cb6a8c733a17a21}{logWarnf}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01563}01563\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01570}01570\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__fsmos_gade3c130d653bf887af5b2f6120f388ad}{logErrorf}}(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01571}01571\ }
+\DoxyCodeLine{\Hypertarget{FsmOS_8h_source_l01572}01572\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ FSMOS\_H}}
+
+\end{DoxyCode}

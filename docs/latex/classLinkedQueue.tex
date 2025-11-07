@@ -1,0 +1,267 @@
+\doxysection{Linked\+Queue\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classLinkedQueue}{}\label{classLinkedQueue}\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+
+
+Lightweight, interrupt-\/safe linked queue.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+
+
+Collaboration diagram for Linked\+Queue\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{classLinkedQueue__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structLinkedQueue_1_1Node}{Node} structure for linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLinkedQueue_a4983be0b269558e5bb0f93d2ce084345}{Linked\+Queue}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classLinkedQueue_ad84250d452864b16e000f4d1ee6295f6}{\texorpdfstring{$\sim$}{\string~}\+Linked\+Queue}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classLinkedQueue_a8c5a6ea35be6ffaf35f76098e8bc89f9}{Linked\+Queue}} (\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinkedQueue_ab2bb64be832ea8f62e76dc7fcbe1e9fb}{push}} (const T \&item)
+\begin{DoxyCompactList}\small\item\em Add item to the end of the queue. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classLinkedQueue_ae54fefdc687852e0465e414bbfadd138}{pop}} (T \&item)
+\begin{DoxyCompactList}\small\item\em Remove item from the front of the queue. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classLinkedQueue_af4554d6d9ca422c9332217fbbe054c06}{is\+Empty}} () const
+\begin{DoxyCompactList}\small\item\em Check if queue is empty. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classLinkedQueue_a81123eba59f05b7218b756740cfb3fa6}{get\+Size}} () const
+\begin{DoxyCompactList}\small\item\em Get number of items in queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classLinkedQueue_ab473bd215aaee5a68ed9535a9605e8be}{head}}
+\begin{DoxyCompactList}\small\item\em Pointer to first node. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classLinkedQueue_ad7eec3a18abedbe1e43f275ae2e37c20}{tail}}
+\begin{DoxyCompactList}\small\item\em Pointer to last node. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classLinkedQueue_a7f8ecf880cc644bd53a75551e96d0987}{count}}
+\begin{DoxyCompactList}\small\item\em Number of items in queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Linked\+Queue$<$ T $>$}
+Lightweight, interrupt-\/safe linked queue. 
+
+\doxylink{classLinkedQueue}{Linked\+Queue} provides a simple queue implementation that is safe to use from interrupt context. It uses a linked list structure for efficient insertion and removal.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of elements to store in the queue \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyNote}{Note}
+This queue is not thread-\/safe for concurrent access 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00464}{464}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classLinkedQueue_a4983be0b269558e5bb0f93d2ce084345}\label{classLinkedQueue_a4983be0b269558e5bb0f93d2ce084345} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!LinkedQueue@{LinkedQueue}}
+\index{LinkedQueue@{LinkedQueue}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LinkedQueue()}{LinkedQueue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\mbox{\hyperlink{classLinkedQueue}{\+::\+Linked\+Queue}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates an empty queue 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00310}{310}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classLinkedQueue_ad84250d452864b16e000f4d1ee6295f6}\label{classLinkedQueue_ad84250d452864b16e000f4d1ee6295f6} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!````~LinkedQueue@{\texorpdfstring{$\sim$}{\string~}LinkedQueue}}
+\index{````~LinkedQueue@{\texorpdfstring{$\sim$}{\string~}LinkedQueue}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}LinkedQueue()}{\string~LinkedQueue()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Frees all nodes in the queue 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00313}{313}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classLinkedQueue_a8c5a6ea35be6ffaf35f76098e8bc89f9}\label{classLinkedQueue_a8c5a6ea35be6ffaf35f76098e8bc89f9} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!LinkedQueue@{LinkedQueue}}
+\index{LinkedQueue@{LinkedQueue}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LinkedQueue()}{LinkedQueue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\mbox{\hyperlink{classLinkedQueue}{\+::\+Linked\+Queue}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Move constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Queue to move from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Transfers ownership of nodes from other queue 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00324}{324}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classLinkedQueue_a81123eba59f05b7218b756740cfb3fa6}\label{classLinkedQueue_a81123eba59f05b7218b756740cfb3fa6} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!getSize@{getSize}}
+\index{getSize@{getSize}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+uint8\+\_\+t \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get number of items in queue. 
+
+\begin{DoxyReturn}{Returns}
+Number of items currently in queue 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00384}{384}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classLinkedQueue_af4554d6d9ca422c9332217fbbe054c06}\label{classLinkedQueue_af4554d6d9ca422c9332217fbbe054c06} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!isEmpty@{isEmpty}}
+\index{isEmpty@{isEmpty}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{isEmpty()}{isEmpty()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Check if queue is empty. 
+
+\begin{DoxyReturn}{Returns}
+true if queue is empty, false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00378}{378}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classLinkedQueue_ae54fefdc687852e0465e414bbfadd138}\label{classLinkedQueue_ae54fefdc687852e0465e414bbfadd138} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!pop@{pop}}
+\index{pop@{pop}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::pop (\begin{DoxyParamCaption}\item[{T \&}]{item }\end{DoxyParamCaption})}
+
+
+
+Remove item from the front of the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & Reference to store the removed item \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if item was removed, false if queue was empty 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00356}{356}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classLinkedQueue_ab2bb64be832ea8f62e76dc7fcbe1e9fb}\label{classLinkedQueue_ab2bb64be832ea8f62e76dc7fcbe1e9fb} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!push@{push}}
+\index{push@{push}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::push (\begin{DoxyParamCaption}\item[{const T \&}]{item }\end{DoxyParamCaption})}
+
+
+
+Add item to the end of the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & Item to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Allocates new node for the item 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00332}{332}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classLinkedQueue_a7f8ecf880cc644bd53a75551e96d0987}\label{classLinkedQueue_a7f8ecf880cc644bd53a75551e96d0987} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!count@{count}}
+\index{count@{count}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+uint8\+\_\+t \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::count\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Number of items in queue. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00524}{524}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classLinkedQueue_ab473bd215aaee5a68ed9535a9605e8be}\label{classLinkedQueue_ab473bd215aaee5a68ed9535a9605e8be} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!head@{head}}
+\index{head@{head}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{head}{head}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::head\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pointer to first node. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00522}{522}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classLinkedQueue_ad7eec3a18abedbe1e43f275ae2e37c20}\label{classLinkedQueue_ad7eec3a18abedbe1e43f275ae2e37c20} 
+\index{LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}!tail@{tail}}
+\index{tail@{tail}!LinkedQueue$<$ T $>$@{LinkedQueue$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{tail}{tail}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinkedQueue_1_1Node}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue}}$<$ T $>$\+::tail\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pointer to last node. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00523}{523}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

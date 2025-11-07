@@ -1,0 +1,24 @@
+<map id="Task::isActive" name="Task::isActive">
+<area shape="rect" id="Node000001" title="Check if task is active." alt="" coords="599,132,704,157"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a42e220f60192016791fa56855fcc8e46" title="Execute a task." alt="" coords="372,5,535,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="629,123,594,87,549,52,506,33,508,28,552,48,597,83,633,119"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,81,308,107"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="619,127,587,110,550,97,487,86,423,82,308,87,308,82,423,77,488,81,551,91,589,105,621,122"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#aafdaee288f465a178ef154e1fce57cf4" title="Find next task to execute." alt="" coords="371,107,536,132"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="585,139,536,133,537,127,585,134"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#aef20dca5b8efdd71b4e91f91d5e0240f" title="Process pending messages for all tasks." alt="" coords="356,156,551,181"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="585,155,551,159,551,154,584,150"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a6212cb4fdc7a3ed5c9e50e97729cff8d" title="Publish a message to a topic." alt="" coords="362,205,545,231"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="616,166,552,195,511,208,509,203,550,190,614,161"/>
+<area shape="rect" id="Node000009" href="$classScheduler.html#a4f3960871e36fdf7234b151f81f04120" title="Send a direct message to a specific task." alt="" coords="369,255,538,280"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="635,170,599,209,577,229,552,246,526,257,524,252,549,241,574,225,596,205,631,166"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,38,357,53,272,84,271,79,355,47,399,32"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,81,117,107"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="152,97,117,97,117,91,152,91"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="357,111,308,105,308,100,357,105"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="385,155,355,146,265,109,267,104,357,141,386,150"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a4b2cce5377f8ddf0cc29d00a3c58c1c0" title="Publish a message to a topic." alt="" coords="187,205,286,231"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="348,221,286,221,286,215,348,215"/>
+<area shape="rect" id="Node000010" href="$classTask.html#adbd4d278e42780bd4b6c1d918d0f85c9" title="Send a direct message to a specific task." alt="" coords="199,255,274,280"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="355,270,274,270,274,265,355,265"/>
+</map>

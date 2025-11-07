@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structTaskStats" xml:lang="en-US">
+<title>TaskStats Struct Reference</title>
+<indexterm><primary>TaskStats</primary></indexterm>
+<para>
+
+<para><link linkend="_classTask">Task</link> execution statistics. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>uint8_t <link linkend="_structTaskStats_1a1fc9ad09023166819ea34a6c9e00a956">taskId</link></para>
+
+<para><link linkend="_classTask">Task</link> identifier. </para>
+</listitem>
+            <listitem><para>const __FlashStringHelper * <link linkend="_structTaskStats_1acee85734ca75baa7fe01cad1c24fc34b">name</link></para>
+
+<para><link linkend="_classTask">Task</link> name. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_structTaskStats_1ad14bdd478708018fae0f1bbceb19d2d0">state</link></para>
+
+<para>Current task state (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">Task::State</link> enum value) </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskStats_1a28271d6c20d6bfccfea9f21fcdb7dd63">periodMs</link></para>
+
+<para><link linkend="_classTask">Task</link> period in milliseconds. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_structTaskStats_1a434524846cef9e3a82b15d7f7b5d439d">priority</link></para>
+
+<para><link linkend="_classTask">Task</link> priority. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structTaskStats_1afb9812d3db56b4a74e3534a0b1046b8c">runCount</link></para>
+
+<para>Number of times task has run. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structTaskStats_1a922dffb9309c234de882457919f7cb66">maxExecTimeUs</link></para>
+
+<para>Maximum execution time in microseconds. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_structTaskStats_1a68e1e0b13b6fc7e48ac77f22bc338492">totalExecTimeUs</link></para>
+
+<para>Total execution time in microseconds. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskStats_1ab319b8455c244af5111b6c2e395ffad9">stackUsage</link></para>
+
+<para>Stack usage in bytes. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskStats_1abbf27ee4cb7f8272b150152df12c3da0">delayCount</link></para>
+
+<para>Number of times task was delayed. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskStats_1ac2ef063a104bca4c81457a8db057a51a">maxDelayMs</link></para>
+
+<para>Maximum delay experienced in milliseconds. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_classTask">Task</link> execution statistics. </para>
+
+
+
+<para>Used for performance monitoring and debugging </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00127">127</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structTaskStats_1abbf27ee4cb7f8272b150152df12c3da0"/><section>
+    <title>delayCount</title>
+<indexterm><primary>delayCount</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>delayCount</secondary></indexterm>
+<para><computeroutput>uint16_t TaskStats::delayCount</computeroutput></para><para>
+
+<para>Number of times task was delayed. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00138">138</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1ac2ef063a104bca4c81457a8db057a51a"/><section>
+    <title>maxDelayMs</title>
+<indexterm><primary>maxDelayMs</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>maxDelayMs</secondary></indexterm>
+<para><computeroutput>uint16_t TaskStats::maxDelayMs</computeroutput></para><para>
+
+<para>Maximum delay experienced in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00139">139</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1a922dffb9309c234de882457919f7cb66"/><section>
+    <title>maxExecTimeUs</title>
+<indexterm><primary>maxExecTimeUs</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>maxExecTimeUs</secondary></indexterm>
+<para><computeroutput>uint32_t TaskStats::maxExecTimeUs</computeroutput></para><para>
+
+<para>Maximum execution time in microseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00135">135</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1acee85734ca75baa7fe01cad1c24fc34b"/><section>
+    <title>name</title>
+<indexterm><primary>name</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>name</secondary></indexterm>
+<para><computeroutput>const __FlashStringHelper* TaskStats::name</computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> name. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00130">130</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1a28271d6c20d6bfccfea9f21fcdb7dd63"/><section>
+    <title>periodMs</title>
+<indexterm><primary>periodMs</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>periodMs</secondary></indexterm>
+<para><computeroutput>uint16_t TaskStats::periodMs</computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> period in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00132">132</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1a434524846cef9e3a82b15d7f7b5d439d"/><section>
+    <title>priority</title>
+<indexterm><primary>priority</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>priority</secondary></indexterm>
+<para><computeroutput>uint8_t TaskStats::priority</computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> priority. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00133">133</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1afb9812d3db56b4a74e3534a0b1046b8c"/><section>
+    <title>runCount</title>
+<indexterm><primary>runCount</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>runCount</secondary></indexterm>
+<para><computeroutput>uint32_t TaskStats::runCount</computeroutput></para><para>
+
+<para>Number of times task has run. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00134">134</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1ab319b8455c244af5111b6c2e395ffad9"/><section>
+    <title>stackUsage</title>
+<indexterm><primary>stackUsage</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>stackUsage</secondary></indexterm>
+<para><computeroutput>uint16_t TaskStats::stackUsage</computeroutput></para><para>
+
+<para>Stack usage in bytes. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00137">137</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1ad14bdd478708018fae0f1bbceb19d2d0"/><section>
+    <title>state</title>
+<indexterm><primary>state</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>state</secondary></indexterm>
+<para><computeroutput>uint8_t TaskStats::state</computeroutput></para><para>
+
+<para>Current task state (<link linkend="_classTask_1afa88d99eb2a58c8f078a53f1195c53a8">Task::State</link> enum value) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00131">131</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1a1fc9ad09023166819ea34a6c9e00a956"/><section>
+    <title>taskId</title>
+<indexterm><primary>taskId</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>taskId</secondary></indexterm>
+<para><computeroutput>uint8_t TaskStats::taskId</computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> identifier. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00129">129</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskStats_1a68e1e0b13b6fc7e48ac77f22bc338492"/><section>
+    <title>totalExecTimeUs</title>
+<indexterm><primary>totalExecTimeUs</primary><secondary>TaskStats</secondary></indexterm>
+<indexterm><primary>TaskStats</primary><secondary>totalExecTimeUs</secondary></indexterm>
+<para><computeroutput>uint32_t TaskStats::totalExecTimeUs</computeroutput></para><para>
+
+<para>Total execution time in microseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00136">136</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

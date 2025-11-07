@@ -1,0 +1,12 @@
+<map id="Scheduler::logTaskDelay" name="Scheduler::logTaskDelay">
+<area shape="rect" id="Node000001" title="Log task delay with attribution." alt="" coords="5,31,172,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="428,5,515,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,28,220,15,323,11,414,12,414,18,323,16,220,21,143,33"/>
+<area shape="rect" id="Node000003" href="$classTask.html#aae9b70f6c6542469cd8c3c122536964c" title="Get task name." alt="" coords="232,31,343,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,41,218,41,218,46,173,46"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#aabf3840938cc797555cdee88f5d19dd2" title="Get task by ID." alt="" coords="220,80,355,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="141,53,223,74,222,79,140,59"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="324,77,354,66,429,34,431,39,356,71,326,82"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#ad2b77c7b7e929aad03ce0034f992d876" title="Find a task using a predicate function." alt="" coords="403,80,540,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="355,90,389,90,389,95,355,95"/>
+</map>

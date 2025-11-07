@@ -1,0 +1,654 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_group__fsmos" xml:lang="en-US">
+<title>FsmOS</title>
+<indexterm><primary>FsmOS</primary></indexterm>
+<para>
+
+<para>Lightweight cooperative scheduler and message-passing library for Arduino. </para>
+ 
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_structTaskNode">TaskNode</link></para>
+
+<para>Node structure for <link linkend="_classTask">Task</link> linked list. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structMemoryStats">MemoryStats</link></para>
+
+<para>Memory tracking statistics. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structTaskStats">TaskStats</link></para>
+
+<para><link linkend="_classTask">Task</link> execution statistics. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structResetInfo">ResetInfo</link></para>
+
+<para>System reset information. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structSystemMemoryInfo">SystemMemoryInfo</link></para>
+
+<para>System memory information. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_structTaskMemoryInfo">TaskMemoryInfo</link></para>
+
+<para><link linkend="_classTask">Task</link> memory information. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classSharedMsg">SharedMsg</link></para>
+
+<para>Smart pointer-like wrapper for MsgData with reference counting. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classMsgDataPool">MsgDataPool</link></para>
+
+<para>Memory pool for efficient MsgData allocation. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classLinkedQueue">LinkedQueue&lt; T &gt;</link></para>
+
+<para>Lightweight, interrupt-safe linked queue. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classMutex">Mutex</link></para>
+
+<para><link linkend="_classMutex">Mutex</link> for cooperative task synchronization. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classSemaphore">Semaphore</link></para>
+
+<para><link linkend="_classSemaphore">Semaphore</link> for resource counting and synchronization. </para>
+</listitem>
+            <listitem><para>class <link linkend="_classScheduler">Scheduler</link></para>
+
+<para>Core scheduler and task manager for FsmOS. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_group__fsmos_1gac11585cd9be0cb4a8fca05cf0c19adb1">TOPIC_BITFIELD_SIZE</link>&#160;&#160;&#160;16</para>
+
+<para>Topic bitfield configuration. </para>
+</listitem>
+            <listitem><para>#define <link linkend="_group__fsmos_1gad69a300f3356c3ac65410bbafd9a0dfb">RESET_CAUSE_EXTERNAL</link>&#160;&#160;&#160;0x01</para>
+
+<para>Reset cause flag constants from MCUSR register. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> { <?linebreak?><link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883">RESET_UNKNOWN</link> = 0
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e">RESET_POWER_ON</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323">RESET_EXTERNAL</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1">RESET_BROWN_OUT</link>
+, <?linebreak?><link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d">RESET_WATCHDOG</link>
+, <link linkend="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b">RESET_MULTIPLE</link>
+ }</para>
+
+<para>Reset cause enumeration for Optiboot reset flags. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>template&lt;typename T &gt; </para><para>struct <link linkend="_group__fsmos_1gaa273e9811fbe7bee8c5bc7ec1f5d0ec5">__attribute__</link> ((packed)) TimerT</para>
+
+<para>Memory-optimized template-based timer for specific duration ranges. </para>
+</listitem>
+            <listitem><para>struct <link linkend="_group__fsmos_1ga1e4e0284f7996d8015ca2b268608904a">__attribute__</link> ((packed)) MsgData</para>
+
+<para>Message data structure for inter-task communication. </para>
+</listitem>
+            <listitem><para>virtual uint8_t <link linkend="_group__fsmos_1gadf715a30a3759bfd0856f12cfdf29d0e">Task::getMaxMessageBudget</link> () const</para>
+
+<para>Get the maximum number of messages this task may produce in one <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step()</link> </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1gac6c8dbf1f133ab906d0f3490e0de5d74">logDebugf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Default per-task message production budget. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1ga0fd80592a7d1d2fd9b1b52081a8d69cb">logInfof</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log an info message with formatting. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1ga58264bc1f779d2cd6cb6a8c733a17a21">logWarnf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log a warning message with formatting. </para>
+</listitem>
+            <listitem><para>void <link linkend="_group__fsmos_1gade3c130d653bf887af5b2f6120f388ad">logErrorf</link> (const __FlashStringHelper *format,...)</para>
+
+<para>Log an error message with formatting. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Variables    </title>
+        <itemizedlist>
+            <listitem><para>const uint8_t <link linkend="_group__fsmos_1ga5c3f1eb0aa79f56d91fdbf8fd9f1b911">DEFAULT_TASK_MESSAGE_BUDGET</link> = 1</para>
+
+<para>Base class for all tasks in FsmOS. </para>
+</listitem>
+            <listitem><para><link linkend="_classScheduler">Scheduler</link> <link linkend="_group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e">OS</link></para>
+
+<para>Global scheduler instance. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1gac154c550db4c5b7fed1b1fd1e31a63ee">DEFAULT_TASK_PERIOD</link> = 100</para>
+
+<para>Default task period in milliseconds. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1ga13157fca65016a2c6c913eff0119cf5c">MIN_TASK_PERIOD</link> = 1</para>
+
+<para>Minimum allowed task period in milliseconds. </para>
+</listitem>
+            <listitem><para>const uint16_t <link linkend="_group__fsmos_1gab0cd97b1506816b7e089447cd3430e65">MAX_TASK_PERIOD</link> = 65535</para>
+
+<para>Maximum allowed task period in milliseconds. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Lightweight cooperative scheduler and message-passing library for Arduino. </para>
+
+<para>Provides tasks, scheduler, message passing, synchronization primitives, and diagnostics with a focus on small RAM/flash usage and clear APIs. </para>
+</section>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_group__fsmos_1gad69a300f3356c3ac65410bbafd9a0dfb"/><section>
+    <title>RESET_CAUSE_EXTERNAL</title>
+<indexterm><primary>RESET_CAUSE_EXTERNAL</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_CAUSE_EXTERNAL</secondary></indexterm>
+<para><computeroutput>#define RESET_CAUSE_EXTERNAL&#160;&#160;&#160;0x01</computeroutput></para><para>
+
+<para>Reset cause flag constants from MCUSR register. </para>
+</para>
+
+<para>These flags are stored by Optiboot in GPIOR0 External Reset flag (fallback) </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00185">185</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1gac11585cd9be0cb4a8fca05cf0c19adb1"/><section>
+    <title>TOPIC_BITFIELD_SIZE</title>
+<indexterm><primary>TOPIC_BITFIELD_SIZE</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>TOPIC_BITFIELD_SIZE</secondary></indexterm>
+<para><computeroutput>#define TOPIC_BITFIELD_SIZE&#160;&#160;&#160;16</computeroutput></para><para>
+
+<para>Topic bitfield configuration. </para>
+</para>
+
+<para>Choose the bitfield size based on your topic count:<itemizedlist>
+<listitem>
+<para>TOPIC_BITFIELD_8: 8 topics max (1 byte)</para>
+</listitem><listitem>
+<para>TOPIC_BITFIELD_16: 16 topics max (2 bytes) - DEFAULT</para>
+</listitem><listitem>
+<para>TOPIC_BITFIELD_32: 32 topics max (4 bytes) </para>
+</listitem></itemizedlist>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00070">70</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d"/><section>
+    <title>ResetCause</title>
+<indexterm><primary>ResetCause</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>ResetCause</secondary></indexterm>
+<para><computeroutput>enum <link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link></computeroutput></para><para>
+
+<para>Reset cause enumeration for Optiboot reset flags. </para>
+</para>
+
+<para>Used to identify the cause of system reset </para>
+<informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>RESET_UNKNOWN</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_UNKNOWN</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883"/>RESET_UNKNOWN</entry><entry>
+<para>Unknown reset cause. </para>
+</entry></row><row><entry><indexterm><primary>RESET_POWER_ON</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_POWER_ON</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e"/>RESET_POWER_ON</entry><entry>
+<para>Power-on reset. </para>
+</entry></row><row><entry><indexterm><primary>RESET_EXTERNAL</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_EXTERNAL</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323"/>RESET_EXTERNAL</entry><entry>
+<para>External reset. </para>
+</entry></row><row><entry><indexterm><primary>RESET_BROWN_OUT</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_BROWN_OUT</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1"/>RESET_BROWN_OUT</entry><entry>
+<para>Brown-out reset. </para>
+</entry></row><row><entry><indexterm><primary>RESET_WATCHDOG</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_WATCHDOG</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d"/>RESET_WATCHDOG</entry><entry>
+<para>Watchdog reset. </para>
+</entry></row><row><entry><indexterm><primary>RESET_MULTIPLE</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>RESET_MULTIPLE</secondary></indexterm>
+<anchor xml:id="_group__fsmos_1ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b"/>RESET_MULTIPLE</entry><entry>
+<para>Multiple reset causes detected. </para>
+</entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00164">164</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_group__fsmos_1ga1e4e0284f7996d8015ca2b268608904a"/><section>
+    <title>__attribute__()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>__attribute__</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>__attribute__</secondary></indexterm>
+<para><computeroutput>struct __attribute__ ((packed) )</computeroutput></para><para>
+
+<para>Message data structure for inter-task communication. </para>
+</para>
+
+<para>This structure holds the actual message data and is managed by the message pool system for efficient memory usage.</para>
+
+<para><note><title>Note</title>
+
+<para>Messages are reference-counted and automatically returned to the pool when no longer needed. </para>
+</note>
+</para>
+
+<para>&lt; Message type identifier</para>
+
+<para>&lt; Topic/channel for message routing</para>
+
+<para>&lt; Additional argument data</para>
+
+<para>&lt; Reference count for memory management</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00078">78</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1gaa273e9811fbe7bee8c5bc7ec1f5d0ec5"/><section>
+    <title>__attribute__()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>__attribute__</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>__attribute__</secondary></indexterm>
+<computeroutput>template&lt;typename T &gt; </computeroutput><para><computeroutput>struct __attribute__ ((packed) )</computeroutput></para><para>
+
+<para>Memory-optimized template-based timer for specific duration ranges. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>T</entry><entry>
+<para>The integer type to use for timing (uint8_t, uint16_t, uint32_t) Choose based on your maximum duration needs:<itemizedlist>
+<listitem>
+<para>uint8_t: 0-255ms (2 bytes total)</para>
+</listitem><listitem>
+<para>uint16_t: 0-65535ms (4 bytes total)</para>
+</listitem><listitem>
+<para>uint32_t: 0-4294967295ms (8 bytes total)</para>
+</listitem></itemizedlist>
+</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>This template allows memory optimization by using smaller data types for shorter timer durations, reducing RAM usage in memory-constrained systems. </para>
+</note>
+</para>
+
+<para>&lt; Timer start timestamp in milliseconds</para>
+
+<para>&lt; Timer duration in milliseconds</para>
+
+<para>Start the timer with specified duration 
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>d</entry><entry>
+<para>Duration in milliseconds </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Timer will be marked as expired if duration is 0</para>
+</note>
+Check if timer has expired <formalpara><title>Returns</title>
+
+<para>true if timer duration has elapsed, false otherwise </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>Handles type-specific overflow correctly</para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00078">78</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1gadf715a30a3759bfd0856f12cfdf29d0e"/><section>
+    <title>getMaxMessageBudget()</title>
+<indexterm><primary>getMaxMessageBudget</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>getMaxMessageBudget</secondary></indexterm>
+<para><computeroutput>virtual uint8_t Task::getMaxMessageBudget ( ) const<computeroutput>[inline]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+
+<para>Get the maximum number of messages this task may produce in one <link linkend="_classTask_1a399ff82ffe4b94a11cd8148987e38622">step()</link> </para>
+</para>
+
+<para><link linkend="_classScheduler">Scheduler</link> uses this to ensure there are at least this many free message slots before running the task. <formalpara><title>Returns</title>
+
+<para>Planned message production budget for the upcoming step </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00801">801</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_gadf715a30a3759bfd0856f12cfdf29d0e_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_group__fsmos_1gac6c8dbf1f133ab906d0f3490e0de5d74"/><section>
+    <title>logDebugf()</title>
+<indexterm><primary>logDebugf</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>logDebugf</secondary></indexterm>
+<para><computeroutput>void logDebugf (const __FlashStringHelper * format,  ...)</computeroutput></para><para>
+
+<para>Default per-task message production budget. </para>
+</para>
+
+<para>If a task does not explicitly declare a budget via <link linkend="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4">Task::setMaxMessageBudget</link>, the scheduler applies this default to ensure capacity checks are enforced.</para>
+
+<para>Log a debug message with formatting 
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>format</entry><entry>
+<para>Format string (FlashStringHelper) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>...</entry><entry>
+<para>Variable arguments for formatting </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01695">1695</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_gac6c8dbf1f133ab906d0f3490e0de5d74_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_group__fsmos_1gade3c130d653bf887af5b2f6120f388ad"/><section>
+    <title>logErrorf()</title>
+<indexterm><primary>logErrorf</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>logErrorf</secondary></indexterm>
+<para><computeroutput>void logErrorf (const __FlashStringHelper * format,  ...)</computeroutput></para><para>
+
+<para>Log an error message with formatting. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>format</entry><entry>
+<para>Format string (FlashStringHelper) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>...</entry><entry>
+<para>Variable arguments for formatting </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01719">1719</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_gade3c130d653bf887af5b2f6120f388ad_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_group__fsmos_1ga0fd80592a7d1d2fd9b1b52081a8d69cb"/><section>
+    <title>logInfof()</title>
+<indexterm><primary>logInfof</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>logInfof</secondary></indexterm>
+<para><computeroutput>void logInfof (const __FlashStringHelper * format,  ...)</computeroutput></para><para>
+
+<para>Log an info message with formatting. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>format</entry><entry>
+<para>Format string (FlashStringHelper) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>...</entry><entry>
+<para>Variable arguments for formatting </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01703">1703</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_group__fsmos_1ga58264bc1f779d2cd6cb6a8c733a17a21"/><section>
+    <title>logWarnf()</title>
+<indexterm><primary>logWarnf</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>logWarnf</secondary></indexterm>
+<para><computeroutput>void logWarnf (const __FlashStringHelper * format,  ...)</computeroutput></para><para>
+
+<para>Log a warning message with formatting. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>format</entry><entry>
+<para>Format string (FlashStringHelper) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>...</entry><entry>
+<para>Variable arguments for formatting </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01711">1711</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="group__fsmos_ga58264bc1f779d2cd6cb6a8c733a17a21_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Variable Documentation</title>
+<anchor xml:id="_group__fsmos_1ga5c3f1eb0aa79f56d91fdbf8fd9f1b911"/><section>
+    <title>DEFAULT_TASK_MESSAGE_BUDGET</title>
+<indexterm><primary>DEFAULT_TASK_MESSAGE_BUDGET</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>DEFAULT_TASK_MESSAGE_BUDGET</secondary></indexterm>
+<para><computeroutput>const uint8_t DEFAULT_TASK_MESSAGE_BUDGET = 1</computeroutput></para><para>
+
+<para>Base class for all tasks in FsmOS. </para>
+</para>
+
+<para><link linkend="_classTask">Task</link> provides the foundation for cooperative multitasking. Each task runs in its own context and can communicate with other tasks through messages and events.</para>
+
+<para><note><title>Note</title>
+
+<para>Tasks must implement the step() method to define their behavior. The scheduler calls step() periodically based on the task&apos;s period.</para>
+</note>
+Default message budget for tasks</para>
+
+<para>If a task does not explicitly declare a budget via <link linkend="_classTask_1a871f04aee2f5a2a024c96b9b54aa5ba4">Task::setMaxMessageBudget</link>, the scheduler applies this default to ensure capacity checks are enforced. </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00648">648</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1gac154c550db4c5b7fed1b1fd1e31a63ee"/><section>
+    <title>DEFAULT_TASK_PERIOD</title>
+<indexterm><primary>DEFAULT_TASK_PERIOD</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>DEFAULT_TASK_PERIOD</secondary></indexterm>
+<para><computeroutput>const uint16_t DEFAULT_TASK_PERIOD = 100</computeroutput></para><para>
+
+<para>Default task period in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01515">1515</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1gab0cd97b1506816b7e089447cd3430e65"/><section>
+    <title>MAX_TASK_PERIOD</title>
+<indexterm><primary>MAX_TASK_PERIOD</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>MAX_TASK_PERIOD</secondary></indexterm>
+<para><computeroutput>const uint16_t MAX_TASK_PERIOD = 65535</computeroutput></para><para>
+
+<para>Maximum allowed task period in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01527">1527</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1ga13157fca65016a2c6c913eff0119cf5c"/><section>
+    <title>MIN_TASK_PERIOD</title>
+<indexterm><primary>MIN_TASK_PERIOD</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>MIN_TASK_PERIOD</secondary></indexterm>
+<para><computeroutput>const uint16_t MIN_TASK_PERIOD = 1</computeroutput></para><para>
+
+<para>Minimum allowed task period in milliseconds. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01521">1521</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_group__fsmos_1ga990d37c1e9d0a35fead6ab92e0da955e"/><section>
+    <title>OS</title>
+<indexterm><primary>OS</primary><secondary>FsmOS</secondary></indexterm>
+<indexterm><primary>FsmOS</primary><secondary>OS</secondary></indexterm>
+<para><computeroutput><link linkend="_classScheduler">Scheduler</link> OS<computeroutput>[extern]</computeroutput></computeroutput></para><para>
+
+<para>Global scheduler instance. </para>
+</para>
+
+<para>Convenient global instance for easy access <note><title>Note</title>
+
+<para>This is the main scheduler instance used by most applications </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00048">48</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+</section>

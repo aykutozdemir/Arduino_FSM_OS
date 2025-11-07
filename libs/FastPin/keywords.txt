@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring Map For FastPin
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+FastPin	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+high	KEYWORD2
+low	KEYWORD2
+toggle	KEYWORD2
+read	KEYWORD2
+set	KEYWORD2
+setMode	KEYWORD2
+

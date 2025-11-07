@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For SafeInterrupts
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SafeInterrupts	KEYWORD1
+ScopedDisable	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+disable	KEYWORD2
+enable	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+cli	LITERAL1
+sei	LITERAL1
+

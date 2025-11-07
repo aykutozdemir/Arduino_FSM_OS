@@ -1,0 +1,333 @@
+\doxysection{Fsm\+OS.\+h File Reference}
+\hypertarget{FsmOS_8h}{}\label{FsmOS_8h}\index{FsmOS.h@{FsmOS.h}}
+
+
+A lightweight cooperative task scheduler for Arduino.  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$util/atomic.\+h$>$}\newline
+{\ttfamily \#include $<$new$>$}\newline
+Include dependency graph for Fsm\+OS.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FsmOS_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=149pt]{FsmOS_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structTaskNode}{Task\+Node}}
+\begin{DoxyCompactList}\small\item\em Node structure for \doxylink{classTask}{Task} linked list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structMemoryStats}{Memory\+Stats}}
+\begin{DoxyCompactList}\small\item\em Memory tracking statistics. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTaskStats}{Task\+Stats}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} execution statistics. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structResetInfo}{Reset\+Info}}
+\begin{DoxyCompactList}\small\item\em System reset information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structSystemMemoryInfo}{System\+Memory\+Info}}
+\begin{DoxyCompactList}\small\item\em System memory information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTaskMemoryInfo}{Task\+Memory\+Info}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classTask}{Task} memory information. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classSharedMsg}{Shared\+Msg}}
+\begin{DoxyCompactList}\small\item\em Smart pointer-\/like wrapper for Msg\+Data with reference counting. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMsgDataPool}{Msg\+Data\+Pool}}
+\begin{DoxyCompactList}\small\item\em Memory pool for efficient Msg\+Data allocation. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classLinkedQueue}{Linked\+Queue$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Lightweight, interrupt-\/safe linked queue. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structLinkedQueue_1_1Node}{Linked\+Queue$<$ T $>$\+::\+Node}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structLinkedQueue_1_1Node}{Node} structure for linked list. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMutex}{Mutex}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classMutex}{Mutex} for cooperative task synchronization. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classSemaphore}{Semaphore}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classSemaphore}{Semaphore} for resource counting and synchronization. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classTask}{Task}}
+\begin{DoxyCompactList}\small\item\em Base class for all tasks in Fsm\+OS. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classScheduler}{Scheduler}}
+\begin{DoxyCompactList}\small\item\em Core scheduler and task manager for Fsm\+OS. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structScheduler_1_1QueuedMessage}{Scheduler\+::\+Queued\+Message}}
+\item 
+struct \mbox{\hyperlink{structScheduler_1_1MsgNode}{Scheduler\+::\+Msg\+Node}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{FsmOS_8h_aaaea265b31dabcfb3098bec7685c39e4}{ATOMIC\+\_\+\+BLOCK}}(type)~for (uint8\+\_\+t \+\_\+ab\+\_\+once = 1; \+\_\+ab\+\_\+once; \+\_\+ab\+\_\+once = 0)
+\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a362c18b15a09703e42e1c246c47420ef}{ATOMIC\+\_\+\+RESTORESTATE}}
+\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a9f8057007e58750af1de560ba396f6bc}{FSMOS\+\_\+\+STACK\+\_\+\+CANARY\+\_\+\+MARGIN}}~32
+\begin{DoxyCompactList}\small\item\em Safety margin (bytes) to keep between stack canary and current stack pointer. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__fsmos_gac11585cd9be0cb4a8fca05cf0c19adb1}{TOPIC\+\_\+\+BITFIELD\+\_\+\+SIZE}}~16
+\begin{DoxyCompactList}\small\item\em Topic bitfield configuration. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}{MAX\+\_\+\+TOPICS}}~16
+\item 
+\#define \mbox{\hyperlink{FsmOS_8h_addd900ed12192f9ff21848d61476d5f2}{MAX\+\_\+\+MESSAGE\+\_\+\+POOL\+\_\+\+SIZE}}~32
+\begin{DoxyCompactList}\small\item\em Forward declaration for \doxylink{classScheduler}{Scheduler} class. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__fsmos_gad69a300f3356c3ac65410bbafd9a0dfb}{RESET\+\_\+\+CAUSE\+\_\+\+EXTERNAL}}~0x01
+\begin{DoxyCompactList}\small\item\em Reset cause flag constants from MCUSR register. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a1725fe610295be64608f3418032d83cf}{RESET\+\_\+\+CAUSE\+\_\+\+BROWN\+\_\+\+OUT}}~0x02
+\begin{DoxyCompactList}\small\item\em Brown-\/out Reset flag (fallback) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a0fe30f99377de57d909e461a560dee78}{RESET\+\_\+\+CAUSE\+\_\+\+POWER\+\_\+\+ON}}~0x04
+\begin{DoxyCompactList}\small\item\em Power-\/on Reset flag (fallback) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{FsmOS_8h_a8ddfa282a94d5f071d6b99b875d220b7}{RESET\+\_\+\+CAUSE\+\_\+\+WATCHDOG}}~0x08
+\begin{DoxyCompactList}\small\item\em Watchdog Reset flag (fallback) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint16\+\_\+t \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{Topic\+Bitfield}}
+\item 
+using \mbox{\hyperlink{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0}{Timer8}} = TimerT$<$ uint8\+\_\+t $>$
+\begin{DoxyCompactList}\small\item\em 8-\/bit timer for short durations (0-\/255ms) \end{DoxyCompactList}\item 
+using \mbox{\hyperlink{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843}{Timer16}} = TimerT$<$ uint16\+\_\+t $>$
+\begin{DoxyCompactList}\small\item\em 16-\/bit timer for medium durations (0-\/65535ms) \end{DoxyCompactList}\item 
+using \mbox{\hyperlink{FsmOS_8h_acce064b0f024fed7c7008c84a000538f}{Timer32}} = TimerT$<$ uint32\+\_\+t $>$
+\begin{DoxyCompactList}\small\item\em 32-\/bit timer for long durations (0-\/4294967295ms) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__fsmos_gaf0e4bd86b7877a41cdb3452dec42904d}{Reset\+Cause}} \{ \newline
+\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da8bf9995e300055d0078c4a09dfe0c883}{RESET\+\_\+\+UNKNOWN}} = 0
+, \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da37c7f4bc95e2b9679583655a8090880e}{RESET\+\_\+\+POWER\+\_\+\+ON}}
+, \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da187c6b01e1cfc544ee25193f43790323}{RESET\+\_\+\+EXTERNAL}}
+, \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da3ab8379425c9a63d5a64c2687968d3a1}{RESET\+\_\+\+BROWN\+\_\+\+OUT}}
+, \newline
+\mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904da9777f5f16727a14c3ccd7601fb09da6d}{RESET\+\_\+\+WATCHDOG}}
+, \mbox{\hyperlink{group__fsmos_ggaf0e4bd86b7877a41cdb3452dec42904dac94fa96c03ded460233a532ab79a089b}{RESET\+\_\+\+MULTIPLE}}
+ \}
+\begin{DoxyCompactList}\small\item\em Reset cause enumeration for Optiboot reset flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\struct \mbox{\hyperlink{group__fsmos_gaa273e9811fbe7bee8c5bc7ec1f5d0ec5}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((packed)) TimerT
+\begin{DoxyCompactList}\small\item\em Memory-\/optimized template-\/based timer for specific duration ranges. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__fsmos_ga1e4e0284f7996d8015ca2b268608904a}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((packed)) Msg\+Data
+\begin{DoxyCompactList}\small\item\em Message data structure for inter-\/task communication. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_gac6c8dbf1f133ab906d0f3490e0de5d74}{log\+Debugf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Default per-\/task message production budget. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_ga0fd80592a7d1d2fd9b1b52081a8d69cb}{log\+Infof}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log an info message with formatting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_ga58264bc1f779d2cd6cb6a8c733a17a21}{log\+Warnf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log a warning message with formatting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__fsmos_gade3c130d653bf887af5b2f6120f388ad}{log\+Errorf}} (const \+\_\+\+\_\+\+Flash\+String\+Helper \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Log an error message with formatting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const uint8\+\_\+t \mbox{\hyperlink{group__fsmos_ga5c3f1eb0aa79f56d91fdbf8fd9f1b911}{DEFAULT\+\_\+\+TASK\+\_\+\+MESSAGE\+\_\+\+BUDGET}} = 1
+\begin{DoxyCompactList}\small\item\em Base class for all tasks in Fsm\+OS. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classScheduler}{Scheduler}} \mbox{\hyperlink{group__fsmos_ga990d37c1e9d0a35fead6ab92e0da955e}{OS}}
+\begin{DoxyCompactList}\small\item\em Global scheduler instance. \end{DoxyCompactList}\item 
+const uint16\+\_\+t \mbox{\hyperlink{group__fsmos_gac154c550db4c5b7fed1b1fd1e31a63ee}{DEFAULT\+\_\+\+TASK\+\_\+\+PERIOD}} = 100
+\begin{DoxyCompactList}\small\item\em Default task period in milliseconds. \end{DoxyCompactList}\item 
+const uint16\+\_\+t \mbox{\hyperlink{group__fsmos_ga13157fca65016a2c6c913eff0119cf5c}{MIN\+\_\+\+TASK\+\_\+\+PERIOD}} = 1
+\begin{DoxyCompactList}\small\item\em Minimum allowed task period in milliseconds. \end{DoxyCompactList}\item 
+const uint16\+\_\+t \mbox{\hyperlink{group__fsmos_gab0cd97b1506816b7e089447cd3430e65}{MAX\+\_\+\+TASK\+\_\+\+PERIOD}} = 65535
+\begin{DoxyCompactList}\small\item\em Maximum allowed task period in milliseconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A lightweight cooperative task scheduler for Arduino. 
+
+\begin{DoxyAuthor}{Author}
+Aykut Özdemir \href{mailto:aykutozdemirgyte@gmail.com}{\texttt{ aykutozdemirgyte@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/10-\/02
+\end{DoxyDate}
+Fsm\+OS provides a simple, memory-\/efficient task scheduler for Arduino, supporting cooperative multitasking, message passing, and system monitoring.
+
+Key features\+:
+\begin{DoxyItemize}
+\item Cooperative task scheduling with configurable periods
+\item Inter-\/task communication through messages and events
+\item Dynamic task creation and deletion
+\item Memory management and monitoring
+\item System diagnostics and profiling
+\item Logging system with multiple levels
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+This library is designed for AVR-\/based Arduino boards but includes partial support for other architectures.
+\end{DoxyNote}
+\begin{DoxyVersion}{Version}
+1.\+3.\+0 -\/ Major refactoring and code organization 
+\end{DoxyVersion}
+\begin{DoxyCopyright}{Copyright}
+2025 Aykut Özdemir \href{mailto:aykutozdemirgyte@gmail.com}{\texttt{ aykutozdemirgyte@gmail.\+com}} 
+\end{DoxyCopyright}
+
+
+Definition in file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{FsmOS_8h_aaaea265b31dabcfb3098bec7685c39e4}\label{FsmOS_8h_aaaea265b31dabcfb3098bec7685c39e4} 
+\index{FsmOS.h@{FsmOS.h}!ATOMIC\_BLOCK@{ATOMIC\_BLOCK}}
+\index{ATOMIC\_BLOCK@{ATOMIC\_BLOCK}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{ATOMIC\_BLOCK}{ATOMIC\_BLOCK}}
+{\footnotesize\ttfamily \#define ATOMIC\+\_\+\+BLOCK(\begin{DoxyParamCaption}\item[{}]{type }\end{DoxyParamCaption})~for (uint8\+\_\+t \+\_\+ab\+\_\+once = 1; \+\_\+ab\+\_\+once; \+\_\+ab\+\_\+once = 0)}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00048}{48}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a362c18b15a09703e42e1c246c47420ef}\label{FsmOS_8h_a362c18b15a09703e42e1c246c47420ef} 
+\index{FsmOS.h@{FsmOS.h}!ATOMIC\_RESTORESTATE@{ATOMIC\_RESTORESTATE}}
+\index{ATOMIC\_RESTORESTATE@{ATOMIC\_RESTORESTATE}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{ATOMIC\_RESTORESTATE}{ATOMIC\_RESTORESTATE}}
+{\footnotesize\ttfamily \#define ATOMIC\+\_\+\+RESTORESTATE}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00049}{49}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a9f8057007e58750af1de560ba396f6bc}\label{FsmOS_8h_a9f8057007e58750af1de560ba396f6bc} 
+\index{FsmOS.h@{FsmOS.h}!FSMOS\_STACK\_CANARY\_MARGIN@{FSMOS\_STACK\_CANARY\_MARGIN}}
+\index{FSMOS\_STACK\_CANARY\_MARGIN@{FSMOS\_STACK\_CANARY\_MARGIN}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{FSMOS\_STACK\_CANARY\_MARGIN}{FSMOS\_STACK\_CANARY\_MARGIN}}
+{\footnotesize\ttfamily \#define FSMOS\+\_\+\+STACK\+\_\+\+CANARY\+\_\+\+MARGIN~32}
+
+
+
+Safety margin (bytes) to keep between stack canary and current stack pointer. 
+
+\begin{DoxyNote}{Note}
+Prevents corruption of active stack frames and ISR stacks 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00058}{58}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_addd900ed12192f9ff21848d61476d5f2}\label{FsmOS_8h_addd900ed12192f9ff21848d61476d5f2} 
+\index{FsmOS.h@{FsmOS.h}!MAX\_MESSAGE\_POOL\_SIZE@{MAX\_MESSAGE\_POOL\_SIZE}}
+\index{MAX\_MESSAGE\_POOL\_SIZE@{MAX\_MESSAGE\_POOL\_SIZE}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_MESSAGE\_POOL\_SIZE}{MAX\_MESSAGE\_POOL\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+MESSAGE\+\_\+\+POOL\+\_\+\+SIZE~32}
+
+
+
+Forward declaration for \doxylink{classScheduler}{Scheduler} class. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00092}{92}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278}\label{FsmOS_8h_a91bc2cac3c4615c062e7524ba2ea2278} 
+\index{FsmOS.h@{FsmOS.h}!MAX\_TOPICS@{MAX\_TOPICS}}
+\index{MAX\_TOPICS@{MAX\_TOPICS}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_TOPICS}{MAX\_TOPICS}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+TOPICS~16}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00079}{79}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a1725fe610295be64608f3418032d83cf}\label{FsmOS_8h_a1725fe610295be64608f3418032d83cf} 
+\index{FsmOS.h@{FsmOS.h}!RESET\_CAUSE\_BROWN\_OUT@{RESET\_CAUSE\_BROWN\_OUT}}
+\index{RESET\_CAUSE\_BROWN\_OUT@{RESET\_CAUSE\_BROWN\_OUT}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{RESET\_CAUSE\_BROWN\_OUT}{RESET\_CAUSE\_BROWN\_OUT}}
+{\footnotesize\ttfamily \#define RESET\+\_\+\+CAUSE\+\_\+\+BROWN\+\_\+\+OUT~0x02}
+
+
+
+Brown-\/out Reset flag (fallback) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00186}{186}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a0fe30f99377de57d909e461a560dee78}\label{FsmOS_8h_a0fe30f99377de57d909e461a560dee78} 
+\index{FsmOS.h@{FsmOS.h}!RESET\_CAUSE\_POWER\_ON@{RESET\_CAUSE\_POWER\_ON}}
+\index{RESET\_CAUSE\_POWER\_ON@{RESET\_CAUSE\_POWER\_ON}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{RESET\_CAUSE\_POWER\_ON}{RESET\_CAUSE\_POWER\_ON}}
+{\footnotesize\ttfamily \#define RESET\+\_\+\+CAUSE\+\_\+\+POWER\+\_\+\+ON~0x04}
+
+
+
+Power-\/on Reset flag (fallback) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00187}{187}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a8ddfa282a94d5f071d6b99b875d220b7}\label{FsmOS_8h_a8ddfa282a94d5f071d6b99b875d220b7} 
+\index{FsmOS.h@{FsmOS.h}!RESET\_CAUSE\_WATCHDOG@{RESET\_CAUSE\_WATCHDOG}}
+\index{RESET\_CAUSE\_WATCHDOG@{RESET\_CAUSE\_WATCHDOG}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{RESET\_CAUSE\_WATCHDOG}{RESET\_CAUSE\_WATCHDOG}}
+{\footnotesize\ttfamily \#define RESET\+\_\+\+CAUSE\+\_\+\+WATCHDOG~0x08}
+
+
+
+Watchdog Reset flag (fallback) 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00188}{188}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843}\label{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843} 
+\index{FsmOS.h@{FsmOS.h}!Timer16@{Timer16}}
+\index{Timer16@{Timer16}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{Timer16}{Timer16}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{FsmOS_8h_acc8d5d8e761e9ae66c17be7f7d8ff843}{Timer16}} =  TimerT$<$uint16\+\_\+t$>$}
+
+
+
+16-\/bit timer for medium durations (0-\/65535ms) 
+
+Uses 4 bytes total memory, ideal for most timing needs 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00275}{275}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_acce064b0f024fed7c7008c84a000538f}\label{FsmOS_8h_acce064b0f024fed7c7008c84a000538f} 
+\index{FsmOS.h@{FsmOS.h}!Timer32@{Timer32}}
+\index{Timer32@{Timer32}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{Timer32}{Timer32}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{FsmOS_8h_acce064b0f024fed7c7008c84a000538f}{Timer32}} =  TimerT$<$uint32\+\_\+t$>$}
+
+
+
+32-\/bit timer for long durations (0-\/4294967295ms) 
+
+Uses 8 bytes total memory, for very long timing requirements 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00281}{281}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0}\label{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0} 
+\index{FsmOS.h@{FsmOS.h}!Timer8@{Timer8}}
+\index{Timer8@{Timer8}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{Timer8}{Timer8}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{FsmOS_8h_a9f53b37c6d575f1b498359cc429740b0}{Timer8}} =  TimerT$<$uint8\+\_\+t$>$}
+
+
+
+8-\/bit timer for short durations (0-\/255ms) 
+
+Uses 2 bytes total memory, ideal for debouncing and short delays 
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00269}{269}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}\label{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb} 
+\index{FsmOS.h@{FsmOS.h}!TopicBitfield@{TopicBitfield}}
+\index{TopicBitfield@{TopicBitfield}!FsmOS.h@{FsmOS.h}}
+\doxysubsubsection{\texorpdfstring{TopicBitfield}{TopicBitfield}}
+{\footnotesize\ttfamily typedef uint16\+\_\+t \mbox{\hyperlink{FsmOS_8h_a21f8c866143c5f1a7f2f75113f2652cb}{Topic\+Bitfield}}}
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00078}{78}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+

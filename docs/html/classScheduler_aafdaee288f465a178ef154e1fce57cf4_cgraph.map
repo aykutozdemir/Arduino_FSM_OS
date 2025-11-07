@@ -1,0 +1,15 @@
+<map id="Scheduler::findNextTask" name="Scheduler::findNextTask">
+<area shape="rect" id="Node000001" title="Find next task to execute." alt="" coords="5,104,171,129"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a86ddccd30b5b2af61d3cb76d53ca1b4b" title="Get number of free slots in the global message queue." alt="" coords="219,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,101,155,71,218,40,239,32,241,37,220,44,158,75,109,106"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="275,55,362,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,101,261,77,262,82,149,107"/>
+<area shape="rect" id="Node000004" href="$group__fsmos.html#gadf715a30a3759bfd0856f12cfdf29d0e" title="Get the maximum number of messages this task may produce in one step()" alt="" coords="221,104,416,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,114,208,114,208,119,171,119"/>
+<area shape="rect" id="Node000005" href="$classTask.html#aef8cf69a9b677977003d8b72d66d36d8" title="Get task priority." alt="" coords="260,153,377,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="149,127,247,148,246,153,147,132"/>
+<area shape="rect" id="Node000006" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="266,203,371,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="110,127,158,157,220,188,254,199,252,204,218,192,156,162,107,132"/>
+<area shape="rect" id="Node000007" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="467,203,573,228"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="372,213,453,213,453,218,372,218"/>
+</map>

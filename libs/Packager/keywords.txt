@@ -1,0 +1,40 @@
+#######################################
+# Syntax Coloring Map For Packager
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PackageInterface	KEYWORD1
+DefaultPackageInterface	KEYWORD1
+CRCPackageInterface	KEYWORD1
+Package	KEYWORD1
+PackageHeader	KEYWORD1
+PackageFooter	KEYWORD1
+PendingMessage	KEYWORD1
+NackReason	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+loop	KEYWORD2
+clear	KEYWORD2
+getPlainStream	KEYWORD2
+getEncodedStream	KEYWORD2
+sendResetPacket	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+MAX_DATA_LENGTH	LITERAL1
+PACKAGE_LENGTH	LITERAL1
+NO_ERROR	LITERAL1
+INVALID_CRC	LITERAL1
+INVALID_START_STOP	LITERAL1
+INVALID_TYPE	LITERAL1
+INVALID_LENGTH	LITERAL1
+UNKNOWN_ERROR	LITERAL1
+

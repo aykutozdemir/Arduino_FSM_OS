@@ -1,0 +1,6 @@
+<map id="Scheduler::MsgNode" name="Scheduler::MsgNode">
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,93,171,119"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="185,98,197,106,189,114,171,116,170,111,187,109,192,106,183,102"/>
+<area shape="rect" id="Node000002" href="$structScheduler_1_1QueuedMessage.html" title=" " alt="" coords="5,5,192,31"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="101,45,101,93,96,93,96,45"/>
+</map>

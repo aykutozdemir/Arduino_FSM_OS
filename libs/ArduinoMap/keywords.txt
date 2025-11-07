@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring Map For ArduinoMap
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ArduinoMap	KEYWORD1
+Pair	KEYWORD1
+Iterator	KEYWORD1
+ConstIterator	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+insert	KEYWORD2
+get	KEYWORD2
+remove	KEYWORD2
+clear	KEYWORD2
+size	KEYWORD2
+empty	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
+cbegin	KEYWORD2
+cend	KEYWORD2
+make_pair	KEYWORD2
+

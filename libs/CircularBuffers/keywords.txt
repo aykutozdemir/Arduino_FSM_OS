@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For CircularBuffers
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+FastCircularQueue	KEYWORD1
+StringBuffer	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+push	KEYWORD2
+pushOverwrite	KEYWORD2
+pop	KEYWORD2
+peek	KEYWORD2
+isEmpty	KEYWORD2
+isFull	KEYWORD2
+available	KEYWORD2
+clear	KEYWORD2
+append	KEYWORD2
+indexOf	KEYWORD2
+endsWith	KEYWORD2
+trim	KEYWORD2
+substring	KEYWORD2
+toCString	KEYWORD2
+toString	KEYWORD2
+size	KEYWORD2
+

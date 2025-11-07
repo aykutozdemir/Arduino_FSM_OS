@@ -1,0 +1,182 @@
+\doxysection{Semaphore Class Reference}
+\hypertarget{classSemaphore}{}\label{classSemaphore}\index{Semaphore@{Semaphore}}
+
+
+\doxylink{classSemaphore}{Semaphore} for resource counting and synchronization.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSemaphore_a9f8febef61d91a380337f05e3fc0678c}{Semaphore}} (uint8\+\_\+t initial\+\_\+count, uint8\+\_\+t \mbox{\hyperlink{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}{max\+\_\+count}})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classSemaphore_ab733c9bf26e7dd7e007c68ca27b8c06e}{wait}} (uint8\+\_\+t task\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Try to acquire a resource. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSemaphore_a1d7c51da55f9ac913a6a711cb6d6e52a}{signal}} ()
+\begin{DoxyCompactList}\small\item\em Release a resource. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classSemaphore_a0c65b57daf4e089e6e6241f4669d6f1f}{get\+Count}} () const
+\begin{DoxyCompactList}\small\item\em Get current resource count. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classSemaphore_a5dc46274b490015edf89edf3048512a8}{get\+Max\+Count}} () const
+\begin{DoxyCompactList}\small\item\em Get maximum resource count. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{classSemaphore_a3a416166d840dc83b6283b20bccd072a}{count}}
+\begin{DoxyCompactList}\small\item\em Current resource count. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}{max\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em Maximum resource count. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classSemaphore}{Semaphore} for resource counting and synchronization. 
+
+\doxylink{classSemaphore}{Semaphore} allows a limited number of tasks to access a resource simultaneously. It maintains a count of available resources.
+
+\begin{DoxyNote}{Note}
+This semaphore is designed for cooperative multitasking only. Tasks must check \doxylink{classSemaphore_ab733c9bf26e7dd7e007c68ca27b8c06e}{wait()} and yield if no resources are available. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00590}{590}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSemaphore_a9f8febef61d91a380337f05e3fc0678c}\label{classSemaphore_a9f8febef61d91a380337f05e3fc0678c} 
+\index{Semaphore@{Semaphore}!Semaphore@{Semaphore}}
+\index{Semaphore@{Semaphore}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{Semaphore()}{Semaphore()}}
+{\footnotesize\ttfamily Semaphore\+::\+Semaphore (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{initial\+\_\+count,  }\item[{uint8\+\_\+t}]{max\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+\_\+count} & Initial number of available resources \\
+\hline
+{\em max\+\_\+count} & Maximum number of resources \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00426}{426}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSemaphore_a0c65b57daf4e089e6e6241f4669d6f1f}\label{classSemaphore_a0c65b57daf4e089e6e6241f4669d6f1f} 
+\index{Semaphore@{Semaphore}!getCount@{getCount}}
+\index{getCount@{getCount}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{getCount()}{getCount()}}
+{\footnotesize\ttfamily uint8\+\_\+t Semaphore\+::get\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get current resource count. 
+
+\begin{DoxyReturn}{Returns}
+Number of available resources 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00453}{453}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSemaphore_a5dc46274b490015edf89edf3048512a8}\label{classSemaphore_a5dc46274b490015edf89edf3048512a8} 
+\index{Semaphore@{Semaphore}!getMaxCount@{getMaxCount}}
+\index{getMaxCount@{getMaxCount}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{getMaxCount()}{getMaxCount()}}
+{\footnotesize\ttfamily uint8\+\_\+t Semaphore\+::get\+Max\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get maximum resource count. 
+
+\begin{DoxyReturn}{Returns}
+Maximum number of resources 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00455}{455}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSemaphore_a1d7c51da55f9ac913a6a711cb6d6e52a}\label{classSemaphore_a1d7c51da55f9ac913a6a711cb6d6e52a} 
+\index{Semaphore@{Semaphore}!signal@{signal}}
+\index{signal@{signal}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{signal()}{signal()}}
+{\footnotesize\ttfamily void Semaphore\+::signal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Release a resource. 
+
+\begin{DoxyNote}{Note}
+Increments the available resource count 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00442}{442}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classSemaphore_ab733c9bf26e7dd7e007c68ca27b8c06e}\label{classSemaphore_ab733c9bf26e7dd7e007c68ca27b8c06e} 
+\index{Semaphore@{Semaphore}!wait@{wait}}
+\index{wait@{wait}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{wait()}{wait()}}
+{\footnotesize\ttfamily bool Semaphore\+::wait (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{task\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Try to acquire a resource. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & ID of the task attempting to acquire resource \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if resource was acquired, false if none available 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00428}{428}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classSemaphore_a3a416166d840dc83b6283b20bccd072a}\label{classSemaphore_a3a416166d840dc83b6283b20bccd072a} 
+\index{Semaphore@{Semaphore}!count@{count}}
+\index{count@{count}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t Semaphore\+::count\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Current resource count. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00626}{626}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e}\label{classSemaphore_a1851b2b206e6fe2fe6711bd8469e157e} 
+\index{Semaphore@{Semaphore}!max\_count@{max\_count}}
+\index{max\_count@{max\_count}!Semaphore@{Semaphore}}
+\doxysubsubsection{\texorpdfstring{max\_count}{max\_count}}
+{\footnotesize\ttfamily uint8\+\_\+t Semaphore\+::max\+\_\+count\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximum resource count. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00627}{627}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

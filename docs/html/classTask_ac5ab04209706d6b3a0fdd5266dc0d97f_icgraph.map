@@ -1,0 +1,5 @@
+<map id="Task::getDelayCount" name="Task::getDelayCount">
+<area shape="rect" id="Node000001" title="Get number of times this task was delayed." alt="" coords="268,5,413,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a2ccde4ea0d8e9a6996c4a897aee709e9" title="Get task that caused the most delays." alt="" coords="5,5,220,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,21,220,21,220,15,254,15"/>
+</map>

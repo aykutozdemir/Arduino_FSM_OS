@@ -1,0 +1,88 @@
+.TH "ResetInfo" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ResetInfo \- System reset information\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "uint8_t \fBresetReason\fP"
+.br
+.RI "Reason for reset\&. "
+.ti -1c
+.RI "uint32_t \fBresetTime\fP"
+.br
+.RI "Time of reset\&. "
+.ti -1c
+.RI "uint16_t \fBwatchdogTimeout\fP"
+.br
+.RI "Watchdog timeout value\&. "
+.ti -1c
+.RI "uint8_t \fBlastTaskId\fP"
+.br
+.RI "ID of last running task\&. "
+.ti -1c
+.RI "uint8_t \fBoptibootResetFlags\fP"
+.br
+.RI "Raw reset flags from Optiboot GPIOR0\&. "
+.ti -1c
+.RI "uint8_t \fBoptibootResetCause\fP"
+.br
+.RI "Processed reset cause (ResetCause enum) "
+.in -1c
+.SH "Detailed Description"
+.PP 
+System reset information\&. 
+
+Used for debugging system resets and crashes 
+.PP
+Definition at line \fB147\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "uint8_t ResetInfo::lastTaskId"
+
+.PP
+ID of last running task\&. 
+.PP
+Definition at line \fB152\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t ResetInfo::optibootResetCause"
+
+.PP
+Processed reset cause (ResetCause enum) 
+.PP
+Definition at line \fB156\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t ResetInfo::optibootResetFlags"
+
+.PP
+Raw reset flags from Optiboot GPIOR0\&. 
+.PP
+Definition at line \fB155\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t ResetInfo::resetReason"
+
+.PP
+Reason for reset\&. 
+.PP
+Definition at line \fB149\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint32_t ResetInfo::resetTime"
+
+.PP
+Time of reset\&. 
+.PP
+Definition at line \fB150\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint16_t ResetInfo::watchdogTimeout"
+
+.PP
+Watchdog timeout value\&. 
+.PP
+Definition at line \fB151\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

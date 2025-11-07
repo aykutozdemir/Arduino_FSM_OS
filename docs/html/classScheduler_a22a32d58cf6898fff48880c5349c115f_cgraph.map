@@ -1,0 +1,7 @@
+<map id="Scheduler::handleTaskTiming" name="Scheduler::handleTaskTiming">
+<area shape="rect" id="Node000001" title="Handle task timing monitoring." alt="" coords="5,31,199,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#aa096c58dddc4fb8f7f8d5f40e1815d2d" title="Get task execution period." alt="" coords="273,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,30,259,23,260,28,199,35"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a40371a166759f310c2223ef082526829" title="Log task delay with attribution." alt="" coords="247,55,413,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,51,233,54,233,60,199,56"/>
+</map>

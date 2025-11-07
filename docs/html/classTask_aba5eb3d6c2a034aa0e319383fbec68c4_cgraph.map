@@ -1,0 +1,9 @@
+<map id="Task::stop" name="Task::stop">
+<area shape="rect" id="Node000001" title="Stop the task." alt="" coords="5,55,88,80"/>
+<area shape="rect" id="Node000002" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="136,5,243,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,52,138,33,140,38,85,57"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a7eccc77f654e53524d3a07b1ef73c83c" title="Called when task is stopped." alt="" coords="137,55,241,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="88,65,123,65,123,70,88,70"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a7a79169eed523ffdafa76f3c9d07ff27" title="Set task state." alt="" coords="136,104,243,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="85,78,140,97,138,102,83,83"/>
+</map>

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structTaskMemoryInfo" xml:lang="en-US">
+<title>TaskMemoryInfo Struct Reference</title>
+<indexterm><primary>TaskMemoryInfo</primary></indexterm>
+<para>
+
+<para><link linkend="_classTask">Task</link> memory information. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>uint8_t <link linkend="_structTaskMemoryInfo_1a6ccb06721fe721014762215555523d65">task_id</link></para>
+
+<para><link linkend="_classTask">Task</link> identifier. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskMemoryInfo_1a455ea7f69c1a9c3b898d5c8d40e0fac7">task_struct_size</link></para>
+
+<para>Size of task structure. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskMemoryInfo_1a33936208344182c0cb2040787efaf117">subscription_size</link></para>
+
+<para>Size of subscription data. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskMemoryInfo_1afc06164ff4977316ba80890f78771b91">queue_size</link></para>
+
+<para>Size of message queue. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_structTaskMemoryInfo_1ae365acfa19af10f054aee062cfe3b824">total_allocated</link></para>
+
+<para>Total memory allocated for task. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_classTask">Task</link> memory information. </para>
+
+
+
+<para>Memory usage statistics for individual tasks </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00221">221</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structTaskMemoryInfo_1afc06164ff4977316ba80890f78771b91"/><section>
+    <title>queue_size</title>
+<indexterm><primary>queue_size</primary><secondary>TaskMemoryInfo</secondary></indexterm>
+<indexterm><primary>TaskMemoryInfo</primary><secondary>queue_size</secondary></indexterm>
+<para><computeroutput>uint16_t TaskMemoryInfo::queue_size</computeroutput></para><para>
+
+<para>Size of message queue. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00226">226</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskMemoryInfo_1a33936208344182c0cb2040787efaf117"/><section>
+    <title>subscription_size</title>
+<indexterm><primary>subscription_size</primary><secondary>TaskMemoryInfo</secondary></indexterm>
+<indexterm><primary>TaskMemoryInfo</primary><secondary>subscription_size</secondary></indexterm>
+<para><computeroutput>uint16_t TaskMemoryInfo::subscription_size</computeroutput></para><para>
+
+<para>Size of subscription data. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00225">225</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskMemoryInfo_1a6ccb06721fe721014762215555523d65"/><section>
+    <title>task_id</title>
+<indexterm><primary>task_id</primary><secondary>TaskMemoryInfo</secondary></indexterm>
+<indexterm><primary>TaskMemoryInfo</primary><secondary>task_id</secondary></indexterm>
+<para><computeroutput>uint8_t TaskMemoryInfo::task_id</computeroutput></para><para>
+
+<para><link linkend="_classTask">Task</link> identifier. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00223">223</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskMemoryInfo_1a455ea7f69c1a9c3b898d5c8d40e0fac7"/><section>
+    <title>task_struct_size</title>
+<indexterm><primary>task_struct_size</primary><secondary>TaskMemoryInfo</secondary></indexterm>
+<indexterm><primary>TaskMemoryInfo</primary><secondary>task_struct_size</secondary></indexterm>
+<para><computeroutput>uint16_t TaskMemoryInfo::task_struct_size</computeroutput></para><para>
+
+<para>Size of task structure. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00224">224</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structTaskMemoryInfo_1ae365acfa19af10f054aee062cfe3b824"/><section>
+    <title>total_allocated</title>
+<indexterm><primary>total_allocated</primary><secondary>TaskMemoryInfo</secondary></indexterm>
+<indexterm><primary>TaskMemoryInfo</primary><secondary>total_allocated</secondary></indexterm>
+<para><computeroutput>uint16_t TaskMemoryInfo::total_allocated</computeroutput></para><para>
+
+<para>Total memory allocated for task. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00227">227</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>

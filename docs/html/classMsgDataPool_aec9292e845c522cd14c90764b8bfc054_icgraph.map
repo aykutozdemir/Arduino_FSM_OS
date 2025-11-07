@@ -1,0 +1,13 @@
+<map id="MsgDataPool::updateAdaptiveLimit" name="MsgDataPool::updateAdaptiveLimit">
+<area shape="rect" id="Node000001" title="Update adaptive pool limit based on usage." alt="" coords="639,23,837,63"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#a5249e1c96225998fac71ba67c691740d" title="Allocate a new MsgData from the pool." alt="" coords="429,5,584,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="625,34,584,29,584,24,625,28"/>
+<area shape="rect" id="Node000003" href="$classMsgDataPool.html#a9b78a83be33a8a2a938f576eee7a98ee" title="Return a MsgData to the pool." alt="" coords="423,55,591,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="625,58,591,61,591,56,625,52"/>
+<area shape="rect" id="Node000004" href="$classSharedMsg.html#ad7ce8df960b49c88f0d4264c23c93f81" title="Assignment operator." alt="" coords="224,29,375,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="408,58,375,54,376,49,409,53"/>
+<area shape="rect" id="Node000005" href="$classSharedMsg.html#a458f5ccc07be87e716ef117e2eb0bce9" title="Internal method to release reference." alt="" coords="230,79,369,104"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="409,81,369,86,369,81,408,76"/>
+<area shape="rect" id="Node000006" href="$classSharedMsg.html#a1819d3340c3fa3d00950eb087cd97131" title="Destructor." alt="" coords="5,79,176,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="216,94,176,94,176,89,216,89"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Scheduler::logMessage" name="Scheduler::logMessage">
+<area shape="rect" id="Node000001" title="Log a message." alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="212,5,299,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,15,198,15,198,21,164,21"/>
+</map>

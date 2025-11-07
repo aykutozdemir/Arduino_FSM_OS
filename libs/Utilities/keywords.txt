@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map For Utilities
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Utilities	KEYWORD1
+StateManager	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+printOK	KEYWORD2
+printError	KEYWORD2
+printHexByte	KEYWORD2
+printHexArray	KEYWORD2
+hexCharToByte	KEYWORD2
+hexStringToBytes	KEYWORD2
+printStars	KEYWORD2
+safeDisableInterrupts	KEYWORD2
+safeEnableInterrupts	KEYWORD2
+changeState	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+PGMT	LITERAL1
+UNUSED	LITERAL1
+

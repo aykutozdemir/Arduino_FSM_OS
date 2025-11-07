@@ -1,0 +1,6 @@
+<map id="TaskNode" name="TaskNode">
+<area shape="rect" id="Node000001" title="Node structure for Task linked list." alt="" coords="5,93,87,119"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="102,97,113,106,105,114,87,117,87,111,103,109,108,106,99,101"/>
+<area shape="rect" id="Node000002" href="$classTask.html" title="Base class for all tasks in FsmOS." alt="" coords="21,5,71,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="49,45,49,93,43,93,43,45"/>
+</map>

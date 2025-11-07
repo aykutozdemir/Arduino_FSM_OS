@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classMutex" xml:lang="en-US">
+<title>Mutex Class Reference</title>
+<indexterm><primary>Mutex</primary></indexterm>
+<para>
+
+<para><link linkend="_classMutex">Mutex</link> for cooperative task synchronization. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classMutex_1a593423d868daf926c7b0d63a833ae29a">Mutex</link> ()</para>
+
+<para>Default constructor. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classMutex_1a25133a881d7392b966786263d41bde79">tryLock</link> (uint8_t task_id)</para>
+
+<para>Try to acquire the mutex. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd">unlock</link> (uint8_t task_id)</para>
+
+<para>Release the mutex. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classMutex_1ac54a451ca9a856271f5f434f1aaee3d5">isLocked</link> () const</para>
+
+<para>Check if mutex is currently locked. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classMutex_1ae155c790be1a23e17700cd8b8c2636b4">getOwner</link> () const</para>
+
+<para>Get ID of task that owns the mutex. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para>volatile bool <link linkend="_classMutex_1a833a30ffb34001c68aa2a37570dbf56e">locked</link></para>
+
+<para>Lock state. </para>
+</listitem>
+            <listitem><para>volatile uint8_t <link linkend="_classMutex_1ae818e65daf468eed3d03a3aad59e1281">owner_id</link></para>
+
+<para>ID of owning task. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_classMutex">Mutex</link> for cooperative task synchronization. </para>
+
+
+
+<para><link linkend="_classMutex">Mutex</link> provides mutual exclusion for shared resources in a cooperative multitasking environment. Only one task can hold the mutex at a time.</para>
+
+<para><note><title>Note</title>
+
+<para>This mutex is designed for cooperative multitasking only. It does not provide blocking behavior - tasks must check try_lock() and yield if the mutex is not available. </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00540">540</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classMutex_1a593423d868daf926c7b0d63a833ae29a"/><section>
+    <title>Mutex()</title>
+<indexterm><primary>Mutex</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>Mutex</secondary></indexterm>
+<para><computeroutput>Mutex::Mutex ( )</computeroutput></para><para>
+
+<para>Default constructor. </para>
+</para>
+
+<para>Creates an unlocked mutex </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00393">393</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classMutex_1ae155c790be1a23e17700cd8b8c2636b4"/><section>
+    <title>getOwner()</title>
+<indexterm><primary>getOwner</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>getOwner</secondary></indexterm>
+<para><computeroutput>uint8_t Mutex::getOwner ( ) const</computeroutput></para><para>
+
+<para>Get ID of task that owns the mutex. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para><link linkend="_classTask">Task</link> ID of owner, or 0 if unlocked </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00423">423</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMutex_1ac54a451ca9a856271f5f434f1aaee3d5"/><section>
+    <title>isLocked()</title>
+<indexterm><primary>isLocked</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>isLocked</secondary></indexterm>
+<para><computeroutput>bool Mutex::isLocked ( ) const</computeroutput></para><para>
+
+<para>Check if mutex is currently locked. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>true if locked, false if available </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00421">421</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMutex_1a25133a881d7392b966786263d41bde79"/><section>
+    <title>tryLock()</title>
+<indexterm><primary>tryLock</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>tryLock</secondary></indexterm>
+<para><computeroutput>bool Mutex::tryLock (uint8_t task_id)</computeroutput></para><para>
+
+<para>Try to acquire the mutex. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of the task attempting to acquire the mutex </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if mutex was acquired, false if already locked </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00395">395</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMutex_1ac72a20fa83ef3beb121bb11bb452e9cd"/><section>
+    <title>unlock()</title>
+<indexterm><primary>unlock</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>unlock</secondary></indexterm>
+<para><computeroutput>void Mutex::unlock (uint8_t task_id)</computeroutput></para><para>
+
+<para>Release the mutex. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of the task releasing the mutex </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Only the task that acquired the mutex can release it </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00409">409</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classMutex_1a833a30ffb34001c68aa2a37570dbf56e"/><section>
+    <title>locked</title>
+<indexterm><primary>locked</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>locked</secondary></indexterm>
+<para><computeroutput>volatile bool Mutex::locked<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Lock state. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00576">576</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classMutex_1ae818e65daf468eed3d03a3aad59e1281"/><section>
+    <title>owner_id</title>
+<indexterm><primary>owner_id</primary><secondary>Mutex</secondary></indexterm>
+<indexterm><primary>Mutex</primary><secondary>owner_id</secondary></indexterm>
+<para><computeroutput>volatile uint8_t Mutex::owner_id<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>ID of owning task. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00577">577</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

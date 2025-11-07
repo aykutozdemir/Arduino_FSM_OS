@@ -1,0 +1,5 @@
+<map id="Scheduler::remove" name="Scheduler::remove">
+<area shape="rect" id="Node000001" title="Remove a task from the scheduler." alt="" coords="5,5,136,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a419ac926b5685ea804fe7eae086066e3" title="Deallocate a TaskNode back to the pool." alt="" coords="184,5,391,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,15,170,15,170,21,136,21"/>
+</map>

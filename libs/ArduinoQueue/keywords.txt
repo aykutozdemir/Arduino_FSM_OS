@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For ArduinoQueue
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ArduinoQueue	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+enqueue	KEYWORD2
+dequeue	KEYWORD2
+getHead	KEYWORD2
+getTail	KEYWORD2
+isEmpty	KEYWORD2
+isFull	KEYWORD2
+itemCount	KEYWORD2
+getMaxItems	KEYWORD2
+getMaxMemory	KEYWORD2
+getMemoryUsage	KEYWORD2
+

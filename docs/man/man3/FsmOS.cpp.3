@@ -1,0 +1,116 @@
+.TH "FsmOS.cpp" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FsmOS.cpp \- Implementation of the FsmOS cooperative task scheduler\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'FsmOS\&.h'\fP
+.br
+\fC#include <stdarg\&.h>\fP
+.br
+\fC#include '\&.\&./\&.\&./src/BuildMemoryInfo\&.h'\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBprintLogHeader\fP (\fBScheduler::LogLevel\fP level)"
+.br
+.ti -1c
+.RI "static void \fBlogFormattedV\fP (\fBScheduler::LogLevel\fP level, const __FlashStringHelper *format, va_list args)"
+.br
+.ti -1c
+.RI "void \fBlogDebugf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Default per-task message production budget\&. "
+.ti -1c
+.RI "void \fBlogInfof\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log an info message with formatting\&. "
+.ti -1c
+.RI "void \fBlogWarnf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log a warning message with formatting\&. "
+.ti -1c
+.RI "void \fBlogErrorf\fP (const __FlashStringHelper *format,\&.\&.\&.)"
+.br
+.RI "Log an error message with formatting\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBScheduler\fP \fBOS\fP"
+.br
+.RI "Global scheduler instance\&. "
+.ti -1c
+.RI "\fBMemoryStats\fP \fBfsmos_memory_stats\fP = {0, 0, 0, 0}"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Implementation of the FsmOS cooperative task scheduler\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+Aykut Özdemir aykutozdemirgyte@gmail.com 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2025-10-02
+.RE
+.PP
+This file contains the implementation of the FsmOS scheduler and task management system\&. It provides:
+.PP
+.IP "\(bu" 2
+\fBTask\fP scheduling and execution
+.IP "\(bu" 2
+Message passing and event handling
+.IP "\(bu" 2
+Memory management and monitoring
+.IP "\(bu" 2
+System diagnostics and profiling
+.IP "\(bu" 2
+Hardware watchdog integration
+.PP
+.PP
+\fBVersion\fP
+.RS 4
+1\&.3\&.0 - Major refactoring and code organization 
+.RE
+.PP
+
+.PP
+Definition in file \fBFsmOS\&.cpp\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "static void logFormattedV (\fBScheduler::LogLevel\fP level, const __FlashStringHelper * format, va_list args)\fC [static]\fP"
+
+.PP
+Definition at line \fB1683\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "static void printLogHeader (\fBScheduler::LogLevel\fP level)\fC [static]\fP"
+
+.PP
+Definition at line \fB1657\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "\fBMemoryStats\fP fsmos_memory_stats = {0, 0, 0, 0}"
+
+.PP
+Definition at line \fB50\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

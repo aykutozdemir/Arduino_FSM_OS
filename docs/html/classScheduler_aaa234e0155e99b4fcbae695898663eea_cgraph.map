@@ -1,0 +1,13 @@
+<map id="Scheduler::removeAll" name="Scheduler::removeAll">
+<area shape="rect" id="Node000001" title="Remove all tasks from the scheduler." alt="" coords="5,31,152,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a419ac926b5685ea804fe7eae086066e3" title="Deallocate a TaskNode back to the pool." alt="" coords="200,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,32,186,29,186,34,152,38"/>
+<area shape="rect" id="Node000003" href="$classTask.html#aba5eb3d6c2a034aa0e319383fbec68c4" title="Stop the task." alt="" coords="262,55,345,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,48,249,59,248,64,152,54"/>
+<area shape="rect" id="Node000004" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="455,5,561,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="344,55,441,31,442,37,346,60"/>
+<area shape="rect" id="Node000005" href="$classTask.html#a7eccc77f654e53524d3a07b1ef73c83c" title="Called when task is stopped." alt="" coords="456,55,560,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="345,65,442,65,442,70,345,70"/>
+<area shape="rect" id="Node000006" href="$classTask.html#a7a79169eed523ffdafa76f3c9d07ff27" title="Set task state." alt="" coords="455,104,561,129"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="346,75,442,98,441,103,344,80"/>
+</map>

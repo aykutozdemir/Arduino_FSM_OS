@@ -1,0 +1,7 @@
+<map id="Task::getName" name="Task::getName">
+<area shape="rect" id="Node000001" title="Get task name." alt="" coords="219,31,329,56"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a4a491d929e3bee5c1bb5db4ad9a13dc3" title="Get task statistics." alt="" coords="5,5,171,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,37,170,32,171,27,206,31"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a5a90bf718dcc0fad7285e1ae580d47df" title="Public helper to read another task&#39;s name safely from diagnostics." alt="" coords="15,55,161,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,55,162,61,161,55,205,50"/>
+</map>

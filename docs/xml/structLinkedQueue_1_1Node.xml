@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structLinkedQueue_1_1Node" kind="struct" language="C++" prot="public">
+    <compoundname>LinkedQueue::Node</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structLinkedQueue_1_1Node_1abfc1309426317b5ec46b96ad93fa3615" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T LinkedQueue&lt; T &gt;::Node::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>LinkedQueue::Node::data</qualifiedname>
+        <briefdescription>
+<para>Data stored in the node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="472" column="11" bodyfile="FsmOS.h" bodystart="472" bodyend="-1"/>
+        <referencedby refid="classLinkedQueue_1ae54fefdc687852e0465e414bbfadd138" compoundref="FsmOS_8cpp" startline="356" endline="375">LinkedQueue&lt; T &gt;::pop</referencedby>
+        <referencedby refid="classLinkedQueue_1ab2bb64be832ea8f62e76dc7fcbe1e9fb" compoundref="FsmOS_8cpp" startline="332" endline="353">LinkedQueue&lt; T &gt;::push</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structLinkedQueue_1_1Node_1a105896e21861dcb1bb7bcb5af3e5c9b2" prot="public" static="no" mutable="no">
+        <type><ref refid="structLinkedQueue_1_1Node" kindref="compound">Node</ref> *</type>
+        <definition>Node* LinkedQueue&lt; T &gt;::Node::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>LinkedQueue::Node::next</qualifiedname>
+        <briefdescription>
+<para>Pointer to next node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="473" column="14" bodyfile="FsmOS.h" bodystart="473" bodyend="-1"/>
+        <referencedby refid="classLinkedQueue_1ab2bb64be832ea8f62e76dc7fcbe1e9fb" compoundref="FsmOS_8cpp" startline="332" endline="353">LinkedQueue&lt; T &gt;::push</referencedby>
+        <referencedby refid="classLinkedQueue_1ad84250d452864b16e000f4d1ee6295f6" compoundref="FsmOS_8cpp" startline="313" endline="321">LinkedQueue&lt; T &gt;::~LinkedQueue</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="structLinkedQueue_1_1Node" kindref="compound">Node</ref> structure for linked list. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>LinkedQueue&lt; T &gt;::Node</label>
+        <link refid="structLinkedQueue_1_1Node"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>LinkedQueue&lt; T &gt;::Node</label>
+        <link refid="structLinkedQueue_1_1Node"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="FsmOS.h" line="470" column="5" bodyfile="FsmOS.h" bodystart="471" bodyend="474"/>
+    <listofallmembers>
+      <member refid="structLinkedQueue_1_1Node_1abfc1309426317b5ec46b96ad93fa3615" prot="public" virt="non-virtual"><scope>LinkedQueue::Node</scope><name>data</name></member>
+      <member refid="structLinkedQueue_1_1Node_1a105896e21861dcb1bb7bcb5af3e5c9b2" prot="public" virt="non-virtual"><scope>LinkedQueue::Node</scope><name>next</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,42 @@
+#######################################
+# Syntax Coloring Map For SoftSerial
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SoftSerial	KEYWORD1
+ParityMode	KEYWORD1
+BaudRate	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+processISR	KEYWORD2
+available	KEYWORD2
+read	KEYWORD2
+peek	KEYWORD2
+flush	KEYWORD2
+write	KEYWORD2
+loop	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+NONE	LITERAL1
+EVEN	LITERAL1
+ODD	LITERAL1
+BAUD_1200	LITERAL1
+BAUD_2400	LITERAL1
+BAUD_4800	LITERAL1
+BAUD_9600	LITERAL1
+BAUD_19200	LITERAL1
+BAUD_38400	LITERAL1
+BAUD_57600	LITERAL1
+BAUD_115200	LITERAL1
+

@@ -1,0 +1,7 @@
+<map id="Scheduler::getMostDelayingTask" name="Scheduler::getMostDelayingTask">
+<area shape="rect" id="Node000001" title="Get task that caused the most delays." alt="" coords="5,31,220,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#ac5ab04209706d6b3a0fdd5266dc0d97f" title="Get number of times this task was delayed." alt="" coords="268,5,413,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,29,254,25,255,30,220,34"/>
+<area shape="rect" id="Node000003" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="297,55,384,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,52,284,59,284,64,220,57"/>
+</map>

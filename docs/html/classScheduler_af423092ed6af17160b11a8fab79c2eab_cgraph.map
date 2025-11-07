@@ -1,0 +1,9 @@
+<map id="Scheduler::checkForTerminatedTask" name="Scheduler::checkForTerminatedTask">
+<area shape="rect" id="Node000001" title="Check if task should be terminated and remove if needed." alt="" coords="5,31,240,56"/>
+<area shape="rect" id="Node000002" href="$classTask.html#acccd11864edfa1abbb15ff43008a17ec" title="Get current task state." alt="" coords="300,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,28,286,23,287,28,239,33"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a303a5bd8d44b55803e6da7b4108401c2" title="Remove a task from the scheduler." alt="" coords="288,55,419,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="240,53,275,57,274,62,240,58"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a419ac926b5685ea804fe7eae086066e3" title="Deallocate a TaskNode back to the pool." alt="" coords="467,55,673,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="419,65,453,65,453,70,419,70"/>
+</map>

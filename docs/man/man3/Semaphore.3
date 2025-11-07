@@ -1,0 +1,155 @@
+.TH "Semaphore" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Semaphore \- \fBSemaphore\fP for resource counting and synchronization\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSemaphore\fP (uint8_t initial_count, uint8_t \fBmax_count\fP)"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "bool \fBwait\fP (uint8_t task_id)"
+.br
+.RI "Try to acquire a resource\&. "
+.ti -1c
+.RI "void \fBsignal\fP ()"
+.br
+.RI "Release a resource\&. "
+.ti -1c
+.RI "uint8_t \fBgetCount\fP () const"
+.br
+.RI "Get current resource count\&. "
+.ti -1c
+.RI "uint8_t \fBgetMaxCount\fP () const"
+.br
+.RI "Get maximum resource count\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "volatile uint8_t \fBcount\fP"
+.br
+.RI "Current resource count\&. "
+.ti -1c
+.RI "uint8_t \fBmax_count\fP"
+.br
+.RI "Maximum resource count\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBSemaphore\fP for resource counting and synchronization\&. 
+
+\fBSemaphore\fP allows a limited number of tasks to access a resource simultaneously\&. It maintains a count of available resources\&.
+.PP
+\fBNote\fP
+.RS 4
+This semaphore is designed for cooperative multitasking only\&. Tasks must check \fBwait()\fP and yield if no resources are available\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB590\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Semaphore::Semaphore (uint8_t initial_count, uint8_t max_count)"
+
+.PP
+Constructor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIinitial_count\fP Initial number of available resources 
+.br
+\fImax_count\fP Maximum number of resources 
+.RE
+.PP
+
+.PP
+Definition at line \fB426\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "uint8_t Semaphore::getCount () const"
+
+.PP
+Get current resource count\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Number of available resources 
+.RE
+.PP
+
+.PP
+Definition at line \fB453\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "uint8_t Semaphore::getMaxCount () const"
+
+.PP
+Get maximum resource count\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Maximum number of resources 
+.RE
+.PP
+
+.PP
+Definition at line \fB455\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Semaphore::signal ()"
+
+.PP
+Release a resource\&. 
+.PP
+\fBNote\fP
+.RS 4
+Increments the available resource count 
+.RE
+.PP
+
+.PP
+Definition at line \fB442\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Semaphore::wait (uint8_t task_id)"
+
+.PP
+Try to acquire a resource\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of the task attempting to acquire resource 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if resource was acquired, false if none available 
+.RE
+.PP
+
+.PP
+Definition at line \fB428\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "volatile uint8_t Semaphore::count\fC [private]\fP"
+
+.PP
+Current resource count\&. 
+.PP
+Definition at line \fB626\fP of file \fBFsmOS\&.h\fP\&.
+.SS "uint8_t Semaphore::max_count\fC [private]\fP"
+
+.PP
+Maximum resource count\&. 
+.PP
+Definition at line \fB627\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

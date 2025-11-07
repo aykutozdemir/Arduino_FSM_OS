@@ -1,0 +1,151 @@
+.TH "Mutex" 3 "Version 1.3.0" "FsmOS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Mutex \- \fBMutex\fP for cooperative task synchronization\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <FsmOS\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMutex\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "bool \fBtryLock\fP (uint8_t task_id)"
+.br
+.RI "Try to acquire the mutex\&. "
+.ti -1c
+.RI "void \fBunlock\fP (uint8_t task_id)"
+.br
+.RI "Release the mutex\&. "
+.ti -1c
+.RI "bool \fBisLocked\fP () const"
+.br
+.RI "Check if mutex is currently locked\&. "
+.ti -1c
+.RI "uint8_t \fBgetOwner\fP () const"
+.br
+.RI "Get ID of task that owns the mutex\&. "
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "volatile bool \fBlocked\fP"
+.br
+.RI "Lock state\&. "
+.ti -1c
+.RI "volatile uint8_t \fBowner_id\fP"
+.br
+.RI "ID of owning task\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBMutex\fP for cooperative task synchronization\&. 
+
+\fBMutex\fP provides mutual exclusion for shared resources in a cooperative multitasking environment\&. Only one task can hold the mutex at a time\&.
+.PP
+\fBNote\fP
+.RS 4
+This mutex is designed for cooperative multitasking only\&. It does not provide blocking behavior - tasks must check try_lock() and yield if the mutex is not available\&. 
+.RE
+.PP
+
+.PP
+Definition at line \fB540\fP of file \fBFsmOS\&.h\fP\&.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Mutex::Mutex ()"
+
+.PP
+Default constructor\&. Creates an unlocked mutex 
+.PP
+Definition at line \fB393\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "uint8_t Mutex::getOwner () const"
+
+.PP
+Get ID of task that owns the mutex\&. 
+.PP
+\fBReturns\fP
+.RS 4
+\fBTask\fP ID of owner, or 0 if unlocked 
+.RE
+.PP
+
+.PP
+Definition at line \fB423\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Mutex::isLocked () const"
+
+.PP
+Check if mutex is currently locked\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if locked, false if available 
+.RE
+.PP
+
+.PP
+Definition at line \fB421\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "bool Mutex::tryLock (uint8_t task_id)"
+
+.PP
+Try to acquire the mutex\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of the task attempting to acquire the mutex 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if mutex was acquired, false if already locked 
+.RE
+.PP
+
+.PP
+Definition at line \fB395\fP of file \fBFsmOS\&.cpp\fP\&.
+.SS "void Mutex::unlock (uint8_t task_id)"
+
+.PP
+Release the mutex\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItask_id\fP ID of the task releasing the mutex 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Only the task that acquired the mutex can release it 
+.RE
+.PP
+
+.PP
+Definition at line \fB409\fP of file \fBFsmOS\&.cpp\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "volatile bool Mutex::locked\fC [private]\fP"
+
+.PP
+Lock state\&. 
+.PP
+Definition at line \fB576\fP of file \fBFsmOS\&.h\fP\&.
+.SS "volatile uint8_t Mutex::owner_id\fC [private]\fP"
+
+.PP
+ID of owning task\&. 
+.PP
+Definition at line \fB577\fP of file \fBFsmOS\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for FsmOS from the source code\&.

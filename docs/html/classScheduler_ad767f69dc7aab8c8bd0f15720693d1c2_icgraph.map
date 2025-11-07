@@ -1,0 +1,11 @@
+<map id="Scheduler::allocateMsgNodesChunk" name="Scheduler::allocateMsgNodesChunk">
+<area shape="rect" id="Node000001" title=" " alt="" coords="583,27,779,67"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a45b70d5aed26ed5bf7c4d99d9df12966" title=" " alt="" coords="345,5,535,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="569,36,535,32,535,27,570,31"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#acb1eb89034fcb709b8769ff9060063e5" title=" " alt="" coords="349,55,531,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="569,63,532,67,531,62,569,58"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#a4f3960871e36fdf7234b151f81f04120" title="Send a direct message to a specific task." alt="" coords="128,63,297,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="335,78,298,78,298,73,335,73"/>
+<area shape="rect" id="Node000005" href="$classTask.html#adbd4d278e42780bd4b6c1d918d0f85c9" title="Send a direct message to a specific task." alt="" coords="5,63,80,88"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="114,78,80,78,80,73,114,73"/>
+</map>

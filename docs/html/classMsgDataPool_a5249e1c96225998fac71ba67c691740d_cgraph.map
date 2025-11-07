@@ -1,0 +1,11 @@
+<map id="MsgDataPool::allocate" name="MsgDataPool::allocate">
+<area shape="rect" id="Node000001" title="Allocate a new MsgData from the pool." alt="" coords="5,35,160,60"/>
+<area shape="rect" id="Node000002" href="$classMsgDataPool.html#aed7f37c999de507b0441f863a4942f2a" title="Initialize the message pool if not already initialized." alt="" coords="229,5,385,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,35,216,27,216,33,161,40"/>
+<area shape="rect" id="Node000005" href="$classMsgDataPool.html#aec9292e845c522cd14c90764b8bfc054" title="Update adaptive pool limit based on usage." alt="" coords="208,55,407,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="161,54,195,59,194,64,160,60"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#acaab28b4949d5a175212d134c04cf406" title="Log a message." alt="" coords="455,5,613,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="386,15,441,15,441,21,386,21"/>
+<area shape="rect" id="Node000004" href="$classTask.html#a548d620b8f5d7490b8cdc235dbfdf6eb" title="Get unique task ID." alt="" coords="661,5,748,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="613,15,648,15,648,21,613,21"/>
+</map>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_index" xml:lang="en-US">
+    <info>
+    <title>FsmOS</title>
+    </info>
+    <xi:include href="mainpage.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<chapter>
+    <title>Topic Documentation</title>
+    <xi:include href="group__fsmos.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<chapter>
+    <title>Class Documentation</title>
+    <xi:include href="classLinkedQueue.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structMemoryStats.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classMsgDataPool.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structScheduler_1_1MsgNode.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classMutex.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structLinkedQueue_1_1Node.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structScheduler_1_1QueuedMessage.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structResetInfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classScheduler.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classSemaphore.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classSharedMsg.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structSystemMemoryInfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="classTask.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structTaskMemoryInfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structTaskNode.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structTaskStats.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<chapter>
+    <title>File Documentation</title>
+    <xi:include href="FsmOS_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="FsmOS_8cpp_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="FsmOS_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="FsmOS_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="README_8md.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<index/>
+</book>

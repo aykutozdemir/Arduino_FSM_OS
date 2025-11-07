@@ -1,0 +1,49 @@
+<map id="Task::getState" name="Task::getState">
+<area shape="rect" id="Node000001" title="Get current task state." alt="" coords="893,205,1000,231"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#af423092ed6af17160b11a8fab79c2eab" title="Check if task should be terminated and remove if needed." alt="" coords="611,7,845,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="935,193,923,159,904,119,877,80,844,47,821,34,824,30,847,43,882,76,908,117,928,157,940,191"/>
+<area shape="rect" id="Node000006" href="$classTask.html#af770c80b9b06c6f314441144dcb6b117" title="Check if task is in expected state." alt="" coords="666,57,790,83"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="930,195,896,144,872,118,844,96,818,84,789,77,791,72,819,79,847,92,875,114,900,140,935,192"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a4a491d929e3bee5c1bb5db4ad9a13dc3" title="Get task statistics." alt="" coords="645,107,811,132"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="921,198,886,170,844,146,810,134,812,129,846,141,889,166,924,194"/>
+<area shape="rect" id="Node000008" href="$classTask.html#a14f40317936f729e291a81fcf4426466" title="Check if task is active." alt="" coords="675,156,781,181"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="883,205,845,195,780,181,781,176,846,190,885,199"/>
+<area shape="rect" id="Node000015" href="$classTask.html#abee024294d3599db8917a96cab0a55f2" title="Check if task is inactive." alt="" coords="671,205,785,231"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="880,221,786,221,786,215,880,215"/>
+<area shape="rect" id="Node000016" href="$classTask.html#a8fc7f3a2f5ebd910f22d1134d0dfcb2f" title="Resume the task." alt="" coords="677,255,779,280"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="880,237,846,245,780,259,778,254,845,239,879,231"/>
+<area shape="rect" id="Node000017" href="$classTask.html#a5d6a1d3c6cd5b587d2414737fab9f3ed" title="Start the task." alt="" coords="686,304,770,329"/>
+<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="923,242,888,269,846,294,808,307,771,315,770,309,807,302,844,289,885,265,920,238"/>
+<area shape="rect" id="Node000019" href="$classTask.html#aba5eb3d6c2a034aa0e319383fbec68c4" title="Stop the task." alt="" coords="687,353,769,379"/>
+<area shape="poly" id="edge22_Node000001_Node000019" title=" " alt="" coords="935,244,900,296,875,322,847,344,808,360,770,367,769,362,807,355,844,340,872,318,896,292,930,241"/>
+<area shape="rect" id="Node000022" href="$classTask.html#ae95f8af6f74b4c956b82698b98454cd2" title="Suspend the task." alt="" coords="675,403,781,428"/>
+<area shape="poly" id="edge25_Node000001_Node000022" title=" " alt="" coords="940,245,928,279,908,320,882,360,847,394,815,409,782,416,781,411,814,404,844,389,878,356,904,317,923,277,935,243"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a42e220f60192016791fa56855fcc8e46" title="Execute a task." alt="" coords="384,5,547,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="597,21,547,21,547,16,597,16"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="171,81,314,107"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="413,38,369,53,280,84,278,79,367,47,412,32"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,81,117,107"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="158,97,118,97,118,91,158,91"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="661,167,634,159,609,145,597,134,590,122,584,98,577,75,561,52,527,33,530,28,564,48,582,72,589,97,595,120,602,131,612,141,636,154,662,162"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="661,164,635,157,609,146,594,133,585,119,576,107,561,96,529,85,494,78,424,72,357,76,301,84,300,79,357,70,424,67,495,72,530,80,564,92,580,103,589,116,598,129,612,141,637,152,663,159"/>
+<area shape="rect" id="Node000009" href="$classScheduler.html#aafdaee288f465a178ef154e1fce57cf4" title="Find next task to execute." alt="" coords="383,107,548,132"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="661,159,533,135,534,129,662,154"/>
+<area shape="rect" id="Node000010" href="$classScheduler.html#aef20dca5b8efdd71b4e91f91d5e0240f" title="Process pending messages for all tasks." alt="" coords="368,156,563,181"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="662,171,563,171,563,166,662,166"/>
+<area shape="rect" id="Node000011" href="$classScheduler.html#a6212cb4fdc7a3ed5c9e50e97729cff8d" title="Publish a message to a topic." alt="" coords="374,205,557,231"/>
+<area shape="poly" id="edge14_Node000008_Node000011" title=" " alt="" coords="662,184,534,208,533,203,661,178"/>
+<area shape="rect" id="Node000013" href="$classScheduler.html#a4f3960871e36fdf7234b151f81f04120" title="Send a direct message to a specific task." alt="" coords="381,255,550,280"/>
+<area shape="poly" id="edge16_Node000008_Node000013" title=" " alt="" coords="662,178,636,185,612,195,597,206,589,219,579,232,564,244,535,257,533,252,561,240,576,228,584,216,594,203,609,190,635,180,661,173"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="369,111,314,105,314,99,369,106"/>
+<area shape="poly" id="edge13_Node000010_Node000004" title=" " alt="" coords="397,155,367,146,272,109,274,104,369,141,399,150"/>
+<area shape="rect" id="Node000012" href="$classTask.html#a4b2cce5377f8ddf0cc29d00a3c58c1c0" title="Publish a message to a topic." alt="" coords="193,205,292,231"/>
+<area shape="poly" id="edge15_Node000011_Node000012" title=" " alt="" coords="360,221,292,221,292,215,360,215"/>
+<area shape="rect" id="Node000014" href="$classTask.html#adbd4d278e42780bd4b6c1d918d0f85c9" title="Send a direct message to a specific task." alt="" coords="205,255,280,280"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="367,270,280,270,280,265,367,265"/>
+<area shape="rect" id="Node000018" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="406,304,525,329"/>
+<area shape="poly" id="edge21_Node000017_Node000018" title=" " alt="" coords="672,319,525,319,525,314,672,314"/>
+<area shape="rect" id="Node000020" href="$classScheduler.html#aaa234e0155e99b4fcbae695898663eea" title="Remove all tasks from the scheduler." alt="" coords="392,353,539,379"/>
+<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="673,369,539,369,539,363,673,363"/>
+<area shape="rect" id="Node000021" href="$classScheduler.html#afc8187779b46f64039d3ffa58f0dbe51" title="Destructor." alt="" coords="165,353,320,379"/>
+<area shape="poly" id="edge24_Node000020_Node000021" title=" " alt="" coords="378,369,320,369,320,363,378,363"/>
+</map>

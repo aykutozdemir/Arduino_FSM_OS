@@ -1,0 +1,16 @@
+<map id="Task::getPeriod" name="Task::getPeriod">
+<area shape="rect" id="Node000001" title="Get task execution period." alt="" coords="808,55,921,80"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#a74551b047dfdd1675e53de6d1fc53ac7" title="Execute the actual task step." alt="" coords="569,5,758,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="798,54,715,33,717,28,800,49"/>
+<area shape="rect" id="Node000006" href="$classScheduler.html#a4a491d929e3bee5c1bb5db4ad9a13dc3" title="Get task statistics." alt="" coords="581,55,746,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="795,70,746,70,746,65,795,65"/>
+<area shape="rect" id="Node000007" href="$classScheduler.html#a22a32d58cf6898fff48880c5349c115f" title="Handle task timing monitoring." alt="" coords="567,104,760,129"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="800,86,717,107,715,101,798,81"/>
+<area shape="rect" id="Node000003" href="$classScheduler.html#a42e220f60192016791fa56855fcc8e46" title="Execute a task." alt="" coords="356,55,519,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="592,36,497,57,496,52,591,31"/>
+<area shape="rect" id="Node000004" href="$classScheduler.html#ae3fa321ea81e2c07e361147f4f0d606e" title="Execute one scheduling step." alt="" coords="165,55,308,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="342,70,308,70,308,65,342,65"/>
+<area shape="rect" id="Node000005" href="$classScheduler.html#a81607abe2905dee2e7cf9222a9e35b8f" title="Run scheduler continuously." alt="" coords="5,55,117,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="152,70,117,70,117,65,152,65"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="591,104,496,83,497,77,592,98"/>
+</map>

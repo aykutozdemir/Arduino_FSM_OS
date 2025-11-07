@@ -1,0 +1,5 @@
+<map id="Scheduler::setLogLevel" name="Scheduler::setLogLevel">
+<area shape="rect" id="Node000001" title="Set minimum log level." alt="" coords="172,5,331,31"/>
+<area shape="rect" id="Node000002" href="$classScheduler.html#ae552f70c9bc8fa9f7406e482d6a3769b" title="Start the scheduler." alt="" coords="5,5,124,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,21,124,21,124,15,158,15"/>
+</map>

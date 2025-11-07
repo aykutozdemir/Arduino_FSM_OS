@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structMemoryStats" kind="struct" language="C++" prot="public">
+    <compoundname>MemoryStats</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structMemoryStats_1ad400667b2264e48d954b2feee8833f4a" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t MemoryStats::total_allocated</definition>
+        <argsstring></argsstring>
+        <name>total_allocated</name>
+        <qualifiedname>MemoryStats::total_allocated</qualifiedname>
+        <briefdescription>
+<para>Total bytes allocated. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="116" column="14" bodyfile="FsmOS.h" bodystart="116" bodyend="-1"/>
+        <referencedby refid="classMsgDataPool_1a5249e1c96225998fac71ba67c691740d" compoundref="FsmOS_8cpp" startline="199" endline="234">MsgDataPool::allocate</referencedby>
+        <referencedby refid="classMsgDataPool_1aed7f37c999de507b0441f863a4942f2a" compoundref="FsmOS_8cpp" startline="278" endline="306">MsgDataPool::initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structMemoryStats_1aaefab979deb1c98218e9267d198de4fe" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t MemoryStats::total_freed</definition>
+        <argsstring></argsstring>
+        <name>total_freed</name>
+        <qualifiedname>MemoryStats::total_freed</qualifiedname>
+        <briefdescription>
+<para>Total bytes freed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="117" column="14" bodyfile="FsmOS.h" bodystart="117" bodyend="-1"/>
+        <referencedby refid="classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee" compoundref="FsmOS_8cpp" startline="236" endline="256">MsgDataPool::deallocate</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structMemoryStats_1ab27f5b00f150919cd24828e4f3136357" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t MemoryStats::peak_usage</definition>
+        <argsstring></argsstring>
+        <name>peak_usage</name>
+        <qualifiedname>MemoryStats::peak_usage</qualifiedname>
+        <briefdescription>
+<para>Peak memory usage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="118" column="14" bodyfile="FsmOS.h" bodystart="118" bodyend="-1"/>
+        <referencedby refid="classMsgDataPool_1a5249e1c96225998fac71ba67c691740d" compoundref="FsmOS_8cpp" startline="199" endline="234">MsgDataPool::allocate</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structMemoryStats_1a66c3d8d757e4fcd55403c904fa4cb0d5" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t MemoryStats::current_usage</definition>
+        <argsstring></argsstring>
+        <name>current_usage</name>
+        <qualifiedname>MemoryStats::current_usage</qualifiedname>
+        <briefdescription>
+<para>Current memory usage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="119" column="14" bodyfile="FsmOS.h" bodystart="119" bodyend="-1"/>
+        <referencedby refid="classMsgDataPool_1a5249e1c96225998fac71ba67c691740d" compoundref="FsmOS_8cpp" startline="199" endline="234">MsgDataPool::allocate</referencedby>
+        <referencedby refid="classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee" compoundref="FsmOS_8cpp" startline="236" endline="256">MsgDataPool::deallocate</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Memory tracking statistics. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Used for memory leak detection and monitoring </para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="114" column="1" bodyfile="FsmOS.h" bodystart="115" bodyend="120"/>
+    <listofallmembers>
+      <member refid="structMemoryStats_1a66c3d8d757e4fcd55403c904fa4cb0d5" prot="public" virt="non-virtual"><scope>MemoryStats</scope><name>current_usage</name></member>
+      <member refid="structMemoryStats_1ab27f5b00f150919cd24828e4f3136357" prot="public" virt="non-virtual"><scope>MemoryStats</scope><name>peak_usage</name></member>
+      <member refid="structMemoryStats_1ad400667b2264e48d954b2feee8833f4a" prot="public" virt="non-virtual"><scope>MemoryStats</scope><name>total_allocated</name></member>
+      <member refid="structMemoryStats_1aaefab979deb1c98218e9267d198de4fe" prot="public" virt="non-virtual"><scope>MemoryStats</scope><name>total_freed</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

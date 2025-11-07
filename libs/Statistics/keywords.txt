@@ -1,0 +1,26 @@
+#######################################
+# Syntax Coloring Map For Statistics
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Statistic	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setName	KEYWORD2
+reset	KEYWORD2
+start	KEYWORD2
+end	KEYWORD2
+print	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+MEASURE_TIME	LITERAL1
+

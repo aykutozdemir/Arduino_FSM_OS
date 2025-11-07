@@ -1,0 +1,345 @@
+\doxysection{Msg\+Data\+Pool Class Reference}
+\hypertarget{classMsgDataPool}{}\label{classMsgDataPool}\index{MsgDataPool@{MsgDataPool}}
+
+
+Memory pool for efficient Msg\+Data allocation.  
+
+
+
+
+{\ttfamily \#include $<$Fsm\+OS.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMsgDataPool_a72b29d6cb8320d81b5b0d7304cf5dce2}{Msg\+Data\+Pool}} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_af2acf581af3a23b651a8985191415f4b}{\texorpdfstring{$\sim$}{\string~}\+Msg\+Data\+Pool}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classMsgDataPool_a5249e1c96225998fac71ba67c691740d}{allocate}} ()
+\begin{DoxyCompactList}\small\item\em Allocate a new Msg\+Data from the pool. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{void}} \mbox{\hyperlink{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee}{deallocate}} (\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}} \texorpdfstring{$\ast$}{*}msg)
+\begin{DoxyCompactList}\small\item\em Return a Msg\+Data to the pool. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{void}} \mbox{\hyperlink{classMsgDataPool_aec9292e845c522cd14c90764b8bfc054}{update\+Adaptive\+Limit}} ()
+\begin{DoxyCompactList}\small\item\em Update adaptive pool limit based on usage. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_a8d57ebaaeb9f6907fd2a6844d8611a68}{get\+Pool\+Size}} () \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{const}}
+\begin{DoxyCompactList}\small\item\em Get current pool size. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_a78472476fea071173c12900e76bb5525}{get\+Pool\+Limit}} () \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{const}}
+\begin{DoxyCompactList}\small\item\em Get maximum pool limit. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_ab68fab96e5ad24d2879c0c852391d25e}{get\+Current\+In\+Use}} () \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{const}}
+\begin{DoxyCompactList}\small\item\em Get number of currently allocated messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{bool}} \mbox{\hyperlink{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a}{initialize}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the message pool if not already initialized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classMsgDataPool_af8a8bed0618d0d7acccaf8f6c5256851}{pool}}
+\begin{DoxyCompactList}\small\item\em Array of Msg\+Data objects. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_aca5724c9ea65b870035798e3cca1149d}{pool\+Size}}
+\begin{DoxyCompactList}\small\item\em Current pool size. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_a25c6c977b1a8a1682d63b4d5e0281ee2}{pool\+Limit}}
+\begin{DoxyCompactList}\small\item\em Maximum pool size. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{current\+In\+Use}}
+\begin{DoxyCompactList}\small\item\em Number of messages currently in use. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} \mbox{\hyperlink{classMsgDataPool_a371ad52b35bd9e2e397abf1dabacc24e}{next\+Free}}
+\begin{DoxyCompactList}\small\item\em Index of next free message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Memory pool for efficient Msg\+Data allocation. 
+
+\doxylink{classMsgDataPool}{Msg\+Data\+Pool} manages a pool of Msg\+Data objects to avoid frequent memory allocation/deallocation. It uses an adaptive limit system to balance memory usage and performance.
+
+\begin{DoxyNote}{Note}
+The pool automatically adjusts its size based on usage patterns. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00383}{383}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMsgDataPool_a72b29d6cb8320d81b5b0d7304cf5dce2}\label{classMsgDataPool_a72b29d6cb8320d81b5b0d7304cf5dce2} 
+\index{MsgDataPool@{MsgDataPool}!MsgDataPool@{MsgDataPool}}
+\index{MsgDataPool@{MsgDataPool}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{MsgDataPool()}{MsgDataPool()}}
+{\footnotesize\ttfamily Msg\+Data\+Pool\+::\+Msg\+Data\+Pool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Initializes the message pool with default settings 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00183}{183}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMsgDataPool_af2acf581af3a23b651a8985191415f4b}\label{classMsgDataPool_af2acf581af3a23b651a8985191415f4b} 
+\index{MsgDataPool@{MsgDataPool}!````~MsgDataPool@{\texorpdfstring{$\sim$}{\string~}MsgDataPool}}
+\index{````~MsgDataPool@{\texorpdfstring{$\sim$}{\string~}MsgDataPool}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}MsgDataPool()}{\string~MsgDataPool()}}
+{\footnotesize\ttfamily Msg\+Data\+Pool\+::\texorpdfstring{$\sim$}{\string~}\+Msg\+Data\+Pool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Frees all allocated memory 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00190}{190}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMsgDataPool_a5249e1c96225998fac71ba67c691740d}\label{classMsgDataPool_a5249e1c96225998fac71ba67c691740d} 
+\index{MsgDataPool@{MsgDataPool}!allocate@{allocate}}
+\index{allocate@{allocate}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{allocate()}{allocate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}} \texorpdfstring{$\ast$}{*} Msg\+Data\+Pool\+::allocate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Allocate a new Msg\+Data from the pool. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to allocated Msg\+Data, or nullptr if pool is full 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Returns nullptr if no memory available 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00199}{199}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMsgDataPool_a5249e1c96225998fac71ba67c691740d_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee}\label{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee} 
+\index{MsgDataPool@{MsgDataPool}!deallocate@{deallocate}}
+\index{deallocate@{deallocate}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{deallocate()}{deallocate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{void}} Msg\+Data\+Pool\+::deallocate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}} \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+
+
+Return a Msg\+Data to the pool. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Pointer to Msg\+Data to deallocate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Frees any associated data and returns Msg\+Data to pool 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00236}{236}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classMsgDataPool_ab68fab96e5ad24d2879c0c852391d25e}\label{classMsgDataPool_ab68fab96e5ad24d2879c0c852391d25e} 
+\index{MsgDataPool@{MsgDataPool}!getCurrentInUse@{getCurrentInUse}}
+\index{getCurrentInUse@{getCurrentInUse}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{getCurrentInUse()}{getCurrentInUse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::get\+Current\+In\+Use (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get number of currently allocated messages. 
+
+\begin{DoxyReturn}{Returns}
+Number of messages currently in use 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00276}{276}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMsgDataPool_a78472476fea071173c12900e76bb5525}\label{classMsgDataPool_a78472476fea071173c12900e76bb5525} 
+\index{MsgDataPool@{MsgDataPool}!getPoolLimit@{getPoolLimit}}
+\index{getPoolLimit@{getPoolLimit}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{getPoolLimit()}{getPoolLimit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::get\+Pool\+Limit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get maximum pool limit. 
+
+\begin{DoxyReturn}{Returns}
+Maximum number of Msg\+Data objects allowed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00274}{274}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMsgDataPool_a8d57ebaaeb9f6907fd2a6844d8611a68}\label{classMsgDataPool_a8d57ebaaeb9f6907fd2a6844d8611a68} 
+\index{MsgDataPool@{MsgDataPool}!getPoolSize@{getPoolSize}}
+\index{getPoolSize@{getPoolSize}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{getPoolSize()}{getPoolSize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::get\+Pool\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get current pool size. 
+
+\begin{DoxyReturn}{Returns}
+Current number of Msg\+Data objects in pool 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00272}{272}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+\Hypertarget{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a}\label{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a} 
+\index{MsgDataPool@{MsgDataPool}!initialize@{initialize}}
+\index{initialize@{initialize}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{bool}} Msg\+Data\+Pool\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialize the message pool if not already initialized. 
+
+\begin{DoxyReturn}{Returns}
+true if pool was initialized successfully, false if already initialized or failed 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This method performs lazy initialization to avoid static allocation issues 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00278}{278}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{classMsgDataPool_aed7f37c999de507b0441f863a4942f2a_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classMsgDataPool_aec9292e845c522cd14c90764b8bfc054}\label{classMsgDataPool_aec9292e845c522cd14c90764b8bfc054} 
+\index{MsgDataPool@{MsgDataPool}!updateAdaptiveLimit@{updateAdaptiveLimit}}
+\index{updateAdaptiveLimit@{updateAdaptiveLimit}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{updateAdaptiveLimit()}{updateAdaptiveLimit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{void}} Msg\+Data\+Pool\+::update\+Adaptive\+Limit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Update adaptive pool limit based on usage. 
+
+Automatically adjusts pool size for optimal performance 
+
+Definition at line \mbox{\hyperlink{FsmOS_8cpp_source_l00258}{258}} of file \mbox{\hyperlink{FsmOS_8cpp_source}{Fsm\+OS.\+cpp}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMsgDataPool_aec9292e845c522cd14c90764b8bfc054_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}\label{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c} 
+\index{MsgDataPool@{MsgDataPool}!currentInUse@{currentInUse}}
+\index{currentInUse@{currentInUse}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{currentInUse}{currentInUse}}
+{\footnotesize\ttfamily uint8\+\_\+t Msg\+Data\+Pool\+::current\+In\+Use\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Number of messages currently in use. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00447}{447}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classMsgDataPool_a371ad52b35bd9e2e397abf1dabacc24e}\label{classMsgDataPool_a371ad52b35bd9e2e397abf1dabacc24e} 
+\index{MsgDataPool@{MsgDataPool}!nextFree@{nextFree}}
+\index{nextFree@{nextFree}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{nextFree}{nextFree}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::next\+Free\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Index of next free message. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00448}{448}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classMsgDataPool_af8a8bed0618d0d7acccaf8f6c5256851}\label{classMsgDataPool_af8a8bed0618d0d7acccaf8f6c5256851} 
+\index{MsgDataPool@{MsgDataPool}!pool@{pool}}
+\index{pool@{pool}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{pool}{pool}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{Msg\+Data}}\texorpdfstring{$\ast$}{*} Msg\+Data\+Pool\+::pool\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Array of Msg\+Data objects. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00444}{444}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classMsgDataPool_a25c6c977b1a8a1682d63b4d5e0281ee2}\label{classMsgDataPool_a25c6c977b1a8a1682d63b4d5e0281ee2} 
+\index{MsgDataPool@{MsgDataPool}!poolLimit@{poolLimit}}
+\index{poolLimit@{poolLimit}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{poolLimit}{poolLimit}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::pool\+Limit\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximum pool size. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00446}{446}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+\Hypertarget{classMsgDataPool_aca5724c9ea65b870035798e3cca1149d}\label{classMsgDataPool_aca5724c9ea65b870035798e3cca1149d} 
+\index{MsgDataPool@{MsgDataPool}!poolSize@{poolSize}}
+\index{poolSize@{poolSize}!MsgDataPool@{MsgDataPool}}
+\doxysubsubsection{\texorpdfstring{poolSize}{poolSize}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMsgDataPool_a0a148d6bfd58376877a0529f217ed33c}{uint8\+\_\+t}} Msg\+Data\+Pool\+::pool\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Current pool size. 
+
+
+
+Definition at line \mbox{\hyperlink{FsmOS_8h_source_l00445}{445}} of file \mbox{\hyperlink{FsmOS_8h_source}{Fsm\+OS.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{FsmOS_8h}{Fsm\+OS.\+h}}\item 
+\mbox{\hyperlink{FsmOS_8cpp}{Fsm\+OS.\+cpp}}\end{DoxyCompactItemize}

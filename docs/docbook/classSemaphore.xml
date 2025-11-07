@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classSemaphore" xml:lang="en-US">
+<title>Semaphore Class Reference</title>
+<indexterm><primary>Semaphore</primary></indexterm>
+<para>
+
+<para><link linkend="_classSemaphore">Semaphore</link> for resource counting and synchronization. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classSemaphore_1a9f8febef61d91a380337f05e3fc0678c">Semaphore</link> (uint8_t initial_count, uint8_t <link linkend="_classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e">max_count</link>)</para>
+
+<para>Constructor. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e">wait</link> (uint8_t task_id)</para>
+
+<para>Try to acquire a resource. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a">signal</link> ()</para>
+
+<para>Release a resource. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classSemaphore_1a0c65b57daf4e089e6e6241f4669d6f1f">getCount</link> () const</para>
+
+<para>Get current resource count. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classSemaphore_1a5dc46274b490015edf89edf3048512a8">getMaxCount</link> () const</para>
+
+<para>Get maximum resource count. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para>volatile uint8_t <link linkend="_classSemaphore_1a3a416166d840dc83b6283b20bccd072a">count</link></para>
+
+<para>Current resource count. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e">max_count</link></para>
+
+<para>Maximum resource count. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_classSemaphore">Semaphore</link> for resource counting and synchronization. </para>
+
+
+
+<para><link linkend="_classSemaphore">Semaphore</link> allows a limited number of tasks to access a resource simultaneously. It maintains a count of available resources.</para>
+
+<para><note><title>Note</title>
+
+<para>This semaphore is designed for cooperative multitasking only. Tasks must check <link linkend="_classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e">wait()</link> and yield if no resources are available. </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00590">590</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classSemaphore_1a9f8febef61d91a380337f05e3fc0678c"/><section>
+    <title>Semaphore()</title>
+<indexterm><primary>Semaphore</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>Semaphore</secondary></indexterm>
+<para><computeroutput>Semaphore::Semaphore (uint8_t initial_count, uint8_t max_count)</computeroutput></para><para>
+
+<para>Constructor. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>initial_count</entry><entry>
+<para>Initial number of available resources </para>
+</entry>
+                            </row>
+                            <row>
+<entry>max_count</entry><entry>
+<para>Maximum number of resources </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00426">426</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classSemaphore_1a0c65b57daf4e089e6e6241f4669d6f1f"/><section>
+    <title>getCount()</title>
+<indexterm><primary>getCount</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>getCount</secondary></indexterm>
+<para><computeroutput>uint8_t Semaphore::getCount ( ) const</computeroutput></para><para>
+
+<para>Get current resource count. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of available resources </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00453">453</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classSemaphore_1a5dc46274b490015edf89edf3048512a8"/><section>
+    <title>getMaxCount()</title>
+<indexterm><primary>getMaxCount</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>getMaxCount</secondary></indexterm>
+<para><computeroutput>uint8_t Semaphore::getMaxCount ( ) const</computeroutput></para><para>
+
+<para>Get maximum resource count. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Maximum number of resources </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00455">455</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classSemaphore_1a1d7c51da55f9ac913a6a711cb6d6e52a"/><section>
+    <title>signal()</title>
+<indexterm><primary>signal</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>signal</secondary></indexterm>
+<para><computeroutput>void Semaphore::signal ( )</computeroutput></para><para>
+
+<para>Release a resource. </para>
+</para>
+
+<para><note><title>Note</title>
+
+<para>Increments the available resource count </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00442">442</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classSemaphore_1ab733c9bf26e7dd7e007c68ca27b8c06e"/><section>
+    <title>wait()</title>
+<indexterm><primary>wait</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>wait</secondary></indexterm>
+<para><computeroutput>bool Semaphore::wait (uint8_t task_id)</computeroutput></para><para>
+
+<para>Try to acquire a resource. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of the task attempting to acquire resource </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if resource was acquired, false if none available </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00428">428</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classSemaphore_1a3a416166d840dc83b6283b20bccd072a"/><section>
+    <title>count</title>
+<indexterm><primary>count</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>count</secondary></indexterm>
+<para><computeroutput>volatile uint8_t Semaphore::count<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Current resource count. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00626">626</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classSemaphore_1a1851b2b206e6fe2fe6711bd8469e157e"/><section>
+    <title>max_count</title>
+<indexterm><primary>max_count</primary><secondary>Semaphore</secondary></indexterm>
+<indexterm><primary>Semaphore</primary><secondary>max_count</secondary></indexterm>
+<para><computeroutput>uint8_t Semaphore::max_count<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Maximum resource count. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00627">627</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

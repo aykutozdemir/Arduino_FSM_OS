@@ -1,0 +1,2690 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classScheduler" xml:lang="en-US">
+<title>Scheduler Class Reference</title>
+<indexterm><primary>Scheduler</primary></indexterm>
+<para>
+
+<para>Core scheduler and task manager for FsmOS. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Scheduler:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_structScheduler_1_1MsgNode">MsgNode</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_structScheduler_1_1QueuedMessage">QueuedMessage</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Types    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> { <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7">LOG_DEBUG</link> = 0
+, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327">LOG_INFO</link> = 1
+, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286">LOG_WARN</link> = 2
+, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805">LOG_ERROR</link> = 3
+ }</para>
+
+<para>Log level enumeration. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6">Scheduler</link> ()</para>
+
+<para>Constructor. </para>
+</listitem>
+            <listitem><para><link linkend="_classScheduler_1afc8187779b46f64039d3ffa58f0dbe51">~Scheduler</link> ()</para>
+
+<para>Destructor. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b">add</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Add a task to the scheduler. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a303a5bd8d44b55803e6da7b4108401c2">remove</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Remove a task from the scheduler. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1aaa234e0155e99b4fcbae695898663eea">removeAll</link> ()</para>
+
+<para>Remove all tasks from the scheduler. </para>
+</listitem>
+            <listitem><para><link linkend="_classTask">Task</link> * <link linkend="_classScheduler_1aabf3840938cc797555cdee88f5d19dd2">getTask</link> (uint8_t task_id)</para>
+
+<para>Get task by ID. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a7a84b715133d1f8dd473e1511b2498a2">getTaskCount</link> () const</para>
+
+<para>Get number of active tasks. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classScheduler_1acb0612339205f7e921b0034768dba4c5">getMaxTasks</link> () const</para>
+
+<para>Get maximum number of tasks. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b">begin</link> ()</para>
+
+<para>Start the scheduler. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e">loopOnce</link> ()</para>
+
+<para>Execute one scheduling step. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f">loop</link> ()</para>
+
+<para>Run scheduler continuously. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1">stop</link> ()</para>
+
+<para>Stop the scheduler. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a6212cb4fdc7a3ed5c9e50e97729cff8d">publishMessage</link> (uint8_t topic, uint8_t type, uint16_t arg=0)</para>
+
+<para>Publish a message to a topic. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a4f3960871e36fdf7234b151f81f04120">sendMessage</link> (uint8_t task_id, uint8_t type, uint16_t arg=0)</para>
+
+<para>Send a direct message to a specific task. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b">getFreeQueueSlots</link> () const</para>
+
+<para>Get number of free slots in the global message queue. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classScheduler_1afe202befb3d6eac9dbb6acd1a4b09401">now</link> () const</para>
+
+<para>Get current system time. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classScheduler_1a56c3c1a776927eeb7917e7b636a2e3ab">getFreeMemory</link> () const</para>
+
+<para>Get amount of free memory. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a612b33338832de0d18ebf5859b3d7037">setLogLevel</link> (<link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level)</para>
+
+<para>Set minimum log level. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1acaab28b4949d5a175212d134c04cf406">logMessage</link> (<link linkend="_classTask">Task</link> *task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const char *msg)</para>
+
+<para>Log a message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1af5334fe39dbfc2286e91ee358087d3b5">logMessage</link> (<link linkend="_classTask">Task</link> *task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper *msg)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1aab0e31c53df15af0ffbcd97d0510c9a2">onTick</link> ()</para>
+
+<para>Handle system tick. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4">getResetInfo</link> (<link linkend="_structResetInfo">ResetInfo</link> &amp;info)</para>
+
+<para>Get system reset information. </para>
+</listitem>
+            <listitem><para><link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> <link linkend="_classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea">getResetCause</link> ()</para>
+
+<para>Get reset cause from system. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e">getResetCauseFlags</link> ()</para>
+
+<para>Get raw reset flags from system. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a1ad7c1772cfa11033b280e9b5de86d35">wasResetCause</link> (<link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> cause)</para>
+
+<para>Check if a specific reset cause occurred. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3">getTaskStats</link> (uint8_t task_id, <link linkend="_structTaskStats">TaskStats</link> &amp;stats)</para>
+
+<para>Get task statistics. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a7c61b8b908a19416283e66c0fb076a40">getSystemMemoryInfo</link> (<link linkend="_structSystemMemoryInfo">SystemMemoryInfo</link> &amp;info)</para>
+
+<para>Get system memory information. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f">getTaskMemoryInfo</link> (uint8_t task_id, <link linkend="_structTaskMemoryInfo">TaskMemoryInfo</link> &amp;info)</para>
+
+<para>Get task memory information. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a69444823d403c8c84670eda2c0d594a4">getHeapFragmentation</link> ()</para>
+
+<para>Get heap fragmentation percentage. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a26f332614d3126f5efdc42092138b0e6">getMemoryLeakStats</link> (<link linkend="_structMemoryStats">MemoryStats</link> &amp;stats)</para>
+
+<para>Get memory leak detection statistics. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1aaba5575657eb6345d1da5442be50f29c">enableWatchdog</link> (uint8_t timeout)</para>
+
+<para>Enable hardware watchdog timer. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1aa541036ba6db4765a2270d39f74c8758">feedWatchdog</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a1ded1b3c0e167dde6574bc8b4a0aca63">logFormatted</link> (<link linkend="_classTask">Task</link> *task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper *format,...)</para>
+
+<para>Log a formatted message. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9">getMostDelayingTask</link> () const</para>
+
+<para>Get task that caused the most delays. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f">processMessages</link> ()</para>
+
+<para>Process pending messages for all tasks. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a0a80134fcc4380c2577a5281352847eb">updateSystemTime</link> ()</para>
+
+<para>Update system time. </para>
+</listitem>
+            <listitem><para><link linkend="_classTask">Task</link> * <link linkend="_classScheduler_1aafdaee288f465a178ef154e1fce57cf4">findNextTask</link> ()</para>
+
+<para>Find next task to execute. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a42e220f60192016791fa56855fcc8e46">executeTask</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Execute a task. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a22a32d58cf6898fff48880c5349c115f">handleTaskTiming</link> (<link linkend="_classTask">Task</link> *task, uint32_t currentTime)</para>
+
+<para>Handle task timing monitoring. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a74551b047dfdd1675e53de6d1fc53ac7">executeTaskStep</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Execute the actual task step. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a23437fce9b79f76f4534c402e832d4f5">updateTaskStatistics</link> (<link linkend="_classTask">Task</link> *task, uint32_t execStart)</para>
+
+<para>Update task execution statistics. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a6ee466fc5e47301d6101c246c691c131">updateTimingVariables</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Update timing monitoring variables. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1af423092ed6af17160b11a8fab79c2eab">checkForTerminatedTask</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Check if task should be terminated and remove if needed. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a40371a166759f310c2223ef082526829">logTaskDelay</link> (<link linkend="_classTask">Task</link> *task, uint16_t delayMs, uint8_t causingTaskId)</para>
+
+<para>Log task delay with attribution. </para>
+</listitem>
+            <listitem><para>template&lt;typename Func &gt; </para><para>void <link linkend="_classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b">forEachTask</link> (Func func)</para>
+
+<para>Iterate through all tasks with a function. </para>
+</listitem>
+            <listitem><para>template&lt;typename Func &gt; </para><para><link linkend="_classTask">Task</link> * <link linkend="_classScheduler_1ad2b77c7b7e929aad03ce0034f992d876">findTask</link> (Func predicate)</para>
+
+<para>Find a task using a predicate function. </para>
+</listitem>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_classScheduler_1a38cf4a79d14bd68514a26946b19d3d53">allocateTaskNode</link> (<link linkend="_classTask">Task</link> *task)</para>
+
+<para>Allocate a <link linkend="_structTaskNode">TaskNode</link> from the pool. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a419ac926b5685ea804fe7eae086066e3">deallocateTaskNode</link> (<link linkend="_structTaskNode">TaskNode</link> *node)</para>
+
+<para>Deallocate a <link linkend="_structTaskNode">TaskNode</link> back to the pool. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344">logSystemEvent</link> (<link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper *msg)</para>
+
+<para>Log a system event message. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a46f4a6ce080b281fd2941aa35450c3c0">logTaskExecution</link> (<link linkend="_classTask">Task</link> *task, uint32_t execTime)</para>
+
+<para>Log a task execution event. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2">allocateMsgNodesChunk</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1acb1eb89034fcb709b8769ff9060063e5">enqueueQueuedMessage</link> (uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba">dequeueQueuedMessage</link> (<link linkend="_structScheduler_1_1QueuedMessage">QueuedMessage</link> &amp;out)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4">dequeueQueuedMessageNode</link> (<link linkend="_structScheduler_1_1MsgNode">MsgNode</link> *&amp;outNode)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1aaa8cc86207802e4a457202396b2f7441">initializeTaskNodePool</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_classScheduler_1afa07db3c7014412af426ee1c304ebc4b">acquireTaskNode</link> (<link linkend="_classTask">Task</link> *task)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a2e5c9f7ad69391854d3a0dc2dd73f8b4">releaseTaskNode</link> (<link linkend="_structTaskNode">TaskNode</link> *node)</para>
+</listitem>
+            <listitem><para><link linkend="_structScheduler_1_1MsgNode">MsgNode</link> * <link linkend="_classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966">allocateMsgNode</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307">deallocateMsgNode</link> (<link linkend="_structScheduler_1_1MsgNode">MsgNode</link> *node)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2">taskHead</link> = nullptr</para>
+
+<para>Head of task linked list. </para>
+</listitem>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9">taskTail</link> = nullptr</para>
+
+<para>Tail of task linked list. </para>
+</listitem>
+            <listitem><para><link linkend="_structTaskNode">TaskNode</link> * <link linkend="_classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a">freeTaskNodeHead</link> = nullptr</para>
+
+<para>Head of free-list for <link linkend="_structTaskNode">TaskNode</link> pool. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7">taskNodePoolInitialized</link> = false</para>
+
+<para>Whether pool has been initialized. </para>
+</listitem>
+            <listitem><para>uint16_t <link linkend="_classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0">taskNodePoolCapacity</link> = 0</para>
+
+<para>Total nodes currently allocated to pool/list. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6">taskCount</link> = 0</para>
+
+<para>Current number of tasks. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a89473e616865792db671bdb2551aa338">nextTaskId</link> = 1</para>
+
+<para>Next available task ID. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool">MsgDataPool</link> <link linkend="_classScheduler_1a4025d35f57b05649764c44f3583fc2b6">msgPool</link></para>
+
+<para>Message pool for efficient allocation. </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classScheduler_1ac66364f021223ea49e76680b6dbcb56a">systemTime</link></para>
+
+<para>Current system time. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd">running</link></para>
+
+<para><link linkend="_classScheduler">Scheduler</link> running state. </para>
+</listitem>
+            <listitem><para><link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> <link linkend="_classScheduler_1a720b2ff4a9e770649fe7b63d3098613d">currentLogLevel</link></para>
+
+<para>Current minimum log level. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1ac44741f6b01d7d8f914851b72f538617">lastExecutedTaskId</link> = 0</para>
+
+<para>ID of last executed task (for delay attribution) </para>
+</listitem>
+            <listitem><para>uint32_t <link linkend="_classScheduler_1a4e2da8da4d0ca8ce7da09e92fcc04ffc">lastTaskEndTime</link> = 0</para>
+
+<para>When the last task finished execution. </para>
+</listitem>
+            <listitem><para><link linkend="_structScheduler_1_1MsgNode">MsgNode</link> * <link linkend="_classScheduler_1afc800a55be0f3da82ef2e79dad96496d">msgHead</link> = nullptr</para>
+</listitem>
+            <listitem><para><link linkend="_structScheduler_1_1MsgNode">MsgNode</link> * <link linkend="_classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02">msgTail</link> = nullptr</para>
+</listitem>
+            <listitem><para><link linkend="_structScheduler_1_1MsgNode">MsgNode</link> * <link linkend="_classScheduler_1a59fa5a068cd9a36672b39362982c2e97">freeHead</link> = nullptr</para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7">msgCount</link> = 0</para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classScheduler_1a15bd5f3410a22f750d9cc40579e11084">totalNodes</link> = 0</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Friends    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_classScheduler_1adad5641aac7a2fe0b15a675a053fd4fb">SharedMsg</link></para>
+
+<para>Allow <link linkend="_classSharedMsg">SharedMsg</link> to access msgPool. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Core scheduler and task manager for FsmOS. </para>
+
+
+
+<para><link linkend="_classScheduler">Scheduler</link> manages the execution of tasks, message routing, and system resources. It provides the main interface for task management and system control.</para>
+
+<para><note><title>Note</title>
+
+<para>Only one scheduler instance should exist per application. The global OS instance is provided for convenience.</para>
+</note>
+Core scheduler and task manager for FsmOS </para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01073">1073</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Enumeration Documentation</title>
+<anchor xml:id="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79"/><section>
+    <title>LogLevel</title>
+<indexterm><primary>LogLevel</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>LogLevel</secondary></indexterm>
+<para><computeroutput>enum <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">Scheduler::LogLevel</link></computeroutput></para><para>
+
+<para>Log level enumeration. </para>
+</para>
+<informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>LOG_DEBUG</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>LOG_DEBUG</secondary></indexterm>
+<anchor xml:id="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ae533a07bf1ba23e55ae9769602ac74a7"/>LOG_DEBUG</entry><entry>
+<para>Debug level messages. </para>
+</entry></row><row><entry><indexterm><primary>LOG_INFO</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>LOG_INFO</secondary></indexterm>
+<anchor xml:id="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79ac50a6d9344241d486cea80292b5ba327"/>LOG_INFO</entry><entry>
+<para>Info level messages. </para>
+</entry></row><row><entry><indexterm><primary>LOG_WARN</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>LOG_WARN</secondary></indexterm>
+<anchor xml:id="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79a43ae65cd6d87b4c15b8ddb2e1a110286"/>LOG_WARN</entry><entry>
+<para>Warning level messages. </para>
+</entry></row><row><entry><indexterm><primary>LOG_ERROR</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>LOG_ERROR</secondary></indexterm>
+<anchor xml:id="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79aa56e45ee8b2ce204989dcede4bfa7805"/>LOG_ERROR</entry><entry>
+<para>Error level messages. </para>
+</entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01195">1195</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classScheduler_1a3b61aac11466cd45ae42ab8c2b0013f6"/><section>
+    <title>Scheduler()</title>
+<indexterm><primary>Scheduler</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>Scheduler</secondary></indexterm>
+<para><computeroutput>Scheduler::Scheduler ( )</computeroutput></para><para>
+
+<para>Constructor. </para>
+</para>
+
+<para>Initializes scheduler with default settings </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00620">620</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1afc8187779b46f64039d3ffa58f0dbe51"/><section>
+    <title>~Scheduler()</title>
+<indexterm><primary>~Scheduler</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>~Scheduler</secondary></indexterm>
+<para><computeroutput>Scheduler::~Scheduler ( )</computeroutput></para><para>
+
+<para>Destructor. </para>
+</para>
+
+<para>Removes all tasks and cleans up resources </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00707">707</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_afc8187779b46f64039d3ffa58f0dbe51_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classScheduler_1afa07db3c7014412af426ee1c304ebc4b"/><section>
+    <title>acquireTaskNode()</title>
+<indexterm><primary>acquireTaskNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>acquireTaskNode</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link> * Scheduler::acquireTaskNode (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00710">710</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_afa07db3c7014412af426ee1c304ebc4b_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a278e9940ce3dd1c708c5bd55b0e4059b"/><section>
+    <title>add()</title>
+<indexterm><primary>add</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>add</secondary></indexterm>
+<para><computeroutput>bool Scheduler::add (<link linkend="_classTask">Task</link> * task)</computeroutput></para><para>
+
+<para>Add a task to the scheduler. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para>Pointer to task to add </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if task was added successfully, false if scheduler is full </para>
+</formalpara>
+<note><title>Note</title>
+
+<para><link linkend="_classTask">Task</link> starts in INACTIVE state </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00783">783</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a278e9940ce3dd1c708c5bd55b0e4059b_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a45b70d5aed26ed5bf7c4d99d9df12966"/><section>
+    <title>allocateMsgNode()</title>
+<indexterm><primary>allocateMsgNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>allocateMsgNode</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1MsgNode">Scheduler::MsgNode</link> * Scheduler::allocateMsgNode ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01365">1365</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a45b70d5aed26ed5bf7c4d99d9df12966_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1ad767f69dc7aab8c8bd0f15720693d1c2"/><section>
+    <title>allocateMsgNodesChunk()</title>
+<indexterm><primary>allocateMsgNodesChunk</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>allocateMsgNodesChunk</secondary></indexterm>
+<para><computeroutput>bool Scheduler::allocateMsgNodesChunk ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01773">1773</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_ad767f69dc7aab8c8bd0f15720693d1c2_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a38cf4a79d14bd68514a26946b19d3d53"/><section>
+    <title>allocateTaskNode()</title>
+<indexterm><primary>allocateTaskNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>allocateTaskNode</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link> * Scheduler::allocateTaskNode (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Allocate a <link linkend="_structTaskNode">TaskNode</link> from the pool. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to wrap in the node </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>Pointer to allocated <link linkend="_structTaskNode">TaskNode</link>, or nullptr if failed </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01328">1328</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a38cf4a79d14bd68514a26946b19d3d53_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a38cf4a79d14bd68514a26946b19d3d53_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1ae552f70c9bc8fa9f7406e482d6a3769b"/><section>
+    <title>begin()</title>
+<indexterm><primary>begin</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>begin</secondary></indexterm>
+<para><computeroutput>void Scheduler::begin ( )</computeroutput></para><para>
+
+<para>Start the scheduler. </para>
+</para>
+
+<para>Starts all tasks and begins scheduling </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00894">894</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_ae552f70c9bc8fa9f7406e482d6a3769b_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1af423092ed6af17160b11a8fab79c2eab"/><section>
+    <title>checkForTerminatedTask()</title>
+<indexterm><primary>checkForTerminatedTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>checkForTerminatedTask</secondary></indexterm>
+<para><computeroutput>void Scheduler::checkForTerminatedTask (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Check if task should be terminated and remove if needed. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to check </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01277">1277</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_af423092ed6af17160b11a8fab79c2eab_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_af423092ed6af17160b11a8fab79c2eab_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a4d40d84c82a4b3f5366d1a7fe5fd9307"/><section>
+    <title>deallocateMsgNode()</title>
+<indexterm><primary>deallocateMsgNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>deallocateMsgNode</secondary></indexterm>
+<para><computeroutput>void Scheduler::deallocateMsgNode (<link linkend="_structScheduler_1_1MsgNode">Scheduler::MsgNode</link> * node)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01381">1381</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a419ac926b5685ea804fe7eae086066e3"/><section>
+    <title>deallocateTaskNode()</title>
+<indexterm><primary>deallocateTaskNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>deallocateTaskNode</secondary></indexterm>
+<para><computeroutput>void Scheduler::deallocateTaskNode (<link linkend="_structTaskNode">TaskNode</link> * node)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Deallocate a <link linkend="_structTaskNode">TaskNode</link> back to the pool. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>node</entry><entry>
+<para><link linkend="_structTaskNode">TaskNode</link> to deallocate </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01354">1354</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a419ac926b5685ea804fe7eae086066e3_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a13c5cff92aab0d7516c469cb7196c1ba"/><section>
+    <title>dequeueQueuedMessage()</title>
+<indexterm><primary>dequeueQueuedMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>dequeueQueuedMessage</secondary></indexterm>
+<para><computeroutput>bool Scheduler::dequeueQueuedMessage (<link linkend="_structScheduler_1_1QueuedMessage">QueuedMessage</link> &amp; out)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01846">1846</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1ac6614605ec1477ed4e44d93e613e3ed4"/><section>
+    <title>dequeueQueuedMessageNode()</title>
+<indexterm><primary>dequeueQueuedMessageNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>dequeueQueuedMessageNode</secondary></indexterm>
+<para><computeroutput>bool Scheduler::dequeueQueuedMessageNode (<link linkend="_structScheduler_1_1MsgNode">MsgNode</link> *&amp; outNode)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00720">720</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1aaba5575657eb6345d1da5442be50f29c"/><section>
+    <title>enableWatchdog()</title>
+<indexterm><primary>enableWatchdog</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>enableWatchdog</secondary></indexterm>
+<para><computeroutput>void Scheduler::enableWatchdog (uint8_t timeout)</computeroutput></para><para>
+
+<para>Enable hardware watchdog timer. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>timeout</entry><entry>
+<para>Watchdog timeout value </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>AVR-specific feature </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01729">1729</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1acb1eb89034fcb709b8769ff9060063e5"/><section>
+    <title>enqueueQueuedMessage()</title>
+<indexterm><primary>enqueueQueuedMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>enqueueQueuedMessage</secondary></indexterm>
+<para><computeroutput>bool Scheduler::enqueueQueuedMessage (uint8_t targetTaskId, uint8_t topic, uint8_t type, uint16_t arg)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01806">1806</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_acb1eb89034fcb709b8769ff9060063e5_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_acb1eb89034fcb709b8769ff9060063e5_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a42e220f60192016791fa56855fcc8e46"/><section>
+    <title>executeTask()</title>
+<indexterm><primary>executeTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>executeTask</secondary></indexterm>
+<para><computeroutput>void Scheduler::executeTask (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Execute a task. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to execute</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                Updates task timing and calls task-&gt;step() </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01161">1161</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a42e220f60192016791fa56855fcc8e46_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a42e220f60192016791fa56855fcc8e46_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a74551b047dfdd1675e53de6d1fc53ac7"/><section>
+    <title>executeTaskStep()</title>
+<indexterm><primary>executeTaskStep</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>executeTaskStep</secondary></indexterm>
+<para><computeroutput>void Scheduler::executeTaskStep (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Execute the actual task step. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to execute </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01212">1212</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a74551b047dfdd1675e53de6d1fc53ac7_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a74551b047dfdd1675e53de6d1fc53ac7_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1aa541036ba6db4765a2270d39f74c8758"/><section>
+    <title>feedWatchdog()</title>
+<indexterm><primary>feedWatchdog</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>feedWatchdog</secondary></indexterm>
+<para><computeroutput>void Scheduler::feedWatchdog ( )</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01736">1736</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aa541036ba6db4765a2270d39f74c8758_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1aafdaee288f465a178ef154e1fce57cf4"/><section>
+    <title>findNextTask()</title>
+<indexterm><primary>findNextTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>findNextTask</secondary></indexterm>
+<para><computeroutput><link linkend="_classTask">Task</link> * Scheduler::findNextTask ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Find next task to execute. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Pointer to next task to execute, or nullptr if none ready </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01109">1109</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aafdaee288f465a178ef154e1fce57cf4_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aafdaee288f465a178ef154e1fce57cf4_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1ad2b77c7b7e929aad03ce0034f992d876"/><section>
+    <title>findTask()</title>
+<indexterm><primary>findTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>findTask</secondary></indexterm>
+<computeroutput>template&lt;typename Func &gt; </computeroutput><para><computeroutput>template <link linkend="_classTask">Task</link> * Scheduler::findTask&lt; bool(*)(<link linkend="_classTask">Task</link> *)&gt; (Func predicate)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Find a task using a predicate function. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>Func</entry><entry>
+<para>Function type that takes Task* and returns bool </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>predicate</entry><entry>
+<para>Function that returns true for the desired task </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>Pointer to found task, or nullptr if not found </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01309">1309</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_ad2b77c7b7e929aad03ce0034f992d876_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a3c9f6290c6ae7231b96c9ba6da36382b"/><section>
+    <title>forEachTask()</title>
+<indexterm><primary>forEachTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>forEachTask</secondary></indexterm>
+<computeroutput>template&lt;typename Func &gt; </computeroutput><para><computeroutput>template void Scheduler::forEachTask&lt; void(*)(<link linkend="_classTask">Task</link> *)&gt; (Func func)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Iterate through all tasks with a function. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>Func</entry><entry>
+<para>Function type that takes Task* parameter </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>func</entry><entry>
+<para>Function to call for each task </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01295">1295</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a3c9f6290c6ae7231b96c9ba6da36382b_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a56c3c1a776927eeb7917e7b636a2e3ab"/><section>
+    <title>getFreeMemory()</title>
+<indexterm><primary>getFreeMemory</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getFreeMemory</secondary></indexterm>
+<para><computeroutput>uint16_t Scheduler::getFreeMemory ( ) const</computeroutput></para><para>
+
+<para>Get amount of free memory. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Free memory in bytes </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>AVR-specific implementation </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00990">990</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a56c3c1a776927eeb7917e7b636a2e3ab_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a86ddccd30b5b2af61d3cb76d53ca1b4b"/><section>
+    <title>getFreeQueueSlots()</title>
+<indexterm><primary>getFreeQueueSlots</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getFreeQueueSlots</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::getFreeQueueSlots ( ) const</computeroutput></para><para>
+
+<para>Get number of free slots in the global message queue. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01749">1749</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a86ddccd30b5b2af61d3cb76d53ca1b4b_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a69444823d403c8c84670eda2c0d594a4"/><section>
+    <title>getHeapFragmentation()</title>
+<indexterm><primary>getHeapFragmentation</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getHeapFragmentation</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::getHeapFragmentation ( )</computeroutput></para><para>
+
+<para>Get heap fragmentation percentage. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Heap fragmentation as percentage (0-100) </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01644">1644</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1acb0612339205f7e921b0034768dba4c5"/><section>
+    <title>getMaxTasks()</title>
+<indexterm><primary>getMaxTasks</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getMaxTasks</secondary></indexterm>
+<para><computeroutput>uint16_t Scheduler::getMaxTasks ( ) const</computeroutput></para><para>
+
+<para>Get maximum number of tasks. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Maximum number of tasks supported </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00892">892</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a26f332614d3126f5efdc42092138b0e6"/><section>
+    <title>getMemoryLeakStats()</title>
+<indexterm><primary>getMemoryLeakStats</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getMemoryLeakStats</secondary></indexterm>
+<para><computeroutput>bool Scheduler::getMemoryLeakStats (<link linkend="_structMemoryStats">MemoryStats</link> &amp; stats)</computeroutput></para><para>
+
+<para>Get memory leak detection statistics. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>stats</entry><entry>
+<para>Reference to store memory leak statistics </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if stats were retrieved successfully </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01649">1649</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a2ccde4ea0d8e9a6996c4a897aee709e9"/><section>
+    <title>getMostDelayingTask()</title>
+<indexterm><primary>getMostDelayingTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getMostDelayingTask</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::getMostDelayingTask ( ) const</computeroutput></para><para>
+
+<para>Get task that caused the most delays. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para><link linkend="_classTask">Task</link> ID of the task causing most delays, or 0 if none </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01754">1754</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a2ccde4ea0d8e9a6996c4a897aee709e9_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a3d51992ab99d1b8e7055ac1b5b6445ea"/><section>
+    <title>getResetCause()</title>
+<indexterm><primary>getResetCause</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getResetCause</secondary></indexterm>
+<para><computeroutput><link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> Scheduler::getResetCause ( )</computeroutput></para><para>
+
+<para>Get reset cause from system. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>ResetCause enumeration value </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>Combines Optiboot and other reset sources </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01437">1437</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a3d51992ab99d1b8e7055ac1b5b6445ea_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a06438be1e9b5f2e9441b9c8c7c0d696e"/><section>
+    <title>getResetCauseFlags()</title>
+<indexterm><primary>getResetCauseFlags</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getResetCauseFlags</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::getResetCauseFlags ( )</computeroutput></para><para>
+
+<para>Get raw reset flags from system. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Raw reset flags byte </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>Internal method for reset cause processing </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01491">1491</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a06438be1e9b5f2e9441b9c8c7c0d696e_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1acd30d51a85bda0b42d8ee5253a42e9f4"/><section>
+    <title>getResetInfo()</title>
+<indexterm><primary>getResetInfo</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getResetInfo</secondary></indexterm>
+<para><computeroutput>bool Scheduler::getResetInfo (<link linkend="_structResetInfo">ResetInfo</link> &amp; info)</computeroutput></para><para>
+
+<para>Get system reset information. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>info</entry><entry>
+<para>Reference to store reset information </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if reset info was retrieved successfully </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01422">1422</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_acd30d51a85bda0b42d8ee5253a42e9f4_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a7c61b8b908a19416283e66c0fb076a40"/><section>
+    <title>getSystemMemoryInfo()</title>
+<indexterm><primary>getSystemMemoryInfo</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getSystemMemoryInfo</secondary></indexterm>
+<para><computeroutput>bool Scheduler::getSystemMemoryInfo (<link linkend="_structSystemMemoryInfo">SystemMemoryInfo</link> &amp; info)</computeroutput></para><para>
+
+<para>Get system memory information. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>info</entry><entry>
+<para>Reference to store memory information </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if memory info was retrieved successfully </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01524">1524</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a7c61b8b908a19416283e66c0fb076a40_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1aabf3840938cc797555cdee88f5d19dd2"/><section>
+    <title>getTask()</title>
+<indexterm><primary>getTask</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getTask</secondary></indexterm>
+<para><computeroutput><link linkend="_classTask">Task</link> * Scheduler::getTask (uint8_t task_id)</computeroutput></para><para>
+
+<para>Get task by ID. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of task to find </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>Pointer to task, or nullptr if not found </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00885">885</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aabf3840938cc797555cdee88f5d19dd2_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aabf3840938cc797555cdee88f5d19dd2_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a7a84b715133d1f8dd473e1511b2498a2"/><section>
+    <title>getTaskCount()</title>
+<indexterm><primary>getTaskCount</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getTaskCount</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::getTaskCount ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+
+<para>Get number of active tasks. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of tasks currently in scheduler </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01121">1121</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a7170da5c7dfd33bd0a5bd6509538d84f"/><section>
+    <title>getTaskMemoryInfo()</title>
+<indexterm><primary>getTaskMemoryInfo</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getTaskMemoryInfo</secondary></indexterm>
+<para><computeroutput>bool Scheduler::getTaskMemoryInfo (uint8_t task_id, <link linkend="_structTaskMemoryInfo">TaskMemoryInfo</link> &amp; info)</computeroutput></para><para>
+
+<para>Get task memory information. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of task to get memory info for </para>
+</entry>
+                            </row>
+                            <row>
+<entry>info</entry><entry>
+<para>Reference to store task memory information </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if memory info was retrieved successfully </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01627">1627</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a7170da5c7dfd33bd0a5bd6509538d84f_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3"/><section>
+    <title>getTaskStats()</title>
+<indexterm><primary>getTaskStats</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>getTaskStats</secondary></indexterm>
+<para><computeroutput>bool Scheduler::getTaskStats (uint8_t task_id, <link linkend="_structTaskStats">TaskStats</link> &amp; stats)</computeroutput></para><para>
+
+<para>Get task statistics. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of task to get stats for </para>
+</entry>
+                            </row>
+                            <row>
+<entry>stats</entry><entry>
+<para>Reference to store task statistics </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if stats were retrieved successfully </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01502">1502</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a4a491d929e3bee5c1bb5db4ad9a13dc3_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a22a32d58cf6898fff48880c5349c115f"/><section>
+    <title>handleTaskTiming()</title>
+<indexterm><primary>handleTaskTiming</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>handleTaskTiming</secondary></indexterm>
+<para><computeroutput>void Scheduler::handleTaskTiming (<link linkend="_classTask">Task</link> * task, uint32_t currentTime)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Handle task timing monitoring. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to monitor </para>
+</entry>
+                            </row>
+                            <row>
+<entry>currentTime</entry><entry>
+<para>Current system time </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01188">1188</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a22a32d58cf6898fff48880c5349c115f_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a22a32d58cf6898fff48880c5349c115f_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1aaa8cc86207802e4a457202396b2f7441"/><section>
+    <title>initializeTaskNodePool()</title>
+<indexterm><primary>initializeTaskNodePool</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>initializeTaskNodePool</secondary></indexterm>
+<para><computeroutput>bool Scheduler::initializeTaskNodePool ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00742">742</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aaa8cc86207802e4a457202396b2f7441_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aaa8cc86207802e4a457202396b2f7441_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a1ded1b3c0e167dde6574bc8b4a0aca63"/><section>
+    <title>logFormatted()</title>
+<indexterm><primary>logFormatted</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logFormatted</secondary></indexterm>
+<para><computeroutput>void Scheduler::logFormatted (<link linkend="_classTask">Task</link> * task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper * format,  ...)</computeroutput></para><para>
+
+<para>Log a formatted message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> that generated the message (can be nullptr) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>level</entry><entry>
+<para>Log level </para>
+</entry>
+                            </row>
+                            <row>
+<entry>format</entry><entry>
+<para>Format string (FlashStringHelper) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>...</entry><entry>
+<para>Variable arguments for formatting </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Simplified implementation - just logs the format string </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01743">1743</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a1ded1b3c0e167dde6574bc8b4a0aca63_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1af5334fe39dbfc2286e91ee358087d3b5"/><section>
+    <title>logMessage()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>logMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logMessage</secondary></indexterm>
+<para><computeroutput>void Scheduler::logMessage (<link linkend="_classTask">Task</link> * task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper * msg)</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01038">1038</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_af5334fe39dbfc2286e91ee358087d3b5_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1acaab28b4949d5a175212d134c04cf406"/><section>
+    <title>logMessage()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>logMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logMessage</secondary></indexterm>
+<para><computeroutput>void Scheduler::logMessage (<link linkend="_classTask">Task</link> * task, <link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const char * msg)</computeroutput></para><para>
+
+<para>Log a message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> that generated the message (can be nullptr) </para>
+</entry>
+                            </row>
+                            <row>
+<entry>level</entry><entry>
+<para>Log level </para>
+</entry>
+                            </row>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01001">1001</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_acaab28b4949d5a175212d134c04cf406_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_acaab28b4949d5a175212d134c04cf406_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a1c6dd608a209d55e1925a4dbf5fb4344"/><section>
+    <title>logSystemEvent()</title>
+<indexterm><primary>logSystemEvent</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logSystemEvent</secondary></indexterm>
+<para><computeroutput>void Scheduler::logSystemEvent (<link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level, const __FlashStringHelper * msg)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Log a system event message. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>level</entry><entry>
+<para>Log level </para>
+</entry>
+                            </row>
+                            <row>
+<entry>msg</entry><entry>
+<para>Message to log </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01409">1409</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a1c6dd608a209d55e1925a4dbf5fb4344_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a40371a166759f310c2223ef082526829"/><section>
+    <title>logTaskDelay()</title>
+<indexterm><primary>logTaskDelay</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logTaskDelay</secondary></indexterm>
+<para><computeroutput>void Scheduler::logTaskDelay (<link linkend="_classTask">Task</link> * task, uint16_t delayMs, uint8_t causingTaskId)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Log task delay with attribution. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para>Delayed task </para>
+</entry>
+                            </row>
+                            <row>
+<entry>delayMs</entry><entry>
+<para>Delay amount in milliseconds </para>
+</entry>
+                            </row>
+                            <row>
+<entry>causingTaskId</entry><entry>
+<para>ID of task that caused the delay </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01285">1285</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a40371a166759f310c2223ef082526829_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a46f4a6ce080b281fd2941aa35450c3c0"/><section>
+    <title>logTaskExecution()</title>
+<indexterm><primary>logTaskExecution</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>logTaskExecution</secondary></indexterm>
+<para><computeroutput>void Scheduler::logTaskExecution (<link linkend="_classTask">Task</link> * task, uint32_t execTime)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Log a task execution event. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> that was executed </para>
+</entry>
+                            </row>
+                            <row>
+<entry>execTime</entry><entry>
+<para>Execution time in microseconds </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01414">1414</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a81607abe2905dee2e7cf9222a9e35b8f"/><section>
+    <title>loop()</title>
+<indexterm><primary>loop</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>loop</secondary></indexterm>
+<para><computeroutput>void Scheduler::loop ( )</computeroutput></para><para>
+
+<para>Run scheduler continuously. </para>
+</para>
+
+<para>Runs scheduler until <link linkend="_classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1">stop()</link> is called </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00955">955</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a81607abe2905dee2e7cf9222a9e35b8f_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1ae3fa321ea81e2c07e361147f4f0d606e"/><section>
+    <title>loopOnce()</title>
+<indexterm><primary>loopOnce</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>loopOnce</secondary></indexterm>
+<para><computeroutput>void Scheduler::loopOnce ( )</computeroutput></para><para>
+
+<para>Execute one scheduling step. </para>
+</para>
+
+<para>Processes messages and executes one ready task </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00924">924</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_ae3fa321ea81e2c07e361147f4f0d606e_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_ae3fa321ea81e2c07e361147f4f0d606e_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1afe202befb3d6eac9dbb6acd1a4b09401"/><section>
+    <title>now()</title>
+<indexterm><primary>now</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>now</secondary></indexterm>
+<para><computeroutput>uint32_t Scheduler::now ( ) const</computeroutput></para><para>
+
+<para>Get current system time. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Current time in milliseconds </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00988">988</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1aab0e31c53df15af0ffbcd97d0510c9a2"/><section>
+    <title>onTick()</title>
+<indexterm><primary>onTick</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>onTick</secondary></indexterm>
+<para><computeroutput>void Scheduler::onTick ( )</computeroutput></para><para>
+
+<para>Handle system tick. </para>
+</para>
+
+<para>Called by system timer interrupt <note><title>Note</title>
+
+<para>Updates internal system time </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01075">1075</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1aef20dca5b8efdd71b4e91f91d5e0240f"/><section>
+    <title>processMessages()</title>
+<indexterm><primary>processMessages</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>processMessages</secondary></indexterm>
+<para><computeroutput>void Scheduler::processMessages ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Process pending messages for all tasks. </para>
+</para>
+
+<para>Internal method called by step() </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01077">1077</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aef20dca5b8efdd71b4e91f91d5e0240f_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a6212cb4fdc7a3ed5c9e50e97729cff8d"/><section>
+    <title>publishMessage()</title>
+<indexterm><primary>publishMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>publishMessage</secondary></indexterm>
+<para><computeroutput>void Scheduler::publishMessage (uint8_t topic, uint8_t type, uint16_t arg = <computeroutput>0</computeroutput>
+)</computeroutput></para><para>
+
+<para>Publish a message to a topic. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>topic</entry><entry>
+<para>Topic ID to publish to </para>
+</entry>
+                            </row>
+                            <row>
+<entry>type</entry><entry>
+<para>Message type </para>
+</entry>
+                            </row>
+                            <row>
+<entry>arg</entry><entry>
+<para>Additional argument data </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>All tasks subscribed to the topic will receive this message </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00965">965</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a6212cb4fdc7a3ed5c9e50e97729cff8d_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a2e5c9f7ad69391854d3a0dc2dd73f8b4"/><section>
+    <title>releaseTaskNode()</title>
+<indexterm><primary>releaseTaskNode</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>releaseTaskNode</secondary></indexterm>
+<para><computeroutput>void Scheduler::releaseTaskNode (<link linkend="_structTaskNode">TaskNode</link> * node)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00715">715</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a2e5c9f7ad69391854d3a0dc2dd73f8b4_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a303a5bd8d44b55803e6da7b4108401c2"/><section>
+    <title>remove()</title>
+<indexterm><primary>remove</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>remove</secondary></indexterm>
+<para><computeroutput>bool Scheduler::remove (<link linkend="_classTask">Task</link> * task)</computeroutput></para><para>
+
+<para>Remove a task from the scheduler. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para>Pointer to task to remove </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if task was removed, false if not found </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00829">829</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a303a5bd8d44b55803e6da7b4108401c2_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a303a5bd8d44b55803e6da7b4108401c2_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1aaa234e0155e99b4fcbae695898663eea"/><section>
+    <title>removeAll()</title>
+<indexterm><primary>removeAll</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>removeAll</secondary></indexterm>
+<para><computeroutput>void Scheduler::removeAll ( )</computeroutput></para><para>
+
+<para>Remove all tasks from the scheduler. </para>
+</para>
+
+<para>Stops and removes all tasks </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00871">871</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aaa234e0155e99b4fcbae695898663eea_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_aaa234e0155e99b4fcbae695898663eea_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a4f3960871e36fdf7234b151f81f04120"/><section>
+    <title>sendMessage()</title>
+<indexterm><primary>sendMessage</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>sendMessage</secondary></indexterm>
+<para><computeroutput>void Scheduler::sendMessage (uint8_t task_id, uint8_t type, uint16_t arg = <computeroutput>0</computeroutput>
+)</computeroutput></para><para>
+
+<para>Send a direct message to a specific task. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task_id</entry><entry>
+<para>ID of target task </para>
+</entry>
+                            </row>
+                            <row>
+<entry>type</entry><entry>
+<para>Message type </para>
+</entry>
+                            </row>
+                            <row>
+<entry>arg</entry><entry>
+<para>Additional argument data </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00977">977</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a4f3960871e36fdf7234b151f81f04120_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a4f3960871e36fdf7234b151f81f04120_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a612b33338832de0d18ebf5859b3d7037"/><section>
+    <title>setLogLevel()</title>
+<indexterm><primary>setLogLevel</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>setLogLevel</secondary></indexterm>
+<para><computeroutput>void Scheduler::setLogLevel (<link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> level)</computeroutput></para><para>
+
+<para>Set minimum log level. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>level</entry><entry>
+<para>Minimum level to display </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Messages below this level will be filtered out </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00999">999</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a612b33338832de0d18ebf5859b3d7037_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a7ac470a1b0421f2db78e5b478a6b28b1"/><section>
+    <title>stop()</title>
+<indexterm><primary>stop</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>stop</secondary></indexterm>
+<para><computeroutput>void Scheduler::stop ( )</computeroutput></para><para>
+
+<para>Stop the scheduler. </para>
+</para>
+
+<para>Stops all tasks and halts scheduling </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00963">963</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a0a80134fcc4380c2577a5281352847eb"/><section>
+    <title>updateSystemTime()</title>
+<indexterm><primary>updateSystemTime</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>updateSystemTime</secondary></indexterm>
+<para><computeroutput>void Scheduler::updateSystemTime ( )<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Update system time. </para>
+</para>
+
+<para>Internal method to update system time from millis() </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01107">1107</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a0a80134fcc4380c2577a5281352847eb_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a23437fce9b79f76f4534c402e832d4f5"/><section>
+    <title>updateTaskStatistics()</title>
+<indexterm><primary>updateTaskStatistics</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>updateTaskStatistics</secondary></indexterm>
+<para><computeroutput>void Scheduler::updateTaskStatistics (<link linkend="_classTask">Task</link> * task, uint32_t execStart)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Update task execution statistics. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> to update </para>
+</entry>
+                            </row>
+                            <row>
+<entry>execStart</entry><entry>
+<para>Execution start time in microseconds </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01221">1221</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a23437fce9b79f76f4534c402e832d4f5_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a6ee466fc5e47301d6101c246c691c131"/><section>
+    <title>updateTimingVariables()</title>
+<indexterm><primary>updateTimingVariables</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>updateTimingVariables</secondary></indexterm>
+<para><computeroutput>void Scheduler::updateTimingVariables (<link linkend="_classTask">Task</link> * task)<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Update timing monitoring variables. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>task</entry><entry>
+<para><link linkend="_classTask">Task</link> that was executed </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01271">1271</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a6ee466fc5e47301d6101c246c691c131_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a6ee466fc5e47301d6101c246c691c131_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classScheduler_1a1ad7c1772cfa11033b280e9b5de86d35"/><section>
+    <title>wasResetCause()</title>
+<indexterm><primary>wasResetCause</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>wasResetCause</secondary></indexterm>
+<para><computeroutput>bool Scheduler::wasResetCause (<link linkend="_group__fsmos_1gaf0e4bd86b7877a41cdb3452dec42904d">ResetCause</link> cause)</computeroutput></para><para>
+
+<para>Check if a specific reset cause occurred. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>cause</entry><entry>
+<para>Reset cause to check for </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>true if the specified cause occurred </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l01500">1500</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classScheduler_a1ad7c1772cfa11033b280e9b5de86d35_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Friends And Related Symbol Documentation</title>
+<anchor xml:id="_classScheduler_1adad5641aac7a2fe0b15a675a053fd4fb"/><section>
+    <title>SharedMsg</title>
+<indexterm><primary>SharedMsg</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>SharedMsg</secondary></indexterm>
+<para><computeroutput>friend class <link linkend="_classSharedMsg">SharedMsg</link><computeroutput>[friend]</computeroutput></computeroutput></para><para>
+
+<para>Allow <link linkend="_classSharedMsg">SharedMsg</link> to access msgPool. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01339">1339</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classScheduler_1a720b2ff4a9e770649fe7b63d3098613d"/><section>
+    <title>currentLogLevel</title>
+<indexterm><primary>currentLogLevel</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>currentLogLevel</secondary></indexterm>
+<para><computeroutput><link linkend="_classScheduler_1ab2bd6aa333e3f108343fedb022eaca79">LogLevel</link> Scheduler::currentLogLevel<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Current minimum log level. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01333">1333</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a59fa5a068cd9a36672b39362982c2e97"/><section>
+    <title>freeHead</title>
+<indexterm><primary>freeHead</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>freeHead</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1MsgNode">MsgNode</link>* Scheduler::freeHead = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01473">1473</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1ae4384c1ec8e5ef486776d6dc255a501a"/><section>
+    <title>freeTaskNodeHead</title>
+<indexterm><primary>freeTaskNodeHead</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>freeTaskNodeHead</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link>* Scheduler::freeTaskNodeHead = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Head of free-list for <link linkend="_structTaskNode">TaskNode</link> pool. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01323">1323</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1ac44741f6b01d7d8f914851b72f538617"/><section>
+    <title>lastExecutedTaskId</title>
+<indexterm><primary>lastExecutedTaskId</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>lastExecutedTaskId</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::lastExecutedTaskId = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>ID of last executed task (for delay attribution) </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01336">1336</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a4e2da8da4d0ca8ce7da09e92fcc04ffc"/><section>
+    <title>lastTaskEndTime</title>
+<indexterm><primary>lastTaskEndTime</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>lastTaskEndTime</secondary></indexterm>
+<para><computeroutput>uint32_t Scheduler::lastTaskEndTime = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>When the last task finished execution. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01337">1337</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a13367b7d53dc7bf804d9158e57bff5f7"/><section>
+    <title>msgCount</title>
+<indexterm><primary>msgCount</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>msgCount</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::msgCount = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01474">1474</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1afc800a55be0f3da82ef2e79dad96496d"/><section>
+    <title>msgHead</title>
+<indexterm><primary>msgHead</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>msgHead</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1MsgNode">MsgNode</link>* Scheduler::msgHead = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01471">1471</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a4025d35f57b05649764c44f3583fc2b6"/><section>
+    <title>msgPool</title>
+<indexterm><primary>msgPool</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>msgPool</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool">MsgDataPool</link> Scheduler::msgPool<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Message pool for efficient allocation. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01329">1329</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a2503ab5f7acb13a3bd46f35036af3c02"/><section>
+    <title>msgTail</title>
+<indexterm><primary>msgTail</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>msgTail</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1MsgNode">MsgNode</link>* Scheduler::msgTail = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01472">1472</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a89473e616865792db671bdb2551aa338"/><section>
+    <title>nextTaskId</title>
+<indexterm><primary>nextTaskId</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>nextTaskId</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::nextTaskId = 1<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Next available task ID. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01327">1327</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a8a0b0619fdfbda3338fc4964999b3ffd"/><section>
+    <title>running</title>
+<indexterm><primary>running</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>running</secondary></indexterm>
+<para><computeroutput>bool Scheduler::running<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para><link linkend="_classScheduler">Scheduler</link> running state. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01331">1331</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1ac66364f021223ea49e76680b6dbcb56a"/><section>
+    <title>systemTime</title>
+<indexterm><primary>systemTime</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>systemTime</secondary></indexterm>
+<para><computeroutput>uint32_t Scheduler::systemTime<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Current system time. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01330">1330</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a3e1f741da7d85ea80bb2f226d6457ab6"/><section>
+    <title>taskCount</title>
+<indexterm><primary>taskCount</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>taskCount</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::taskCount = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Current number of tasks. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01326">1326</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a9eb682b2716a34e7c3eb742782aa42e2"/><section>
+    <title>taskHead</title>
+<indexterm><primary>taskHead</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>taskHead</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link>* Scheduler::taskHead = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Head of task linked list. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01320">1320</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a72d0e1044f04173955e8783b8c1c9bb0"/><section>
+    <title>taskNodePoolCapacity</title>
+<indexterm><primary>taskNodePoolCapacity</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>taskNodePoolCapacity</secondary></indexterm>
+<para><computeroutput>uint16_t Scheduler::taskNodePoolCapacity = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Total nodes currently allocated to pool/list. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01325">1325</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a6f21f46d36e9c56a43fadfa6cc32aad7"/><section>
+    <title>taskNodePoolInitialized</title>
+<indexterm><primary>taskNodePoolInitialized</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>taskNodePoolInitialized</secondary></indexterm>
+<para><computeroutput>bool Scheduler::taskNodePoolInitialized = false<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Whether pool has been initialized. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01324">1324</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a7dbc17482550f15704cdc4e5bbdde2d9"/><section>
+    <title>taskTail</title>
+<indexterm><primary>taskTail</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>taskTail</secondary></indexterm>
+<para><computeroutput><link linkend="_structTaskNode">TaskNode</link>* Scheduler::taskTail = nullptr<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Tail of task linked list. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01321">1321</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classScheduler_1a15bd5f3410a22f750d9cc40579e11084"/><section>
+    <title>totalNodes</title>
+<indexterm><primary>totalNodes</primary><secondary>Scheduler</secondary></indexterm>
+<indexterm><primary>Scheduler</primary><secondary>totalNodes</secondary></indexterm>
+<para><computeroutput>uint8_t Scheduler::totalNodes = 0<computeroutput>[private]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01475">1475</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classMsgDataPool" xml:lang="en-US">
+<title>MsgDataPool Class Reference</title>
+<indexterm><primary>MsgDataPool</primary></indexterm>
+<para>
+
+<para>Memory pool for efficient MsgData allocation. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;FsmOS.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classMsgDataPool_1a72b29d6cb8320d81b5b0d7304cf5dce2">MsgDataPool</link> ()</para>
+
+<para>Constructor. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1af2acf581af3a23b651a8985191415f4b">~MsgDataPool</link> ()</para>
+
+<para>Destructor. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link> * <link linkend="_classMsgDataPool_1a5249e1c96225998fac71ba67c691740d">allocate</link> ()</para>
+
+<para>Allocate a new MsgData from the pool. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">void</link> <link linkend="_classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee">deallocate</link> (<link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link> *msg)</para>
+
+<para>Return a MsgData to the pool. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">void</link> <link linkend="_classMsgDataPool_1aec9292e845c522cd14c90764b8bfc054">updateAdaptiveLimit</link> ()</para>
+
+<para>Update adaptive pool limit based on usage. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1a8d57ebaaeb9f6907fd2a6844d8611a68">getPoolSize</link> () <link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">const</link></para>
+
+<para>Get current pool size. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1a78472476fea071173c12900e76bb5525">getPoolLimit</link> () <link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">const</link></para>
+
+<para>Get maximum pool limit. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1ab68fab96e5ad24d2879c0c852391d25e">getCurrentInUse</link> () <link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">const</link></para>
+
+<para>Get number of currently allocated messages. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">bool</link> <link linkend="_classMsgDataPool_1aed7f37c999de507b0441f863a4942f2a">initialize</link> ()</para>
+
+<para>Initialize the message pool if not already initialized. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Private Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link> * <link linkend="_classMsgDataPool_1af8a8bed0618d0d7acccaf8f6c5256851">pool</link></para>
+
+<para>Array of MsgData objects. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1aca5724c9ea65b870035798e3cca1149d">poolSize</link></para>
+
+<para>Current pool size. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1a25c6c977b1a8a1682d63b4d5e0281ee2">poolLimit</link></para>
+
+<para>Maximum pool size. </para>
+</listitem>
+            <listitem><para>uint8_t <link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">currentInUse</link></para>
+
+<para>Number of messages currently in use. </para>
+</listitem>
+            <listitem><para><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> <link linkend="_classMsgDataPool_1a371ad52b35bd9e2e397abf1dabacc24e">nextFree</link></para>
+
+<para>Index of next free message. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Memory pool for efficient MsgData allocation. </para>
+
+
+
+<para><link linkend="_classMsgDataPool">MsgDataPool</link> manages a pool of MsgData objects to avoid frequent memory allocation/deallocation. It uses an adaptive limit system to balance memory usage and performance.</para>
+
+<para><note><title>Note</title>
+
+<para>The pool automatically adjusts its size based on usage patterns. </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00383">383</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classMsgDataPool_1a72b29d6cb8320d81b5b0d7304cf5dce2"/><section>
+    <title>MsgDataPool()</title>
+<indexterm><primary>MsgDataPool</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>MsgDataPool</secondary></indexterm>
+<para><computeroutput>MsgDataPool::MsgDataPool ( )</computeroutput></para><para>
+
+<para>Constructor. </para>
+</para>
+
+<para>Initializes the message pool with default settings </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00183">183</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1af2acf581af3a23b651a8985191415f4b"/><section>
+    <title>~MsgDataPool()</title>
+<indexterm><primary>~MsgDataPool</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>~MsgDataPool</secondary></indexterm>
+<para><computeroutput>MsgDataPool::~MsgDataPool ( )</computeroutput></para><para>
+
+<para>Destructor. </para>
+</para>
+
+<para>Frees all allocated memory </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00190">190</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classMsgDataPool_1a5249e1c96225998fac71ba67c691740d"/><section>
+    <title>allocate()</title>
+<indexterm><primary>allocate</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>allocate</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link> * MsgDataPool::allocate ( )</computeroutput></para><para>
+
+<para>Allocate a new MsgData from the pool. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Pointer to allocated MsgData, or nullptr if pool is full </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>Returns nullptr if no memory available </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00199">199</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_a5249e1c96225998fac71ba67c691740d_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1a9b78a83be33a8a2a938f576eee7a98ee"/><section>
+    <title>deallocate()</title>
+<indexterm><primary>deallocate</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>deallocate</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">void</link> MsgDataPool::deallocate (<link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link> * msg)</computeroutput></para><para>
+
+<para>Return a MsgData to the pool. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>msg</entry><entry>
+<para>Pointer to MsgData to deallocate </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <note><title>Note</title>
+
+<para>Frees any associated data and returns MsgData to pool </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00236">236</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_a9b78a83be33a8a2a938f576eee7a98ee_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1ab68fab96e5ad24d2879c0c852391d25e"/><section>
+    <title>getCurrentInUse()</title>
+<indexterm><primary>getCurrentInUse</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>getCurrentInUse</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::getCurrentInUse ( ) const</computeroutput></para><para>
+
+<para>Get number of currently allocated messages. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Number of messages currently in use </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00276">276</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1a78472476fea071173c12900e76bb5525"/><section>
+    <title>getPoolLimit()</title>
+<indexterm><primary>getPoolLimit</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>getPoolLimit</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::getPoolLimit ( ) const</computeroutput></para><para>
+
+<para>Get maximum pool limit. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Maximum number of MsgData objects allowed </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00274">274</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1a8d57ebaaeb9f6907fd2a6844d8611a68"/><section>
+    <title>getPoolSize()</title>
+<indexterm><primary>getPoolSize</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>getPoolSize</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::getPoolSize ( ) const</computeroutput></para><para>
+
+<para>Get current pool size. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>Current number of MsgData objects in pool </para>
+</formalpara>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00272">272</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1aed7f37c999de507b0441f863a4942f2a"/><section>
+    <title>initialize()</title>
+<indexterm><primary>initialize</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>initialize</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">bool</link> MsgDataPool::initialize ( )</computeroutput></para><para>
+
+<para>Initialize the message pool if not already initialized. </para>
+</para>
+
+<para><formalpara><title>Returns</title>
+
+<para>true if pool was initialized successfully, false if already initialized or failed </para>
+</formalpara>
+<note><title>Note</title>
+
+<para>This method performs lazy initialization to avoid static allocation issues </para>
+</note>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00278">278</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_aed7f37c999de507b0441f863a4942f2a_cgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_aed7f37c999de507b0441f863a4942f2a_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1aec9292e845c522cd14c90764b8bfc054"/><section>
+    <title>updateAdaptiveLimit()</title>
+<indexterm><primary>updateAdaptiveLimit</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>updateAdaptiveLimit</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">void</link> MsgDataPool::updateAdaptiveLimit ( )</computeroutput></para><para>
+
+<para>Update adaptive pool limit based on usage. </para>
+</para>
+
+<para>Automatically adjusts pool size for optimal performance </para>
+<para>
+Definition at line <link linkend="_FsmOS_8cpp_source_1l00258">258</link> of file <link linkend="_FsmOS_8cpp_source">FsmOS.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classMsgDataPool_aec9292e845c522cd14c90764b8bfc054_icgraph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c"/><section>
+    <title>currentInUse</title>
+<indexterm><primary>currentInUse</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>currentInUse</secondary></indexterm>
+<para><computeroutput>uint8_t MsgDataPool::currentInUse<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Number of messages currently in use. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00447">447</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1a371ad52b35bd9e2e397abf1dabacc24e"/><section>
+    <title>nextFree</title>
+<indexterm><primary>nextFree</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>nextFree</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::nextFree<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Index of next free message. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00448">448</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1af8a8bed0618d0d7acccaf8f6c5256851"/><section>
+    <title>pool</title>
+<indexterm><primary>pool</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>pool</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">MsgData</link>* MsgDataPool::pool<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Array of MsgData objects. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00444">444</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1a25c6c977b1a8a1682d63b4d5e0281ee2"/><section>
+    <title>poolLimit</title>
+<indexterm><primary>poolLimit</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>poolLimit</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::poolLimit<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Maximum pool size. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00446">446</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_classMsgDataPool_1aca5724c9ea65b870035798e3cca1149d"/><section>
+    <title>poolSize</title>
+<indexterm><primary>poolSize</primary><secondary>MsgDataPool</secondary></indexterm>
+<indexterm><primary>MsgDataPool</primary><secondary>poolSize</secondary></indexterm>
+<para><computeroutput><link linkend="_classMsgDataPool_1a0a148d6bfd58376877a0529f217ed33c">uint8_t</link> MsgDataPool::poolSize<computeroutput>[private]</computeroutput></computeroutput></para><para>
+
+<para>Current pool size. </para>
+</para>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l00445">445</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link><link linkend="_FsmOS_8cpp">FsmOS.cpp</link></section>
+</section>

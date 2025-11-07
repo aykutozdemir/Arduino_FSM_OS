@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structTaskStats" kind="struct" language="C++" prot="public">
+    <compoundname>TaskStats</compoundname>
+    <includes refid="FsmOS_8h" local="no">FsmOS.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structTaskStats_1a1fc9ad09023166819ea34a6c9e00a956" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TaskStats::taskId</definition>
+        <argsstring></argsstring>
+        <name>taskId</name>
+        <qualifiedname>TaskStats::taskId</qualifiedname>
+        <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="129" column="13" bodyfile="FsmOS.h" bodystart="129" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1acee85734ca75baa7fe01cad1c24fc34b" prot="public" static="no" mutable="no">
+        <type>const __FlashStringHelper *</type>
+        <definition>const __FlashStringHelper* TaskStats::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>TaskStats::name</qualifiedname>
+        <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> name. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="130" column="31" bodyfile="FsmOS.h" bodystart="130" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1ad14bdd478708018fae0f1bbceb19d2d0" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TaskStats::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <qualifiedname>TaskStats::state</qualifiedname>
+        <briefdescription>
+<para>Current task state (<ref refid="classTask_1afa88d99eb2a58c8f078a53f1195c53a8" kindref="member">Task::State</ref> enum value) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="131" column="13" bodyfile="FsmOS.h" bodystart="131" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1a28271d6c20d6bfccfea9f21fcdb7dd63" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskStats::periodMs</definition>
+        <argsstring></argsstring>
+        <name>periodMs</name>
+        <qualifiedname>TaskStats::periodMs</qualifiedname>
+        <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> period in milliseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="132" column="14" bodyfile="FsmOS.h" bodystart="132" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1a434524846cef9e3a82b15d7f7b5d439d" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TaskStats::priority</definition>
+        <argsstring></argsstring>
+        <name>priority</name>
+        <qualifiedname>TaskStats::priority</qualifiedname>
+        <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> priority. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="133" column="13" bodyfile="FsmOS.h" bodystart="133" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1afb9812d3db56b4a74e3534a0b1046b8c" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t TaskStats::runCount</definition>
+        <argsstring></argsstring>
+        <name>runCount</name>
+        <qualifiedname>TaskStats::runCount</qualifiedname>
+        <briefdescription>
+<para>Number of times task has run. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="134" column="14" bodyfile="FsmOS.h" bodystart="134" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1a922dffb9309c234de882457919f7cb66" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t TaskStats::maxExecTimeUs</definition>
+        <argsstring></argsstring>
+        <name>maxExecTimeUs</name>
+        <qualifiedname>TaskStats::maxExecTimeUs</qualifiedname>
+        <briefdescription>
+<para>Maximum execution time in microseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="135" column="14" bodyfile="FsmOS.h" bodystart="135" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1a68e1e0b13b6fc7e48ac77f22bc338492" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t TaskStats::totalExecTimeUs</definition>
+        <argsstring></argsstring>
+        <name>totalExecTimeUs</name>
+        <qualifiedname>TaskStats::totalExecTimeUs</qualifiedname>
+        <briefdescription>
+<para>Total execution time in microseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="136" column="14" bodyfile="FsmOS.h" bodystart="136" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1ab319b8455c244af5111b6c2e395ffad9" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskStats::stackUsage</definition>
+        <argsstring></argsstring>
+        <name>stackUsage</name>
+        <qualifiedname>TaskStats::stackUsage</qualifiedname>
+        <briefdescription>
+<para>Stack usage in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="137" column="14" bodyfile="FsmOS.h" bodystart="137" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1abbf27ee4cb7f8272b150152df12c3da0" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskStats::delayCount</definition>
+        <argsstring></argsstring>
+        <name>delayCount</name>
+        <qualifiedname>TaskStats::delayCount</qualifiedname>
+        <briefdescription>
+<para>Number of times task was delayed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="138" column="14" bodyfile="FsmOS.h" bodystart="138" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structTaskStats_1ac2ef063a104bca4c81457a8db057a51a" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t TaskStats::maxDelayMs</definition>
+        <argsstring></argsstring>
+        <name>maxDelayMs</name>
+        <qualifiedname>TaskStats::maxDelayMs</qualifiedname>
+        <briefdescription>
+<para>Maximum delay experienced in milliseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="FsmOS.h" line="139" column="14" bodyfile="FsmOS.h" bodystart="139" bodyend="-1"/>
+        <referencedby refid="classScheduler_1a4a491d929e3bee5c1bb5db4ad9a13dc3" compoundref="FsmOS_8cpp" startline="1502" endline="1522">Scheduler::getTaskStats</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classTask" kindref="compound">Task</ref> execution statistics. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Used for performance monitoring and debugging </para>
+    </detaileddescription>
+    <location file="FsmOS.h" line="127" column="1" bodyfile="FsmOS.h" bodystart="128" bodyend="140"/>
+    <listofallmembers>
+      <member refid="structTaskStats_1abbf27ee4cb7f8272b150152df12c3da0" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>delayCount</name></member>
+      <member refid="structTaskStats_1ac2ef063a104bca4c81457a8db057a51a" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>maxDelayMs</name></member>
+      <member refid="structTaskStats_1a922dffb9309c234de882457919f7cb66" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>maxExecTimeUs</name></member>
+      <member refid="structTaskStats_1acee85734ca75baa7fe01cad1c24fc34b" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>name</name></member>
+      <member refid="structTaskStats_1a28271d6c20d6bfccfea9f21fcdb7dd63" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>periodMs</name></member>
+      <member refid="structTaskStats_1a434524846cef9e3a82b15d7f7b5d439d" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>priority</name></member>
+      <member refid="structTaskStats_1afb9812d3db56b4a74e3534a0b1046b8c" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>runCount</name></member>
+      <member refid="structTaskStats_1ab319b8455c244af5111b6c2e395ffad9" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>stackUsage</name></member>
+      <member refid="structTaskStats_1ad14bdd478708018fae0f1bbceb19d2d0" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>state</name></member>
+      <member refid="structTaskStats_1a1fc9ad09023166819ea34a6c9e00a956" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>taskId</name></member>
+      <member refid="structTaskStats_1a68e1e0b13b6fc7e48ac77f22bc338492" prot="public" virt="non-virtual"><scope>TaskStats</scope><name>totalExecTimeUs</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

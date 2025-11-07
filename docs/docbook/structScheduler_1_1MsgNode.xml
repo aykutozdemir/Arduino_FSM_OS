@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structScheduler_1_1MsgNode" xml:lang="en-US">
+<title>Scheduler::MsgNode Struct Reference</title>
+<indexterm><primary>Scheduler::MsgNode</primary></indexterm>
+Collaboration diagram for Scheduler::MsgNode:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="structScheduler_1_1MsgNode__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_structScheduler_1_1MsgNode">MsgNode</link> * <link linkend="_structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee">next</link></para>
+</listitem>
+            <listitem><para><link linkend="_structScheduler_1_1QueuedMessage">QueuedMessage</link> <link linkend="_structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c">payload</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01464">1464</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_structScheduler_1_1MsgNode_1a91702c9faa02b67ac24d3924be9fdaee"/><section>
+    <title>next</title>
+<indexterm><primary>next</primary><secondary>Scheduler::MsgNode</secondary></indexterm>
+<indexterm><primary>Scheduler::MsgNode</primary><secondary>next</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1MsgNode">MsgNode</link>* Scheduler::MsgNode::next</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01466">1466</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<anchor xml:id="_structScheduler_1_1MsgNode_1ab2623f2b15be317f6b54848af08ce97c"/><section>
+    <title>payload</title>
+<indexterm><primary>payload</primary><secondary>Scheduler::MsgNode</secondary></indexterm>
+<indexterm><primary>Scheduler::MsgNode</primary><secondary>payload</secondary></indexterm>
+<para><computeroutput><link linkend="_structScheduler_1_1QueuedMessage">QueuedMessage</link> Scheduler::MsgNode::payload</computeroutput></para><para>
+Definition at line <link linkend="_FsmOS_8h_source_1l01467">1467</link> of file <link linkend="_FsmOS_8h_source">FsmOS.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+<link linkend="_FsmOS_8h">FsmOS.h</link></section>
+</section>
