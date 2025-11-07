@@ -1,7 +1,14 @@
+<<<<<<< HEAD:Makefile
 # Makefile for FsmOS Documentation and Compilation Testing
 # FsmOS v1.3.0 - Standalone Library Documentation
 
 .PHONY: all clean docs help test-compile test-fsmos test-examples test-libs test-all
+=======
+# Makefile for FsmOS Documentation
+# FsmOS v1.3.0 - Standalone Library Documentation
+
+.PHONY: all clean docs help
+>>>>>>> 65bdf6ed5a850446de0e3034b2d80def63f1efd6:FsmOS/Makefile
 
 # Default target
 all: docs
@@ -13,6 +20,7 @@ docs:
 	@echo "Documentation generated in docs/html/"
 	@echo "Open docs/html/index.html to view"
 
+<<<<<<< HEAD:Makefile
 # Test compilation of all examples
 test-compile: test-fsmos test-examples test-libs
 	@echo ""
@@ -188,6 +196,8 @@ test-all: test-compile
 	@echo "✓ All compilation tests passed!"
 	@echo "=========================================="
 
+=======
+>>>>>>> 65bdf6ed5a850446de0e3034b2d80def63f1efd6:FsmOS/Makefile
 # Clean documentation
 clean:
 	@echo "Cleaning documentation..."
@@ -196,6 +206,7 @@ clean:
 
 # Help
 help:
+<<<<<<< HEAD:Makefile
 	@echo "FsmOS Makefile"
 	@echo "=============="
 	@echo ""
@@ -221,3 +232,21 @@ help:
 	@echo "  make test-libs    # Test library examples only"
 	@echo "  make clean        # Clean documentation"
 	@echo "  make help         # Show help"
+=======
+	@echo "FsmOS Documentation Makefile"
+	@echo "============================="
+	@echo ""
+	@echo "Available targets:"
+	@echo "  all     - Generate documentation (default)"
+	@echo "  docs    - Generate documentation"
+	@echo "  clean   - Remove generated documentation"
+	@echo "  help    - Show this help message"
+	@echo ""
+	@echo "Requirements:"
+	@echo "  - Doxygen 1.9.8 or higher"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make          # Generate documentation"
+	@echo "  make clean    # Clean documentation"
+	@echo "  make help     # Show help"
+>>>>>>> 65bdf6ed5a850446de0e3034b2d80def63f1efd6:FsmOS/Makefile
